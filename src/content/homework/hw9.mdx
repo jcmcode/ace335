@@ -1,0 +1,194 @@
+---
+title: "Homework 9 Solutions"
+homework: 9
+---
+
+## Problem 1: Root Locus and Continuity of Roots in the Coefficients
+
+<Problem id="1" title="Root Locus and Continuity of Roots in the Coefficients">
+Consider the polynomial $a(s) + Kb(s) = 0$ where $a$ and $b$ are polynomials. Show that the roots of this polynomial vary continuously as $K \in \mathbb{R}$ changes. That is, as $K$ approaches any fixed number, say 1, through a sequence, then the roots of the polynomial sequence converges to the roots of the polynomial with $K = 1$.
+
+Hint: We can follow the three steps below:
+
+a) First show that for any polynomial $p(s) = a_0 + a_1 s + \cdots + a_{n-1}s^{n-1} + s^n$, the matrix
+
+$$A = \begin{bmatrix} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ \vdots & \vdots & \vdots & \cdots & \vdots \\ 0 & 0 & 0 & \cdots & 1 \\ -a_0 & -a_1 & -a_2 & \cdots & -a_{n-1} \end{bmatrix}$$
+
+has $p(s)$ as its characteristic polynomial.
+
+b) From this, one can show through some algebraic analysis that eigenvalues are uniformly bounded where the bound continuously changes with the polynomial coefficients: Consider an eigenvalue $\lambda$ with eigenvector $v$ with $Av = \lambda v$ and $v = \begin{bmatrix} v_1 & \cdots & v_n \end{bmatrix}^T$. Then, for every $i$, we have that
+
+$$|\lambda| |v_i| = \left|\sum_j A(i,j) v(j)\right| \leq \left(\max_i \sum_j |A(i,j)|\right) \max_j |v_j|$$
+
+and hence
+
+$$|\lambda| \max_i |v_i| \leq \left(\max_i \sum_j |A(i,j)|\right) \max_j |v_j|$$
+
+and thus $|\lambda| \leq \max_i \sum_j |A(i,j)|$ for all eigenvalues. As a result $|\lambda_j| \leq \max(1, \sum_i |a_i|)$ for each $1 \leq j \leq n$. Alternatively, you can use a very useful result known as Gershgorin circle theorem. What matters is that the bound (on the eigenvalues) is uniformly bounded (as $K$ changes), since the obtained bound above changes continuously with $K$.
+
+c) Now, as $K$ changes, the coefficients of the polynomial continuously change. Therefore, by part b), the roots of the polynomial are uniformly bounded for $K$ sufficiently close to 1. This implies that for every sequence $K_m \to 1$, the corresponding sequence of roots must contain a converging subsequence. Then, we can arrive at a contradiction for the following contrapositive argument: suppose that $K_m$ approaches 1 along some sequence but the roots do not converge to the roots of the polynomial with $K = 1$.
+
+Complete the argument. As noted above, the argument applies for an arbitrary limit for the $K_m$ sequence, in place of 1.
+</Problem>
+
+<Solution>
+**a)** The result holds for $n = 1$ and $n = 2$ by direct calculation. Now, let this hold for $n - 1 \geq 1$. We show that it also holds for $n$ (leading to an inductive argument for all $n \geq 2$). Observe that the determinant of the matrix
+
+$$\lambda I - A = \begin{bmatrix} \lambda & -1 & 0 & \cdots & 0 \\ 0 & \lambda & -1 & \cdots & 0 \\ \vdots & \vdots & \vdots & \cdots & \vdots \\ 0 & 0 & 0 & \cdots & -1 \\ a_0 & a_1 & a_2 & \cdots & \lambda + a_{n-1} \end{bmatrix}$$
+
+is
+
+$$\lambda(a_1 + \cdots + a_{n-1}\lambda^{n-2}) + (-1)^{n-1} a_0 (-1)^{n-1} = a_0 + a_1\lambda + \cdots + a_{n-1}\lambda^{n-1} + \lambda^n$$
+
+We can also show this by the following more tedious but instructive argument. Given your earlier studies involving differential equations, we can show this by realizing that the matrix above appears in the first-order ODE reduction of the $n$th order constant coefficient differential equation:
+
+$$\frac{d^n y(t)}{dt^n} + a_{n-1}\frac{d^{n-1} y(t)}{dt^{n-1}} + a_{n-2}\frac{d^{n-2} y(t)}{dt^{n-2}} + \cdots + a_1 \frac{dy(t)}{dt} + a_0 y(t) = 0 \qquad \text{(1)}$$
+
+by writing
+
+$$x(t) = \begin{bmatrix} y(t) & \frac{dy(t)}{dt} & \cdots & \frac{d^{n-1}y(t)}{dt^{n-1}} \end{bmatrix}^T \qquad \text{(2)}$$
+
+Then, realize that $e^{\lambda_i t}c$ (for some constant $c$) solves the differential equation (1) and thus obtain a solution
+
+$$A \begin{bmatrix} e^{\lambda_i t} \\ \lambda_i e^{\lambda_i t} \\ \vdots \\ \lambda_i^{n-1} e^{\lambda_i t} \end{bmatrix} = \lambda_i \begin{bmatrix} e^{\lambda_i t} \\ \lambda_i e^{\lambda_i t} \\ \vdots \\ \lambda_i^{n-1} e^{\lambda_i t} \end{bmatrix} =: \lambda_i v_i e^{\lambda_i t}$$
+
+for (2), leading to an eigenvalue equation. For a repeated eigenvalue $\lambda_i$ we may need to consider $te^{\lambda_i t}$ which solves (1) and plug this into the vector (2), to arrive at a generalized eigenvector $v_j$: $Av_j = \lambda_i v_j + v_i$.
+
+**b)** Now, as $K$ changes, the coefficients of the polynomial continuously change. Therefore, the roots of the polynomial are uniformly bounded for $K$ sufficiently close to any fixed $K^*$. This implies that for every sequence $K_m \to K^*$, the corresponding sequence of roots must contain a converging subsequence (since the ordering of the roots may be arbitrary one can consider the metric between two vectors defined as the smallest $l_2$ distance among all possible permutations). Then, we can arrive at a contradiction for the following contrapositive argument: suppose that $K$ approaches $K^*$ along some sequence but the roots do not converge to the roots of the polynomial with $K = K^*$.
+
+**c)** Let $\{s_1^K, \cdots, s_n^K\}$ be the roots of the polynomial $p_K(s)$ for a given $K$. For any sequence $K_m \to K^*$, by part a), the family of roots will take values from a compact set. Thus, there must exist a converging subsequence, call such a subsequential limit $\{\bar{s}_1, \cdots, \bar{s}_n\}$. Now, if this limit is not the same as the roots of the polynomial with $K = 1$, then the value of the polynomial at $K = K^*$, $p_{K^*}(s)$ must be different then the value $\prod_{m=1}^{n} (s - \bar{s}_m)$ for some $s \in \mathbb{C}$. But, by continuity of the polynomial itself in $K$, $p_K(s) \to p_1(s)$ for all $s \in \mathbb{C}$, a contradiction. Thus, every converging subsequence must converge to the roots of the polynomial $p_{K^*}(s)$. For the metric for convergence, as noted, we consider the smallest possible $l_2$ metric on $\mathbb{C}^n$ among all permutations.
+
+Finally, we now show that in fact every sequence itself must be converging: suppose not, then there exists $\epsilon$ and a subsequence $\{\bar{s}_1, \cdots, \bar{s}_n\}$ such that $\{\bar{s}_1, \cdots, \bar{s}_n\}$ is $\epsilon$ away from the roots of the $p_{K^*}(s)$ under the metric considered above. But this subsequence itself must contain a converging subsequence, by the arguments above, and the limit has to be the roots of $p_{K^*}(s)$. Hence, a contradiction.
+</Solution>
+
+## Problem 2: Root Locus
+
+<Problem id="2" title="Root Locus">
+Consider Figure 1 (a standard feedback control block diagram with $r \to (+) \to C(s) \to P(s) \to y$, with negative feedback from $y$ to the summing junction).
+
+a) [Proportional Control] Let the plant and controller be given with $P(s) = \frac{1}{s^2}$ (double integrator dynamics) and $C(s) = k_p$ (such a controller is known as a *proportional* controller). Find the root locus as $k_p$ changes from 0 to $\infty$. Can this system be made stable by such a proportional controller?
+
+b) [PD Control] Consider $P(s) = \frac{1}{s^2}$ (double integrator dynamics), and $C(s) = k_p + k_d s$ (the term PD-controller means *proportional* plus *derivative* control). Let $k_p = k_d = K$. Find the root locus as $K$ changes from 0 to $\infty$. Conclude, while comparing with part a above, that the addition of the derivative controller has pushed the poles to the left-half plane (thus, leading to stability!)
+
+c) [Reference Tracking] For the system with the controller in part b), let $K > 0$: Let $r(t) = A1_{\{t \geq 0\}}$ for some $A \in \mathbb{R}$. Find $\lim_{t \to \infty} y(t)$. Hint: Apply the Final Value Theorem. We have that $R(s) = A\frac{1}{s}$ and with $Y(s) = A \frac{Ks+K}{s(s^2+Ks+K)}$ we have that $sY(s)$ has all poles on the left-half plane. By the final value theorem, the limit is $A$. Thus, the output asymptotically *tracks* the input signal.
+
+**Some engineering interpretation.** $\frac{1}{s^2}$ can be viewed as a map from acceleration to position: $\frac{d^2p}{dt^2} = u$; part a) in the above suggests that if we only use position error we cannot have a stable tracking system; but if we use position and derivative (that is, velocity) information, then we can make the system stable. Furthermore, if we have a reference tracking problem, the output will indeed track the reference path.
+</Problem>
+
+<Solution>
+**a)** The roots solve $s^2 + K = 0$ and therefore the system is not BIBO stable for any $K > 0$.
+
+**b)** Here, we have $1 + K\frac{s+1}{s^2} = 0$ and thus $s^2 + Ks + K = 0$. All reals to the left of $-1$, and values on the unit circle centred around $-1$ form the root loci. Therefore, with $K > 0$, the presence of the derivative control together with the proportional control pushes the root loci to the left half plane!
+
+**c)** We have that $U(s) = \frac{1}{s}$. Then, $Y(s) = \frac{Ks+K}{s(s^2+Ks+K)}$. Note that $sY(s)$ has all poles on the left-half plane. By the final value theorem, the limit is $A$ (you can also directly apply an analysis based on partial fraction expansion which upon some analysis leads to $\frac{\alpha_1}{s} + \frac{\beta_1 s + \beta_2}{s^2 + Ks + K}$ for constants $\alpha_1, \beta_1, \beta_2$, and note that only the term involving the partial fraction $\frac{\alpha_1}{s}$ leads to a term which does not decay to zero in view of part b), and thus it suffices to compute $\alpha_1 = 1$). Thus, the output asymptotically *tracks* the input signal.
+</Solution>
+
+## Problem 3: Nyquist Stability Criterion
+
+<Problem id="3" title="Nyquist Stability Criterion">
+Consider Figure 1 (same feedback block diagram as Problem 2).
+
+a) Consider $C(s) = K$, $P(s) = \frac{1}{(s+1)^3}$. Is this system stable for a given $K > 0$. Explain through the Nyquist stability criterion.
+
+b) Consider $P(s)C(s) = \frac{K}{(s+a)^3}$ with the controller in an error feedback form so that the closed loop transfer function is given by $\frac{P(s)C(s)}{1+P(s)C(s)}$. Is this system stable? Explain through the Nyquist stability criterion.
+
+c) Let $P(s)C(s) = \frac{3}{(s+1)^3}$. Compute the gain stability margin. Draw the phase stability margin on the Nyquist curve.
+</Problem>
+
+<Solution>
+**a)** As done in class, both with root locus and with Nyquist criteria, we establish that for $K \leq -1$, the system is unstable, for $K > -1$, the system is stable.
+
+**b)** For $a > 0$, there are no right-half plane poles of $P(s)C(s)$. So, for stability we require that there are no encirclements of $-1$. Write
+
+$$L(i\omega) = \frac{1}{(i\omega + a)^3} = \frac{a^3 - 3a\omega^2}{(a^2 + \omega^2)^3} + i\frac{\omega^3 - 3a^2\omega}{(a^2 + \omega^2)^3}$$
+
+We see that for $\omega > 0$, the $x$-axis is visited only twice (and also in the limit as $\omega \to \infty$). The values are at $\omega = 0$, $L(i\omega) = \frac{1}{a^3}$; and at $\omega = \sqrt{3}a$ with the value $L(i\omega) = \frac{-1}{8a^3}$. We require then that $8a^3 > 1$ and $a > \frac{1}{2}$.
+
+For $a < 0$, since there are three poles on the right half plane, and the number of encirclements will at most be 2, the system will be unstable.
+
+**c)** With the analysis above, find the angle from $-1$ from the Nyquist plot hitting the unit circle; this will be the phase stability margin. Find the distance from $-1$ the point where the Nyquist plot hits the negative $x$-axis; this will be the gain stability margin: by computing $\frac{-3}{8a^3}$ at $a = 1$ we obtain $\frac{-3}{8}$, and thus the gain stability margin is $|\frac{1}{-3/8}| = \frac{8}{3}$.
+</Solution>
+
+## Problem 4: Stability via Nyquist Plot or Root Locus Plot
+
+<Problem id="4" title="Stability via Nyquist Plot or Root Locus Plot">
+Consider Figure 1 (same feedback block diagram). Let $C(s) = K$, $P(s) = \frac{s+1}{s(\frac{s}{10}-1)}$.
+
+Study stability properties using either the root locus and Nyquist stability criteria.
+</Problem>
+
+<Solution>
+Observe that there is a pole at $s = 10$, therefore we have to have an encirclement counter-clockwise.
+
+Note that when you compute the Nyquist contour, you should avoid $s = 0$, as this is a pole on the imaginary axis: for this, you can move from $-ir$ to $r$ to $ir$ along an arbitrarily small semi-circle (taking $r$ small enough) clock-wise to plot the Nyquist diagram, so that the pole is not inside the contour. This won't affect the stability analysis since 0 is a pole and not a zero of $1 + P(s)C(s)$.
+
+Now, write $s = i\omega$. Then,
+
+$$K \frac{10(i\omega + 1)}{i\omega(i\omega - 10)} = K10 \frac{i(-\omega^3 + 10\omega) - 11\omega^2}{100\omega^2 + \omega^4}$$
+
+This curve hits the real axis at $\omega = \sqrt{10}$ (and doesn't hit it again until it hits again in the limit at $\omega = \infty$). The value is $-11K/100$.
+
+At $\omega = \sqrt{10}$, the value of the fraction above is $-K$; and the encirclement is counterclockwise, so $N = -1$. But since there is also a pole in the right half plane we have that $Z = N + P = 0$. Thus, the system is stable for $K > 1$.
+
+A careful inspection shows that when the contour circles around $s = 0$ to avoid the pole, when $K < 1$, the Nyquist curve does encircle $-1$ but does so clock-wise therefore this does not contribute to stability. Therefore, we do need that $K > 1$. For $K < 1$, the system is unstable.
+
+With the root locus method, you can show that the root loci satisfy: $\{s : s^2 + s(10K - 10) + 10K = 0\}$. For $K > 1$, the system is stable, as the roots are both on the left half plane. For $K < 1$, the system is unstable.
+</Solution>
+
+## Problem 5: Infinity Norm and the Small Gain Theorem (Optional)
+
+<Problem id="5" title="Infinity Norm and the Small Gain Theorem (Optional)">
+a) Consider a linear system with feedback, which we assume to be stable: We generalize the observation above by viewing the input as one in $L_2(\mathbb{R}; \mathbb{C})$. Consider then the gain of a linear system with:
+
+$$\gamma := \sup_{u \in L_2(\mathbb{R};\mathbb{C}): \|u\|_2 \neq 0} \frac{\|y\|_2}{\|u\|_2}$$
+
+We know, by Parseval's theorem, that
+
+$$\gamma := \sup_{u \in L_2(\mathbb{R};\mathbb{C}): \|u\|_2 \neq 0} \frac{\|\mathcal{F}_{CC}(y)\|_2}{\|\mathcal{F}_{CC}(u)\|_2}$$
+
+By writing $i\omega$ instead of $i2\pi f$ in the following, we have
+
+$$\mathcal{F}_{CC}(y)(\omega) = \mathcal{F}_{CC}(u)(\omega) G(i\omega),$$
+
+where $G$ is the closed-loop transfer function with $s = i\omega$.
+
+Show that
+
+$$\gamma = \sup_{u \in L_2(\mathbb{R};\mathbb{C}): \|u\|_2 \neq 0} \sqrt{\frac{\int_\omega |\mathcal{F}_{CC}(u)(i\omega) G(i\omega)|^2 d\omega}{\|\mathcal{F}_{CC}(u)\|^2}} = \sup_{\omega \in \mathbb{R}} |G(i\omega)| =: \|G\|_\infty$$
+
+b) Let us define a system to be $L_2$-stable if a bounded input, in the $L_2$-sense, leads to a bounded output in the $L_2$-sense. Show that BIBO stability of a linear system implies $L_2$-stability.
+
+c) Prove the following statement: [Small Gain Theorem] Consider a feedback control system with closed-loop transfer function $G(s) = \frac{H_1(s)}{1 + H_1(s)H_2(s)}$, where $H_1$ and $H_2$ are stable. Suppose further that the gains of $H_1$ and $H_2$ are $\gamma_1$ and $\gamma_2$, respectively. Then, if $\gamma_1 \gamma_2 < 1$, the closed-loop system is stable.
+</Problem>
+
+<Solution>
+**a)** First observe that since $g$ is integrable, $G(i\omega)$ is continuous in $\omega$ (or $\hat{g}(2\pi f)$ is continuous in $f$). This can be shown by an application of the dominated convergence theorem.
+
+Now note that by writing $\omega = 2\pi f$,
+
+$$\int_\omega |\mathcal{F}_{CC}(u)(i\omega)|^2 |G(i\omega)|^2 d\omega \leq \left(\sup_\omega |G(i\omega)|^2\right) \int |\mathcal{F}_{CC}(u)(i\omega)|^2 d\omega$$
+
+We write $\sup_{u \in L_2(\mathbb{R};\mathbb{C})}$, since a maximizing frequency may not exist or a maximizing input, even if a maximizing frequency $\omega^*$ exists, $u(t) = e^{i\omega^* t}$, will not be square integrable.
+
+However, this can be approximated arbitrarily well by truncation of the input and the output: Let $\omega^* = 2\pi f^*$ and $u_K(t) = 1_{\{-K/2 \leq t \leq K/2\}} e^{i2\pi f^* t}$. As $K \to \infty$, the gain of the system will approximate $\gamma$ arbitrarily well. This is slightly beyond the scope of our course, but the reasoning is that the Fourier transform of $u_K(t) = 1_{\{-K/2 \leq t \leq K/2\}} e^{i2\pi f^* t}$ will form an approximate identity sequence $\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}$, and $\frac{1}{K}|\hat{u}_K|^2(f)$ will also form an approximate identity-like sequence around $f^*$, since
+
+$$\frac{1}{K} \left(\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}\right)^2 = \frac{\sin(\pi(f-f^*)K)\sin(\pi(f-f^*)K)}{\pi(f-f^*)K}$$
+
+Now, by viewing the function
+
+$$R(f) := \frac{|\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}|^2}{\int_v |\frac{\sin(\pi(v-f^*)K)}{\pi(v-f^*)}|^2 dv}$$
+
+as a probability density function which concentrates around $f^*$, we have that
+
+$$\left(\int_\omega \frac{|\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}|^2}{\int_\omega |\frac{\sin(\pi(f'-f^*)K)}{\pi(f'-f^*)}|^2 df'} \hat{g}(f)^2 df\right)$$
+
+converges to $|\hat{g}(f^*)|^2$ as $K$ gets larger and larger by the continuity of $\hat{g}$.
+
+Thus, we can get arbitrarily close to the supremum gain by first approaching the supremum value over all frequencies arbitrarily well, and then by approaching the gain corresponding to such frequencies arbitrarily well with inputs constructed as above. Thus, we define the gain of a linear system as:
+
+$$\gamma := \|G(i\omega)\|_\infty = \sup_{\omega \in \mathbb{R}} |G(i\omega)| = \sup_{f \in \mathbb{R}} |\hat{g}(f)|$$
+
+**b)** BIBO stability implies $\|h\|_1 < \infty$, which implies that $H(i\omega)$ is uniformly bounded for $\omega \in \mathbb{R}$ so that $|H(i\omega)| \leq \|h\|_1$. Let $u^m \in \mathcal{S}$. Then, observe that $\|y^m\|_2^2 = \int |Y^m(i\omega)|^2 \frac{1}{2\pi} d\omega = \int |H^2(i\omega)(U^m)^2(i\omega)| \frac{1}{2\pi} d\omega \leq \|h\|_1^2 \int |(U^m)^2(i\omega)| \frac{1}{2\pi} d\omega$. Now, approximate any $u$ with $\|u\|_2 < \infty$ with the sequence $\{u^m \in \mathcal{S}, m \in \mathbb{N}\}$, taking the limit of the output sequence of which lets us conclude that the output $\|y\|_2$ is also bounded.
+
+**c)** Note that $\sup_\omega \frac{H_1(i\omega)}{1+H_1(i\omega)H_2(i\omega)}$ is uniformly bounded as $1 + H_1(i\omega)H_2(i\omega)$ is uniformly bounded away from 0. The proof then follows from Nyquist's criterion: Since $H_1, H_2$ are stable, they have no poles in the right half-plane. Furthermore, since $\gamma_1 \gamma_2 < 1$, $|C(s)P(s)|$ (here: $H_1(i\omega)H_2(i\omega)$) will be uniformly away from the point $-1$, thus a positive gain margin will be maintained and $-1$ will not be encircled. The system, then, is stable.
+</Solution>

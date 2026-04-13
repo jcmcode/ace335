@@ -1,0 +1,254 @@
+---
+title: "The Sampling Theorem"
+chapter: 10
+---
+
+One important requirement for signal transmission and storage is the need for discretization of the signal, both in time-index sets and in signal-range sets. The former is called sampling; the latter is called quantization. In the following, we discuss sampling.
+
+## 10.1 The Sampling Theorem
+
+Samplers perform the discretization in the time-index. We discuss a very important theorem in the following.
+
+<SamplingDemo />
+
+### 10.1.1 Sampling of a Continuous-Time (CT) Signal
+
+<Theorem id="10.1.1" title="Shannon-Nyquist Sampling Theorem">
+Let $\{x(t), \; t \in \mathbb{R}\}$ be a CT signal in $L_2(\mathbb{R};\mathbb{R})$ and let $\hat{x} = \mathcal{F}_{CC}(x)$. If this signal has a finite bandwidth $B$, that is if
+
+$$\hat{x}(f) = 0, \quad |f| > B,$$
+
+(that is, the support of $\hat{x}$ is contained in $[-B, B]$) then it is possible to reconstruct this signal by samples of this signal (with arbitrarily small error in the $L_2(\mathbb{R};\mathbb{R})$ sense, i.e., in the $\|\cdot\|_2$ norm), where the sampling period $T$ that allows this satisfies
+
+$$\frac{1}{2T} > B.$$
+
+If this condition holds, the recovery is satisfied by the relation
+
+$$\tilde{x}(t) = \sum_{n \in \mathbb{Z}} x(nT)\frac{\sin(\pi\frac{t-nT}{T})}{\pi\frac{t-nT}{T}},$$
+
+where $\{x(nT), n \in \mathbb{Z}\}$ denotes the samples of the signal $x$.
+</Theorem>
+
+<Remark>
+**Intuition:** The sampling theorem says you need at least 2 samples per cycle of the highest frequency in your signal to reconstruct it perfectly. This is why CD audio uses 44.1 kHz sampling -- human hearing tops out at ~20 kHz, so 44.1 kHz (more than $2 \times 20$ kHz) captures everything we can hear. Sample too slowly and high frequencies disguise themselves as low ones, a phenomenon called aliasing. The reconstruction works by placing a sinc function at each sample point and summing them up -- the sinc functions fill in the gaps between samples exactly.
+</Remark>
+
+This is a remarkable result which paves the way to communications, signal processing, and digital control technologies, which are ubiquitous in our daily lives. For example, human voice range is typically about 20 Hz to 20 kHz (female voice typically has a higher frequency band than male voice), but primarily most of the content is between 2 to 4 KHz. The bandwidth allocated for a telephone transmission channel is about 4 kHz. These suggest that one can recover human voice quite well with large enough samples taken: $T = \frac{1}{8000}$ seconds.
+
+The frequency $\frac{1}{2T}$ is called the **Nyquist frequency** (or Nyquist rate). The theorem says: to perfectly reconstruct a band-limited signal, you must sample at more than twice its highest frequency component. The reconstruction formula is a sinc interpolation -- each sample is "smeared" by a sinc function, and the sum of all these sinc functions recovers the original signal exactly.
+
+**Sketch of proof.** We now present a sketch of the proof of the result above. Let $x \in \mathcal{S}$: We know that, by Theorem 5.3.5, any $x \in L_2(\mathbb{R};\mathbb{R})$ can be approximated arbitrarily well by a signal in $\mathcal{S}$ and therefore, in the following, we can assume that $x \in \mathcal{S}$ (with an arbitrarily small approximation error in the $\|\cdot\|_2$ norm).
+
+Consider the sampled signal
+
+$$x_p(t) = \int x(t)\sum_{k \in \mathbb{Z}}\delta(t - kT), \; t \in \mathbb{R},$$
+
+where $\sum_{k \in \mathbb{Z}}\delta(t - kT)$ is called an **impulse train**. Observe that, the impulse train is a distribution, and recall from Section 5.4 that the CCFT of a distribution is itself a distribution. We will consider $\hat{x}_p(f)$, which denotes the CCFT of the sampled signal, which now needs to be viewed as a distribution.
+
+Now let us discuss what the CCFT for the impulse train $\sum_{k \in \mathbb{Z}}\delta(t - kT)$ should be.
+
+<Remark id="10.1">
+As observed earlier and above, the sequence of partial sums $\left(\sum_{k=-N}^{N} e^{-i2\pi kPt}\right)$ converges to a periodic Dirac delta function as a distribution (see also Theorem 3.4.2). This sequence is known as the Dirichlet kernel sequence.
+</Remark>
+
+It then follows that, the $\mathcal{F}_{CC}$ of $\sum_{k\in\mathbb{Z}}\delta(t - kT)$ is another impulse train given as:
+
+$$\hat{I}(f) = \frac{1}{T}\sum_k \delta(f - \frac{k}{T}).$$
+
+This result is in agreement with an engineering intuition that if one considers $I$ as a periodic signal, and computes its $\mathcal{F}_{CD}$, $\hat{I}(\frac{k}{T}) = \frac{1}{\sqrt{T}}1$ for all $k \in \mathbb{Z}$, this leads to
+
+$$I(t) = \sum_k \frac{1}{\sqrt{T}}(\frac{1}{\sqrt{T}})e^{i2\pi\frac{k}{T}t}$$
+
+The $\mathcal{F}_{CC}$ of $x_p(t)$ then satisfies, by the properties of convolution in frequency domain corresponding to a time-wise product in time domain, the following:
+
+$$\hat{x}_p(f) = (\hat{I} * \hat{x})(f).$$
+
+It follows after some analysis the following relation holds
+
+$$\hat{x}_p(f) = \frac{1}{T}\sum_{m \in \mathbb{Z}} \hat{x}(f - m\frac{1}{T}),$$
+
+which is an addition of shifted versions of $\hat{x}$.
+
+If $T$ is small enough, then the signal
+
+$$\hat{\tilde{x}}(f) = T1_{(|f|< \frac{1}{2T})}\hat{x}_p(f),$$
+
+is exactly equal to the $\mathcal{F}_{CC}$ of the original signal. Hence, a low-pass filter which takes out the repetitions of the frequency shifted due to the convolution with the impulse sequence, except for the primary component, leads to the reconstruction of the original signal.
+
+Since the rectangular low-pass filter $T1_{(|f|<\frac{1}{2T})}$ corresponds to
+
+$$h(t) = \frac{\sin(\pi\frac{t}{T})}{\pi\frac{t}{T}},$$
+
+the reconstruction can then be written as:
+
+$$\tilde{x}(t) = \sum_{n \in \mathbb{Z}} \hat{x}_p(nT)\frac{\sin(\pi\frac{t-nT}{T})}{\pi\frac{t-nT}{T}}.$$
+
+It also follows that if $T > \frac{1}{2B}$, the exact reconstruction will not be possible since the shifted frequency components will overlap with each other. This is known as **aliasing**. When there is aliasing, one can compute the error in the reconstruction via Parseval's theorem (see Theorem 5.3.4).
+
+<Remark id="10.2">
+To see that the informational content of a finite bandwidth signal is captured by sampling, consider the following (Shannon's argument): Since $\hat{x}$ has bounded support $[-B, B]$, $x(\frac{k}{2B}) = \int \hat{x}(\hat{f})\frac{1}{\sqrt{2B}}e^{-i\frac{2\pi}{2B}f}df$ can be viewed to be the $\mathcal{F}_{CD}$ of $\hat{f}$, but now in time domain. Having access to $x(\frac{k}{2B}), k \in \mathbb{Z}$ then is sufficient to recover $\hat{x}$ which can then be used to recover the original signal. The more detailed analysis above also provides an explicit construction, and also further insight on the approximation error when there is aliasing. The same analysis applies for the discrete-time setting to be discussed next.
+</Remark>
+
+### 10.1.2 Sampling of a Discrete-Time (DT) Signal
+
+A similar discussion applies to DT signals. Let $\{x(n)\}$ be a DT signal. If this signal has a finite bandwidth as $B$, that is if
+
+$$\hat{x}(f) = 0, \quad |f| > B, \quad f \in [0, 1),$$
+
+then it is possible to reconstruct exactly this signal by samples of this signal, where the sampling period $N$ that allows this satisfies:
+
+$$\frac{1}{2N} > B$$
+
+As in the CT-case, the function that we use for sampling is the discrete-time impulse train given by.
+
+$$w_N(n) = \sum_{k \in \mathbb{Z}}\delta(n - kN)$$
+
+We can take the truncated sum
+
+$$w_N^{(M)}(n) := \sum_{k=-M}^{M}\delta(n - kN)$$
+
+and work with this signal instead of the impulse train, which is in $l_2(\mathbb{Z};\mathbb{R})$ and construct an approximate signal (via Parseval's theorem after reconstruction of the signal via the low-pass filter) and then take $M \to \infty$.
+
+This will give rise to the idealized analysis noted in the following: As earlier, using the fact that $\sum_{-M}^{M}e^{-i2\pi fkN}$, converges as a distribution, as $M \to \infty$, to an impulse train; the DCFT of $w_N$ is equal to the distribution represented by:
+
+$$\hat{w}_N(f) = \frac{1}{N}\sum_{k \in \mathbb{Z}}\delta(f - \frac{k}{N})$$
+
+Therefore, let $x_N(n) = x(n) \times w_N(n)$. It follows that
+
+$$\hat{x}_N(f) = \frac{1}{N}\sum_{k \in \mathbb{Z}} \hat{x}(f - \frac{k}{N})$$
+
+Thus, the same discussion we had above for the CT case applies here also.
+
+Applying a low-pass filter with Fourier transform given by $N1_{(|f|<\frac{1}{2N})}$, whose inverse Fourier is the kernel
+
+$$h(n) = \frac{\sin(\frac{\pi n}{N})}{\frac{\pi n}{N}}$$
+
+leads to the reconstruction to be written as:
+
+$$\tilde{x}(n) = \sum_{k \in \mathbb{Z}} x(kN)\frac{\sin(\pi\frac{n-kN}{N})}{\pi\frac{n-kN}{N}}.$$
+
+One further remark follows: When a signal is sampled, the unsampled components become zero. Since it is already known that these values are zero, they can be taken out. This is known as **decimation**. Decimation has the effect of enlarging the bandwidth of the sampled signal, but it does not lead to an information loss. That is, let $x_d(n) = x_N(nN) = x(nN)$ for all $N$ where $x$ satisfies the conditions noted above to allow for recovery from its samples. Then, we have
+
+$$\tilde{x}(n) = \sum_{k \in \mathbb{Z}} x_d(k)\frac{\sin(\pi\frac{n-kN}{N})}{\pi\frac{n-kN}{N}}.$$
+
+Furthermore, we have that
+
+$$\hat{x}_d(f) = \sum_{n \in \mathbb{Z}} x_d(n)e^{-i2\pi fn} = \sum_{n \in \mathbb{Z}} x_N(nN)e^{-i2\pi fn} = \sum_{k \in \mathbb{Z}} x_N(k)e^{-i2\pi\frac{f}{N}k} = \hat{x}_N(\frac{f}{N}),$$
+
+since $x_N(k) = 0$ for $k$ not divisible by $N$.
+
+---
+
+## 10.2 Exercises
+
+<Example id="10.2.1" title="Reconstruction of a Box Signal">
+Suppose that we have a continuous time signal $x \in L_2(\mathbb{R};\mathbb{R})$ given by:
+
+$$x(t) = m1_{\{|t| \leq \frac{1}{n}\}},$$
+
+where $m \in \mathbb{R}_+$ is a constant. Note that this signal has a bounded support.
+
+Suppose that we sample this signal with a period $T$. Our goal is to try to reconstruct this signal from its samples after passing the sampled signal through a low-pass filter with a frequency response
+
+$$\hat{h}(f) = T1_{\{|f| \leq \frac{1}{2T}\}}$$
+
+Let $\tilde{x}$ denote the reconstructed signal.
+
+a) Given $m$ and $T$, is perfect reconstruction possible (in the $L_2(\mathbb{R};\mathbb{R})$ sense)? For what values of $m, T$?
+
+b) Given an arbitrary $m$ and $T$, find an upper bound on
+
+$$\int_{\mathbb{R}} |x(t) - \tilde{x}(t)|^2 dt$$
+
+as a function of the $\mathcal{F}_{CC}$ of $x$.
+
+*Hint: For part b, you may use Parseval's Theorem. One may expect that if the energy of the signal frequencies outside $[-1/2T, 1/2T]$ band is small, the reconstruction error may also be small.*
+</Example>
+
+<Example id="10.2.2" title="DT Signal Sampling and Recovery">
+a) Consider a discrete-time signal $\{x(n)\}$ with a bandwidth $B$. A discrete-time sampler samples this signal with a period $N$ such that the sampled signal satisfies
+
+$$x_p(n) = \begin{cases} x(n) & \text{if } 0 \equiv n \mod N, \\ 0 & \text{else.} \end{cases}$$
+
+Following this, a decimator is applied to the system to obtain the signal:
+
+$$x_d(n) = x_p(nN).$$
+
+This new signal is stored in a storage device such as a recorder. Later, the original signal is attempted to be recovered from the storage device. What should the relation between $B$ and $N$ be such that, such a recovery is perfect, that is
+
+$$\sup_n |x(n) - \tilde{x}(n)| = 0,$$
+
+where $\{\tilde{x}(n)\}$ denotes the reconstructed signal.
+
+Identify the steps such that $\{\tilde{x}(n)\}$ is recovered from $\{x_d(n)\}$.
+
+b) Typically human voice has a bandwidth of 4kHz. Suppose we wish to store a speech signal with bandwidth equal to 4kHz with a recorder. Since the recorder has finite memory, one needs to sample the signal. What is the maximum sampling period (in seconds) to be able to reconstruct this signal with no error?
+</Example>
+
+<Example id="10.2.3" title="Impulse Train is a Distribution and its CCFT">
+Consider an impulse train defined by:
+
+$$w_P(t) = \sum_{n \in \mathbb{Z}} \delta(t + nP)$$
+
+so that the distribution that we can associate with this impulse train would be defined by:
+
+$$\overline{w_P}(\phi) = \sum_{n \in \mathbb{Z}} \phi(nP) = \lim_{N \to \infty} \sum_{n=-N}^{N} \phi(nP),$$
+
+for $\phi \in \mathcal{S}$.
+
+a) Show that $\overline{w_P}$ is a distribution.
+
+b) Show that
+
+$$\hat{\overline{w_P}}(\phi) = \int \frac{1}{P} w_{\frac{1}{P}}(t) \phi(t) dt,$$
+
+that is, the $\mathcal{F}_{CC}$ of this impulse train is another impulse train.
+
+**Solution.** a) Let $\phi_n \to 0$ in $\mathcal{S}$. Then, since $\sup_t |\phi_n(t)(1 + t^2)| \to 0$,
+
+$$|\overline{w_P}(\phi)| = |\sum_{k \in \mathbb{Z}} \phi_n(kP)| = |\sum_{k \in \mathbb{Z}} \frac{1}{1 + k^2 P^2}\left(\phi_n(kP)(1 + k^2 P^2)\right)| \leq \sum_{k \in \mathbb{Z}} \frac{1}{1 + k^2 P^2} \sup_{k \in \mathbb{Z}} \left(\phi_n(kP)(1 + k^2 P^2)\right) \to 0$$
+
+Thus, $\overline{w_P}$ is continuous on $\mathcal{S}$. Furthermore, $\overline{w_P}$ is linear on $\mathcal{S}$ since for any real $\alpha, \beta$ and $\phi_1, \phi_2 \in \mathcal{S}$,
+
+$$\overline{w_P}(\alpha\phi_1 + \beta\phi_2) = \alpha\overline{w_P}(\phi_1) + \beta\overline{w_P}(\phi_2).$$
+
+Thus, $\overline{w_P}$ is a distribution.
+
+b) By Section 5.4, we have that $\hat{\overline{w_P}}(\phi) = \overline{w_P}(\hat{\phi})$. Then,
+
+$$\hat{\overline{w_P}}(\phi) = \overline{w_P}(\hat{\phi}) = \lim_{N \to \infty} \sum_{k=-N}^{N} \hat{\phi}(kP) = \lim_{N \to \infty} \sum_{k=-N}^{N} \left(\int \phi(t) e^{-i2\pi k P t} dt\right)$$
+
+$$= \lim_{N \to \infty} \int \phi(t) \left(\sum_{k=-N}^{N} e^{-i2\pi k P t}\right) dt$$
+
+Using the geometric series formula and the fact that $\frac{\sin(2\pi(N+1/2)Pt)}{\sin(\pi Pt)}$ is periodic with period $1/P$, and for $t \in [-\frac{1}{2P}, \frac{1}{2P}]$ this function converges (as a distribution) to a delta function (see Theorem 3.4.2), the result follows:
+
+$$\hat{\overline{w_P}}(\phi) = \lim_{N \to \infty} \sum_{k=-N}^{N} \frac{1}{P}\phi(\frac{k}{P}) = \int \frac{1}{P} w_{\frac{1}{P}}(t)\phi(t) dt$$
+</Example>
+
+<Example id="10.2.4" title="DCFT of Downsampled Signal">
+Consider a discrete-time signal $\{h(n)\}$ with DCFT as:
+
+$$\hat{h}(f) = 1_{(f \in ([0,\frac{1}{8}] \cup (\frac{7}{8},1)))} \quad f \in [0, 1).$$
+
+Determine the DCFT of the signal $g(n) = h(2n), n \in \mathbb{Z}$.
+</Example>
+
+<Example id="10.2.5" title="Hilbert Transform and Modulation">
+a) Let $m(t)$ be a real-valued signal with a bandwidth $B$. One can use a transformation, known as the Hilbert transform, to further compress the signal. This transform makes use of the fact that, the Fourier transform of a real signal is conjugate symmetric.
+
+Let $\bar{x}$ denote the Hilbert transform of a signal $x$ in $L_2$, the space of square integrable functions with the usual inner product. The CCFT of the Hilbert transform of a signal is given by:
+
+$$\hat{\bar{x}}(f) = -i\text{sign}(f)\hat{x}(f).$$
+
+Using this relation, prove that the Hilbert transform of a signal is orthogonal to the signal itself.
+
+b) Briefly describe the (double-sideband) Amplitude Modulation (AM) and the Frequency Modulation (FM) techniques for radio communications.
+
+Using the result in part a), one can further suppress the bandwidth requirement for the double-sideband Amplitude Modulation (AM) technique, leading to a single-sideband AM signal.
+</Example>
+
+<Example id="10.2.6" title="Bounded Support and Bounded Bandwidth">
+Consider a square-integrable signal with non-zero $L_2$ norm, with bounded support. That is, there exists a compact set, outside of which this signal is identically zero. Can the CCFT of such a signal, with a bounded support in time-domain, also have bounded support in frequency domain?
+
+You may use any method you wish to use to answer this question.
+</Example>

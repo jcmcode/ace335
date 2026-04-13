@@ -1,0 +1,288 @@
+---
+title: "Homework 10 Solutions"
+homework: 10
+---
+
+## Problem 1: State-Space Realizability
+
+<Problem id="1" title="State-Space Realizability">
+A transfer function $L(s)$ is state-space realizable if there exists finite dimensional $(A, B, C, D)$ so that
+
+$$L(s) = C(sI - A)^{-1}B + D$$
+
+Prove the following statement: A transfer function $L(s)$ is realizable if and only if it is a proper rational fraction (that is, $L(s) = \frac{P(s)}{Q(s)}$ where both the numerator $P$ and the denominator $Q$ are polynomials, and with degree $P$ less than or equal to the degree of $Q$).
+</Problem>
+
+<Solution>
+Since this is an if and only if statement, the implications in both directions need to be established.
+
+**(i) Let $L$ be realizable,** that is
+
+$$L(s) = C(sI - A)^{-1}B + D$$
+
+for finite-dimensional matrices $(A, B, C, D)$. We will show that this implies that $L$ is proper and that $L$ is a rational fraction.
+
+Now, for a square matrix $E$ which is invertible, we know that $\det(E) = \sum_j E(i,j)(-1)^{i+j}M(i,j)$, where $M(i,j)$ is the determinant of the matrix obtained by deleting the $i$th row and $j$th column from $E$. Let $F$ be the co-factor matrix given by $F(i,j) = (-1)^{i+j}M(i,j)$. It then follows that
+
+$$E^{-1} = \frac{1}{\det(E)} F^T$$
+
+You can verify this by noting that the diagonals of $EE^{-1}$ would be 1 (as the determinant would appear both in the numerator and denominator), and the off-diagonals would be so that the product of each row-column pair would be equivalent to the determinant of a square matrix whose rows are repeated, leading to a zero. Let us call $F^T$ the adjoint of $E$. Then,
+
+$$C(sI - A)^{-1}B = \frac{1}{\det(sI - A)} C[\text{Adj}(sI - A)]B$$
+
+Since the denominator is a polynomial of order $n$, and the adjoint matrix consists of polynomials of order at most $n - 1$, it follows that the expression is a fraction which is also proper.
+
+To verify properness, we can also have the following reasoning: for $|s| > \max_i\{|\lambda_i|\}$, with $\lambda_i$ the eigenvalues of $A$,
+
+$$(sI - A)^{-1} = (s(I - s^{-1}A))^{-1} = s^{-1}(I - s^{-1}A)^{-1} = s^{-1}\sum_{k=0}^{\infty} (s^{-1}A)^k$$
+
+Since $\lim_{|s| \to \infty} |s^{-1}\sum_{k=0}^{\infty}(s^{-1}A)^k| = 0$, it must be that $C(sI - A)^{-1}B$ is strictly proper. The presence of a non-zero $D$ is what may lead the transfer function to be proper, and not strictly proper.
+
+**(ii) If $L$ is proper and rational,** then it is realizable where this can be shown explicitly by construction: In class, we discussed several constructions (controllable canonical form, observable canonical form, modal canonical form).
+</Solution>
+
+## Problem 2: Zero-State Equivalence and Algebraic Equivalence
+
+<Problem id="2" title="Zero-State Equivalence and Algebraic Equivalence">
+We say that two systems $(A, B, C, D)$ and $(\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})$ are *zero-state equivalent* if the induced transfer functions are equal, that is
+
+$$C(sI - A)^{-1}B + D = \tilde{C}(sI - \tilde{A})^{-1}\tilde{B} + \tilde{D}$$
+
+Let $P$ be invertible and let us define a transformation through $\tilde{x} = Px$. Then, we can write the state-space model $(A, B, C, D)$ in terms of $\tilde{x}$ as
+
+$$\frac{d\tilde{x}}{dt} = \tilde{A}\tilde{x}(t) + \tilde{B}u(t), \qquad \tilde{y}(t) = \tilde{C}\tilde{x}(t) + \tilde{D}u(t),$$
+
+with $\tilde{A} = PAP^{-1}, \tilde{B} = PB, \tilde{C} = CP^{-1}, \tilde{D} = D$. In this case, we say that $(A, B, C, D)$ and $(\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})$ are *algebraically equivalent*.
+
+Show that algebraic equivalence implies zero-state equivalence but not vice versa.
+</Problem>
+
+<Solution>
+First, observe that for every $k \in \mathbb{Z}_+$,
+
+$$\tilde{C}\tilde{A}^k\tilde{B} = CP^{-1}\left(PA^kP^{-1}\right)PB = CA^kB \qquad \text{(1)}$$
+
+Now, for $|s| > \max_i\{|\lambda_i|\}$, with $\lambda_i$ the eigenvalues of $A$, we have that
+
+$$(sI - A)^{-1} = (s(I - s^{-1}A))^{-1} = s^{-1}(I - s^{-1}A)^{-1} = s^{-1}\sum_{k=0}^{\infty}(s^{-1}A)^k$$
+
+Then,
+
+$$C(sI - A)^{-1}B + D = \left(\sum_k Cs^{-1}(s^{-1}A)^k B\right) + D$$
+
+and
+
+$$\tilde{C}(sI - \tilde{A})^{-1}\tilde{B} + \tilde{D} = \left(\sum_k \tilde{C}s^{-1}(s^{-1}\tilde{A})^k \tilde{B}\right) + \tilde{D}$$
+
+Since, by (1), the above terms are equal, algebraic equivalence implies zero-state equivalence.
+
+**Alternatively,** we can simply write
+
+$$(sI - \tilde{A})^{-1} = (sI - PAP^{-1})^{-1} = \left(P(sI - A)P^{-1}\right)^{-1} = P(sI - A)^{-1}P^{-1}$$
+
+so that
+
+$$\tilde{C}(sI - \tilde{A})^{-1}\tilde{B} + \tilde{D} = CP^{-1}P(sI - A)^{-1}P^{-1}PB + D = C(sI - A)^{-1}B + D$$
+
+**The reverse implication is not correct.** As we discussed in class, for a given $(A, B, C, D)$ one can always artificially add further state variables to expand $A$ by a new row and column (leading to $\tilde{A}$) but which, through the matrix $\tilde{C} = \begin{bmatrix} C & 0 \end{bmatrix}$, can be designed to have no impact on the output variable $y$: $A$ and $\tilde{A}$ are not algebraically equivalent.
+</Solution>
+
+## Problem 3: Canonical Realizations (Optional)
+
+<Problem id="3" title="Canonical Realizations (Optional)">
+Algebraically express and draw the realizations of the transfer function
+
+$$H(s) = \frac{s^2 + 2s + 1}{(s+1)(s^2 - 4)}$$
+
+in the controllable canonical realization, observable canonical realization, and modal canonical realization forms.
+</Problem>
+
+<Solution>
+For the controllable and observable canonical forms, write
+
+$$H(s) = \frac{s^2 + 2s + 1}{s^3 + s^2 - 4s - 4}$$
+
+and follow the construction from our class notes to construct the $(A_c, B_c, C_c)$ and $(A_o, B_o, C_o)$ matrices. Note that since the ratio is strictly proper $D = 0$ for every realization. Notice also that $A_c = A_o^T, B_c = C_o^T, C_c = B_o^T$.
+
+For the modal canonical form, write
+
+$$H(s) = \frac{s^2 + 2s + 1}{s^3 + s^2 - 4s - 4} = \frac{a}{s+1} + \frac{b}{s-2} + \frac{c}{s+2}$$
+
+with $a = 0, b = \frac{3}{4}, c = \frac{1}{4}$, and express each mode as: $x_i' = p_i x_i + u$. $A_m$ will be diagonal, $C = \begin{bmatrix} 1 & 1 & 1 \end{bmatrix}$ and $B_m$ will consist of the $a, b, c$ terms.
+
+**Note 1.** In the above the condition $a = 0$ shows that we have redundancy in representation. One of the modes has no impact on the output. This is not surprising since the numerator and denominator share a common root, which cancels: $(s + 1)$. We call this phenomenon a *pole-zero cancellation*. Effectively, our system is second order (and not third order) and for such scenarios there is no loss in expressing the state space realization with a reduced order.
+
+**Note 2.** If there were a repeated pole, also note that this would lead to a serial connection of systems of the form: $x_i' = p_i x_i + u$ and observe that the output of one system would be the input to the subsequent one. Please see your class notes.
+</Solution>
+
+## Problem 4: Non-Rational Transfer Functions
+
+<Problem id="4" title="Non-Rational Transfer Functions">
+Consider the following continuous-time system:
+
+$$y(t) = a(u(t-1) + y(t-1)), \quad t \in \mathbb{R}$$
+
+Find the transfer function, from $u$ to $y$, of this system and note that this transfer function is not rational.
+</Problem>
+
+<Solution>
+Taking the Laplace transform of both sides, we arrive at
+
+$$Y(s)(1 - ae^{-s}) = ae^{-s}U(s)$$
+
+leading to
+
+$$H(s) = \frac{Y(s)}{U(s)} = \frac{ae^{-s}}{1 - ae^{-s}}$$
+
+The transfer function $H$ is not a ratio of polynomials. Such a system cannot be realized by a finite dimensional state space description. Systems with such irrational transfer functions are sometimes called *distributed parameter systems*. Note that we would need to know $\{y(t), t \in [0,1]\}$ to be able to compute the future values. Since $[0,1]$ is a continuum and contains infinitely many (in fact, uncountably infinitely many) elements, a *state* for such a system would have to be infinite dimensional.
+</Solution>
+
+## Problem 5: Discretization of Continuous-Time State-Space Models
+
+<Problem id="5" title="Discretization of Continuous-Time State-Space Models">
+Consider
+
+$$\frac{d}{dt}x(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t)$$
+
+Suppose that we apply piece-wise constant control actions $u$ which are varied only at the discrete time instances given with $\{t : t = kT, k \in \mathbb{Z}_+\}$ so that $u(t) = u(kT)$ for $t \in [kT, (k+1)T)$. Show that with $x_k := x(kT)$ and $u_k := u(kT)$, we arrive at
+
+$$x_{k+1} = A_d x_k + B_d u_k$$
+
+where
+
+$$A_d = e^{AT}$$
+
+$$B_d = \int_0^T e^{A\tau} B \, d\tau$$
+
+Show also that if $A$ is invertible, we can further write
+
+$$B_d = \int_0^T e^{A\tau} B \, d\tau = A^{-1}(e^{AT} - I)B$$
+</Problem>
+
+<Solution>
+We write
+
+$$x((k+1)T) = e^{AT}x(kT) + \left(\int_{kT}^{(k+1)T} e^{A((k+1)T - s)} Bu(s) \, ds\right)$$
+
+Writing $\tau = (k+1)T - s$ with $d\tau = -ds$, we arrive at
+
+$$x((k+1)T) = e^{AT}x(kT) + \left(\int_0^T e^{A\tau} B \, d\tau\right) u(kT)$$
+
+With $x_k := x(kT)$ and $u_k := u(kT)$, we have
+
+$$A_d = e^{AT}$$
+
+$$B_d = \int_0^T e^{A\tau} B \, d\tau$$
+
+If $A$ is invertible, the integration of $\int e^{A\tau} d\tau$ in the above leads to $A^{-1}(e^{AT} - I)B$.
+</Solution>
+
+## Problem 6: Impulse Train Distribution
+
+<Problem id="6" title="Impulse Train Distribution">
+Consider an impulse train defined by:
+
+$$w_P(t) = \sum_{n \in \mathbb{Z}} \delta(t + nP)$$
+
+so that the distribution that we can associate with this impulse train would be defined by:
+
+$$\overline{w_P}(\phi) = \sum_{n \in \mathbb{Z}} \phi(nP),$$
+
+for $\phi \in \mathcal{S}$.
+
+a) Show that $\overline{w_P}$ is a distribution.
+
+b) [Optional] Show that
+
+$$\hat{w}_P(\phi) = \int \frac{1}{P} w_{1/P}(t) \phi(t) \, dt,$$
+
+that is, the $\mathcal{F}_{CC}$ of this train is another impulse train.
+</Problem>
+
+<Solution>
+**a)** Please see the lecture notes (Section 10.1 or your class notes).
+
+**b)** [Optional] This is proven in the lecture notes. The key idea is that the Fourier transform of the impulse train with period $P$ is itself an impulse train with period $\frac{1}{P}$, scaled by $\frac{1}{P}$.
+</Solution>
+
+## Problem 7: Sampling and Reconstruction
+
+<Problem id="7" title="Sampling and Reconstruction">
+a) Typically human voice has a bandwidth of 4kHz. Suppose we wish to store a speech signal with bandwidth equal to 4kHz with a recorder. Since the recorder has finite memory, one needs to sample the signal. What is the maximum sampling period (in seconds) to be able to reconstruct this signal with no error. Explain how the reconstruction from the samples can be done.
+
+b) Consider a discrete-time signal $\{x(n)\}$ with a bandwidth $B$. A discrete-time sampler samples this signal with a period $N$ such that the sampled signal satisfies
+
+$$x_p(n) = \begin{cases} x(n) & \text{if } 0 \equiv n \mod N, \\ 0 & \text{else.} \end{cases}$$
+
+Following this, a decimator is applied to the system to obtain the signal:
+
+$$x_d(n) = x_p(nN).$$
+
+This new signal is stored in a storage device such as a recorder. Later, the original signal is attempted to be recovered from the storage device. What should the relation between $B$ and $N$ be such that, such a recovery is possible?
+
+Identify the steps such that $\{\tilde{x}(n)\}$ is recovered from $\{x_d(n)\}$.
+</Problem>
+
+<Solution>
+**a)** The sampling period has to satisfy $T < \frac{1}{8000}$ seconds. We now discuss the steps for sampling and reconstruction: One first applies an interpolator (whose CCFT is a rectangular, low-pass filter with a gain of $T$). This amounts to the operation
+
+$$\tilde{x}(t) = \sum_{n \in \mathbb{Z}} \hat{x}_p(nT) i(t - nT),$$
+
+where $T$ is the sampling rate, and $i(t) = \frac{\sin(\frac{\pi t}{T})}{\frac{\pi t}{T}}$. You should have an understanding for the operations in the frequency domain, following the discussions in class.
+
+**b)** We need, by the Sampling Theorem, $N < \frac{1}{2B}$.
+
+The steps for reconstruction are as follows: We first insert zeros to the signal, $N - 1$ of them between every entry, and then apply a low-pass, rectangular filter with impulse response $h(n) = \frac{\sin(\frac{\pi n}{N})}{\frac{\pi n}{N}}$.
+</Solution>
+
+## Problem 8: DCFT of a Decimated Signal
+
+<Problem id="8" title="DCFT of a Decimated Signal">
+Consider a discrete-time signal $\{h(n)\}$ with DCFT as:
+
+$$\hat{h}(f) = 1_{(f \in ([0, \frac{1}{4}] \cup (\frac{3}{4}, 1)))} \quad f \in [0, 1).$$
+
+Determine the DCFT of the signal $g(n) = h(3n), n \in \mathbb{Z}$.
+</Problem>
+
+<Solution>
+The solution follows the observation that the overall operation consists of sampling and decimation. Sampling leads to scaling, and shifting and adding in the frequency domain: $\frac{1}{3}\sum_{k \in \mathbb{Z}} \hat{h}(f - \frac{k}{3})$. Finally, decimation leads to a spreading out in the frequency domain as discussed in Chapter 10. Hence, the overall effect is:
+
+$$\hat{g}(f) = \frac{1}{3}\sum_{k \in \mathbb{Z}} \hat{h}\left(\frac{f}{3} - \frac{k}{3}\right)$$
+</Solution>
+
+## Problem 9: Applications in Communications (Optional)
+
+<Problem id="9" title="Applications in Communications (Optional)">
+a) Let $m$ be a real-valued signal with a bandwidth B. One can use a transformation, known as the Hilbert transform, to further compress the signal: This compression makes use of the fact that the Fourier transform of a real signal is conjugate symmetric and that it suffices to transmit only the positive frequency band (from which the negative band can be recovered).
+
+Let $\bar{x}$ denote the Hilbert transform of a signal $x$ in $L_2(\mathbb{R}; \mathbb{R})$. We will only characterize this transform with the following information: The CCFT of the Hilbert transform of a signal is given by:
+
+$$\hat{\bar{x}}(f) = -i \, \text{sign}(f) \hat{x}(f).$$
+
+Using this relation, prove that the Hilbert transform of a signal is orthogonal to the signal itself.
+
+b) Briefly describe the (double-sideband) Amplitude Modulation (AM) and the Frequency Modulation (FM) techniques for radio communications.
+
+Using the result in part a), one can further suppress the bandwidth requirement for the double-sideband Amplitude Modulation (AM) technique, leading to a single-sideband AM signal.
+</Problem>
+
+<Solution>
+**a)** This follows from the observation that,
+
+$$\int \hat{x}(f) \overline{\hat{\bar{x}}(f)} \, df = \int i |\hat{x}(f)|^2 \text{sign}(f) \, df = 0,$$
+
+since for a real-valued signal $x$, the CCFT satisfies that
+
+$$|\hat{x}(f)|$$
+
+is symmetric (an even function of $f$), and $\text{sign}(f)$ is odd.
+
+Plancherel's identity then leads to the result that the signals are orthogonal.
+
+**b)** AM Modulation consists of multiplication of a message signal with a harmonic carrier signal with high frequency. This signal, at the receiver end, is subjected to another multiplication by the same harmonic signal and a low-pass filter.
+
+In contrast, FM does not alter the magnitude of a signal but involves the change of the phase of a signal which also amounts to carrying a signal over a high-frequency band.
+
+You are encouraged to consult resources on the Internet to learn more about the constructions for such practically important communication methods.
+</Solution>

@@ -1,0 +1,214 @@
+---
+title: "Homework 8 Solutions"
+homework: 8
+---
+
+## Problem 1: Z-Transform, Laplace Transform, and Inverse Laplace Transform
+
+<Problem id="1" title="Z-Transform, Laplace Transform, and Inverse Laplace Transform">
+a) Compute the (two-sided) Z-transform of
+
+$$x(n) = 4^{n-1} 1_{\{n-1 \geq 0\}}$$
+
+Note that you should find the Region of Convergence as well.
+
+b) Compute the (two-sided) Laplace-transform of
+
+$$x(t) = e^{5t} 1_{\{t \geq 0\}}$$
+
+Find the regions in the complex plane, where the transforms are finite valued.
+
+c) Show that the one-sided Laplace transform of $\cos(\alpha t)$ satisfies
+
+$$\mathcal{L}_+\{\cos \alpha t\} = \frac{s}{s^2 + \alpha^2}, \quad \text{Re}\{s\} > 0$$
+
+d) Compute the inverse Laplace transform of
+
+$$\frac{s^2 + 9s + 2}{(s-1)^2(s+3)}, \quad \text{Re}\{s\} > 1$$
+
+Hint: Use partial fraction expansion and the properties of the derivative of a Laplace transform.
+</Problem>
+
+<Solution>
+**a)** By definition:
+
+$$X(z) = \sum_{n=-\infty}^{\infty} x(n) z^{-n} = z^{-1} \sum_{n=0}^{\infty} 4^n z^{-n} = \frac{z^{-1}}{1 - 4z^{-1}}, \quad |z| > 4$$
+
+The Region of Convergence is $|z| > 4$.
+
+**b)**
+
+$$X(s) = \int_{t=-\infty}^{\infty} x(t) e^{-st} dt = \int_{t=0}^{\infty} e^{(5-s)t} dt = \frac{1}{s - 5}, \quad \text{Re}\{s\} > 5$$
+
+The region of convergence is $\text{Re}\{s\} > 5$.
+
+**c)** Let us first follow a more tedious approach:
+
+$$\mathcal{L}_+(\cos(\alpha t)) = \lim_{A \to \infty} \int_0^A e^{-st} \cos(\alpha t) \, dt$$
+
+$$= \lim_{A \to \infty} e^{-st} \frac{\sin(\alpha t)}{\alpha} \Big|_0^A - \int_0^A \frac{-s}{\alpha} e^{-st} \sin(\alpha t) \, dt$$
+
+$$= \lim_{A \to \infty} e^{-st} \frac{\sin(\alpha t)}{\alpha} \Big|_0^A + \frac{s}{\alpha^2} \left\{ e^{-st} \cos(\alpha t) \frac{s}{\alpha^2} \Big|_0^A - \int_0^A \frac{s^2}{\alpha^2} e^{-st} \cos(\alpha t) \, dt \right\}$$
+
+$$= \lim_{A \to \infty} e^{-st} \frac{\sin(\alpha t)}{\alpha} \Big|_0^A + \frac{s}{\alpha^2} \left\{ e^{-st} \cos(\alpha t) \Big|_0^A - s \int_0^A e^{-st} \cos(\alpha t) \, dt \right\}$$
+
+$$= \frac{s}{\alpha^2} - \frac{s^2}{\alpha^2} \mathcal{L}_+\{\cos(\alpha t)\}$$
+
+Hence,
+
+$$\mathcal{L}_+\{\cos(\alpha t)\} \left(1 + \frac{s^2}{\alpha^2}\right) = \frac{s}{\alpha^2}$$
+
+which leads to the desired result:
+
+$$\mathcal{L}_+\{\cos(\alpha t)\} = \frac{s}{s^2 + \alpha^2}$$
+
+However, another, and a much more direct, approach would be to write $\cos(\alpha t) = \frac{1}{2} e^{i\alpha t} + \frac{1}{2} e^{-i\alpha t}$ and take the transform of each term separately and add them: $\frac{1}{2} \frac{1}{s - i\alpha} + \frac{1}{2} \frac{1}{s + i\alpha} = \frac{s}{s^2 + \alpha^2}$.
+
+**d)** We express
+
+$$\frac{s^2 + 9s + 2}{(s-1)^2(s+3)} = \frac{a}{(s-1)^2} + \frac{b}{s-1} + \frac{c}{s+3}$$
+
+We find $a = 3$, $b = 2$, $c = -1$. The inverse transform leads to:
+
+$$2e^t 1_{\{t \geq 0\}} + 3te^t 1_{\{t \geq 0\}} - e^{-3t} 1_{\{t \geq 0\}}$$
+</Solution>
+
+## Problem 2: Inverse Z-Transform
+
+<Problem id="2" title="Inverse Z-Transform">
+Find the inverse Z-transform of:
+
+$$X(z) = \frac{3 - \frac{5}{6}z^{-1}}{(1 - \frac{1}{4}z^{-1})(1 - \frac{1}{3}z^{-1})}, \quad |z| > 1$$
+</Problem>
+
+<Solution>
+By partial fraction expansion, we obtain
+
+$$X(z) = \frac{1}{1 - \frac{1}{4}z^{-1}} + \frac{2}{1 - \frac{1}{3}z^{-1}}$$
+
+leading to
+
+$$x(n) = \left(\frac{1}{4}\right)^n 1_{\{n \geq 0\}} + 2\left(\frac{1}{3}\right)^n 1_{\{n \geq 0\}}$$
+</Solution>
+
+## Problem 3: Z-Transform Limit Property
+
+<Problem id="3" title="Z-Transform Limit Property">
+Let $x(n) = 0$ for $n < 0$ and $|x(n)| \leq Mr^n$ for some $M, r \in \mathbb{R}$. Show that
+
+$$\lim_{|z| \to \infty} X(z) = x(0)$$
+</Problem>
+
+<Solution>
+Consider
+
+$$\lim_{z \to \infty} X(z) = \lim_{z \to \infty} \sum_{n \geq 0} x(n) z^{-n}$$
+
+If a limit were to exist,
+
+$$\lim_{z \to \infty} X(z) = \lim_{z \to \infty} \sum_{n=0}^{N} x(n) z^{-n} + \lim_{z \to \infty} \sum_{n=N}^{\infty} x(n) z^{-n}$$
+
+The magnitude of the second term $\lim_{z \to \infty} |\sum_{n=N}^{\infty} x(n) z^{-n}| \leq M \left(\frac{r}{|z|}\right)^N \frac{1}{1 - \frac{r}{|z|}}$ can be made to be smaller than any $\epsilon > 0$ by taking $N$ large enough. The first term on the right would be $x(0)$ for every $N \in \mathbb{N}$.
+
+Thus, the limit is $x(0)$.
+
+**Note:** Since for sufficiently large $|z|$, $|\sum_{n \geq 0} x(n) z^{-n}| \leq \sum_n M |x(n)| (r + \delta)^{-n} < \infty$ for some $\delta > 0$, we could apply the dominated convergence theorem to insert the limit inside the summation, leading to:
+
+$$\lim_{z \to \infty} X(z) = \lim_{z \to \infty} \sum_{n \geq 0} x(n) z^{-n} = \sum_{n \geq 0} \lim_{z \to \infty} x(n) z^{-n} = x(0)$$
+</Solution>
+
+## Problem 4: Final Value Theorem for Laplace Transforms
+
+<Problem id="4" title="Final Value Theorem for Laplace Transforms">
+a) Prove the final value theorem for the Laplace transforms. That is, if $\lim_{t \to \infty} x(t) =: M < \infty$, then
+
+$$\lim_{t \to \infty} x(t) = \lim_{s \downarrow 0} s X_+(s)$$
+
+b) Read (you do not need to write anything on your assignment) the rules of converse differentiation (and their proofs in the lecture notes). That is,
+
+(i) Suppose that $\limsup_{n \to \infty} |x(n)|^{1/n} \leq R$ for some $R \in \mathbb{R}$. Let $y(n) = -nx(n)$. Then,
+
+$$\mathcal{Z}_+(y)(z) = z \frac{d}{dz}(\mathcal{Z}_+(x))(z)$$
+
+for $|z| > R$.
+
+(ii) Let $|x(t)| \leq Me^{at}$ for some $M, a \in \mathbb{R}$. Let $y(t) = -tx(t)$. Then, for $s$ with $\text{Re}\{s\} > a$, we have
+
+$$\mathcal{L}_+(y)(s) = \frac{d}{ds}(\mathcal{L}_+(x))(s)$$
+</Problem>
+
+<Solution>
+**a)** Let $M = \lim_{t \to \infty} x(t)$. Then with $M = s \int M e^{-st} dt$, it suffices to show that
+
+$$\lim_{s \to 0} \int (x(t) - M) e^{-st} dt = 0 \qquad \text{(2)}$$
+
+For $K$ with for all $t > K$: $|x(t) - M| \leq \epsilon$, it follows that $\lim_{s \to 0} s \int_K^{\infty} (x(t) - M) e^{-st} dt \leq \epsilon$. On the other hand with this $K$ fixed, the remainder $\lim_{s \to 0} s \int_0^K (x(t) - M) e^{-st} dt = 0$. Thus, (2) holds.
+
+To be able to apply the Final Value Theorem, it is important to ensure that the finiteness condition, $\lim_{t \to \infty} x(t) =: M < \infty$, holds. Note that if we have that all poles of $sX_+(s)$ are in the left half plane, this ensures that $\lim_{t \to \infty} x(t)$ exists and is finite.
+
+**b)** This part is for reading only -- no written solution required.
+</Solution>
+
+## Problem 5: Transfer Functions, Causality, Stability, and Minimum-Phase Systems
+
+<Problem id="5" title="Transfer Functions, Causality, Stability, and Minimum-Phase Systems">
+Let $P(z)$ and $Q(z)$ be polynomials in $z$. Let the transfer function of a discrete-time LTI system be given by
+
+$$H(z) = \frac{P(z)}{Q(z)}$$
+
+a) Show that the system is causal (non-anticipative) if and only if $\frac{P(z)}{Q(z)}$ is a proper fraction (that is the degree of the polynomial in the numerator cannot be greater than the one of the denominator).
+
+b) Show that the system is BIBO stable if and only if the Region of Convergence of the transfer function contains the unit circle. Thus, for a system to be both causal and stable, what are the conditions on the roots of $Q(z)$?
+
+c) Repeat the above for a continuous-time system and with the Laplace transform instead of the Z-transform.
+
+d) What does it mean to be a minimum-phase system? Why do we call such systems minimum-phase?
+</Problem>
+
+<Solution>
+**a)** We first show that if the system is causal, the fraction is proper. If the system is causal, then $h(n) = 0$ for all $n < 0$. This implies that $H(z) = h(0) + \sum_{n=1}^{\infty} h(n)(z^{-1})^n$ is a polynomial in $z^{-1}$, and does not involve any terms involving positive powers of $z$. Since $P$ and $Q$ are polynomials, then for some $r$ with $\{z : |z| = r\}$, $H(z) < \infty$. Therefore, it must be that the region of convergence contains $z : |z| > r$ for some $r > 0$. Hence, if the transfer function is written as a ratio
+
+$$H(z) = \frac{P(z)}{Q(z)},$$
+
+then it must be that $P(z)$ has degree less than or equal to the degree of $Q(z)$, for otherwise as $|z| \to \infty$, $|H(z)| \to \infty$ leading to a contradiction.
+
+If the fraction is proper, then the system is causal. This is equivalent to the statement that, if the system is not causal, then the system is not proper. This follows the discussion above since the transfer function of a non-causal system would contain a positive power of $z$.
+
+**b)** The system is BIBO stable if and only if $h \in l_1(\mathbb{Z})$. This implies that $\sum_n h(n) z^{-n}$ is absolutely summable for $z = e^{i\theta}, \theta \in [0, 2\pi]$. This is equivalent to the result that the unit circle is inside the region of convergence.
+
+Thus, if $P(z)$ and $Q(z)$ are polynomials in $z$ and the transfer function of a discrete-time LTI system is given by
+
+$$H(z) = \frac{P(z)}{Q(z)},$$
+
+this system is stable and causal if poles of $H$ are strictly inside the unit circle.
+
+**c)** A similar discussion applies for continuous-time systems: Such a system is BIBO stable if the imaginary axis is in the region of convergence. Such a system is causal if the region of convergence includes $\{s : \text{Re}\{s\} > R\}$ for some $R$ (if the region of convergence is non-empty). Therefore, a continuous-time system is BIBO stable and causal if the region of convergence is of the form $\{s : \text{Re}\{s\} > R\}$ for some $R < 0$.
+
+Thus, if $P(s)$ and $Q(s)$ are polynomials in $s$ and the transfer function of a continuous-time LTI system is given by
+
+$$H(s) = \frac{P(s)}{Q(s)},$$
+
+this system is causal and stable if and only if the poles of $H$ are strictly in the left-half plane.
+
+**d)** A practically important property of stable and causal convolution systems is whether the inverse of the transfer function is also realizable through a causal and stable system: Such systems are called *minimum-phase* systems. Thus, a system is minimum-phase if all of its zeros and poles are inside the unit circle. A similar discussion applies for continuous-time systems, all the poles and zeros in this case belong to the left-half plane.
+
+Such systems are called minimum phase since every system transfer function can be written as a product of a minimum phase system transfer function and a transfer function which has unit magnitude for a purely harmonic input but which has a larger (positive) phase change as the frequency is varied. To make this more concrete, consider
+
+$$G_1(s) = \frac{s-1}{s+5}$$
+
+This system is not minimum-phase. Now, write this system as:
+
+$$G_1(s) = \left(\frac{s+1}{s+5}\right)\left(\frac{s-1}{s+1}\right)$$
+
+Here, $G_2(s) := \frac{s+1}{s+5}$ is minimum-phase. $G_3(s) := \frac{s-1}{s+1}$ is so that its magnitude on the imaginary axis is always 1. However, this term contributes to a positive phase. This can be observed by plotting the Bode diagram, as for small $\omega$ values, the signal has a phase close to $\pi$ which gradually decays to zero.
+
+Another way to observe this added delay is the following: Write $\frac{s-1}{s+1} = 1 - \frac{2}{s+1}$, and observe that the inverse Laplace of this term is the Dirac delta impulse minus the effect of the inverse Laplace of $-\frac{2}{s+1}$; this latter term is $b(t) := -2e^{-t}1_{\{t \geq 0\}}$ or in terms of a linear system it is the solution of a causal system with input $u$ whose output is $\int b(t-\tau)u(\tau) d\tau$ (or generally $\int^t Ce^{A(t-s)}Bu(s)$ for appropriate matrices $A, B, C$). This term adds a delayed response compared with the effect of the Dirac delta impulse.
+
+Yet another interpretation is the following: Let $\theta > 0$. One has the approximation
+
+$$\frac{1 - s\theta/2}{1 + s\theta/2} \approx e^{-s\theta}$$
+
+for small $s = i\omega$ values through expanding the exponential term. A negative complex exponential in the Laplace transform contributes to a positive time delay. The approximation above is known as a first-order Pade approximation.
+
+Thus, non-minimum-phase systems have higher delay properties in their impulse responses compared to minimum-phase systems.
+</Solution>

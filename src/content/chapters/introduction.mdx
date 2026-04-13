@@ -1,0 +1,148 @@
+---
+title: "Introduction"
+chapter: 1
+---
+
+## 1.1 Introduction
+
+In a *differential equations* course, one studies quantitative and qualitative behaviours of solutions to differential equations. For such equations, under mild regularity conditions, a given initial condition (in the absence of disturbances) leads to a unique solution/output. One could generalize this to difference equations for discrete-time equations.
+
+For such setups, we can view the solution as a map from a set of initial conditions to an appropriate set of solutions/outcomes such as a set of paths; e.g. continuous functions for the former (continuous-time setup), and discrete-time functions for the latter (discrete-time setup).
+
+This solution map may be regarded as a **system** mapping the set of possible inputs (that is, a set of initial states) to the set of possible outputs (that is, a set of functions).
+
+Studying several regularity properties (such as continuity, stability, robustness) of such a map has remarkable implications in engineering and applied mathematics. In many engineering or applied mathematics areas, one may also need to consider the presence of noise/disturbance terms (which are typically external/exogenous inputs) or one may also have the liberty to affect the solutions through introducing an external *control* term. Accordingly, one should view the aforementioned map to be from some set of initial states, some set of disturbances and some set of external inputs, to some output set.
+
+**Systems theory** is concerned with rigorously studying, defining and analyzing, as well as shaping the input-output behaviour of such maps (which we will call *systems*).
+
+In this course, we will study systems theory and through our development, we will also present a detailed analysis on signal spaces, representation of signals using signal bases, and their optimal approximations, and we will introduce some aspects of optimization. There are many applications that we will study in our course, which will primarily concern signal processing, communications, and control; but we will also find occasions to touch on many related applications involving signal spaces and systems design.
+
+In the context of systems which are linear (a rigorous definition is to be given later; these systems are essentially linear functions from a linear space of inputs to a linear space of outputs), causal (where the output at any given time cannot depend on inputs occurring at later time stages) and time-invariant (where a time shift or delay in the input leads to an equivalent time shift in the output), we will see that the input-output relation admits very efficient representational properties when the signals are expressed in terms of complex harmonics.
+
+This will motivate the **Fourier Transform**, and its generalizations (the **Laplace Transform** and the **Z-transform**), which will be studied in detail in our course.
+
+To rigorously study the Dirac Delta generalized function, which will let us define the impulse response and the frequency response of linear time-invariant systems, we will introduce distribution theory and the Schwartz space of signals (which is also critical for the Fourier Transform theory).
+
+---
+
+## 1.2 Applications
+
+### 1.2.1 Applications in Control Theory
+
+In control systems, the goal is to shape the input-output behaviour by possibly utilizing feedback from system outputs under various design criteria and constraints. Commonly considered criteria are system stability (e.g. convergence to a point or a set with respect to initial state conditions, or boundedness of the output corresponding to any bounded input), reference tracking, robustness to incorrect models (unspecified system dynamics) and presence of disturbance (which may appear in the system itself or in the measurements available at the controller: that is, either as a system noise or a measurement noise), and optimal control.
+
+A common, and one of the earliest modern examples, of control systems is the thermostat-based temperature control system. In this example, $T_d$ is a desired temperature, $T_r$ is the (actual) room temperature, $h_1$ is the heat from the furnace and $h_o$ represents the heat leaked outside (or the cold air entering the house). The thermostat is the controller which decides on whether the gas valve should be turned on or off based on the desired temperature and the sensed actual room temperature; $u$ is the control input representing these turn-on or turn-off signals. The furnace is the *actuator* which maps the control input to the heat input, $h_1$, entering the system. House is the process or the system, whose output (the room temperature) is to be controlled. Often one lumps the actuator and the system (house in this case) as a single unit and calls it a *plant*. Thus, one typically considers a controller and a plant (to be controlled), in a control system together with the external inputs to the system (in this case: the desired temperature and the heat leakage).
+
+<Example id="1.1" title="Stability via Feedback Control">
+Consider the system
+
+$$\frac{dx}{dt} = ax(t) + u(t) + n(t)$$
+
+where $a \in \mathbb{R}_+$ is a scalar, $u(t)$ is the control input that can be selected given the information $\{x(s), s < t\}$, and $n(t)$ is some disturbance/noise acting on the system. The disturbance is external, that is, the controller has nothing to do with its generation.
+
+**Without control ($u = 0$):** If $a > 0$, the solution is
+
+$$x(t) = e^{at}x(0) + \int_0^t e^{a(t-s)}n(s)\,ds.$$
+
+In particular, if $n(s) = K \neq 0$ for some constant $K$, then even when $x(0) = 0$, we have $\lim_{t \to \infty} |x(t)| = \infty$. The system is unstable.
+
+**With feedback control:** If we use the control input (using the feedback from the *state* of the system)
+
+$$u(t) = -(a+1)x(t), \qquad t \in \mathbb{R}_+,$$
+
+we obtain the equation
+
+$$\frac{dx}{dt} = -x(t) + n(t)$$
+
+with the solution
+
+$$x(t) = e^{-t}x(0) + \int_0^t e^{-(t-s)}n(s)\,ds,$$
+
+which remains bounded if $\sup_{s \in \mathbb{R}} |n(s)| < \infty$. Thus, with control utilizing *feedback* we have achieved some notion of stability which will be termed as **bounded-input-bounded-output** stability. The input is $n$, the output is $y = x$, and $u(t) = -(a+1)x(t)$.
+</Example>
+
+The setup depicted in the thermostat example can be considered as a reference-tracking example, where the desired temperature process is the reference signal that the system output is designed to be tracking.
+
+Control can also be used to steer the *state* of the system from some initial condition to some final condition. If the final condition is an equilibrium point, often this task is called **stabilization**. If the goal is to steer the state to some arbitrary point in the state space, the task is called **reachability** (from an initial state) or **controllability** (with respect to a final state). A related concept is **observability**, which is a crucial concept in particular when the information available at the controller with regard to the state is perturbed by some measurement noise.
+
+### 1.2.2 Applications in Signal Processing Theory
+
+Applications in signal processing has enabled much of modern technology. Two primary applications are in filter design, which allows for estimation and denoising, and sampling theories which allow for discrete-time processing of continuous-time signals.
+
+Consider a signal $x$ which is perturbed by noise $w$. A filter is a system which takes the noisy signal $y = x + w$ as input and provides a cleaner signal $\hat{x}$ as its output.
+
+Many systems in practice are continuous, but they need to be processed by computers, which inevitably have to work with discrete-time/discrete-space signals (as the ultimate language of transistors/chips are binary in terms of 0s and 1s). Therefore, one needs to first sample a continuous-time signal and work with such signals in discrete-time, before processing them, and interpolating them back to the continuous-time domain.
+
+### 1.2.3 Applications in Communications and Information Theory
+
+Modern engineering systems are typically highly interconnected with their environment which necessitates the presence of data-links between various components of a system. Typically such systems require finite representations of uncountable or large state space valued signals (in addition to discrete-time representation/approximation of continuous-time signals). These include quantization, coding and decoding of signals over communication channels (with or without feedback). Each of the individual components, such as encoders, channels and decoders, may separately be viewed as systems, though typically by the term *communication system*, we will refer to the entire ensemble mapping the source symbol and stochastic noise (in the channel), to the decoder output.
+
+Many other systems, however, operate in continuous-time. An example is a classical analog radio communication system, in which signals are modulated to carrier signals with targeted frequency waves, transmitted over wireless or wired media, and demodulated upon reception by a decoder (radio receiver).
+
+---
+
+## 1.3 Linearization
+
+Even though the primary focus of these notes is on linear models, we will see that linearization of non-linear models, around a point of interest leads to a design method where a design based on the linear model achieves satisfactory performance for the non-linear system in a local sense to be studied later in the notes.
+
+Let $g : \mathbb{R}^n \to \mathbb{R}^m$ be a differentiable function. Let $g(x) = \begin{bmatrix} g^1(x) \dots g^m(x) \end{bmatrix}$ and $x \in \mathbb{R}^n$ be written as $x = \begin{bmatrix} x^1 \dots x^n \end{bmatrix}^T$. The Jacobian matrix of $g$ at $x$, $J^x(g)$, is an $m \times n$ matrix function consisting of partial derivatives of $g$ such that
+
+$$J^x(g)(i,j) = \frac{\partial g^i}{\partial x^j}(x), \qquad i = 1, 2, \cdots, m;\; j = 1, 2, \cdots, n$$
+
+Now, let $x \in \mathbb{R}^m$ and $u \in \mathbb{R}^p$ and
+
+$$\frac{dx}{dt} = f(x, u) \qquad \text{(1.1)}$$
+
+be such that $f(\bar{x}, \bar{u}) = 0$ for some $(\bar{x}, \bar{u}) \in \mathbb{R}^m \times \mathbb{R}^p$. In this case, we say that $x$ is at equilibrium at $\bar{x}$ under input $\bar{u}$. Suppose that we slightly perturb $x$ and $u$ around the equilibrium $(\bar{x}, \bar{u})$. Let us write $x(t) = \bar{x} + \tilde{x}(t)$ and $u = \bar{u} + \tilde{u}(t)$, where $\tilde{x}$ and $\tilde{u}$ are small. Then,
+
+$$\frac{d(\bar{x} + \tilde{x})}{dt} = f(\bar{x} + \tilde{x}, \bar{u} + \tilde{u})$$
+
+Notice that $\frac{d(\bar{x} + \tilde{x})}{dt} = \frac{d\tilde{x}}{dt}$. If $f$ is continuously differentiable, it follows that
+
+$$f(\bar{x} + \tilde{x}, \bar{u} + \tilde{u}) \approx f(\bar{x}, \bar{u}) + J^f_x(\bar{x}, \bar{u})\tilde{x} + J^f_u(\bar{x}, \bar{u})\tilde{u},$$
+
+where $J^f_x(\bar{x}, \bar{u})$ is the Jacobian of $f(\cdot, \bar{u}) : \mathbb{R}^m \to \mathbb{R}^m$ at fixed $\bar{u}$ and $J^f_u(\bar{x}, \bar{u})$ is the Jacobian of $f(\bar{x}, \cdot) : \mathbb{R}^p \to \mathbb{R}^m$ at fixed $\bar{x}$. Let
+
+$$J^f_x(\bar{x}, \bar{u}) =: A, \qquad J^f_u(\bar{x}, \bar{u}) =: B,$$
+
+we obtain
+
+$$\frac{d\tilde{x}}{dt} = A\tilde{x} + B\tilde{u},$$
+
+as an approximate linear description of the system (1.1) at around the equilibrium point $(\bar{x}, \bar{u})$. We will observe that such a linearization is very useful in systems design.
+
+<Example id="1.2" title="Inverted Pendulum on a Cart">
+Consider the following example involving an inverted (non-linear) pendulum over a cart system, with masses of the pendulum and cart given with $m$ and $M$, respectively. The goal is to keep the inverted pendulum (locally) stable around $\theta = 0$ by the control acting horizontally on the cart with mass $M$.
+
+The non-linear mechanical/rotational dynamics equations can be derived as:
+
+$$u = M\frac{d^2y}{dt^2} + m\frac{d^2}{dt^2}(y + l\sin(\theta)) = M\frac{d^2y}{dt^2} + m\frac{d^2y}{dt^2} + ml\cos(\theta)\frac{d^2\theta}{dt^2} - ml\left(\frac{d\theta}{dt}\right)^2\sin(\theta) \qquad \text{(1.2)}$$
+
+$$ml^2\frac{d^2\theta}{dt^2} = mg\sin(\theta)l - m\frac{d^2y}{dt^2}\cos(\theta)l$$
+
+Around $\theta = 0$, $\frac{d\theta}{dt} = 0$, we apply the linear approximations $\sin(\theta) \approx \theta$ and $\cos(\theta) \approx 1$, and $\left(\frac{d\theta}{dt}\right)^2 \approx 0$ to arrive at
+
+$$M\frac{d^2y}{dt^2} = u - \left(m\frac{d^2y}{dt^2} + ml\frac{d^2\theta}{dt^2}\right)$$
+
+$$l\frac{d^2\theta}{dt^2} = g\theta - \frac{d^2y}{dt^2} \qquad \text{(1.3)}$$
+
+Finally, writing $x_1 = y$, $x_2 = \frac{dy}{dt}$, $x_3 = \theta$, $x_4 = \frac{d\theta}{dt}$, and manipulating the equations, we arrive at the linear model in state space form
+
+$$\frac{dx}{dt} = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{-mg}{M} & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & \frac{(M+m)g}{Ml} & 0 \end{bmatrix} x + \begin{bmatrix} 0 \\ \frac{1}{M} \\ 0 \\ \frac{-1}{Ml} \end{bmatrix} u,$$
+
+where $x = \begin{bmatrix} x_1 & x_2 & x_3 & x_4 \end{bmatrix}^T$.
+
+A remarkable implication is the following: Using some systems theoretic analysis, it can be shown that linearization will let us construct a control function/policy/law that makes the idealized linear system stable, which in turn makes the original non-linear system (1.2) locally stable around the (open-loop unstable) equilibrium point.
+</Example>
+
+---
+
+## 1.4 Mathematics of Systems
+
+Given the introductory discussion presented, in the following we will first develop a rigorous study of a class of signal spaces which arise in systems theory and applications. We will then investigate signal expansions and approximations. This will also serve as an introduction to Fourier theory.
+
+We will then study systems and their various regularity, structural and stability properties. We will, in this course, particularly focus on linear systems. A primary motivation, as we saw earlier in the previous section, is that many physical systems are either linear or locally almost linear (in the sense that a design based on a linear approximation leads to satisfactory performance for the original non-linear system).
+
+Fourier theory occupies a dominant domain in linear systems theory: In the historical theory of systems (and control), one often reads about classical design vs. modern design: classical design is with regard to methods based on frequency-domain analysis of systems, and modern design (or state-space design) refers to methods based on time-domain analysis. In our course, we will discuss both approaches extensively. Fourier theory (and its generalizations via Laplace and Z-transforms) facilitate the frequency-domain analysis.
+
+We will then study several applications in further detail. The course will lay the foundations for further study on the applications considered here, in addition to many related areas in both engineering and applied mathematics.

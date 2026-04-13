@@ -1,0 +1,594 @@
+---
+title: "Stability and Lyapunov's Method"
+chapter: 11
+---
+
+## 11.1 Introduction
+
+In many engineering applications, one wants to make sure the system behaves well in the long-run; without worrying too much about the particular path the system takes (so long as these paths are acceptable). Stability is the characterization ensuring that a system behaves well in the long-run. We will make this statement precise in the following.
+
+---
+
+<StabilityRegions mode="continuous" />
+
+## 11.2 Stability Criteria
+
+Consider $\frac{dx}{dt} = f(x)$, with initial condition $x(0)$. Let $f(0) = 0$. We will consider three definitions of stability:
+
+<Definition id="11.2.1" title="Local Stability (Lyapunov Stability)">
+For every $\epsilon > 0$, there exists $\delta > 0$ such that $\|x(0)\| < \delta$ implies that $\|x(t)\| < \epsilon$, $\forall t \geq 0$. This is also known as *stability in the sense of Lyapunov*.
+</Definition>
+
+<Remark>
+**Intuition:** Think of a ball resting at the bottom of a bowl. If you nudge it slightly, it stays close to the bottom -- it does not fly away. Local stability says exactly this: small perturbations produce small deviations, forever. Note that the ball does not have to return to the bottom; it just cannot wander far. A frictionless pendulum at its lowest point is locally stable (it oscillates nearby) but not asymptotically stable (it never stops oscillating).
+</Remark>
+
+<Definition id="11.2.2" title="Local Asymptotic Stability">
+$\exists \delta > 0$ such that $\|x(0)\| < \delta$ implies that $\lim_{t \to \infty} \|x(t)\| = 0$.
+</Definition>
+
+<Remark>
+**Intuition:** Now add friction to the ball-in-a-bowl picture. The ball not only stays near the bottom but actually returns to it over time. Local asymptotic stability means small perturbations eventually die out completely. The "local" qualifier matters: there is only a neighborhood around the equilibrium from which the system returns. Push the ball too far (over the rim of the bowl), and all bets are off.
+</Remark>
+
+<Definition id="11.2.3" title="Global Asymptotic Stability">
+For every $x(0) \in \mathbb{R}^n$, $\lim_{t \to \infty} \|x(t)\| = 0$. Hence, here, for any initial condition, the system converges to 0.
+</Definition>
+
+<Remark>
+**Intuition:** Global asymptotic stability is the strongest guarantee: no matter where you start in the entire state space, the system eventually returns to the equilibrium. Think of it as a bowl that extends infinitely in all directions with friction everywhere -- no matter how far you throw the ball, it always rolls back to the bottom. For linear systems, local and global asymptotic stability are equivalent, but for nonlinear systems they can differ dramatically.
+</Remark>
+
+It should be added that, stability does not necessarily need to be defined with regard to 0; that is stability can be defined around any $z \in \mathbb{R}^n$ with $f(z) = 0$. In this case, the above norms above should be replaced with $\|x(t) - z\|$ (such that, for example for the asymptotic stability case, $x(t)$ will converge to $z$).
+
+One could consider an inverted pendulum as an example of a system which is not locally stable.
+
+### 11.2.1 Linear Systems
+
+Consider an initial value problem $\frac{dx}{dt} = Ax$, with initial conditions $x(0) = x_0$. As studied earlier, the solution is
+
+$$x(t) = e^{At}x_0$$
+
+where
+
+$$e^{At} = I + At + A^2\frac{t^2}{2} + \ldots A^n\frac{t^n}{n!} + \ldots$$
+
+is the matrix exponential (see Exercise 11.6.1). We now briefly review how to compute matrix exponentials with a focus on stability properties.
+
+**Case: $A = I$ (Identity Matrix).** In this case, $e^{At} = I + It + I^2\frac{t^2}{2!} + \cdots + I^n\frac{t^n}{n!} + \ldots$, and
+
+$$e^{At} = \begin{bmatrix} e^t & 0 \\ 0 & e^t \end{bmatrix}$$
+
+**Case: $A$ diagonal.** With similar arguments, if $A$ is diagonal with
+
+$$A = \begin{bmatrix} \lambda_1 & 0 & 0 \\ 0 & \lambda_2 & 0 \\ 0 & 0 & \lambda_3 \end{bmatrix},$$
+
+we obtain
+
+$$e^{At} = \begin{bmatrix} e^{\lambda_1 t} & 0 & 0 \\ 0 & e^{\lambda_2 t} & 0 \\ 0 & 0 & e^{\lambda_3 t} \end{bmatrix},$$
+
+Hence, it is very easy to compute the exponential when the matrix is diagonal.
+
+**Commutativity property.** Note now that if $AB = BA$, that is, if $A$ and $B$ commute, then (see Exercise 11.6.2)
+
+$$e^{(A+B)} = e^A e^B$$
+
+**Case: $A$ in Jordan form.** We will use commutativity to compute the matrix exponential in the case where the matrix is in a Jordan form. Let us write
+
+$$A = \begin{bmatrix} \lambda_1 & 1 & 0 \\ 0 & \lambda_1 & 1 \\ 0 & 0 & \lambda_1 \end{bmatrix}$$
+
+as $B + C$, where
+
+$$B = \begin{bmatrix} \lambda_1 & 0 & 0 \\ 0 & \lambda_1 & 0 \\ 0 & 0 & \lambda_1 \end{bmatrix}, \qquad C = \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}$$
+
+We note that $BC = CB$, for $B$ is the identity matrix multiplied by a scalar number. Hence, $e^{At} = e^{Bt}e^{Ct}$. All we need to compute is $e^{Ct}$, as we have already discussed how to compute $e^{Bt}$. Here, one should note that $C^3 = 0$.
+
+More generally, for a Jordan matrix where the number of 1s off the diagonal of a Jordan block is $k - 1$, the $k$th power is equal to 0.
+
+Therefore,
+
+$$e^{Ct} = I + Ct + C^2\frac{t^2}{2!} + C^3\frac{t^3}{3!} + \ldots,$$
+
+becomes
+
+$$e^{Ct} = I + Ct + C^2\frac{t^2}{2!} = \begin{bmatrix} 1 & t & t^2/2 \\ 0 & 1 & t \\ 0 & 0 & 1 \end{bmatrix}$$
+
+Hence,
+
+$$e^{At} = \begin{bmatrix} e^{\lambda_1 t} & 0 & 0 \\ 0 & e^{\lambda_1 t} & 0 \\ 0 & 0 & e^{\lambda_1 t} \end{bmatrix}\begin{bmatrix} 1 & t & t^2/2 \\ 0 & 1 & t \\ 0 & 0 & 1 \end{bmatrix} = \begin{bmatrix} e^{\lambda_1 t} & te^{\lambda_1 t} & \frac{t^2}{2}e^{\lambda_1 t} \\ 0 & e^{\lambda_1 t} & te^{\lambda_1 t} \\ 0 & 0 & e^{\lambda_1 t} \end{bmatrix}$$
+
+**General matrix.** Now that we know how to compute the exponential of a Jordan form, we can proceed to study a general matrix. Let $A = PBP^{-1}$, where $B$ is in a Jordan form. Then,
+
+$$A^k = (PBP^{-1})^k = PB^kP$$
+
+Finally,
+
+$$e^A = Pe^BP^{-1}$$
+
+and
+
+$$e^{At} = Pe^{Bt}P^{-1}$$
+
+Hence, once we obtain a diagonal matrix or a Jordan form matrix $B$, we can compute the exponential $e^{At}$ very efficiently.
+
+The main insight here is that the eigenvalues determine whether the system remains bounded or not. In case, we have a repeated eigenvalue of 0, then the Jordan form determines whether the solution remains bounded or not. We state the following theorem.
+
+<Theorem id="11.2.1" title="Global Asymptotic Stability of Linear Systems">
+For a linear differential equation
+
+$$x' = Ax,$$
+
+the solution is locally and globally asymptotically stable if and only if
+
+$$\max_{\lambda_i}\{\text{Re}\{\lambda_i\}\} < 0,$$
+
+where $\text{Re}\{\cdot\}$ denotes the real part of a complex number, and $\lambda_i$ denotes the $i$th eigenvalue of $A$.
+</Theorem>
+
+<Remark>
+**Intuition:** For linear systems, stability is entirely determined by the eigenvalues of $A$. Each eigenvalue corresponds to a natural "mode" of the system, and the real part of the eigenvalue determines whether that mode grows or decays exponentially. If every mode decays (all eigenvalues in the open left half-plane), the entire system is stable -- and this works globally, not just locally. This is why pole placement is such a central concept in control design: moving eigenvalues to the left half-plane is equivalent to stabilizing the system.
+</Remark>
+
+This is one of the most important results in linear systems theory. It says that for a linear system, all three notions of stability coincide and reduce to a simple eigenvalue check. If all eigenvalues are in the open left half-plane, the system is globally asymptotically stable; if any eigenvalue has positive real part, the system is unstable.
+
+<Theorem id="11.2.2" title="Local Stability of Linear Systems">
+For a linear differential equation
+
+$$x' = Ax,$$
+
+the system is locally stable if and only if the following two conditions hold:
+
+(i) $\max_{\lambda_i}\{\text{Re}\{\lambda_i\}\} \leq 0$,
+
+(ii) if $\text{Re}\{\lambda_i\} = 0$, for some $\lambda_i$, the algebraic multiplicity of this eigenvalue should be the same as the geometric multiplicity.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem relaxes the asymptotic stability condition to mere boundedness. Eigenvalues on the imaginary axis are allowed (corresponding to sustained oscillations that neither grow nor decay), but only if they have no Jordan blocks larger than $1 \times 1$. A Jordan block for a purely imaginary eigenvalue introduces polynomial growth factors like $t \cdot e^{i\omega t}$, which grow without bound even though $|e^{i\omega t}| = 1$. Think of a frictionless pendulum: simple oscillation is fine (simple eigenvalue), but resonance-like behavior (repeated eigenvalue with a Jordan block) would make the amplitude grow.
+</Remark>
+
+Condition (ii) prevents polynomial growth from Jordan blocks. If a purely imaginary eigenvalue has a Jordan block of size greater than 1, the terms $te^{i\omega t}$, $t^2e^{i\omega t}$, etc. will grow without bound even though $|e^{i\omega t}| = 1$.
+
+In practice, many systems are not linear, and hence the above theorems are not applicable.
+
+---
+
+## 11.3 A General Approach: Lyapunov's Method
+
+<LyapunovDemo />
+
+A very versatile and effective approach to stabilization is via *Lyapunov functions* (this approach is often called Lyapunov's second method, the first one being an analysis based on linearization to be considered after this section). Let $\Omega \subset \mathbb{R}^n$ be an open set containing the equilibrium point, taken to be 0 here without any loss.
+
+<Definition id="11.3.1" title="Lyapunov Function">
+A function $V : \mathbb{R}^n \to \mathbb{R}$ is called a Lyapunov function if
+
+1. $V(x) > 0$, $\forall x \neq 0$, $x \in \Omega$,
+2. $V(x) = 0$, if $x = 0$,
+3. $V$ is continuous, and has continuous partial derivatives.
+</Definition>
+
+<Remark>
+**Intuition:** A Lyapunov function is a generalized notion of "energy" for a system. Just as physical energy is always non-negative and equals zero only at rest, $V(x)$ is positive everywhere except at the equilibrium. The key idea is that you do not need to solve the differential equation to prove stability -- you just need to find an appropriate energy-like function and show it never increases (or strictly decreases) along the system's trajectories. For mechanical systems, the actual energy often works as a Lyapunov function, but for abstract systems you may need to be creative.
+</Remark>
+
+A Lyapunov function serves as a generalized notion of "energy" for a system. The idea is that if we can find a positive-definite function that never increases along trajectories of the system, then the trajectories must remain bounded (stability). If the function is strictly decreasing, the system must converge to the equilibrium (asymptotic stability).
+
+First we present results on local asymptotic stability. As above, let $\Omega \in \mathbb{R}^n$ be an open set containing 0.
+
+<Theorem id="11.3.1" title="Lyapunov's Direct Method">
+a) For a given differential equation $x'(t) = f(x(t))$ with $f(0) = 0$, and continuous $f$, if we can find a Lyapunov function $V$ such that
+
+$$\frac{d}{dt}V(x(t)) \leq 0,$$
+
+for all $x(t) = x \in \Omega$, then, the system is locally stable (stable in the sense of Lyapunov).
+
+b) For a given differential equation $x'(t) = f(x(t))$ with $f(0) = 0$, and continuous $f$, if we can find a Lyapunov function $V(x)$ such that
+
+$$\frac{d}{dt}V(x(t)) < 0,$$
+
+for $x(t) = x \in \Omega \setminus \{0\}$, the system is locally asymptotically stable.
+
+c) If b) holds for $V$ so that $\lim_{\|x\| \to \infty} V(x) = \infty$, and
+
+$$\frac{d}{dt}V(x(t)) < 0,$$
+
+for $x(t) = z \in \mathbb{R}^n \setminus \{0\}$, then the system is globally asymptotically stable.
+</Theorem>
+
+<Remark>
+**Intuition:** Lyapunov's direct method is like proving a ball will reach the bottom of a valley without tracking its exact path. Part (a) says: if the system's "energy" never increases, the state stays close (stability). Part (b) says: if the energy strictly decreases, the state must converge to equilibrium (asymptotic stability). Part (c) adds the global guarantee: if the energy function grows to infinity in all directions (so there are no "escape routes"), then asymptotic stability holds everywhere. The power of this method is that it avoids solving the differential equation entirely -- you only need a suitable energy function.
+</Remark>
+
+<Proof>
+**a)** Let $\epsilon > 0$ be given, which we may assume to be so that $\{x : \|x\| = \epsilon\} \subset \Omega$ (this is where we use the condition that $\Omega$ is an open set containing the equilibrium point). We will show the existence of $\delta > 0$ such that for all $\|x(0)\| \leq \delta$, $\|x(t)\| < \epsilon$ for all $t \geq 0$.
+
+Define $m = \min_{\{x: \|x\| = \epsilon\}} V(x)$ (such an $m$ exists by the continuity of $V$). Let $0 < \delta \leq \epsilon$ so that for all $\|x\| \leq \delta$ it follows that $V(x) < m$. Such a $\delta$ exists by continuity of $V$. Now, for any $\|x(0)\| \leq \delta$, $V(x(0)) < m$ and furthermore by the condition $\frac{d}{dt}V(x(t)) \leq 0$, $V(x(t)) < m$ as long as $x(t) \in \Omega$ (and thus also as long as $\|x(t)\| \leq \epsilon$).
+
+This then implies that $\|x(t)\| < \epsilon$ since otherwise, there would have to be some time $t_1$ so that $\|x(t_1)\| = \epsilon$ and $\|x(t)\| < \epsilon$ for $t \leq t_1$, which would result in $V(x(t_1)) \geq m$ while $x(t) \in \Omega$ until $t_1$ so that
+
+$$V(x(t_1)) = V(x(0)) + \int_{s=0}^{t_1} \frac{d}{ds}V(x(s))ds \leq V(x(0)) < m$$
+
+leading to a contradiction.
+
+**b)** $\epsilon = r > 0$, $\delta > 0$ satisfy the condition in part a so that with $\|x(0)\| \leq \delta$, $\|x(t)\| \leq r$ for all $t$ so that $x(t) \in \Omega$. Since $\frac{d}{dt}V(x(t)) < 0$, $V(x(t))$ is a monotonically decreasing family of non-negative numbers and it therefore has a limit. Call this limit $c$. We will show that $c = 0$. Suppose $c \neq 0$. Let $\alpha > 0$ be such that for all $\|x\| < \alpha$, $V(x) < c$. It then follows that for all $t$, $x(t) \in \{x : \alpha \leq \|x\| \leq r\}$. Define $a = \max_{\{x: \alpha \leq \|x\| \leq r\}}\left(\nabla_x V(x)\right)f(x)$. The number $a$ exists since the functions considered are continuous, maximized over a compact set. This $a$ is attained, it must be that $a < 0$. This implies that $V(x(t)) = V(x(0)) + \int_{s=0}^{t}\frac{d}{ds}V(x(s))ds \leq V(x(0)) + at$, which implies that $V(x(t))$ will be negative after a finite $t$. This can't be true, therefore $c$ cannot be non-zero.
+
+**c)** The proof in b) applies with $\Omega$ being the entire state space: for any given $x(0) = z$, the set $\{x : V(x) \leq z\}$ will be compact and the proof will follow identically.
+</Proof>
+
+<Theorem id="11.3.2" title="Region of Asymptotic Stability">
+Let us, in addition to the conditions noted in Theorem 11.3.1(b), further impose that for some $l$, $\Omega_l := \{x : V(x) \leq l\}$ is a bounded set and $\Omega_l \subset \Omega$ where $\Omega$ satisfies Theorem 11.3.1(b). Then, every solution of the system with initial state $x(0) \in \Omega_l$ converges to equilibrium.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem gives you a concrete, computable estimate of the "basin of attraction" -- the set of initial conditions from which the system is guaranteed to converge. The sublevel set $\{x : V(x) \leq l\}$ acts like a fence: since $V$ is decreasing along trajectories, once the state is inside this set, it can never leave. In practice, you pick $l$ as large as possible while keeping the sublevel set within the region where $\dot{V} < 0$, giving you the largest provable region of attraction.
+</Remark>
+
+By following (and slightly modifying) the proof of Theorem 11.3.1(b), we can conclude that $\Omega_l$ is a **region of attraction** for the equilibrium point, which is defined as a set of initial states whose corresponding solutions converge to the equilibrium point: $\{x(0) : \lim_{t\to\infty} x(t) = 0\}$.
+
+<Remark id="11.1">
+For local stability, by restricting the analysis to $\Omega$, we can allow the Lyapunov function $V$ to take even negative values outside $\Omega$ or not necessarily be continuous outside $\Omega$. In Theorem 11.3.1, we used such properties of $V$ only on $\Omega$.
+</Remark>
+
+<Example id="11.2" title="Cubic System Stability">
+Show that $x' = -x^3$ is locally asymptotically stable, by picking $V(x) = x^2$ as a Lyapunov function. Is this solution globally asymptotically stable as well?
+
+We compute $\frac{d}{dt}V(x(t)) = 2x \cdot x' = 2x(-x^3) = -2x^4 < 0$ for all $x \neq 0$. Since $V(x) = x^2 \to \infty$ as $|x| \to \infty$, by Theorem 11.3.1(c), the system is globally asymptotically stable.
+</Example>
+
+<Example id="11.3" title="Region of Attraction">
+Show that $x' = -2x + x^3$ is locally asymptotically stable, by picking $V(x) = x^2$ as a Lyapunov function. Is this solution globally asymptotically stable? Find a region of attraction for local stability.
+
+We compute $\frac{d}{dt}V(x(t)) = 2x(-2x + x^3) = -4x^2 + 2x^4 = 2x^2(x^2 - 2)$. This is negative when $x^2 < 2$, i.e., when $|x| < \sqrt{2}$. So the system is locally asymptotically stable with region of attraction $\Omega_l = \{x : |x| < \sqrt{2}\}$. The system is not globally asymptotically stable since for $|x| > \sqrt{2}$, $\dot{V} > 0$.
+</Example>
+
+<Remark id="11.4">
+One should note that BIBO stability and the stability notions considered in this chapter have very different contexts; BIBO stability is concerned with the input-output behaviour of systems and the criteria considered in this chapter are with regard to the effects of initial conditions (also called *internal stability*). The conditions are also slightly different for the linear setup: for continuous-time linear systems, BIBO stability requires all the eigenvalues to have strictly negative real parts. Stability itself, however, may require more relaxed conditions.
+</Remark>
+
+### 11.3.1 Revisiting the linear case
+
+Recall that an $n \times n$ real matrix $P$ is positive definite if $P$ is symmetric and $x^TPx > 0$ for all $x \neq 0$. It is positive semi-definite of $x^TPx \geq 0$ for all $x \in \mathbb{R}^n$. Note that being symmetric is part of the definition.
+
+<Theorem id="11.3.3" title="Lyapunov Equation for Linear Systems">
+All eigenvalues of a square matrix $A$ have negative real parts if and only if for any given positive definite $N$, the (Lyapunov) equation
+
+$$A^TM + MA = -N$$
+
+has a unique solution $M$, where the solution is positive definite.
+</Theorem>
+
+<Remark>
+**Intuition:** The Lyapunov equation converts the problem of checking eigenvalue locations (a nonlinear problem) into solving a system of linear equations for $M$. If you can find a positive definite $M$ satisfying $A^TM + MA = -N$, then $V(x) = x^TMx$ is a Lyapunov function that certifies stability. In MATLAB, this is a single command (`lyap`). The theorem says this always works for stable linear systems: for any "target" energy dissipation rate $N$, there is a unique energy function $M$ that achieves it. This makes stability verification for linear systems completely algorithmic.
+</Remark>
+
+<Proof>
+**a) Forward direction:** Let $A$ have eigenvalues with negative real parts: we will show that $M = \int_0^{\infty} e^{A^Tt}Ne^{At}dt$ is a solution (whose uniqueness will also be established shortly). Since $A$ is stable, we have
+
+$$A^TM + MA = \int_0^{\infty} A^Te^{A^Tt}Ne^{At}dt + \int_0^{\infty} e^{A^Tt}Ne^{At}Adt = \int_0^{\infty} \frac{d}{dt}(e^{A^Tt}Ne^{At})dt = -N,$$
+
+where the last line follows from the fact that $\lim_{t\to\infty} e^{At} = 0$.
+
+$M$ is symmetric, which can be shown by verifying that $M^T = M$. Furthermore, $M$ is positive definite: for any $x \neq 0$, we have $x^TMx = \int_0^{\infty} x^Te^{A^Tt}Ne^{At}xdt = \int_0^{\infty}\|\sqrt{N}e^{At}x\|^2dt > 0$, where $\sqrt{N}$ is the invertible matrix that solves the equation $\sqrt{N}\sqrt{N} = N$: with $N = U\Lambda U^T$ where $\Lambda$ is the diagonal matrix containing the (all positive real) eigenvalues of $N$ on the diagonal, we have that $\sqrt{N} = U\sqrt{\Lambda}U^T$, where $\sqrt{\Lambda}$ is a diagonal matrix consisting of square roots of the eigenvalues of $N$ on the diagonal.
+
+**Uniqueness:** For uniqueness, consider the following: let $\bar{M}$ also solve $A^T\bar{M} + \bar{M}A = -N$. Then, since $A$ has all eigenvalues with negative real parts, it follows from the fundamental theorem of calculus that
+
+$$\bar{M} = -\int_0^{\infty} \frac{d}{dt}(e^{A^Tt}\bar{M}e^{At})dt$$
+
+but
+
+$$\bar{M} = -\int_0^{\infty}\frac{d}{dt}(e^{A^Tt}\bar{M}e^{At})dt = -\int_0^{\infty}(e^{A^Tt}A^T\bar{M}e^{At} + e^{A^Tt}\bar{M}Ae^{At})dt$$
+
+$$= -\int_0^{\infty} e^{A^Tt}\left(A^T\bar{M} + \bar{M}A\right)e^{At}dt = -\int_0^{\infty}e^{A^Tt}(-N)e^{At}dt = \int_0^{\infty}e^{A^Tt}Ne^{At}dt$$
+
+$$= M$$
+
+**b) Reverse direction:** For the reverse direction, consider the Lyapunov function $V(x) = x^TMx$. Then,
+
+$$\frac{d}{dt}V(x(t)) = \frac{d}{dt}(x^T(t)Mx(t)) = x^TMAx + x^TA^TMx = x^T(MA + A^TM)x = -x^TNx$$
+
+which is strictly negative for all $x \neq 0$. Then, Theorem 11.3.1(b) would imply that the system $x' = Ax$ is globally asymptotically stable and hence, by Theorem 11.2.1, the eigenvalues of $A$ have to have negative real parts.
+</Proof>
+
+The Lyapunov equation $A^TM + MA = -N$ is a **linear matrix equation** -- given $A$ and $N$, solving for $M$ is a system of linear equations. In MATLAB, the command `lyap(A', N)` solves this directly. This theorem converts a nonlinear eigenvalue problem (checking eigenvalue locations) into a linear algebra problem (solving a matrix equation and checking positive definiteness).
+
+---
+
+## 11.4 Non-Linear Systems and Linearization
+
+<Theorem id="11.4.1" title="Stability via Linearization">
+Let $f : \mathbb{R}^n \to \mathbb{R}^n$ be continuously differentiable. Consider $x' = f(x)$ and let $f(x^*) = 0$ for some $x^* \in \mathbb{R}^n$. Let $A := Df(x^*)$ be the Jacobian of $f$ at $x^*$ (that is, with $f(x) = \begin{bmatrix} f^1(x) \cdots f^n(x) \end{bmatrix}^T$ the linearization with $A(i,j) = \frac{\partial f^i}{\partial x^j}(x^*)$). Let $\lambda_1, \ldots, \lambda_n$ be the eigenvalues of $A$. If $\text{Re}\{\lambda_i\} < 0$ for $i = 1, \cdots, n$, then $x^*$ is locally asymptotically stable.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem says that near an equilibrium, a nonlinear system behaves like its linearization. If the linearized system (the Jacobian) is stable, then the nonlinear system is locally stable too -- the higher-order nonlinear terms are too small near the equilibrium to overcome the stabilizing effect of the linear part. This is why linearization is such a workhorse in engineering: you can design controllers using linear theory and trust that they will work locally around the operating point. The caveat is that if the linearization has eigenvalues on the imaginary axis, the nonlinear terms decide stability and the linearization is inconclusive.
+</Remark>
+
+<Proof title="Direct Proof">
+Without any loss, we can assume that $x^* = 0$ (since the linearization is with respect to the perturbation regardless of the fixed (equilibrium) point). Since $A$ has all its eigenvalues strictly in the left half plane, there exists $\epsilon > 0$ so that $A + \epsilon I$ also has all the eigenvalues in the left half plane. You can show this via the continuity result in Theorem 8.3.1 (see, in particular, Remark 8.1).
+
+Therefore, $e^{(A+\epsilon I)t}$ will remain bounded: $\|e^{tA}e^{\epsilon t}\| \leq K$ for some constant $K$ for all $t \geq 0$. Here, for a matrix, we use the norm $\|A\| = \sup_{x \neq 0}\frac{\|Ax\|_2}{\|x\|_2}$. In the following, we drop the subscript 2.
+
+Now write
+
+$$x'(t) = Ax(t) + E(x(t)),$$
+
+with $E(x(t)) := f(x(t)) - A(x(t))$. Let $r > 0$ be such that $\|z\| \leq r$ implies $\|E(z)\| \leq \beta\|z\|$, where we will take $\beta$ sufficiently small (to be determined at the end of the proof). Let $B := \{z : \|z\| \leq \frac{r}{2}\}$. The idea is to show that if $x(0) \in B$, then $x(t) \in B$ for all $t \geq 0$ and $\lim_{t\to\infty}x(t) = 0$. Recall that the solution to (11.1) is given with
+
+$$x(t) = e^{At}x(0) + \int_0^t e^{A(t-s)}E(x(s))ds$$
+
+and for $x(0) \in B$, we have, as long as $x(\tau) \in B$ for all $\tau \leq t$, that
+
+$$\|x(t)\| \leq K\left(e^{-t\epsilon}\|x(0)\| + \beta\int_0^t e^{-\epsilon(t-s)}\|x(s)\|ds\right)$$
+
+Write $\alpha = K\beta$ and write the above as
+
+$$\|x(t)\| \leq e^{-t\epsilon}\|x(0)\| + \alpha'\int_0^t e^{-\epsilon(t-s)}\|x(s)\|ds$$
+
+Define $g(t) = e^{t\epsilon}\|x(t)\|$. Then, the above writes as
+
+$$g(t) \leq K\|x(0)\| + \alpha\int_0^t g(s)ds$$
+
+This then implies the following
+
+$$g(t) \leq e^{\alpha t}K\|x(0)\|,$$
+
+(by an argument known as Gronwall's inequality). *Let us now prove this intermediate step:* Write:
+
+$$v(s) = e^{-\alpha s}\int_0^s \alpha g(r)dr$$
+
+and
+
+$$v'(s) = \left(-\alpha e^{-\alpha s}\int_0^s \alpha g(r)dr + e^{-\alpha s}\alpha g(s)\right) = e^{-\alpha s}\alpha\left(g(s) - \alpha\int_0^s g(r)dr\right) \leq K\|x(0)\|\alpha e^{-\alpha s}$$
+
+This implies that, since $v(0) = 0$
+
+$$v(t) \leq \int_0^t K\|x(0)\|\alpha e^{-\alpha s}ds = K\|x(0)\|(1 - e^{-\alpha t})$$
+
+and thus $e^{-\alpha t}\int_0^t \alpha g(r)dr \leq K\|x(0)\|(1 - e^{-\alpha t})$ leading to
+
+$$\int_0^t \alpha g(r)dr \leq K\|x(0)\|e^{\alpha t} - K\|x(0)\|$$
+
+and using the bound on $g(t)$, we arrive at
+
+$$g(t) \leq K\|x(0)\|e^{\alpha t}$$
+
+Then,
+
+$$\|x(t)\| \leq e^{\alpha t - \epsilon t}K\|x(0)\|$$
+
+If we now take $K\beta = \alpha < \epsilon$, then $x(t) \to 0$ and the proof is complete.
+</Proof>
+
+<Proof title="Proof of Theorem 11.4.1 via Lyapunov's Method">
+Take $x^* = 0$, we have that $A := Df(0)$ is stable, where $Df(x)$ is the linearization of $f$ at $x$. Then, by part b) of the proof of Theorem 11.3.3, there exists $M > 0$ so that the Lyapunov function $V(x) := x^TMx$ satisfies $\frac{dV(x(t))}{dt} = -x^T(t)Nx(t)$, for the linearized model $x' = Ax$, where $N$ is positive-definite.
+
+By continuous-differentiability, we have that the non-linear system satisfies $Ax + E(x) = Ax + g(x)x$ with $\|g(x)\| \to 0$ as $x \to 0$. To see this, apply the definition of the derivative and use continuity of this derivative.
+
+We can then show that the Lyapunov function is also decreasing for the non-linear model as long as $x$ is close enough to the equilibrium. That is,
+
+$$\frac{dV(x(t))}{dt} = \frac{d(x^T(t)Mx(t))}{dt}$$
+
+$$= x^T(t)(MA + A^TM)x(t) + x^T(t)Mg(x(t))x(t) + x^T(t)(g(x(t)))^TMx(t)$$
+
+$$= -x^T(t)Nx(t) + x^T(t)(Mg(x(t)) + g(x(t))^TM)x(t)$$
+
+It follows that $-x^T(t)Nx(t) \leq -\lambda_{\min}\|x\|^2$, where $\lambda_{\min}$ is the minimum eigenvalue of $N$. To show this, observe that $N - \lambda_{\min}I$ is positive semi-definite. Now, since $Mg(x(t)) + (g(x(t)))^TM \to 0$ as $x(t) \to 0$, we have that
+
+$$\frac{dV(x(t))}{dt} \leq -\lambda_{\min}\|x(t)\|^2 + x^T(t)(Mg(x(t)) + (g(x(t)))^TM)x(t) < 0,$$
+
+for $x(0)$ small enough (note that all eigenvalues of the symmetric matrix $(Mg(x(t)) + (g(x(t)))^TM)$ will converge to zero, by the continuity of the eigenvalues in the matrix entries). This establishes local asymptotic stability.
+</Proof>
+
+The above shows that linearization can be a very effective method. However, when the linearization leads to a matrix with an eigenvalue having a zero real part, the analysis (above based on linearization) is inconclusive and further analysis would be required. To make this observation explicit, consider two systems
+
+$$x' = -x^5$$
+
+$$x' = x^5$$
+
+which have the same linearization around 0. By a Lyapunov stability argument with taking $V(x) = x^2$, the first system can be shown to be locally and globally stable, whereas the second one is not (which can be verified by solving the equation directly: show that $x(t)$ blows up in finite time!).
+
+---
+
+## 11.5 Discrete-time Setup
+
+<StabilityRegions mode="discrete" />
+
+The stability results presented for continuous-time linear systems have essentially identical generalizations for the discrete-time setup. In this case, we require the eigenvalues to be strictly inside the unit disk for asymptotic stability (local and global); and for local stability we additionally have the relaxation that the Jordan form corresponding to an eigenvalue on the unit circle is to be strictly diagonal: Any Jordan form block $J$ of size $N \times N$, with eigenvalue $\lambda_i$, can be written as
+
+$$\lambda_i I + E$$
+
+where $E$ is a matrix which has all terms zero, except the super-diagonal (the points right above the diagonal), at which points the value is 1. The second term $E$ is such that $E^N = 0$. Finally, we use the power expansion and using the fact that any matrix commutes with the identity matrix:
+
+$$(\lambda_i I + E)^n = \sum_{k=0}^{n}\binom{n}{k}\lambda_i^n IE^{n-k}.$$
+
+Since $E^N = 0$, we have
+
+$$(\lambda_i I + E)^n = \sum_{k=0}^{N-1}\binom{n}{k}\lambda_i^{n-k}IE^k$$
+
+One can have discrete-time generalizations of Lyapunov functions.
+
+<Theorem id="11.5.1" title="Discrete Lyapunov Equation">
+Consider
+
+$$x_{k+1} = Ax_k.$$
+
+All eigenvalues of $A$ have magnitudes strictly less than 1 if and only if for any given positive definite matrix $N$ or for $N = P^TP$ where $P$ is any given $m \times n$ matrix with $m < n$, the discrete Lyapunov equation
+
+$$M - A^TMA = N$$
+
+has a unique solution which is also positive definite.
+</Theorem>
+
+<Remark>
+**Intuition:** This is the discrete-time counterpart of the continuous Lyapunov equation. Instead of checking that eigenvalues are in the left half-plane (continuous-time), you check that they are strictly inside the unit circle (discrete-time). The Lyapunov function $V(x_k) = x_k^T M x_k$ decreases at each step: $V(x_{k+1}) - V(x_k) = -x_k^T N x_k < 0$. Think of it as verifying that the system's "energy" drops with every discrete time step, guaranteeing that the state spirals inward to the origin.
+</Remark>
+
+The solution in the theorem statement is $M = \sum_{k \in \mathbb{Z}_+}(A^T)^kNA^k$.
+
+---
+
+## 11.6 Exercises
+
+<Example id="11.6.1" title="Derivative of Matrix Exponential">
+Let $A$ be a square matrix. Show that $\frac{d}{dt}e^{At} = Ae^{At}$.
+
+**Solution.** Let $t, h$ be scalars. Since $At$ and $Ah$ commute so that $(At)(Ah) = (Ah)(At)$ we have that $e^{A(t+h)} = e^{At}e^{Ah}$. Then,
+
+$$\frac{d}{dt}e^{At} = \lim_{h \to 0}\frac{e^{A(t+h)} - e^{At}}{h}$$
+
+$$= e^{At}\lim_{h \to 0}\frac{e^{Ah} - I}{h}$$
+
+$$= e^{At}\lim_{h \to 0}\left(\sum_{k=1}^{\infty}\frac{A^kh^k}{h(k!)}\right)$$
+
+$$= e^{At}\lim_{h \to 0}\left(A + h\sum_{k=2}^{\infty}\frac{A^kh^{k-2}}{k!}\right)$$
+
+$$= Ae^{At}$$
+
+The final line follows from the fact that the sum converges to zero as $h \to 0$: let $\tilde{A}(i,j) = |A(i,j)|$ be the matrix consisting of the absolute value of the entries of $A$, then for each entry $(i,j)$ of the matrix
+
+$$\left|\left(h\sum_{k=2}^{\infty}\frac{A^kh^{k-2}}{k!}\right)(i,j)\right| \leq |h|\left(\tilde{A}^2\sum_{k=2}^{\infty}\frac{\tilde{A}^{k-2}|h|^{k-2}}{(k-2)!}\right)(i,j)$$
+
+$$\leq |h|\left(\tilde{A}^2\sum_{k=0}^{\infty}\frac{\tilde{A}^k|\epsilon|^k}{k!}\right)(i,j)$$
+
+$$= |h|\tilde{A}^2 e^{\tilde{A}\epsilon}(i,j)$$
+
+$$= \lim_{h \to 0} |h|\tilde{A}^2e^{\tilde{A}\epsilon}(i,j) = 0$$
+
+The result follows.
+</Example>
+
+<Example id="11.6.2" title="Exponential of Commuting Matrices">
+Show that for square matrices $A$ and $B$, which commute, that is $AB = BA$, it follows that
+
+$$e^{(A+B)} = e^Ae^B.$$
+
+**Solution.** Recall that
+
+$$e^A = \lim_{T\to\infty}\sum_{k=0}^{T}\frac{A^k}{k!} = \sum_{k=0}^{\infty}\frac{A^k}{k!},$$
+
+with the definition that $A^0 = I$. It follows that
+
+$$e^Ae^B = (\lim_{T\to\infty}\sum_{k=0}^{T}\frac{A^k}{k!})(\lim_{T\to\infty}\sum_{l=0}^{T}\frac{B^l}{l!})$$
+
+$$= \sum_{k=0}^{\infty}\sum_{l=0}^{\infty}\frac{A^k}{k!}\frac{B^l}{l!} = \sum_{k=0}^{\infty}\sum_{u=k}^{\infty}\frac{1}{k!(u-k)!}A^kB^{u-k}$$
+
+$$= \sum_{u=0}^{\infty}\sum_{k=0}^{u}\frac{1}{k!(u-k)!}A^kB^{u-k}$$
+
+$$= \sum_{u=0}^{\infty}\frac{1}{u!}\sum_{k=0}^{u}\frac{u!}{k!(u-k)!}A^kB^{u-k} = \sum_{u=0}^{\infty}\frac{1}{u!}\sum_{k=0}^{u}\binom{u}{k}A^kB^{u-k}$$
+
+$$= \sum_{u=0}^{\infty}\frac{1}{u!}(A+B)^u$$
+
+$$= e^{(A+B)}$$
+
+In the above, the substitution $u = k + l$ was used, the re-indexing of the double sum follows from re-expressing the summation, and the binomial theorem step uses the fact that $AB = BA$ to establish
+
+$$(A+B)^k = \sum_{m=0}^{k}\binom{k}{m}A^mB^{k-m}.$$
+
+This last statement is proved by induction. Clearly for $k=1$, $(A+B)^1 = \binom{1}{0}B + \binom{1}{1}A$. Suppose this is true for $k$. Then for $k+1$:
+
+$$(A+B)^k(A+B) = \sum_{m=0}^{k}\binom{k}{m}A^{m+1}B^{k-m} + \sum_{m=0}^{k}\binom{k}{m}A^mB^{k+1-m}.$$
+
+Let us separate out the terms involving $A^pB^{k+1-p}$ for $0 \leq p \leq k+1$. It turns out that we obtain:
+
+$$\sum_{p=0}^{k+1}A^pB^{k+1-p}\left(\binom{k}{p} + \binom{k}{p-1}\right)$$
+
+Now,
+
+$$\binom{k}{p} + \binom{k}{p-1} = \frac{k!}{p!(k-p)!} + \frac{k!}{(p-1)!(k+1-p)!}$$
+
+$$= \frac{k!}{(p-1)!(k-p)!}\left(\frac{1}{p} + \frac{1}{(k+1-p)}\right) = \frac{k!}{(p-1)!(k-p)!}\left(\frac{k+1}{p(k+1-p)}\right)$$
+
+$$= \frac{(k+1)!}{(p)!(k+1-p)!} = \binom{k+1}{p}$$
+
+This completes the proof.
+</Example>
+
+<Example id="11.6.3" title="Stability of x' = -x^7">
+Let $x(t)$ satisfy
+
+$$\frac{dx}{dt} = -x^7$$
+
+Is $x(t)$ (locally) asymptotically stable?
+
+Using $V(x) = x^2$, we get $\dot{V} = 2x(-x^7) = -2x^8 < 0$ for $x \neq 0$. By Theorem 11.3.1(b), the system is locally asymptotically stable. Since $V(x) \to \infty$ as $|x| \to \infty$, it is also globally asymptotically stable by part (c).
+</Example>
+
+<Example id="11.6.4" title="Second-Order System Stability">
+Consider $x'' + x' + x = 0$. Is this system asymptotically stable?
+
+*Hint: Convert this equation into a system of first-order differential equations, via $x_1 = x$ and $x_2 = x_1'$, $x_2' = -x_1 - x_2$. Then apply $V(x_1, x_2) = x_1^2 + x_1x_2 + x_2^2$ as a candidate Lyapunov function.*
+</Example>
+
+<Example id="11.6.5" title="A Further Lyapunov Stability Theorem and Barbalat's Lemma">
+Prove the following theorem:
+
+<Theorem id="11.6.1" title="Lyapunov-Barbalat Stability Theorem">
+Consider
+
+$$x' = f(x),$$
+
+where $f : \mathbb{R}^n \to \mathbb{R}^n$ is continuous and $f(0) = 0$. Let $V : \mathbb{R}^n \to \mathbb{R}_+$ be continuously differentiable. Suppose there exists a continuous function $W : \mathbb{R}^n \to \mathbb{R}_+$ such that
+
+$$\frac{d}{dt}V(x(t)) \leq -W(x(t)) \leq 0$$
+
+Then, provided $x(t)$ remains bounded, $W(x(t)) \to 0$.
+</Theorem>
+
+*Hint:* Write
+
+$$V(x(t)) = V(x_0) + \int_0^t \frac{dV(x(s))}{ds} ds \leq V(x_0) - \int_0^t W(x(s)) ds$$
+
+and conclude that $\int_0^t W(x(s)) ds \leq V(x_0)$ for all $t \geq 0$ and by the non-negativity of $W$, we have that $\int_0^{\infty} W(x(s)) ds \leq V(x_0)$. From here, we want to establish that $W(x(t)) \to 0$, provided that (by hypothesis) $x(t)$ remains bounded. Complete the proof.
+
+*Prove and use Barbalat's lemma:* Let $f : K \to \mathbb{R}_+$ be uniformly continuous over $K$. Then, if $x(t)$ remains in $K$ and if $\int_0^{\infty} f(x(s)) ds$ is finite, then $f(x(t)) \to 0$.
+
+*Note:* The above result also implies an important stability theorem known as LaSalle's invariance principle.
+</Example>
+
+<Example id="11.6.6" title="Application to Formation Control, Consensus Algorithms or Opinion Dynamics">
+Consider a network of $N$ agents which are connected over a graph. We say that $A$ is an adjacency graph if $A(i,j) = 1$ if Agents $i$ and Agent $j$ are connected and $A(i,j) = 0$ otherwise. For each agent $i \in \{1, \cdots, N\}$ define $d_i = \sum_{j=1}^{N}A(i,j)$ to be the degree of the agent. Now define $L = A - D$ where $D$ is a diagonal matrix with $D(i,i) = d_i$. Such a matrix $L$ is called a Laplacian.
+
+Now, suppose that the agents update their states by the following equation:
+
+$$\frac{dx}{dt} = -Lx$$
+
+Observe that $L$ is a positive semi-definite matrix and if the graph is connected the only eigenvector corresponding to the zero eigenvalue is $\begin{bmatrix} 1 & 1 & \cdots & 1 \end{bmatrix}^T$. This you can see by noting that $x^TLx = \frac{1}{2}\sum A(i,j)(x_i - x_j)^2$.
+
+In this case, define the following Lyapunov function:
+
+$$V(x) = \frac{1}{2}x^Tx$$
+
+Then,
+
+$$\frac{d}{dt}(V(x(t))) = \frac{1}{2}((\frac{dx}{dt})^Tx(t) + x^T(t)\frac{dx}{dt}) = -x^T(t)Lx(t) \leq 0$$
+
+The above ensures that $x(t)$ remains bounded. Now, invoke Barbalat's Lemma to conclude that $x^T(t)Lx(t) \to 0$. Since the only eigenvalue corresponding to $Lx(t) = 0$ is $x(t) = \begin{bmatrix} 1 & 1 & \cdots & 1 \end{bmatrix}^T$ and throughout the updates the sum $\frac{1}{N}(x_1(t) + x_2(t) + \cdots x_N(t))$ is a constant (as the sum does not change), we have that $x(t) \to \frac{1}{N}(x_1(0) + x_2(0) + \cdots + x_N(0))$.
+</Example>
+
+<Example id="11.6.7" title="Application to Adaptive Control">
+Consider
+
+$$\frac{dx}{dt} = ax + u$$
+
+Suppose that our goal is to have $\lim_{t\to\infty}x(t) = 0$. We know that if we select $u(t) = -(a + \kappa)x$ for any $\kappa > 0$, the system is stable. In particular, let $\kappa = 1$.
+
+In many engineering applications, the value of $a$ is unknown.
+
+Adaptive control theory is the sub-field of control theory studying such problems. The goal is to allow the controller to learn the system to be able to achieve the desired goal.
+
+Suppose that the controller runs the following policy:
+
+$$u(t) = -(\hat{a}(t) + 1)x(t),$$
+
+which leads to $x' = (a - \hat{a}(t) - 1)x(t)$, where $\hat{a}(t)$ is an estimate of $a$. Suppose that we take
+
+$$\hat{a}'(t) = x^2(t)$$
+
+In this case, consider the Lyapunov function:
+
+$$V(x, \hat{a}) = x^2 + (a - \hat{a})^2$$
+
+We compute $\dot{V} = 2x \cdot x' + 2(a - \hat{a})(-\hat{a}') = 2x(a - \hat{a} - 1)x - 2(a-\hat{a})x^2 = -2x^2 \leq 0$.
+
+Since $V$ is non-increasing, $x(t)$ and $\hat{a}(t)$ remain bounded. By Barbalat's Lemma (Theorem 11.6.1), $x(t) \to 0$.
+</Example>

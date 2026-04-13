@@ -1,0 +1,398 @@
+---
+title: "Homework 7 Solutions"
+homework: 7
+---
+
+## Problem 1: CCFT of Gaussian Signal
+
+<Problem id="1" title="CCFT of Gaussian Signal">
+CCFT is a map from $\mathcal{S}$ to $\mathcal{S}$. One typical example is the Gaussian signal $e^{-at^2/2}$ for some $a > 0$: Show that for $a > 0$, the CCFT of
+
+$$\phi(t) = e^{-at^2/2}$$
+
+is equal to
+
+$$\hat{\phi}(f) = Ke^{-2\pi^2 f^2/a},$$
+
+for some $K$ and conclude that $\hat{\phi}$ is also a Schwartz signal.
+
+Hint: Take the CCFT of $\phi$, obtain the integral as $M(f)e^{-2\pi^2 f^2/a}$ where $M(f)$ is a function of $f$. Then show that $M(f)$ does not depend on $f$, by taking its derivative with respect to $f$ and observing that its derivative is equal to 0. Set $K := M(f)$.
+</Problem>
+
+<Solution>
+We have the Fourier integral as:
+
+$$\hat{\phi}(f) = \int_{\mathbb{R}} e^{-at^2/2} e^{-i2\pi ft} dt = \int_{\mathbb{R}} e^{-at^2/2 - i2\pi ft} dt$$
+
+This we can write as:
+
+$$\int_{\mathbb{R}} e^{(-at^2/2 - i2\pi ft)} dt = \int_{\mathbb{R}} e^{-(\sqrt{a/2}\,t + i\frac{1}{\sqrt{a/2}}\pi f)^2} e^{-\pi^2(f^2/(a/2))} dt = e^{-2\pi^2 f^2/a} \int_{\mathbb{R}} e^{-(\sqrt{a/2}\,t + i\frac{1}{\sqrt{a/2}}\pi f)^2} dt$$
+
+Hence,
+
+$$\hat{h}(f) = e^{-2\pi^2 f^2/a} K(f)$$
+
+with
+
+$$K(f) = \int_{\mathbb{R}} e^{-(\sqrt{a}\,t + i\frac{1}{\sqrt{a}}\pi f)^2} dt$$
+
+We now show that $K$ is independent of $f$ as follows. Let us take the derivative of $K$ with respect to $f$. We can change the order of the integration and the derivative operations, by Theorem A.2.1 in the lecture notes (as also discussed in class). This becomes
+
+$$\int_{\mathbb{R}} -2i\frac{1}{\sqrt{a}}\pi(\sqrt{a}\,t + i\frac{1}{\sqrt{a}}\pi f) e^{-(\sqrt{a}\,t + i\frac{1}{\sqrt{a}}\pi f)^2} dt$$
+
+This equals, by arranging the terms so that the integrand looks to be the antiderivative in terms of $t$:
+
+$$i\frac{1}{a}\pi \int_{\mathbb{R}} -2\sqrt{a}(\sqrt{a}\,t + i\frac{1}{\sqrt{a}}\pi f) e^{-(\sqrt{a}\,t + i\frac{1}{\sqrt{a}}\pi f)^2} dt$$
+
+$$= i\frac{1}{a}\pi \int_{\mathbb{R}} \frac{d}{dt}\left( e^{-(\sqrt{a}\,t + i\frac{1}{\sqrt{a}}\pi f)^2} \right) dt$$
+
+$$= i\frac{1}{a}\pi \left. \left( e^{-(\sqrt{a}\,t + i\frac{1}{\sqrt{a}}\pi f)^2} \right) \right|_{t=-\infty}^{t=\infty}$$
+
+$$= 0$$
+
+Hence, $K$ is a constant. Thus, $\hat{\phi}$ is in $\mathcal{S}$.
+</Solution>
+
+## Problem 2: Convolution Theorem
+
+<Problem id="2" title="Convolution Theorem">
+Show that with $\mathcal{F}_{CC}$ denoting the Continuous-Continuous Fourier transform, show that
+
+$$\Big( \mathcal{F}_{CC}(u * v) \Big)(f) = \hat{u}(f)\hat{v}(f), \qquad f \in \mathbb{R}$$
+
+for $u \in \mathcal{S}$ and $v \in \mathcal{S}$. Here, $\mathcal{F}_{CC}(u) =: \hat{u}$ and $\mathcal{F}_{CC}(v) =: \hat{v}$.
+</Problem>
+
+<Solution>
+Apply the definition of $\mathcal{F}_{CC}$ to
+
+$$y(t) = (u * v)(t) = \int_{\tau \in \mathbb{R}} h(\tau) u(t - \tau) d\tau$$
+
+so that
+
+$$\hat{y}(f) = \int_{\mathbb{R}} \left( \int_{\mathbb{R}} h(\tau) u(t - \tau) d\tau \right) e^{-i2\pi ft} dt$$
+
+$$= \int_{\mathbb{R}} \left( \int_{\mathbb{R}} h(\tau) u(t - \tau) d\tau \right) e^{-i2\pi f\tau} e^{-i2\pi f(t-\tau)} dt$$
+
+$$= \int_{\mathbb{R}} h(\tau) e^{-i2\pi f\tau} \left( \int_{\mathbb{R}} u(t - \tau) e^{-i2\pi f(t-\tau)} dt \right) d\tau$$
+
+$$= \int_{\mathbb{R}} h(\tau) e^{-i2\pi f\tau} \hat{u}(f) \, d\tau$$
+
+$$= \hat{u}(f) \int_{\mathbb{R}} h(\tau) e^{-i2\pi f\tau} d\tau$$
+
+$$= \hat{u}(f)\hat{v}(f)$$
+
+Observe that we use Fubini's theorem in the third equality in the above.
+</Solution>
+
+## Problem 3: RC Circuit
+
+<Problem id="3" title="RC Circuit">
+Consider the R-C circuit considered in class with the equations:
+
+$$\frac{dV_C(t)}{dt} = -\frac{1}{RC}V_C(t) + \frac{1}{RC}u(t)$$
+
+a) Viewed as a linear time-invariant system, where $u$ is the input and $V_C$ is the output, find the impulse response and the frequency response.
+
+b) Qualitatively, plot the Bode diagram.
+</Problem>
+
+<Solution>
+In class, we had observed that
+
+$$h(t) = \frac{1}{RC} e^{-\frac{t}{RC}} 1_{\{t \ge 0\}}$$
+
+The corresponding frequency response is
+
+$$\hat{h}(f) = \frac{1}{1 + i2\pi f RC}$$
+
+In class, we plotted the Bode diagram for both the phase and the magnitude for systems of this type. Please see your lecture notes and pay attention to the log scales.
+</Solution>
+
+## Problem 4: RLC Circuit
+
+<Problem id="4" title="RLC Circuit">
+Consider the R-L-C circuit considered in class, with the dynamics
+
+$$L\frac{d^2Q}{dt^2} + R\frac{dQ}{dt} + \frac{1}{C}Q = u(t)$$
+
+Note $V_C = Q/C$.
+
+a) Viewed as a linear time-invariant system, where $u$ is the input and $V_C$ is the output, find the impulse response and the frequency response.
+
+b) Qualitatively, plot the Bode diagram in the setup when $R$ is very small.
+</Problem>
+
+<Solution>
+In state-space form, we can write, with
+
+$$x(t) = \begin{bmatrix} Q(t) \\ \frac{dQ}{dt}(t) \end{bmatrix}$$
+
+$$\frac{dx}{dt} = Ax + Bu, \qquad V_C(t) = Ex(t)$$
+
+where
+
+$$A = \begin{bmatrix} 0 & 1 \\ \frac{-1}{LC} & \frac{-R}{L} \end{bmatrix}, \qquad B = \begin{bmatrix} 0 \\ \frac{1}{L} \end{bmatrix}, \qquad E = \begin{bmatrix} \frac{1}{C} & 0 \end{bmatrix}$$
+
+This leads to
+
+$$h(t) = Ee^{At}B1_{\{t \ge 0\}}$$
+
+We can take the Fourier transform of this signal. However, this would involve matrix operations and can be significantly more complicated than directly taking the Fourier transform of both sides of the equation:
+
+$$L\frac{d^2Q}{dt^2} + R\frac{dQ}{dt} + \frac{1}{C}Q = u(t),$$
+
+leading to
+
+$$\left( L(i2\pi f)^2 + R(i2\pi f) + \frac{1}{C} \right)\hat{Q}(f) = \hat{u}(f)$$
+
+We then arrive, with $\hat{V}_C(f) = \frac{\hat{Q}(f)}{C}$, at the following:
+
+$$\frac{\hat{V}_C(f)}{\hat{u}(f)} = \hat{h}(f) = \frac{1}{1 - 4\pi^2 LCf^2 + iRC2\pi f}$$
+
+In class, we plotted the Bode diagram for both the phase and the magnitude for systems of this type. Note that unlike the R-C circuit (which serves as a low-pass filter), the frequency response of the R-L-C system is a band-pass filter.
+</Solution>
+
+## Problem 5: LTI System with Exponential Decay
+
+<Problem id="5" title="LTI System with Exponential Decay">
+Consider a linear time invariant (LTI) system characterized by:
+
+$$y^{(1)}(t) = -ay(t) + u(t), \qquad t \in \mathbb{R}$$
+
+with $a > 0$.
+
+a) Find the impulse response of this system.
+
+b) Find the frequency response of the system.
+
+c) Let $u(t) = e^{-t}1_{\{t \ge 0\}}$. Find $y(t)$.
+</Problem>
+
+<Solution>
+**a-b)** Taking the Fourier transform of the terms in the differential equation, we obtain
+
+$$(i2\pi f + a)\hat{y}(f) = \hat{u}(f)$$
+
+Hence, the frequency response is:
+
+$$\frac{1}{a + i2\pi f}$$
+
+The impulse response corresponds to the inverse Fourier transform of this, which is
+
+$$e^{-at}1_{\{t \ge 0\}}$$
+
+**c)** The function $u$ has its Fourier as:
+
+$$\hat{u}(f) = \frac{1}{1 + i2\pi f}$$
+
+Hence, the frequency response of the output will be
+
+$$\hat{y}(f) = \frac{1}{1 + i2\pi f} \cdot \frac{1}{a + i2\pi f} = \frac{1}{a-1} \cdot \frac{1}{1 + i2\pi f} + \frac{1}{1-a} \cdot \frac{1}{a + i2\pi f},$$
+
+when $a \neq 1$. This leads to an inverse transform of:
+
+$$y(t) = \frac{1}{a-1}e^{-t}1_{\{t \ge 0\}} + \frac{1}{1-a}e^{-at}1_{\{t \ge 0\}}$$
+
+When $a = 1$, we have
+
+$$\hat{y}(f) = \left(\frac{1}{1 + i2\pi f}\right)^2$$
+
+Once we observe that $\left(\frac{1}{1+i2\pi f}\right)^2$ is the derivative $-\frac{1}{i2\pi}\frac{d}{df}\frac{1}{1+i2\pi f}$, and that differentiation in frequency domain leads to multiplication by $-i2\pi t$ in the time domain as was discussed in class, the result becomes (with $a = 1$)
+
+$$y(t) = te^{-at}1_{\{t \ge 0\}}$$
+</Solution>
+
+## Problem 6: Ideal Low-Pass Filter
+
+<Problem id="6" title="Ideal Low-Pass Filter">
+Consider a continuous time LTI system with a frequency response
+
+$$\hat{h}(f) = 1_{\{|f| < f_0\}} \quad f \in \mathbb{R}$$
+
+a) Find the impulse response of the system. You can also think of this as the output of the system when the input is the delta signal representing the $\bar{\delta}$ distribution.
+
+b) Find the CCFT of the output, when the input is given by
+
+$$u(t) = e^{-t}\cos(f_1 t)1_{\{t \ge 0\}}$$
+</Problem>
+
+<Solution>
+**a)** The output will be the inverse Fourier transform of the rectangular function:
+
+$$\hat{h}(f) = 1_{\{|f| < f_0\}} \quad f \in \mathbb{R}$$
+
+This is obtained as:
+
+$$h(t) = \int_{-f_0}^{f_0} e^{i2\pi ft} df$$
+
+This leads to:
+
+$$h(t) = \frac{\sin(2\pi f_0 t)}{\pi t}$$
+
+**b)** Recall that convolution in time-domain corresponds to point-wise multiplication in the frequency domain under the Fourier transform. Thus, the CCFT of the output will be the product
+
+$$\hat{u}(f)\hat{h}(f).$$
+
+The CCFT of
+
+$$e^{-2t}\cos(f_1 t)1_{\{t \ge 0\}} = e^{-2t}\left(\frac{e^{if_1 t} + e^{-if_1 t}}{2}\right)1_{\{t \ge 0\}} = \left(\frac{e^{(-2+if_1)t} + e^{(-2-if_1)t}}{2}\right)1_{\{t \ge 0\}}$$
+
+can be written as:
+
+$$\frac{i2\pi f + 2}{(i2\pi f + 2)^2 + f_1^2}$$
+
+Hence, the CCFT of the output becomes:
+
+$$\hat{y}(f) = \frac{i2\pi f + 2}{(i2\pi f + 2)^2 + f_1^2} 1_{\{|f| < f_0\}}$$
+</Solution>
+
+## Problem 7: Discrete-Time LTI System
+
+<Problem id="7" title="Discrete-Time LTI System">
+Let a non-anticipative LTI system be given by:
+
+$$y(n) = \frac{3}{4}y(n-1) - \frac{1}{8}y(n-2) + u(n)$$
+
+a) Compute the frequency response of this system.
+
+b) Compute the impulse response of the system.
+
+c) Find the output when the input is
+
+$$u(n) = \left(\frac{1}{2}\right)^n 1_{\{n \ge 0\}}$$
+</Problem>
+
+<Solution>
+**a)** We obtain the frequency response with the following: We have
+
+$$\hat{y}(f)\left(1 - \frac{3}{4}e^{-i2\pi f} + \frac{1}{8}e^{-i4\pi f}\right) = \hat{u}(f)$$
+
+This leads to:
+
+$$\hat{h}(f) = \frac{1}{1 - \frac{3}{4}e^{-i2\pi f} + \frac{1}{8}e^{-i4\pi f}}$$
+
+**b)** We write the second degree polynomial (in terms of $e^{i2\pi f}$) in the denominator, in terms of first degree polynomials as follows:
+
+$$\hat{h}(f) = \frac{1}{1 - \frac{3}{4}e^{-i2\pi f} + \frac{1}{8}e^{-i4\pi f}} = \frac{1}{(1 - \frac{1}{2}e^{-i2\pi f})(1 - \frac{1}{4}e^{-i2\pi f})}$$
+
+This can be written as
+
+$$\frac{2}{1 - \frac{1}{2}e^{-i2\pi f}} + \frac{-1}{1 - \frac{1}{4}e^{-i2\pi f}}$$
+
+Hence, the output in time domain becomes:
+
+$$h(n) = 2\left(\frac{1}{2}\right)^n 1_{\{n \ge 0\}} - \left(\frac{1}{4}\right)^n 1_{\{n \ge 0\}}$$
+
+**c)** The input has its Fourier as
+
+$$\hat{u}(f) = \frac{1}{1 - \frac{1}{2}e^{-i2\pi f}}$$
+
+Hence, by multiplication with $\hat{h}(f)$ above:
+
+$$\hat{y}(f) = \frac{1}{(1 - \frac{1}{4}e^{-i2\pi f})(1 - \frac{1}{2}e^{-i2\pi f})^2}$$
+
+This can be expanded as
+
+$$\hat{y}(f) = \frac{A}{1 - \frac{1}{4}e^{-i2\pi f}} + \frac{B}{1 - \frac{1}{2}e^{-i2\pi f}} + \frac{C}{(1 - \frac{1}{2}e^{-i2\pi f})^2}$$
+
+The values for $A, B, C$ can be shown to be equal to: $A = 1, B = -2, C = 2$.
+
+The first and the second terms above can be converted to the time-domain by the property that $x(n) = r^n 1_{n \ge 0}$ gets mapped by $\mathcal{F}_{DC}$ to $\frac{1}{1 - re^{-i2\pi f}}$ for $|r| < 1$. For the last term, we observe that
+
+$$\frac{C}{(1 - \frac{1}{2}e^{-i2\pi f})^2} = \frac{C}{2} \frac{d}{df}\left( \frac{1}{(1 - \frac{1}{2}e^{-i2\pi f})} \right) \frac{e^{i2\pi f}}{-i2\pi}$$
+
+Using the fact that the derivative in the frequency domain leads to multiplication by $(-i2\pi)n$ by the time domain, and that multiplication by $e^{i2\pi f}$ leads to a shift in the time-domain, we obtain that the contribution of the last term in time-domain would be
+
+$$(n+1)\left(\frac{1}{2}\right)^{n+1} 1_{\{n+1 \ge 0\}}$$
+
+Hence, the output becomes (by the observation that, derivative in frequency domain leads to a polynomial multiplication in the time domain)
+
+$$y(n) = \left( \left(\frac{1}{4}\right)^n - 2\left(\frac{1}{2}\right)^n \right) 1_{\{n \ge 0\}} + (n+1)\left(\frac{1}{2}\right)^{n+1} 1_{\{n+1 \ge 0\}}$$
+</Solution>
+
+## Problem 8: Impulse Train
+
+<Problem id="8" title="Impulse Train">
+Consider an impulse train defined by:
+
+$$w_P(t) = \sum_{n \in \mathbb{Z}} \delta(t + nP)$$
+
+so that the distribution that we can associate with this impulse train would be defined by:
+
+$$\overline{w_P}(\phi) = \sum_{n \in \mathbb{Z}} \phi(nP),$$
+
+for $\phi \in \mathcal{S}$.
+
+a) Show that $\overline{w_P}$ is a distribution.
+
+b) [Optional] Show that
+
+$$\hat{\overline{w_P}}(\phi) = \int \frac{1}{P} w_{\frac{1}{P}}(t)\phi(t)dt,$$
+
+that is, the $\mathcal{F}_{CC}$ of this train is another impulse train.
+</Problem>
+
+<Solution>
+**a)** Let $\phi_n \to 0$ in $\mathcal{S}$. Then, since $\sup_t |\phi_n(t)(1 + t^2)| \to 0$,
+
+$$|\overline{w_P}(\phi_n)| = \left| \sum_{k \in \mathbb{Z}} \phi_n(kP) \right|$$
+
+$$= \left| \sum_{k \in \mathbb{Z}} \frac{1}{1 + k^2P^2} \Big( \phi_n(kP)(1 + k^2P^2) \Big) \right|$$
+
+$$\le \sum_{k \in \mathbb{Z}} \frac{1}{1 + k^2P^2} \sup_{k \in \mathbb{Z}} \Big( \phi_n(kP)(1 + k^2P^2) \Big) \to 0$$
+
+Thus, $\overline{w_P}$ is continuous on $\mathcal{S}$. Furthermore, $\overline{w_P}$ is linear on $\mathcal{S}$ since for any real $\alpha, \beta$ and $\phi_1, \phi_2 \in \mathcal{S}$,
+
+$$\overline{w_P}(\alpha\phi_1 + \beta\phi_2) = \alpha\overline{w_P}(\phi_1) + \beta\overline{w_P}(\phi_2).$$
+
+Thus, $\overline{w_P}$ is a distribution.
+
+**b)**
+
+$$\hat{\overline{w_P}}(\phi) = \overline{w_P}(\hat{\phi}) = \lim_{N \to \infty} \sum_{k=-N}^{N} \hat{\phi}(kP)$$
+
+$$= \lim_{N \to \infty} \sum_{k=-N}^{N} \left( \int \phi(t) e^{-i2\pi kPt} dt \right)$$
+
+$$= \lim_{N \to \infty} \int \phi(t) \left( \sum_{k=-N}^{N} e^{-i2\pi kPt} \right) dt$$
+
+$$= \lim_{N \to \infty} \int \phi(t) \left( e^{i2\pi NPt} \left( \sum_{k=0}^{2N} e^{-i2\pi kPt} \right) \right) dt$$
+
+$$= \lim_{N \to \infty} \int \phi(t) \left( e^{i2\pi NPt} \frac{1 - e^{-i2\pi(2N+1)Pt}}{1 - e^{-i2\pi Pt}} \right) dt$$
+
+$$= \lim_{N \to \infty} \int \phi(t) \left( e^{i2\pi NPt} \frac{e^{i2\pi(1/2)Pt} - e^{-i2\pi(2N+1/2)Pt}}{e^{i\pi Pt} - e^{-i\pi Pt}} \right) dt$$
+
+$$= \lim_{N \to \infty} \int \phi(t) \left( \frac{e^{i2\pi(N+1/2)Pt} - e^{-i2\pi(N+1/2)Pt}}{e^{i\pi Pt} - e^{-i\pi Pt}} \right) dt$$
+
+$$= \lim_{N \to \infty} \int \phi(t) \left( \frac{\sin(2\pi(N+1/2)Pt)}{\sin(\pi Pt)} \right) dt$$
+
+$$= \lim_{N \to \infty} \int \phi(t) \frac{1}{P} \left( \frac{\pi Pt}{\sin(\pi Pt)} \cdot \frac{\sin(2\pi(N+1/2)Pt)}{\pi t} \right) dt$$
+
+$$= \lim_{N \to \infty} \sum_{k=-N}^{N} \frac{1}{P} \hat{\phi}\left(\frac{k}{P}\right)$$
+
+$$= \int \frac{1}{P} w_{\frac{1}{P}}(t)\phi(t) dt$$
+
+Observe that $\frac{\sin(2\pi(N+1/2)Pt)}{\sin(\pi Pt)}$ is periodic with period $1/P$. For the integration over $t \in [-\frac{1}{2P}, \frac{1}{2P}]$, this function can be shown, as we studied earlier (see Theorem 3.3.1 in Lecture notes), to converge to the Dirac delta function in a distributional sense. Due to periodicity each contribution needs to be added and the result follows.
+</Solution>
+
+## Problem 9: Fourier Transform of Unit-Step [Optional]
+
+<Problem id="9" title="Fourier Transform of Unit-Step [Optional]">
+Compute the Fourier transform of the unit-step distribution defined with
+
+$$\bar{U}(\phi) = \int 1_{\{t \ge 0\}} \phi(t)dt, \qquad \phi \in \mathcal{S}.$$
+</Problem>
+
+<Solution>
+Apply the definition of the Fourier transform of a distribution via
+
+$$\hat{T}(\phi) = T(\hat{\phi}) \quad \phi \in \mathcal{S}$$
+
+Now,
+
+$$\hat{\bar{U}}(\phi) = \bar{U}(\hat{\phi}) = \lim_{A \to \infty} \int_{f=0}^{A} \hat{\phi}(f)df = \lim_{A \to \infty} \int \phi(t) \int_{f=0}^{A} e^{-i2\pi ft} df = \int \phi(t) \frac{1}{i2\pi f}$$
+
+where we use the Riemann-Lebesgue lemma in the last equality. We then conclude that the Fourier transform of the unit-step function, viewed as a distribution, is
+
+$$\frac{1}{i2\pi f}.$$
+</Solution>

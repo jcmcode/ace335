@@ -1,0 +1,481 @@
+---
+title: "Control Analysis and Design through Frequency Domain Methods"
+chapter: 8
+---
+
+## 8.1 Transfer Function Shaping through Control: Closed-Loop vs. Open-Loop
+
+In Section 1.2.1, we discussed some control theoretic configurations mapping an input to an output and how the map can be shaped by control design. Two common architectures are depicted in Figure 1.2 (as a general output feedback; here the control depends on the output of the system) and in Figure 1.3 (as an error output feedback control system; here the control depends on the error between the external input and the system output). More general configurations are also possible, as discussed in Section 1.2.1. For consistency, we will focus on a particular architecture noting that the analysis to follow can be generalized to any of these models.
+
+<FeedbackDiagram title="Standard Negative Feedback Loop" />
+
+Consider the (error) feedback loop given in Figure 8.4. Here $P(s)$ denotes the transfer function of the system to be controlled. By writing $Y(s) = P(s)C(s)(R(s) - Y(s))$, it follows that
+
+$$\frac{Y(s)}{R(s)} = \frac{P(s)C(s)}{1 + P(s)C(s)}$$
+
+is the **closed-loop** transfer function (under negative unity feedback). Compare this with the setup where there is no feedback: in this case, the transfer function would have been $P(s)C(s)$. This latter expression is often called the **(open) loop-transfer function**.
+
+The goal is to shape the closed-loop transfer function via the control characterized with $C(s)$ in the frequency domain.
+
+### 8.1.1 Some motivation via a common class of controllers: PID controllers
+
+By Laplace transforms, we know that differentiation in time domain entails a multiplication with $s$, and integration involves multiplication with $\frac{1}{s}$. In the context of the setup of Figure 8.4, let $e(t) = y(t) - r(t)$. A popular and practical type of control structure involves:
+
+$$u(t) = k_i \int_0^t e(t)\, dt + k_d \frac{de}{dt} + k_p e(t)$$
+
+which writes as, in Laplace domain,
+
+$$U(s) = \left(\frac{k_i}{s} + k_d s + k_p\right) E(s).$$
+
+Thus, the control uses both the error itself (proportional), its integration, and its derivative; leading to the term **PID control**.
+
+---
+
+## 8.2 Bode-Plot Analysis
+
+<BodePlotDemo />
+
+Bode plots were studied earlier in class. With Bode plots, we observed that we can identify the transfer function of a system, when a system is already stable. However, the Bode plot does not provide insights on how to design a control system or how to adjust a controller so that stability is attained.
+
+---
+
+## 8.3 The Root Locus Method
+
+The set $\{s : 1 + C(s)P(s) = 0\}$ consists of the poles of the transfer function. If one associates with the controller a gain parameter $K$, the root locus method traces the set of all poles as $K$ ranges from $0$ to $\infty$ (and often from $0$ to $-\infty$ as well), so that $\{s : 1 + KC(s)P(s) = 0\}$ is traced. Thus, this method provides a design technique in identifying desirable values for the parameter $K$.
+
+The root locus method allows one to identify the poles. As we studied in Section 7.5, the pole information clearly identifies BIBO stability properties and all of the poles are to have negative real values for the closed-loop system to be BIBO stable.
+
+Additionally, it lets one select desirable pole values: for example, poles with imaginary components lead to significant transient fluctuations and poles with real parts closer to the origin (on the left half plane) dominate the behaviour involving the response characteristics. A control engineer/designer may have reasons to choose certain poles over others.
+
+For the approach to be applicable, the following key mathematical result is to be noted.
+
+<Theorem id="8.3.1" title="Continuous Dependence of Roots on Parameters">
+Consider the polynomial $a(s) + Kb(s) = 0$ where $a$ and $b$ are polynomials. The roots of this polynomial vary continuously as $K \in \mathbb{R}$ changes.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem guarantees that as you slowly turn a gain knob, the poles of your system move smoothly through the complex plane -- they cannot suddenly jump from one location to another. This is what makes the root locus method work: you can trace continuous curves showing where the poles go as gain increases, and identify the exact gain value where poles cross from the stable left half-plane into the unstable right half-plane.
+</Remark>
+
+<Proof title="Proof Sketch">
+We will follow a contrapositive argument showing that if the roots do not converge to the roots of the polynomial, the polynomial cannot converge either, as $K$ approaches a fixed number (say 1, without any loss). Consider the following three steps:
+
+**a)** First show that for any polynomial $p(s) = a_0 + a_1 s + \cdots + a_{n-1}s^{n-1} + s^n$, the matrix
+
+$$A = \begin{bmatrix} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & 0 & \cdots & 1 \\ -a_0 & -a_1 & -a_2 & \cdots & -a_{n-1} \end{bmatrix}$$
+
+has $p(s)$ as its characteristic polynomial; that is: $\det(sI - A) = p(s) = a_0 + a_1 s + \cdots + a_{n-1}s^{n-1} + s^n$.
+
+We can show this by directly computing the characteristic polynomial (and by an inductive argument): The result holds for $n = 2$. Now, let this hold for $n - 1 \ge 2$. We show that it also holds for $n$. Observe that the determinant of the matrix
+
+$$\lambda I - A = \begin{bmatrix} \lambda & -1 & 0 & \cdots & 0 \\ 0 & \lambda & -1 & \cdots & 0 \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & 0 & \cdots & -1 \\ a_0 & a_1 & a_2 & \cdots & \lambda + a_{n-1} \end{bmatrix}$$
+
+is
+
+$$\lambda(a_1 + \cdots + a_{n-1}\lambda^{n-2} + \lambda^{n-1}) + (-1)^{n-1}a_0(-1)^{n-1} = a_0 + a_1\lambda + \cdots + a_{n-1}\lambda^{n-1} + \lambda^n$$
+
+Alternatively, (given earlier studies involving differential equations) you can show this by realizing that the matrix above appears in the first-order ODE reduction of the $n$th order constant coefficient differential equation:
+
+$$\frac{d^n y(t)}{dt^n} + a_{n-1}\frac{d^{n-1}y(t)}{dt^{n-1}} + a_{n-2}\frac{d^{n-2}y(t)}{dt^{n-2}} + \cdots + a_1 \frac{dy(t)}{dt} + a_0 y(t) = 0,$$
+
+by writing
+
+$$x(t) = \begin{bmatrix} y(t) & \frac{dy(t)}{dt} & \cdots & \frac{d^{n-1}y(t)}{dt^{n-1}} \end{bmatrix}^T$$
+
+Then, realize that $e^{\lambda_i t}c$ (for some constant $c$) solves the differential equation and thus obtain a solution for the eigenvalue equation:
+
+$$A \begin{bmatrix} e^{\lambda_i t} \\ \lambda_i e^{\lambda_i t} \\ \vdots \\ \lambda_i^{n-1} e^{\lambda_i t} \end{bmatrix} = \lambda_i \begin{bmatrix} e^{\lambda_i t} \\ \lambda_i e^{\lambda_i t} \\ \vdots \\ \lambda_i^{n-1} e^{\lambda_i t} \end{bmatrix}.$$
+
+For a repeated eigenvalue we need to consider $e^{\lambda_i t}t$ or further functions, and a slightly more involved analysis, to arrive at generalized eigenvectors.
+
+**b)** From this, one can show through some algebraic analysis that eigenvalues are uniformly bounded where the bound continuously changes with the polynomial coefficients: Consider an eigenvalue $\lambda$ with eigenvector $v$ with $Av = \lambda v$ and $v = \begin{bmatrix} v_1 & \cdots & v_n \end{bmatrix}^T$. Then, for every $i$, we have that
+
+$$|\lambda||v_i| = \Big|\sum_j A(i,j)v(j)\Big| \le \left(\max_i \sum_j |A(i,j)|\right) \max_j |v_j|$$
+
+and hence
+
+$$|\lambda| \max_i |v_i| \le \left(\max_i \sum_j |A(i,j)|\right) \max_j |v_j|,$$
+
+and thus $|\lambda| \le \max_i \sum_j |A(i,j)|$ for all eigenvalues. As a result $|\lambda_j| \le \max(1, \sum_i |a_i|)$ for each $1 \le j \le n$.
+
+Alternatively, you can use a very useful result known as **Gershgorin circle theorem**.
+
+**c)** Now, as $K$ changes, the coefficients of the polynomial continuously change. Therefore, the roots of the polynomial are uniformly bounded for $K$ sufficiently close to any fixed $K^*$. By b) above, this implies that for every sequence $K_m \to K^*$, the corresponding sequence of roots must contain a converging subsequence (since the ordering of the roots may be arbitrary, one can consider the metric between two vectors defined as the smallest $l_2$ distance among all possible permutations).
+
+Then, we can arrive at a contradiction for the following contrapositive argument: suppose that $K$ approaches $K^*$ along some sequence but the roots do not converge to the roots of the polynomial with $K = K^*$.
+
+Let $\{s_1^K, \cdots, s_n^K\}$ be the roots of the polynomial $p_K(s)$ for a given $K$. For any sequence $K_m \to K^*$, by part a), the family of roots will take values from a compact set. Thus, there must exist a converging subsequence, call such a subsequential limit $\{s_1, \cdots, s_n\}$. Now, if this limit is not the same as the roots of the polynomial with $K = 1$, then the value of the polynomial at $K = K^*$, $p_{K^*}(s)$ must be different then the value $\prod_{m=1}^n(s - s_m)$ for some $s \in \mathbb{C}$. But, by continuity of the polynomial itself in $K$, $p_K(s) \to p_1(s)$ for all $s \in \mathbb{C}$, a contradiction. Thus, every converging subsequence must converge to the roots of $p_{K^*}(s)$. For the metric for convergence, as noted, we consider the smallest possible $l_2$ metric on $\mathbb{C}^n$ among all permutations.
+
+Finally, we now show that in fact every sequence itself must be converging: suppose not, then there exists $\epsilon$ and a subsequence $\{s_1, \cdots, s_n\}$ such that $\{s_1, \cdots, s_n\}$ is $\epsilon$ away from the roots of $p_{K^*}(s)$ under the metric considered above. But this subsequence itself must contain a converging subsequence, by the arguments above, and the limit has to be the roots of $p_{K^*}(s)$. Hence, a contradiction. $\square$
+</Proof>
+
+<Remark id="8.1">
+The above also directly establishes the very useful result that when one is given a matrix, the eigenvalues of the matrix are continuous in (pointwise perturbations of) its entries.
+</Remark>
+
+<Example id="8.3.1" title="Root Locus for Double Integrator">
+Consider Figure 8.4.
+
+**a) [Proportional Control]** Let the plant and controller be given with $P(s) = \frac{1}{s^2}$ (double integrator dynamics) and $C(s) = k_p$ (such a controller is known as a proportional controller). Find the root locus as $k_p$ changes from $0$ to $\infty$. Can this system be made stable by such a proportional controller?
+
+**b) [PD Control]** Consider $P(s) = \frac{1}{s^2}$ (double integrator dynamics), and $C(s) = k_p + k_d s$ (the term PD-controller means proportional plus derivative control). Let $k_p = k_d = K$. Find the root locus as $K$ changes from $0$ to $\infty$. Conclude, while comparing with part a above, that the addition of the derivative controller has pushed the poles to the left-half plane (thus, leading to stability!)
+
+**c) [Reference Tracking]** For the system with the controller in part b), let $K > 0$: Let $r(t) = A1_{\{t \ge 0\}}$ for some $A \in \mathbb{R}$. Find $\lim_{t \to \infty} y(t)$. Hint: Apply the Final Value Theorem. We have that $R(s) = \frac{A}{s}$ and with $Y(s) = A \frac{K(s+K)}{s(s^2 + Ks + K)}$ we have that $sY(s)$ has all poles on the left-half plane. By the final value theorem, the limit is $A$. Thus, the output asymptotically tracks the input signal.
+
+**Some engineering interpretation.** $\frac{1}{s^2}$ can be viewed as a map from acceleration to position: $\frac{d^2}{dt^2} = u$; part a) in the above suggests that if we only use position error we cannot have a stable tracking system; but if we use position and derivative (that is, velocity) information, then we can make the system stable. Furthermore, if we have a reference tracking problem, the output will indeed track the reference path.
+
+**Solution.** a) The roots solve $s^2 + K = 0$ and therefore the system is not BIBO stable for any $K > 0$. b) Here, $1 + K\frac{s+1}{s^2} = 0$ and thus $s^2 + Ks + K = 0$. All reals to the left of $-1$, and values on the unit circle centred around $-1$ form the root loci. Therefore, with $K > 0$, the presence of the derivative controller together with the proportional control pushes the root loci to the left half plane!
+
+We have that $U(s) = \frac{1}{s}$. Then, $Y(s) = \frac{K(s+K)}{s(s^2+Ks+K)}$. Note that $sY(s)$ has all poles on the left-half plane. By the final value theorem, the limit is $A$ (you can also directly apply an analysis based on partial fraction expansion which upon some analysis leads to $\frac{\alpha_1}{s} + \frac{\beta_1 s + \beta_2}{s^2 + Ks + K}$ for constants $\alpha_1, \beta_1, \beta_2$, and note that only the term involving the partial fraction $\frac{\alpha_1}{s}$ leads to a term which does not decay to zero in view of part b, and thus it suffices to compute $\alpha_1 = 1$). Thus, the output asymptotically tracks the input signal.
+</Example>
+
+---
+
+## 8.4 Nyquist Stability Criterion
+
+With the Bode plot, we observed that we can identify the transfer function when a system is already stable. However, the Bode plot does not provide insights on how to adjust the controller so that stability is attained. The Root Locus method allows for parametrically adjusting the instability region. Complementing the Root Locus method, the Nyquist plot provides further insight on controller design and its robustness properties to parameter variations with also the phase of the transfer function appearing in the analysis (unlike the Root Locus method), to be discussed further below.
+
+Recall first that a right-half plane pole of $1 + P(s)C(s)$ implies instability. In general, it is not difficult to identify the poles of the (open-loop) transfer function $P(s)C(s)$. Therefore, in the following we will assume that we know the number of right-half plane poles $P(s)C(s)$. Note also that the poles of $P(s)C(s)$ are the same as the poles of $1 + P(s)C(s)$; thus, we will assume that we know the number of right-half plane poles of $1 + P(s)C(s)$.
+
+**Constructing the Nyquist contour.** For the Nyquist plot, we will construct a clockwise contour starting from $-iR$ to the origin and then to $+iR$ and then along a semi-circle of radius $R$ to close the curve. Later on we will take $R \to \infty$.
+
+We will refer to this contour as a **Nyquist contour**.
+
+If there is a pole of $L(s)$ on the imaginary axis, we should carefully exclude this from our contour: to exclude these, we divert the path along a semi-circle of a very small radius $r$ around the pole in a counter clock-wise fashion (which will later be taken to be arbitrarily close to 0). The exclusion of such a pole will not make a difference in the stability analysis: we focus on the zeroes of $1 + P(s)C(s)$ in the right-half plane (as such a pole cannot make $1 + P(s)C(s) = 0$).
+
+<Theorem id="8.4.1" title="Nyquist Criterion">
+Consider a closed loop system with the loop transfer function $L(s) = C(s)P(s)$. Suppose $L(s)$ has $P$ poles in the region encircled by the Nyquist contour. Let $N$ be the number of clockwise encirclements of $-1$ by $L(s)$ when $s$ encircles the Nyquist contour $\Gamma$ clock-wise (where we note that $-N$ would be the number of counter-clockwise encirclements). Then, the closed loop has $N + P$ poles in the right-half plane.
+</Theorem>
+
+<Remark>
+**Intuition:** The Nyquist criterion lets you determine closed-loop stability by looking at the open-loop frequency response -- you trace out the open-loop transfer function as frequency sweeps from 0 to infinity and count how many times the curve encircles the critical point $-1$. This is powerful because you can assess stability from experimental frequency response data without knowing the exact system model. If there are no open-loop right-half-plane poles ($P = 0$), then stability requires zero encirclements of $-1$.
+</Remark>
+
+Note: One can alternatively trace the contours counter-clockwise and then count $N$ as the number of counterclockwise encirclements. The result will be the same.
+
+The proof builds on what is known as the **principle of variation of the argument theorem**, which we state and prove next.
+
+<Theorem id="8.4.2" title="Principle of Variation of the Argument">
+Let $D$ be a closed region in the complex plane with $\Gamma$ its boundary. Let $f : \mathbb{C} \to \mathbb{C}$ be complex differentiable (and hence analytic) on $D$ (and on $\Gamma$) except at a finite number of poles and with a finite number of zeroes, all in the interior of $D$. Then, the change in the argument of $f$ (normalized by $2\pi$) over $\Gamma$ (known as the winding number $w_n$) is given by:
+
+$$w_n = \frac{1}{2\pi}\Delta_\Gamma \arg(f) = \frac{1}{2\pi} \int_\Gamma \frac{f'(z)}{f(z)}\, dz = Z - P,$$
+
+where $\Delta_\Gamma$ is the net variation in the angle (or argument) of $f$ when $z$ traces the contour $\Gamma$ in the counter-clockwise direction; $Z$ is the number of zeroes, and $P$ is the number of poles (with multiplicities counted).
+</Theorem>
+
+<Remark>
+**Intuition:** Think of walking along a closed path in the complex plane and watching where $f(z)$ points. Each zero of $f$ inside the contour acts like a "positive vortex" that winds the output once counterclockwise, while each pole acts like a "negative vortex" that winds it once clockwise. The net winding number (total counterclockwise turns) equals the difference $Z - P$. This is the mathematical engine behind the Nyquist criterion: by counting encirclements, you are really counting the zeros minus poles of $1 + L(s)$ in the right half-plane.
+</Remark>
+
+<Proof>
+**a)** Let $z = p$ be a zero of multiplicity $m$. Then, in small neighbourhoods of $p$, we have
+
+$$f(z) = (z - p)^m g(z),$$
+
+where $g$ is analytic and non-zero. Now,
+
+$$\frac{f'(z)}{f(z)} = \frac{m(z-p)^{m-1}g(z) + (z-p)^m g'(z)}{(z-p)^m g(z)} = \frac{m}{z - p} + \frac{g'(z)}{g(z)}$$
+
+Thus, $\frac{f'(z)}{f(z)}$ has a single pole at $p$ and the integration (normalized with $\frac{1}{2\pi}$) will be $m$ (by Cauchy's integral formula Theorem B.0.2). Thus, the sum of all residues at the zeros of $f$ will be $Z$.
+
+Now, make the same reasoning for the poles, say $q$, with $f(z) = (z - q)^{-m}g(z)$ and observe that the sum of the residues at the poles is $-P$.
+
+Hence,
+
+$$Z - P = \frac{1}{i2\pi} \int \frac{f'(z)}{f(z)}\, dz$$
+
+**b)** Let $\Gamma$ be parametrized as $\gamma(t), a \le t \le b$, with $\gamma(a) = \gamma(b)$. Recall that $f$ is complex differentiable on all of $\Gamma$. Now, write
+
+$$\int_\Gamma \frac{f'(z)}{f(z)}\, dz = \int_a^b \frac{f'(\gamma(t))}{f(\gamma(t))} \gamma'(t)\, dt$$
+
+$$= \log(f(\gamma(t)))\bigg|_a^b = \log(|f(\gamma(t))|)\bigg|_a^b + \left(i2\pi \arg(f(\gamma(t)))\right)\bigg|_a^b,$$
+
+since $\log(f(z)) = \log(|f(z)|) + i\arg(f(z))$. As $|f(\gamma(b))| = |f(\gamma(a))|$, we have that
+
+$$\int_\Gamma \frac{f'(z)}{f(z)}\, dz = i2\pi \arg f(\gamma(t))\bigg|_a^b = i2\pi \Delta_\Gamma \arg(f)$$
+
+The proof then follows from (8.5). $\square$
+</Proof>
+
+Now, to apply this theorem, consider $f(s) = 1 + P(s)C(s)$, as noted earlier observe that the poles of $1 + P(s)C(s)$ are the same as the poles of $P(s)C(s)$. We are interested in the zeroes of $1 + P(s)C(s)$, and whether they are in the right-half plane. So, all we need to compute is the number of zeroes of $1 + P(s)C(s)$ through the difference given by the number of encirclements: Note now that the number of encirclements of $1 + P(s)C(s)$ around 0 is the same as the number of encirclements of $P(s)C(s)$ around $-1$. So, the number of zeroes in the right-half plane of $1 + P(s)C(s)$ will be $P$ plus the winding number. As a final note, in the Nyquist analysis, we construct the contour clockwise and apply the argument principle accordingly (so, the number of encirclements around $-1$ should be counted *clock-wise*). So, the number of interest is $N + P$, as claimed.
+
+**Computing the Nyquist plot.** To compute the number of clock-wise encirclements, compute $L(i\omega)$ starting from $\omega = 0$ and increase $\omega$ to $\infty$. Observe that $L(i\omega) = \overline{L(-i\omega)}$, computing $L(i\omega)$ for $\omega > 0$ is sufficient to compute the values for $\omega < 0$. Finally, to compute $L(s)$ as $|s| \to \infty$, we note that often $|L(s)|$ converges to a constant as $|s| \to \infty$, and the essence of the encirclements is given by the changes observed as $s$ traces the imaginary axis.
+
+<Problem id="8.4.1" title="Nyquist Stability Analysis">
+a) Consider $C(s) = K$, $P(s) = \frac{1}{(s+1)^2}$. Is this system stable for a given $K > 0$? Explain through the Nyquist stability criterion.
+
+b) Consider $P(s)C(s) = \frac{1}{(s+a)^3}$ with the controller in an error feedback form so that the closed loop transfer function is given by $\frac{P(s)C(s)}{1 + P(s)C(s)}$. Is this system stable? Explain through the Nyquist stability criterion.
+
+c) Let $P(s)C(s) = \frac{3}{(s+1)^3}$. Compute the gain stability margin. Draw the phase stability margin on the Nyquist curve.
+</Problem>
+
+<Problem id="8.4.2" title="Inverted Pendulum with Nyquist Analysis">
+Consider the inverted pendulum displayed in Figure 8.2, where a torque of $u$ is applied to maintain the pendulum around $\theta = 0$. The dynamics can be derived as
+
+$$\frac{d^2\theta(t)}{dt^2} = \frac{g}{l}\sin(\theta(t)) + \frac{u(t)\cos(\theta(t))}{ml^2}$$
+
+For simplicity, let us assume the coefficients $(m, l)$ are selected so that the above simplifies to:
+
+$$\frac{d^2\theta(t)}{dt^2} = \sin(\theta(t)) + u(t)\cos(\theta(t))$$
+
+Consider the linearization around $\theta = 0$, $\frac{d\theta}{dt} = 0$ (with the approximation $\sin(\theta) \approx \theta, \cos(\theta) \approx 1$).
+
+Then, it follows that the Plant, modeling the linearized inverted pendulum, would have its transfer function as
+
+$$P(s) = \frac{1}{s^2 - 1}$$
+
+Now, suppose we apply the control
+
+$$C(s) = k(s + 1),$$
+
+with an error feedback control configuration as in Figure 8.4.
+
+Via the Nyquist criterion, find conditions on $k$ so that the closed-loop linearized system is BIBO stable.
+
+*Hint. Note that $P(s)$ has a right-half plane pole, so the Nyquist criterion has to encircle $-1$ clock-wise.*
+</Problem>
+
+### Robustness via Nyquist plots
+
+Nyquist's criterion suggests a robustness analysis, via **gain** and **phase margins**, mainly as a way to measure how far $P(s)L(s)$ is from $-1$ in both the magnitude (1) and phase ($\pi$) terms.
+
+Roughly speaking, for systems which hit the real-line only once, in the complex plane the angle between $\pi$ and the location where the Nyquist plot hits the unit circle (i.e., with magnitude equaling 1) is called the **phase stability margin**.
+
+The ratio between $-1$ and the point where the Nyquist plot hits the negative $x$-axis is called the **gain stability margin**.
+
+Root locus method cannot give such a strong characterization for robustness. A useful implication is the small gain theorem presented in the following subsection.
+
+### 8.4.1 System gain, passivity and the small gain theorem
+
+Consider a linear system with feedback, which we assume to be stable. We generalize the observation above by viewing the input as one in $L_2(\mathbb{R}; \mathbb{C})$. Consider then the **gain** of a linear system with:
+
+$$\gamma := \sup_{u \in L_2(\mathbb{R}; \mathbb{C}): \|u\|_2 \neq 0} \frac{\|y\|_2}{\|u\|_2}$$
+
+We know, by Parseval's theorem (Theorem 5.3.4), that
+
+$$\gamma := \sup_{u \in L_2(\mathbb{R}; \mathbb{C}): \|u\|_2 \neq 0} \frac{\|\mathcal{F}_{CC}(y)\|_2}{\|\mathcal{F}_{CC}(u)\|_2}$$
+
+By writing $i\omega$ instead of $i2\pi f$ in the following, we have
+
+$$\mathcal{F}_{CC}(y)(\omega) = \mathcal{F}_{CC}(u)(\omega) G(i\omega),$$
+
+where $G$ is the closed-loop transfer function with $s = i\omega$. It can then be shown by noting that
+
+$$\int_\omega |\mathcal{F}_{CC}(u)(i\omega)|^2 |G(i\omega)|^2\, d\omega \le \left(\sup_\omega |G(i\omega)|^2\right) \int_\omega |\mathcal{F}_{CC}(u)(i\omega)|^2,$$
+
+the following holds:
+
+$$\gamma := \sup_{u \in L_2(\mathbb{R}; \mathbb{C}): \|u\|_2 \neq 0} \sqrt{\frac{\int_\omega |\mathcal{F}_{CC}(u)(i\omega) G(i\omega)|^2\, d\omega}{\|\mathcal{F}_{CC}(u)\|^2}} = \sup_{\omega \in \mathbb{R}} |G(i\omega)| =: \|G\|_\infty$$
+
+In the above, we write $\sup_{u \in L_2(\mathbb{R};\mathbb{C})}$, since a maximizing frequency $\omega^*$ exists, a corresponding input $u(t) = e^{i\omega^* t}$, will not be square integrable. However, this can be approximated arbitrarily well by truncation of the input and the output:
+
+First observe that since $g$ is integrable, $G(i\omega)$ is continuous in $\omega$ (or $\hat{g}(2\pi f)$ is continuous in $f$). This can be shown by an application of the dominated convergence theorem. Let $\omega^* = 2\pi f^*$ and $u_K(t) = 1_{\{-\frac{K}{2} \le t < \frac{K}{2}\}} e^{i2\pi f^* t}$. As $K \to \infty$, the gain of the system will approximate $\gamma$ arbitrarily well. This is slightly beyond the scope of our course, but the reasoning is that the Fourier transform of $u_K(t) = 1_{\{-\frac{K}{2} \le t \le \frac{K}{2}\}} e^{i2\pi f^* t}$ will form an approximate identity sequence $\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}$, and $\frac{1}{K}|\hat{u}_K|^2(f)$ will also form an approximate identity-like sequence around $f^*$, since
+
+$$\frac{1}{K}\left(\frac{\sin(\pi(f-f^*))K)}{\pi(f-f^*)}\right)^2 = \frac{\sin(\pi(f-f^*))K)}{\pi(f-f^*)K} \frac{\sin(\pi(f-f^*))K)}{\pi(f-f^*)}$$
+
+Thus, the gain, when the input is $u_K$, is:
+
+$$\left(\frac{\int_f \big|\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}\big|^2 |\hat{g}(f)|^2\, df}{\int_f \big|\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}\big|^2\, df}\right)^{1/2}$$
+
+Now, by viewing the function
+
+$$R(f) := \frac{\big|\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}\big|^2}{\int_v \big|\frac{\sin(\pi(v-f^*)K)}{\pi(v-f^*)}\big|^2\, dv}$$
+
+as a probability density function which concentrates around $f^*$, we have that
+
+$$\left(\int_\omega \frac{\big|\frac{\sin(\pi(f-f^*)K)}{\pi(f-f^*)}\big|^2}{\int_\omega \big|\frac{\sin(\pi(f'-f^*)K)}{\pi(f'-f^*)}\big|^2\, df'} \hat{g}(f)^2\, df\right)$$
+
+converges to $|\hat{g}(f^*)|^2$ as $K$ gets larger and larger by the continuity of $\hat{g}$.
+
+Thus, we can get arbitrarily close to the supremum gain by first approaching the supremum value over all frequencies arbitrarily well, and then by approaching the gain corresponding to such frequencies arbitrarily well with inputs constructed as above. Thus, we define the gain of a linear system as:
+
+$$\gamma := \|G(i\omega)\|_\infty = \sup_{\omega \in \mathbb{R}} |G(i\omega)| = \sup_{f \in \mathbb{R}} |\hat{g}(f)|$$
+
+Define a system to be **$L_2$-stable** if a bounded input, in the $L_2$-sense, leads to a bounded output in the $L_2$-sense. BIBO stability of a linear system implies $L_2$-stability: BIBO stability implies $\|h\|_1 < \infty$, which implies that $H(i\omega)$ is uniformly bounded for $\omega \in \mathbb{R}$ so that $|H(i\omega)| \le \|h\|_1$. Then, observe that the output $\|y^m\|_2^2 = \int |Y^m(i\omega)^2| \frac{1}{2\pi}\, d\omega = \int |H^2(i\omega)|^2 |U^m(i\omega)|^2 \frac{1}{2\pi}\, d\omega \le \|h\|_1^2 \int |(U^m(i\omega))^2| \frac{1}{2\pi}\, d\omega$. Thus, following Theorem 5.3.6, we can extend the domain (input function space) to be the entire $L_2$ space: Now, approximate any $u$ with $\|u\|_2 < \infty$ with the sequence $\{u^m \in \mathcal{S}, m \in \mathbb{N}\}$, taking the limit of the output sequence of which lets us conclude that the output $\|y\|_2$ is also bounded. Thus $\|y\|_2^2 = \int |Y(i\omega)^2| \frac{1}{2\pi}\, d\omega = \int |H^2(i\omega) U^2(i\omega)| \frac{1}{2\pi}\, d\omega < \infty$.
+
+We next state a useful result on the verification of stability.
+
+<Theorem id="8.4.3" title="Small Gain Theorem">
+Consider a feedback control system with closed-loop transfer function $G(s) = \frac{H_1(s)}{1 + H_1(s)H_2(s)}$, where $H_1$ and $H_2$ are stable. Suppose further that the gains of $H_1$ and $H_2$ are $\gamma_1$ and $\gamma_2$, respectively. Then, if $\gamma_1 \gamma_2 < 1$, the closed-loop system is stable.
+</Theorem>
+
+<Remark>
+**Intuition:** The small gain theorem says that if a feedback loop has two stable subsystems and the product of their peak gains is less than 1, then the loop cannot amplify signals enough to sustain instability. Think of it like an echo between two walls: if each wall reflects less than the full sound energy, the echo eventually dies out. This is a conservative but robust test -- it ignores phase information and only looks at magnitudes, so it works even when you have uncertainty about the exact system model.
+</Remark>
+
+Note that $|H_1(i\omega)H_2(i\omega)| < 1$ uniformly for $\omega \in \mathbb{R}$ and therefore $\sup_\omega \frac{H_1(i\omega)}{1 + H_1(i\omega)H_2(i\omega)}$ is uniformly bounded from above by 1, since $1 + H_1(i\omega)H_2(i\omega)$ is uniformly bounded away from 0. The proof then follows from Nyquist's criterion: Since $H_1, H_2$ are stable, they have no poles in the right half plane. Furthermore, since $\gamma_1 \gamma_2 < 1$, $|C(s)P(s)|$ (there: $H_1(i\omega)H_2(i\omega)$) will be uniformly away from the point $-1$, thus a positive gain margin will be maintained and $-1$ will not be encircled. The closed-loop system is then stable.
+
+The above concept does not involve phase properties, and it may be conservative for certain applications. On phase properties, there is a further commonly used concept of **passivity**: By Nyquist's criterion, for stable $P$ and $C$, if $P(s)C(s)$ is so that the phase is in $(-\pi, \pi)$ for all $s = i\omega, \omega \in \mathbb{R}$, then the closed loop system will be stable since $1 + P(s)C(s)$ will never hit the negative real axis and therefore $-1$ will not be encircled. Since $P$ and $C$ are stable, they have no poles in the right half-plane. The closed-loop system is then stable.
+
+---
+
+## 8.5 Predictive and Feedforward Control
+
+In addition to stability and robustness, one may also wish to have desirable tracking and settling time properties (such as a low delay in the response). For such setups, it is often desirable to have a minimum-phase closed loop system (with no zeroes in the right half-plane). When one has a plant which is not minimum-phase, the design is often more challenging, due to the effective time delay present, as discussed in Section 7.5.
+
+In such cases, it may be necessary to go beyond classical PID control, and consider schemes such as **predictive control** or **feedforward control** where part of the control input can be computed by some pre-processing by possibly using feedback from the output.
+
+To gain some insight, consider the following equation:
+
+$$\frac{P(s)C(s)}{1 + P(s)C(s)} = H_d(s)$$
+
+where $H_d(s)$ is a desired closed-loop system transfer function, which we may assume to be minimum-phase. Some algebra leads to:
+
+$$C(s) = \frac{1}{P(s)}\left(\frac{1}{H_d(s)} - 1\right)$$
+
+What we see is that if $P(s)$ has a zero in the right half-plane, the presence of $\frac{1}{P(s)}$ above leads to an unstable control transfer function.
+
+For such settings, predictive control or feedforward control policies are often utilized in practice. **Feedforward control** is a general control paradigm where, unlike feedback control, the control is defined by an open-loop inner system in the control. The feedforward control is often used as a predictive correction term for the system. However, in many designs, the feedforward control is often added to a feedback control term leading to the overall control to the system with stronger robustness properties.
+
+To gain further insight, let $P(s) = P_m(s)P_{nm}(s)$ where $P_m$ is minimum-phase and $P_{nm}$ is not minimum-phase. Consider $Y_f(s) = Y(s)P_{nm}^{-1}(s)$. This then effectively allows the control to only work with the minimum-phase portion of the system as if the feedback $Y_f$ only involves $P_m$. A PID control can then be designed for this system, and the output may be then subjected to $P_{nm}$ at the end: Observe that via $Y_f(s) = Y(s)P_{nm}^{-1}(s)$, $y_f$ acts as a prediction of the output $y$: For example, if $P_{nm}(s) = e^{-2s}$ were a pure delay system (see the Pade approximation discussion in Section 7.5), then $Y_f(s) = Y(s)e^{2s}$ would essentially be written in time domain as $y_f(t) = y(t+2)$, serving as a prediction of the output. Thus, future is anticipated in the design.
+
+For example, in reference tracking applications in which a path is given and the system is to closely steer the path, using feedback and causal reference information alone may lead to a weaker performance; here, future reference information can be used to compute an additional control input via an inverse analysis mapping reference paths to control actions. One can see that if it is possible to predict/estimate the future behaviour of a system to be tracked, this may make the application of a baseline control feasible (e.g. if an obstacle is known to be soon coming ahead, one may be able to slow down in anticipation). This additional control input is a predictive control and its presence can provide significant improvement in performance.
+
+Some specific predictive control design methods are known as **Smith Predictor Based** or **Internal Model Based Control Designs** (which allow the control to anticipate the output and require further system model information), or **Model Predictive Control** (which is an optimization based control design and is more aligned with modern control theory).
+
+---
+
+## 8.5.1 The Routh-Hurwitz Stability Criterion
+
+The root locus and Nyquist methods provide ways to analyze stability graphically. The **Routh-Hurwitz criterion** provides an algebraic test: given a polynomial (such as the characteristic polynomial of a closed-loop system), it determines whether all roots have negative real parts -- without computing the roots explicitly.
+
+This is particularly useful for checking BIBO stability of a closed-loop transfer function $\frac{P(s)C(s)}{1 + P(s)C(s)}$, where the denominator polynomial $1 + P(s)C(s) = 0$ determines the pole locations.
+
+### Necessary Condition
+
+<Theorem id="8.5.1" title="Necessary Condition for Stability">
+For a polynomial $p(s) = a_n s^n + a_{n-1} s^{n-1} + \cdots + a_1 s + a_0$ to have all roots with negative real parts, it is necessary that all coefficients $a_i$ have the same sign and that no coefficient is zero.
+</Theorem>
+
+<Remark>
+**Intuition:** If any coefficient is zero or has a different sign from the others, you can immediately conclude the system is unstable (or marginally stable) without further analysis. This is a quick first check before constructing the full Routh table.
+</Remark>
+
+### Constructing the Routh Table
+
+<Definition id="8.5.1" title="Routh Table">
+Given a polynomial $p(s) = a_n s^n + a_{n-1} s^{n-1} + \cdots + a_1 s + a_0$, the **Routh table** is constructed as follows. The first two rows are filled directly from the polynomial coefficients:
+
+$$\begin{array}{c|cccc}
+s^n & a_n & a_{n-2} & a_{n-4} & \cdots \\
+s^{n-1} & a_{n-1} & a_{n-3} & a_{n-5} & \cdots \\
+s^{n-2} & b_1 & b_2 & b_3 & \cdots \\
+s^{n-3} & c_1 & c_2 & c_3 & \cdots \\
+\vdots & \vdots & & & \\
+s^0 & \cdot & & &
+\end{array}$$
+
+where each subsequent entry is computed by a $2 \times 2$ determinant divided by the leading element of the row above:
+
+$$b_1 = \frac{a_{n-1} \cdot a_{n-2} - a_n \cdot a_{n-3}}{a_{n-1}}, \qquad b_2 = \frac{a_{n-1} \cdot a_{n-4} - a_n \cdot a_{n-5}}{a_{n-1}},$$
+
+and similarly for subsequent rows. The table has $n + 1$ rows total.
+</Definition>
+
+<Theorem id="8.5.2" title="Routh-Hurwitz Criterion">
+The number of roots of $p(s)$ with positive real parts equals the number of sign changes in the first column of the Routh table. In particular, the polynomial has all roots in the open left half-plane if and only if all entries in the first column are positive (assuming $a_n > 0$).
+</Theorem>
+
+<Remark>
+**Intuition:** Each sign change in the first column of the Routh table corresponds to a root crossing from the left half-plane to the right half-plane. The table effectively counts how many roots are "on the wrong side" without ever computing the roots themselves. This is especially valuable when the characteristic polynomial depends on a design parameter (like a gain $K$), because you can determine the range of $K$ for which all first-column entries remain positive.
+</Remark>
+
+### Worked Example
+
+<Example id="8.5.1" title="Routh-Hurwitz for a Third-Order System">
+Consider a closed-loop system with characteristic polynomial
+
+$$p(s) = s^3 + 6s^2 + 11s + 6.$$
+
+**Step 1: Check the necessary condition.** All coefficients are positive, so the necessary condition is satisfied.
+
+**Step 2: Construct the Routh table.**
+
+$$\begin{array}{c|cc}
+s^3 & 1 & 11 \\
+s^2 & 6 & 6 \\
+s^1 & b_1 & 0 \\
+s^0 & c_1 &
+\end{array}$$
+
+Computing $b_1$:
+
+$$b_1 = \frac{6 \cdot 11 - 1 \cdot 6}{6} = \frac{66 - 6}{6} = 10$$
+
+Computing $c_1$:
+
+$$c_1 = \frac{10 \cdot 6 - 6 \cdot 0}{10} = 6$$
+
+The first column is: $1, 6, 10, 6$ -- all positive, so there are zero sign changes.
+
+**Conclusion:** All roots have negative real parts. The system is stable. (Indeed, the roots are $s = -1, -2, -3$.)
+</Example>
+
+<Example id="8.5.2" title="Routh-Hurwitz with a Gain Parameter">
+Consider a feedback system with loop transfer $L(s) = \frac{K}{s(s+1)(s+2)}$. The closed-loop characteristic polynomial is
+
+$$p(s) = s^3 + 3s^2 + 2s + K.$$
+
+The Routh table:
+
+$$\begin{array}{c|cc}
+s^3 & 1 & 2 \\
+s^2 & 3 & K \\
+s^1 & \frac{6 - K}{3} & 0 \\
+s^0 & K &
+\end{array}$$
+
+For stability, all first-column entries must be positive:
+- $1 > 0$ (always satisfied)
+- $3 > 0$ (always satisfied)
+- $\frac{6 - K}{3} > 0 \implies K < 6$
+- $K > 0$
+
+**Conclusion:** The system is stable for $0 < K < 6$. At $K = 6$ the system is marginally stable (the $s^1$ row vanishes, indicating purely imaginary roots). For $K > 6$, there are two right half-plane poles.
+</Example>
+
+<Remark>
+**Intuition:** The Routh-Hurwitz criterion complements the Nyquist and root locus methods. While root locus traces poles graphically and Nyquist counts encirclements, Routh-Hurwitz gives a purely algebraic condition. It is especially useful for finding the exact stability boundary in terms of a design parameter, as in the example above.
+</Remark>
+
+---
+
+## 8.6 Exercises
+
+<Problem id="8.6.1" title="Inverted Pendulum Control Design">
+Consider the inverted pendulum displayed in Figure 8.3, where a torque of $u$ is applied to keep the pendulum around $\theta = 0$. The dynamics can be derived as $\frac{d^2\theta(t)}{dt^2} = \frac{g}{l}\sin(\theta(t)) + \frac{u(t)\cos(\theta(t))}{ml^2}$. Assume the coefficients $(m, l)$ are selected so that this simplifies to: $\frac{d^2\theta(t)}{dt^2} = \sin(\theta(t)) + u(t)\cos(\theta(t))$. Linearizing this system at $\theta = 0$, $\frac{d\theta}{dt} = 0$ (with approximations $\sin(\theta) \approx \theta, \cos(\theta) \approx 1$), we arrive at the linear system:
+
+$$\frac{d^2\theta(t)}{dt^2} = \theta(t) + u(t).$$
+
+Now, consider the linearized pendulum model as our plant $P$, mapping $u$ to $\theta$, to be used in Figure 8.4. Note that the transfer function of this model given above is $P(s) = \frac{1}{s^2 - 1}$. Here $y = \theta$.
+
+Suppose that the transfer function of the controller, $C$, is given with $C(s) = K_1 s + K_2$, with $K_1, K_2 \in \mathbb{R}_+$. Observe that this means that $u(t) = K_1 \frac{d}{dt}e(t) + K_2 e(t)$, where $e(t) = r(t) - y(t)$.
+
+a) Find the (closed-loop) transfer function, mapping the signal $r$ to $y$ in the frequency/Laplace domain.
+
+b) With $C(s) = K_1 s + K_2$, set $K_2 = 0$. For what values of $K_1 \ge 0$, is the closed-loop system, mapping the signal $r$ to $y$, BIBO stable? You can use any method.
+
+c) With $C(s) = K_1 s + K_2$, set $K_1 = 0$. For what values of $K_2 \ge 0$, is the closed-loop system, mapping the signal $r$ to $y$, BIBO stable? You can use any method.
+
+d) Let $C(s) = Ks + K$. For what values of $K \ge 0$, is the closed-loop system, mapping the signal $r$ to $y$, BIBO stable? You can use any method.
+
+e) Interpret your analysis in the context of the inverted pendulum system.
+</Problem>
+
+<Problem id="8.6.2" title="Root Locus Study">
+Let $C(s) = K$, $P(s) = \frac{s+1}{s(\frac{s}{10} - 1)}$.
+
+Study stability properties using the root locus method as $K$ is varied from $0$ to $\infty$.
+</Problem>
+
+<Problem id="8.6.3" title="State Space P-D Controller Analysis">
+Consider Figure 8.4. The plant $P(s)$ is a linearized inverted pendulum and suppose for simplicity that its transfer function is $P(s) = \frac{1}{s^2 - 1}$. Suppose that the controller applied is given with $C(s) = k(s + 2)$ (and thus, it is a P-D controller) for some parameter $k \in \mathbb{R}_+$.
+
+a) Write the plant $P$ in state space form, where the input is $u$ and the output is $y$.
+
+b) By writing $u$ as a function of $r(t) - y(t)$, express the overall (closed-loop) system as a linear map from $r$ to $y$.
+
+c) Find conditions on $k$ for the system to be BIBO stable.
+
+d) Verify that this result is consistent with a Nyquist or root-locus method analysis.
+</Problem>

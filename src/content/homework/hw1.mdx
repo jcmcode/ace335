@@ -1,0 +1,360 @@
+---
+title: "Homework 1 Solutions"
+homework: 1
+---
+
+## Problem 1: Linear (Vector) Spaces
+
+<Problem id="1" title="Linear (Vector) Spaces">
+a) The set $C^\infty(\mathbb{R})$, which is the set of all functions from $\mathbb{R}$ to $\mathbb{R}$ that are infinitely differentiable, together with the operations of addition and scalar multiplication defined as follows, is a vector space: For any $f_1, f_2 \in C^\infty(\mathbb{R})$
+
+$$(f_1 + f_2)(x) = f_1(x) + f_2(x), \qquad x \in \mathbb{R}$$
+
+and for any $\alpha \in \mathbb{R}$ and $f \in C^\infty(\mathbb{R})$
+
+$$(\alpha \cdot f)(x) = \alpha f(x), \qquad x \in \mathbb{R}$$
+
+i) Now, consider $\mathcal{P}(\mathbb{R})$ to be the set of all (polynomial) functions that maps $\mathbb{R}$ to $\mathbb{R}$ such that any $f \in \mathcal{P}(\mathbb{R})$ can be written as $f(x) = \sum_{i=0}^{n} a_i x^i$ for some $n \in \mathbb{N}$ with $a_0, a_1, \cdots, a_n \in \mathbb{R}$. Suppose that we define the same addition and scalar multiplication operations as defined above. Is $\mathcal{P}(\mathbb{R})$ a subspace in $C^\infty(\mathbb{R})$?
+
+ii) Show that the space of all functions in $C^\infty(\mathbb{R})$ which map $\mathbb{R}$ to $\mathbb{R}$ which satisfy $f(10) = 0$ is a vector space with addition and multiplication defined as above.
+
+b) Consider the set $\mathbb{R}^n$. On $\mathbb{R}^n$, define an addition operation and a scalar multiplication operation as follows:
+
+$$(x_1, x_2, \cdots, x_n) + (y_1, y_2, \cdots, y_n) = (x_1 + y_1, x_2 + y_2, \cdots, x_n + y_n)$$
+
+$$\alpha \cdot (x_1, x_2, \cdots, x_n) = (\alpha x_1, \alpha x_2, \cdots, \alpha x_n)$$
+
+Show that, with these operations, $\mathbb{R}^n$ is a vector space.
+
+c) [Optional] Consider the set
+
+$$\mathbb{W} = \{(x, y) : x \in \mathbb{R}, y \in \mathbb{R}, x > 0, y > 0\}$$
+
+On this set, define an addition operation and a scalar multiplication operation as follows:
+
+$$(x_1, y_1) + (x_2, y_2) = (x_1 y_1, x_2 y_2)$$
+
+$$\alpha \cdot (x, y) = (x^\alpha, y^\alpha)$$
+
+Show that, with these operations, $\mathbb{W}$ is a vector space. Hint: Consider a bijection between $\mathbb{W}$ and the space $\mathbb{R}^2$ with $\mathbb{W} \ni (x, y) \mapsto (\log(x), \log(y)) \in \mathbb{R}^2$.
+</Problem>
+
+<Solution>
+**a)**
+
+**i)** Observe first that $\mathcal{P}(\mathbb{R}) \subset C^\infty(\mathbb{R})$ since any polynomial is infinitely differentiable.
+
+Let $f_1, f_2 \in \mathcal{P}(\mathbb{R})$. That is,
+
+$$f_1(x) = \sum_{i=0}^{n} a_i x^i, \qquad x \in \mathbb{R}$$
+
+$$f_2(x) = \sum_{i=0}^{n} b_i x^i, \qquad x \in \mathbb{R}$$
+
+for some real number sequence $(a_0, \cdots, a_n; b_0, \cdots, b_n)$ (some possibly taking the value zero). Note that,
+
+$$(f_1 + f_2)(x) = f_1(x) + f_2(x) = \sum_{i=0}^{n} (a_i + b_i)x^i, \qquad x \in \mathbb{R}$$
+
+and since $(a_i + b_i) \in \mathbb{R}$ for every $i = 0, 1, \cdots, n$, it follows that $f_1 + f_2 \in \mathcal{P}(\mathbb{R})$.
+
+Likewise, let $f \in \mathcal{P}(\mathbb{R})$ with
+
+$$f(x) = \sum_{i=0}^{n} a_i x^i, \qquad x \in \mathbb{R}$$
+
+For $\alpha \in \mathbb{R}$
+
+$$(\alpha \cdot f)(x) = \alpha f(x) = \sum_{i=0}^{n} \alpha a_i x^i, \qquad x \in \mathbb{R},$$
+
+and since $\alpha a_i \in \mathbb{R}$ for every $i = 0, 1, \cdots, n$, it follows that $\alpha \cdot f \in \mathcal{P}(\mathbb{R})$ as well.
+
+Finally, the zero vector is given by
+
+$$\bar{0}(x) = 0, \qquad x \in \mathbb{R},$$
+
+is also in $\mathcal{P}(\mathbb{R})$ since we can write:
+
+$$\bar{0}(x) = \sum_{i=0}^{n} 0 \cdot x^i, \qquad x \in \mathbb{R}.$$
+
+By the answer to the previous problem (since $C^\infty(\mathbb{R})$ is already a vector space and to check whether $\mathcal{P}(\mathbb{R})$ is a vector space itself, and hence a **subspace** of $C^\infty(\mathbb{R})$, we need to verify only the three properties studied above to conclude that $\mathcal{P}(\mathbb{R})$ is indeed a vector space), we arrive at the conclusion that $\mathcal{P}(\mathbb{R})$ is a vector space.
+
+**ii)** Let
+
+$$\mathbb{S} := \{f \in C^\infty(\mathbb{R}) : f(10) = 0\}.$$
+
+The addition of any two vectors $f_1, f_2 \in C^\infty(\mathbb{R})$ with $f_1(10) = f_2(10) = 0$ leads to a vector $h := f_1 + f_2 \in C^\infty(\mathbb{R})$ with $h(10) = 0$ and thus $f_1 + f_2 \in \mathbb{S}$. For any $f \in C^\infty(\mathbb{R})$ with $f(10) = 0$, for any $\alpha \in \mathbb{R}$, we have that $g := \alpha \cdot f$ is so that $g \in C^\infty(\mathbb{R})$ with $g(10) = 0$, and thus $\alpha \cdot f \in \mathbb{S}$. Finally, the zero vector in $C^\infty(\mathbb{R})$ is given by $\bar{0}(x) = 0, \quad \forall x \in \mathbb{R}$ and, thus, $\bar{0}(10) = 0$, leading to the conclusion that $\bar{0} \in \mathbb{S}$.
+
+These conclude that $\mathbb{S}$ is a vector space with the given addition and scalar multiplication operations.
+
+**b)** The set $\mathbb{R}^n$ together with the operations of addition and scalar multiplication defined as follows
+
+$$(x_1, x_2, \cdots, x_n) + (y_1, y_2, \cdots, y_n) = (x_1 + y_1, x_2 + y_2, \cdots, x_n + y_n)$$
+
+$$\alpha \cdot (x_1, x_2, \cdots, x_n) = (\alpha x_1, \alpha x_2, \cdots, \alpha x_n), \qquad \alpha \in \mathbb{R}$$
+
+forms a vector space. The result that $\mathbb{R}^n$ is a vector space follows from the fact that the addition and scalar multiplication operations are so that the addition of two vectors in $\mathbb{R}^n$ is another vector in $\mathbb{R}^n$, and the scalar multiplication of any vector with any real number is another vector in $\mathbb{R}^n$ together with the 8 axioms discussed in class: Recall that these entail the commutativity of addition, the associate property of addition, the existence of a zero vector, the existence of an additive inverse, and four axioms that involve scalar multiplication as detailed in the lecture notes. Please ensure that you verify all of these to conclude that $\mathbb{R}^n$ (with the operations of addition and scalar multiplication given) is a vector space.
+
+**c)** On $\mathbb{W}$, as in any vector space, we can find the unique zero vector by multiplying any vector in $\mathbb{W}$ by the scalar 0. Take $v = (x,y)$. Then, $\bar{0} = 0 \cdot v = (x^0, y^0) = (1,1)$.
+
+To find the additive inverse of $v = (x_1, y_1)$, we look for a vector $-v = (a,b) =: u$ such that $v + u = (1,1)$ and thus, $(x_1 a, y_1 b) = (1,1)$. Therefore, $u = (\frac{1}{x_1}, \frac{1}{x_2}) \in \mathbb{W}_2$ is the additive inverse of $v$. One can show that all other properties also apply.
+</Solution>
+
+## Problem 2: Metric Spaces
+
+<Problem id="2" title="Metric Spaces">
+Given a normed space $(X, \|.\|)$, introduce a function:
+
+$$n(x, y) = \frac{\|x - y\|}{1 + \|x - y\|}$$
+
+Show that $n(x,y)$ satisfies the triangle inequality, $n(x,y) = 0$ iff $x = y$, and $n(x,y) = n(y,x)$.
+
+A function which satisfies the above three properties is called a **distance** or a **metric** on $X$.
+</Problem>
+
+<Solution>
+To show the triangle inequality, we need to show that
+
+$$n(x, y) \le n(x, z) + n(z, y), \quad \forall x, y, z \in X.$$
+
+Let
+
+$$\|x - y\| = a, \quad \|x - z\| = b, \quad \|y - z\| = c$$
+
+By the triangle inequality for the norm $\|.\|$, we have that
+
+$$a \le b + c$$
+
+Since $a, b, c$ are all non-negative: $a \le b + c + 2bc + abc$. Further, by adding $ab + ac + abc$ to both sides,
+
+$$a + ab + ac + abc \le b + c + 2bc + ab + ac + 2abc,$$
+
+which can be rewritten as
+
+$$a(1 + b) + ac(1 + b) \le b(1 + a) + c(1 + a) + 2bc(1 + a),$$
+
+or
+
+$$a(c + 1)(1 + b) \le (1 + a)(b + c + 2bc) = (1 + a)\left(b(1 + c) + c(1 + b)\right),$$
+
+Now, dividing all sides by $(1 + a)(1 + b)(1 + c)$, we obtain
+
+$$\frac{\|x - y\|}{1 + \|x - y\|} \le \frac{\|x - z\|}{1 + \|x - z\|} + \frac{\|y - z\|}{1 + \|y - z\|}$$
+
+The symmetry property holds by a quick inspection. The property that $n(x,y) = 0$ iff $x = y$ holds since the denominator is always positive, and hence, the norm is zero iff the numerator is zero, which is only true when $\|x - y\| = 0$.
+</Solution>
+
+## Problem 3: Subspaces
+
+<Problem id="3" title="Subspaces">
+A non-empty subset $M$ of a (real) linear vector space $\mathbb{X}$ is called a subspace of $\mathbb{X}$ if
+
+$$\alpha x + \beta y \in M, \quad \forall x, y \in M \quad \text{and} \quad \alpha, \beta \in \mathbb{R}.$$
+
+In particular, the null element $\underline{0}$ is an element of every subspace.
+
+For $M, N$ two subspaces of a vector space $\mathbb{X}$, show that $M \cap N$ is also a subspace of $\mathbb{X}$.
+</Problem>
+
+<Solution>
+The null element is an element of any subspace, hence it is also an element of the intersection. Thus, $M \cap N$ is non-empty.
+
+For any two vectors $x, y$, and $\alpha, \beta \in \mathbb{R}$, $\alpha x + \beta y \in M$ and $N$, hence the intersection is a subspace.
+</Solution>
+
+## Problem 4: Holder's Inequality and Minkowski's Inequality
+
+<Problem id="4" title="Holder's Inequality and Minkowski's Inequality">
+Let $1 \le p, q \le \infty$ with $1/p + 1/q = 1$. Let $x \in l_p(\mathbb{Z}_+)$ and $y \in l_q(\mathbb{Z}_+)$. Then,
+
+$$\sum_{i=0}^{\infty} |x_i y_i| \le \|x\|_p \|y\|_q$$
+
+This is known as Holder's inequality. Equality holds if and only if
+
+$$\left(\frac{x_i}{\|x\|_p}\right)^{(1/q)} = \left(\frac{y_i}{\|y\|_q}\right)^{(1/p)},$$
+
+for each $i \in \mathbb{Z}_+$.
+
+To prove this, perform the following:
+
+a) Show that for $a \ge 0, b \ge 0, c \in (0,1)$: $a^c b^{1-c} \le ca + (1-c)b$ with equality if and only if $a = b$. To show this, you may consider the function $f(t) = t^c - ct + c - 1$ and see how it behaves for $t \ge 0$ and let $t = a/b$.
+
+b) Apply the inequality $a^c b^{1-c} \le ca + (1-c)b$ to the numbers:
+
+$$a = \left(\frac{|x_i|}{\|x\|_p}\right)^p, \quad b = \left(\frac{|y_i|}{\|y\|_q}\right)^q, \quad c = 1/p$$
+
+Holder's inequality is useful to prove Minkowski's inequality which states that for $1 < p < \infty$,
+
+$$\|x + y\|_p \le \|x\|_p + \|y\|_p$$
+</Problem>
+
+<Solution>
+We can show that $F(t) := t^c - ct + c - 1 \le 0$ for all $t \ge 0$ and is equal to zero at $t = 0$. This follows from the observation that $F(0) < 1$, $\frac{d}{dt}F(t) \ge 0$ for $t \in [0,1)$ and $\frac{d}{dt}F(t) \le 0$ for $t > 1$. Thus, the maximum value is achieved when $t = 1$. Using the hints, we obtain that
+
+$$\frac{|x_i|}{\|x\|_p} \frac{|y_i|}{\|y\|_q} \le \frac{1}{p}\frac{|x_i|^p}{\|x\|_p^p} + \frac{1}{q}\frac{|y_i|^q}{\|y\|_q^q}$$
+
+Summing this over all $i$, observing that $\sum_i \frac{|x_i|^p}{\|x\|_p^p} = 1$, $\sum_i \frac{|y_i|^q}{\|y\|_q^q} = 1$, and $1/p + 1/q = 1$, it follows that
+
+$$\sum_{i=0}^{\infty} |x_i y_i| \le \|x\|_p \|y\|_q.$$
+
+Equality holds when $t = 1$, which means that $\left(\frac{|x_i|}{\|x\|_p}\right)^p = \left(\frac{|y_i|}{\|y\|_q}\right)^q$.
+
+**Minkowski's inequality proof:**
+
+$$\sum_{i=1}^{n} |x_i + y_i|^p \le \sum_{i=1}^{n} |x_i + y_i|^{p-1}|x_i| + \sum_{i=1}^{n} |x_i + y_i|^{p-1}|y_i|$$
+
+$$= \left(\sum_{i=1}^{n} |x_i + y_i|^{(p-1)q}\right)^{1/q} \left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |x_i + y_i|^{(p-1)q}\right)^{1/q} \left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p}$$
+
+$$= \left(\sum_{i=1}^{n} |x_i + y_i|^p\right)^{1/q} \left(\left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p}\right)$$
+
+Thus, using that $1 - 1/q = 1/p$,
+
+$$\left(\sum_{i=1}^{n} |x_i + y_i|^p\right)^{1/p} \le \left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p},$$
+
+Now, the above holds for every $n$. Taking the limit $n \to \infty$ (first on the right and then on the left), it follows that
+
+$$\|x + y\|_p \le \|x\|_p + \|y\|_p$$
+
+which is the desired inequality.
+</Solution>
+
+## Problem 5: Completeness of Normed Linear Spaces
+
+<Problem id="5" title="Completeness of Normed Linear Spaces">
+a) Let $C([0,1]; \mathbb{R})$ be the space of continuous functions in $\Gamma([0,1]; \mathbb{R})$ with the norm
+
+$$\|f\| = \sup_{t \in [0,1]} |f(t)|.$$
+
+Is this space a complete normed linear space?
+
+b) In class we will show that under the norm $\|f\| = \int_0^1 |f(t)| dt$, the space of continuous functions $C([0,1]; \mathbb{R})$ is not complete. Let us revisit this property.
+
+Consider the sequence
+
+$$x_n(t) = \begin{cases} 1, & \text{if } 0 \le t \le 1/2 \\ -2^n(t - 1/2) + 1 & \text{if } 1/2 < t < (1/2) + (1/2)^n \\ 0, & \text{if } (1/2) + (1/2)^n \le t \le 1 \end{cases}$$
+
+Is this sequence Cauchy under the described norm? Does the sequence have a limit which is continuous?
+</Problem>
+
+<Solution>
+**a)** We will show that every Cauchy sequence has a limit. Let $\{x_n\}$ be Cauchy. For each fixed $t \in [0,1]$, $\{x_n(t)\}$ is also Cauchy, and hence $x_n(t) \to a_t$ for some $a_t$ since $\mathbb{R}$ is complete. Define $x(t) = a_t$.
+
+We need to prove that $\|x_n - x\| \to 0$ and that $x$ is continuous.
+
+Given $\epsilon > 0$, there exists $N$ such that $\|x_n(t) - x_m(t)\| \le \epsilon$ for all $t$ and $n, m \ge N$. For each $t$,
+
+$$\lim_{m\to\infty} |x_n(t) - x_m(t)| \le \epsilon$$
+
+and hence
+
+$$|x_n(t) - x(t)| \le \epsilon,$$
+
+for all $n \ge N$. Accordingly,
+
+$$\|x_n - x\| \le \epsilon,$$
+
+and thus $\|x_n - x\| \to 0$.
+
+Note that this also implies that $\|x\| = \|x - x_N\| + \|x_N\| < \infty$.
+
+We now show that $x$ is continuous to conclude that $x \in C([0,1]; \mathbb{R})$. Now,
+
+$$|x(t + h) - x(t)| = |x(t+h) - x_n(t+h) + x_n(t+h) - x_n(t) + x_n(t) - x(t)|$$
+
+$$\le |x(t+h) - x_n(t+h)| + |x_n(t+h) - x_n(t)| + |x_n(t) - x(t)| \to 0$$
+
+as $h \to 0$, since $x_n \to x$ and $x_n$ is continuous. We now make this more explicit: For every $\epsilon > 0$ pick $n \in \mathbb{N}$ such that $|x(t+h) - x_n(t+h)| \le \epsilon/3$ and $|x_n(t) - x(t)| \le \epsilon/3$ for all $t + h \in [0,1]$ (note that this convergence is uniform), and for the fixed $n$, pick $\delta > 0$ sufficiently small so that for all $|h| \le \delta$, $|x_n(t+h) - x_n(t)| \le \epsilon/3$ (since $x_n$ is continuous). As a result, for every $\epsilon > 0$ there exists $\delta$ such that $|h| \le \delta$ implies that $|x(t+h) - x(t)| < \epsilon$.
+
+**b)** We first show the Cauchy property. Let $n \le m$. We have that:
+
+$$\|x_n - x_m\| = \int_0^1 |x_n(t) - x_m(t)| dt = \frac{1}{2}\left(\frac{1}{2^n} - \frac{1}{2^m}\right) \to 0,$$
+
+as $n, m \to \infty$. Hence, the sequence is indeed Cauchy (or, for every $\epsilon > 0$, there is an $N = -\log_2(\epsilon) + 1$, such that, for $n, m > N$, $\|x_n - x_m\| < \epsilon$). The sequence converges to (the discontinuous function) $x$:
+
+$$x = \begin{cases} 1, & \text{if } 0 \le t \le 1/2 \\ 0, & \text{if } (1/2) < t \le 1 \end{cases}$$
+</Solution>
+
+## Problem 6: Maximizing and Minimizing Functionals
+
+<Problem id="6" title="Maximizing and Minimizing Functionals">
+Find a function $f \in L_2([0,2]; \mathbb{R})$ of unit norm, that is with
+
+$$\int_0^2 |f(t)|^2 dt = 1,$$
+
+which
+
+a) maximizes
+
+$$J(f) = \int_0^2 f(t)\sin(\pi t) dt$$
+
+b) minimizes
+
+$$J(f) = \int_0^2 f(t)\sin(\pi t) dt$$
+
+Are the solutions unique?
+
+Hint: Apply the Cauchy-Schwarz inequality.
+</Problem>
+
+<Solution>
+By the Cauchy-Schwarz inequality:
+
+$$J(f) \le \|f(t)\|_2 \|\sin(\pi t)\|_2 = \|\sin(\pi t)\|_2 = \left(\int_0^2 \sin^2(\pi t) dt\right)^{1/2}$$
+
+Using the trigonometric identity: $\cos(a + b) = \cos(a)\cos(b) - \sin(a)\sin(b)$ with $a = b$ we obtain $\sin^2(a) = \cos^2(a) - \cos(2a) = 1 - \sin^2(a) - \cos(2a)$ leading to $\sin^2(a) = \frac{1}{2}(1 - \cos(2a))$. We have then that
+
+$$\int_0^2 \sin^2(\pi t) dt = \frac{1}{2}\int_0^2 (1 - \cos(2\pi t)) dt = 1$$
+
+Hence,
+
+$$J(f) \le 1$$
+
+Equality is achieved when $f(t)$ and $\sin(\pi t)$ are related through a scaling. Hence, $f(t) = \alpha\sin(\pi t)$. But, for $f$ to have unit norm, we must have that $\alpha = 1$. Hence the maximizing $f$ is $f(t) = \sin(\pi t)$.
+
+The minimizing one would be $f(t) = -\sin(\pi t)$.
+</Solution>
+
+## Problem 7: Parallelogram Law
+
+<Problem id="7" title="Parallelogram Law">
+Let $X$ be a pre-Hilbert space with norm $\|x\| = \sqrt{\langle x, x \rangle}$. Prove the Parallelogram law, that is, show that:
+
+$$\|x + y\|^2 + \|x - y\|^2 = 2\|x\|^2 + 2\|y\|^2$$
+</Problem>
+
+<Solution>
+The result follows from the following:
+
+$$\langle x + y, x + y \rangle = \langle x, x + y \rangle + \langle y, x + y \rangle$$
+
+$$= \langle x + y, x \rangle^* + \langle x + y, y \rangle^*$$
+
+$$= \langle x, x \rangle + \langle x, y \rangle + \langle y, x \rangle + \langle y, y \rangle$$
+
+and
+
+$$\langle x - y, x - y \rangle = \langle x, x - y \rangle - \langle y, x - y \rangle$$
+
+$$= \langle x - y, x \rangle^* - \langle x + y, y \rangle^*$$
+
+$$= \langle x, x \rangle - \langle x, y \rangle - \langle y, x \rangle + \langle y, y \rangle,$$
+
+where $z^*$ is the complex conjugate of a complex vector $z$. Adding the two expansions leads to the result.
+</Solution>
+
+## Problem 8: Continuity of Linear Functionals
+
+<Problem id="8" title="Continuity of Linear Functionals">
+Let $T : L_2(\mathbb{R}_+; \mathbb{R}) \to \mathbb{R}$ be a mapping given by:
+
+$$T(f) = \int_0^\infty f(t) \frac{1}{1 + t^2} dt$$
+
+Is $T$ continuous at some $f_0 \in L_2(\mathbb{R}_+; \mathbb{R})$?
+</Problem>
+
+<Solution>
+For any sequence $\{f_n\}$ which converges to the null element ($\underline{0}$) under the $L_2$ distance:
+
+$$T(f_n) = \int_0^\infty f_n(t) \frac{1}{1+t^2} dt \le \left(\int_0^\infty f_n^2(t) dt\right)^{\frac{1}{2}} \left(\int_0^\infty \frac{1}{(1+t^2)^2} dt\right)^{\frac{1}{2}} = \|f_n\|_2 \left(\int_1^\infty \frac{1}{(1+t^2)^2} dt\right)^{\frac{1}{2}} \to 0,$$
+
+where we use the Cauchy-Schwarz inequality. As such, $T$ is continuous at the null element.
+
+The map $T$ is linear. A linear map or transformation is continuous at a given element in its domain space if and only if it is continuous at the null element. Thus, $T$ is continuous.
+</Solution>

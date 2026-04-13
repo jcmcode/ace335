@@ -1,0 +1,607 @@
+---
+title: "Final Exam 2024"
+year: 2024
+---
+
+## Problem 1
+
+<Problem id="1" title="Inverted Pendulum and Feedback Control">
+
+**[30 points]**
+
+Consider the inverted pendulum displayed in Figure 1, where a torque of $u$ is applied to keep the pendulum around $\theta = 0$. The dynamics can be derived as $\frac{d^2\theta(t)}{dt^2} = \frac{g}{l}\sin(\theta(t)) + \frac{u(t)\cos(\theta(t))}{ml^2}$. Assume the coefficients $(m, l)$ are selected so that this simplifies to: $\frac{d^2\theta(t)}{dt^2} = \sin(\theta(t)) + u(t)\cos(\theta(t))$. Linearizing this system at $\theta = 0$, $\frac{d\theta}{dt} = 0$ (with approximations $\sin(\theta) \approx \theta$, $\cos(\theta) \approx 1$), we arrive at the linear system:
+
+$$\frac{d^2\theta(t)}{dt^2} = \theta(t) + u(t). \qquad \text{(1)}$$
+
+Now, consider the linearized pendulum model as our plant $P$, mapping $u$ to $\theta$, to be used in a feedback control system (Figure 2). Note that the transfer function of this model given in (1) is $P(s) = \frac{1}{s^2 - 1}$. Here $y = \theta$.
+
+Suppose that the transfer function of the controller, $C$, is given with $C(s) = K_1 s + K_2$, with $K_1, K_2 \in \mathbb{R}_+$. Observe that this means that $u(t) = K_1 \frac{d}{dt}e(t) + K_2 e(t)$, where $e(t) = r(t) - y(t)$.
+
+a) [6 Points] Find the (closed-loop) transfer function, mapping the signal $r$ to $y$ in the frequency/Laplace domain.
+
+b) [6 Points] With $C(s) = K_1 s + K_2$, set $K_2 = 0$. For what values of $K_1 \geq 0$, is the closed-loop system, mapping the signal $r$ to $y$, BIBO stable? You can use any method.
+
+c) [6 Points] With $C(s) = K_1 s + K_2$, set $K_1 = 0$. For what values of $K_2 \geq 0$, is the closed-loop system, mapping the signal $r$ to $y$, BIBO stable? You can use any method.
+
+d) [6 Points] Let $C(s) = Ks + K$. For what values of $K \geq 0$, is the closed-loop system, mapping the signal $r$ to $y$, BIBO stable? You can use any method.
+
+e) [6 Points] Interpret your analysis in the context of the inverted pendulum system.
+
+</Problem>
+
+<Solution>
+**a) Closed-loop transfer function. [6 Points]**
+
+**Step 1: Standard feedback loop derivation.**
+
+With the standard negative feedback loop: $e = r - y$, $u = C(s) \cdot e$, $y = P(s) \cdot u$.
+
+$$Y(s) = P(s) C(s) (R(s) - Y(s))$$
+
+$$Y(s)(1 + P(s)C(s)) = P(s)C(s) R(s)$$
+
+**Step 2: Substitute $P(s) = \frac{1}{s^2 - 1}$ and $C(s) = K_1 s + K_2$.**
+
+$$P(s)C(s) = \frac{K_1 s + K_2}{s^2 - 1}$$
+
+$$G(s) = \frac{Y(s)}{R(s)} = \frac{P(s)C(s)}{1 + P(s)C(s)} = \frac{\frac{K_1 s + K_2}{s^2 - 1}}{1 + \frac{K_1 s + K_2}{s^2 - 1}} = \frac{K_1 s + K_2}{s^2 - 1 + K_1 s + K_2}$$
+
+$$\boxed{G(s) = \frac{K_1 s + K_2}{s^2 + K_1 s + (K_2 - 1)}}$$
+
+---
+
+**b) $K_2 = 0$: Stability for $K_1 \geq 0$. [6 Points]**
+
+**Step 1: Set $K_2 = 0$.**
+
+$$G(s) = \frac{K_1 s}{s^2 + K_1 s - 1}$$
+
+The characteristic polynomial is:
+
+$$p(s) = s^2 + K_1 s - 1$$
+
+**Step 2: Apply the Routh-Hurwitz criterion.**
+
+For $s^2 + a_1 s + a_0$ to have all roots in the left-half plane, we need $a_1 > 0$ and $a_0 > 0$.
+
+Here $a_1 = K_1$ and $a_0 = -1 < 0$.
+
+Since $a_0 = -1 < 0$, the constant term is always negative. This means one root is always in the right-half plane, regardless of $K_1$.
+
+**Step 3: Conclusion.**
+
+$$\boxed{\text{There is no value of } K_1 \geq 0 \text{ for which the system is BIBO stable.}}$$
+
+A pure derivative (D) controller alone cannot stabilize this plant.
+
+---
+
+**c) $K_1 = 0$: Stability for $K_2 \geq 0$. [6 Points]**
+
+**Step 1: Set $K_1 = 0$.**
+
+$$G(s) = \frac{K_2}{s^2 + K_2 - 1}$$
+
+The characteristic polynomial is:
+
+$$p(s) = s^2 + (K_2 - 1)$$
+
+**Step 2: Find the roots.**
+
+$$s = \pm \sqrt{-(K_2 - 1)} = \pm \sqrt{1 - K_2}$$
+
+- If $K_2 < 1$: $s = \pm\sqrt{1 - K_2}$, two real roots, one positive. Unstable.
+- If $K_2 = 1$: $s = 0$, a root on the imaginary axis. Not BIBO stable.
+- If $K_2 > 1$: $s = \pm i\sqrt{K_2 - 1}$, two purely imaginary roots. Not BIBO stable (marginally stable -- the impulse response does not decay, so $\|h\|_1 = \infty$).
+
+**Step 3: Conclusion.**
+
+$$\boxed{\text{There is no value of } K_2 \geq 0 \text{ for which the system is BIBO stable.}}$$
+
+A pure proportional (P) controller alone cannot stabilize this plant either. The roots are either real with a positive root, or purely imaginary (not strictly in the left-half plane).
+
+---
+
+**d) $C(s) = Ks + K$: Stability for $K \geq 0$. [6 Points]**
+
+**Step 1: Set $K_1 = K_2 = K$.**
+
+$$G(s) = \frac{K(s + 1)}{s^2 + Ks + (K - 1)}$$
+
+The characteristic polynomial is:
+
+$$p(s) = s^2 + Ks + (K - 1)$$
+
+**Step 2: Check for pole-zero cancellation.**
+
+The zero is at $s = -1$. Check if $s = -1$ is a root of $p(s)$:
+
+$$p(-1) = 1 - K + K - 1 = 0$$
+
+So $s = -1$ is always a root of the characteristic polynomial. We can factor:
+
+$$s^2 + Ks + (K-1) = (s + 1)(s + (K - 1))$$
+
+**Step 3: Simplify the transfer function.**
+
+$$G(s) = \frac{K(s+1)}{(s+1)(s + K - 1)} = \frac{K}{s + K - 1}$$
+
+after cancelling the common factor $(s + 1)$.
+
+**Step 4: Determine stability.**
+
+The remaining pole is at $s = -(K-1) = 1 - K$.
+
+For BIBO stability, we need this pole strictly in the left-half plane:
+
+$$1 - K < 0 \implies K > 1$$
+
+However, we must also verify that the cancelled pole at $s = -1$ does not cause issues. Since $s = -1$ is in the left-half plane ($\text{Re}(s) = -1 < 0$), the cancellation is of a stable pole-zero pair, and the system from $r$ to $y$ is BIBO stable provided the remaining pole satisfies the condition.
+
+**Step 5: Conclusion.**
+
+$$\boxed{K > 1}$$
+
+---
+
+**e) Physical interpretation. [6 Points]**
+
+- **Part (b):** A pure derivative controller ($C(s) = K_1 s$) acts only on the rate of change of the error. For the inverted pendulum, this means the controller only responds to how fast the pendulum is moving away from vertical, but provides no restoring force based on position. This is insufficient to stabilize the inherently unstable system ($P(s)$ has a pole at $s = +1$).
+
+- **Part (c):** A pure proportional controller ($C(s) = K_2$) provides a restoring force proportional to the angular displacement error. However, for the inverted pendulum, this only shifts the natural frequency but cannot add damping. The system oscillates without decay (purely imaginary poles for $K_2 > 1$), which is not BIBO stable.
+
+- **Part (d):** A PD controller ($C(s) = K(s+1)$) combines both proportional and derivative action. The proportional term provides a restoring force, and the derivative term provides damping. Together, for $K > 1$, they successfully stabilize the inverted pendulum. The derivative action is crucial for providing damping, while the proportional action ensures a sufficient restoring force to overcome the gravitational instability.
+</Solution>
+
+## Problem 2
+
+<Problem id="2" title="State-Space Systems and Equivalence">
+
+**[15 Points]**
+
+Consider a finite-dimensional system in state-space form given as:
+
+$$\frac{dx}{dt} = Ax(t) + Bu(t), \qquad y(t) = Cx(t) + Du(t). \qquad \text{(2)}$$
+
+We will denote this system with the collection $(A, B, C, D)$ and call it *system* $(A, B, C, D)$.
+
+We say that two systems $(A, B, C, D)$ and $(\bar{A}, \bar{B}, \bar{C}, \bar{D})$ are ***zero-state equivalent*** if the induced transfer functions are equal, that is, when $s$ is in the region of convergence,
+
+$$C(sI - A)^{-1}B + D = \bar{C}(sI - \bar{A})^{-1}\bar{B} + \bar{D}$$
+
+a) [7 Points] Consider (2). Let $T$ be an invertible matrix and let us define a transformation through $\tilde{x} = Tx$. Then, we obtain the following system:
+
+$$\frac{d\tilde{x}}{dt} = \tilde{A}\tilde{x}(t) + \tilde{B}u(t), \qquad y(t) = \tilde{C}\tilde{x}(t) + \tilde{D}u(t).$$
+
+Explicitly express $(\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})$ in terms of $(A, B, C, D)$ and $T$.
+
+In such a case where a coordinate transformation via an invertible matrix $T$ is applied as above, we say that $(A, B, C, D)$ and $(\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})$ are ***algebraically equivalent***.
+
+b) [8 Points] Show that algebraic equivalence implies zero-state equivalence. Show that the reverse implication is not correct by constructing an explicit example.
+
+</Problem>
+
+<Solution>
+**a) Express $(\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})$ in terms of $(A, B, C, D)$ and $T$. [7 Points]**
+
+**Step 1: Apply the transformation $\tilde{x} = Tx$.**
+
+From $x = T^{-1}\tilde{x}$, substitute into the state equation:
+
+$$\frac{dx}{dt} = Ax + Bu \implies \frac{d}{dt}(T^{-1}\tilde{x}) = A(T^{-1}\tilde{x}) + Bu$$
+
+$$T^{-1}\frac{d\tilde{x}}{dt} = AT^{-1}\tilde{x} + Bu$$
+
+Multiply both sides by $T$:
+
+$$\frac{d\tilde{x}}{dt} = TAT^{-1}\tilde{x} + TBu$$
+
+**Step 2: Transform the output equation.**
+
+$$y = Cx + Du = C(T^{-1}\tilde{x}) + Du = CT^{-1}\tilde{x} + Du$$
+
+**Step 3: Identify the transformed system.**
+
+$$\boxed{\tilde{A} = TAT^{-1}, \quad \tilde{B} = TB, \quad \tilde{C} = CT^{-1}, \quad \tilde{D} = D}$$
+
+---
+
+**b) Algebraic equivalence implies zero-state equivalence; the converse is false. [8 Points]**
+
+**Part 1: Algebraic equivalence $\Rightarrow$ zero-state equivalence.**
+
+**Step 1: Compute the transfer function of the transformed system.**
+
+$$\tilde{C}(sI - \tilde{A})^{-1}\tilde{B} + \tilde{D}$$
+
+$$= CT^{-1}(sI - TAT^{-1})^{-1}TB + D$$
+
+**Step 2: Simplify $(sI - TAT^{-1})^{-1}$.**
+
+Note that $sI - TAT^{-1} = T(sI)T^{-1} - TAT^{-1} = T(sI - A)T^{-1}$.
+
+Therefore:
+
+$$(sI - TAT^{-1})^{-1} = (T(sI - A)T^{-1})^{-1} = T(sI - A)^{-1}T^{-1}$$
+
+**Step 3: Substitute back.**
+
+$$CT^{-1} \cdot T(sI - A)^{-1}T^{-1} \cdot TB + D = C(sI - A)^{-1}B + D$$
+
+Therefore $\tilde{C}(sI - \tilde{A})^{-1}\tilde{B} + \tilde{D} = C(sI - A)^{-1}B + D$, which proves zero-state equivalence. $\square$
+
+---
+
+**Part 2: Zero-state equivalence $\not\Rightarrow$ algebraic equivalence.**
+
+**Step 1: Construct a counterexample.**
+
+Consider the following two systems that have the same transfer function but different state dimensions (so no invertible $T$ can relate them):
+
+**System 1:** $(A_1, B_1, C_1, D_1)$ with
+
+$$A_1 = \begin{pmatrix} -1 & 0 \\ 0 & -2 \end{pmatrix}, \quad B_1 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}, \quad C_1 = \begin{pmatrix} 1 & 1 \end{pmatrix}, \quad D_1 = 0$$
+
+Transfer function: $C_1(sI - A_1)^{-1}B_1 = \frac{1}{s+1} + \frac{1}{s+2} = \frac{2s + 3}{(s+1)(s+2)}$
+
+**System 2:** $(A_2, B_2, C_2, D_2)$ with
+
+$$A_2 = \begin{pmatrix} -1 & 0 & 0 \\ 0 & -2 & 0 \\ 0 & 0 & -3 \end{pmatrix}, \quad B_2 = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}, \quad C_2 = \begin{pmatrix} 1 & 1 & 0 \end{pmatrix}, \quad D_2 = 0$$
+
+Transfer function: $C_2(sI - A_2)^{-1}B_2 = \frac{1}{s+1} + \frac{1}{s+2} + 0 = \frac{2s+3}{(s+1)(s+2)}$
+
+**Step 2: Verify zero-state equivalence.**
+
+Both transfer functions equal $\frac{2s+3}{(s+1)(s+2)}$, so the systems are zero-state equivalent.
+
+**Step 3: Show they are not algebraically equivalent.**
+
+Algebraic equivalence requires an invertible matrix $T$ with $\tilde{A} = TAT^{-1}$. But $A_1$ is $2 \times 2$ while $A_2$ is $3 \times 3$. No invertible matrix $T$ can map between different-dimensional state spaces. Therefore, they are not algebraically equivalent. $\square$
+
+*Note: The extra state in System 2 is unobservable and uncontrollable, but does not affect the input-output behavior.*
+</Solution>
+
+## Problem 3
+
+<Problem id="3" title="Second-Order Continuous-Time System">
+
+**[20 Points]**
+
+Consider a continuous-time system described by the equation:
+
+$$\frac{d^2 y(t)}{dt^2} + 3\frac{dy(t)}{dt} + 2y(t) = u(t), \quad t \in \mathbb{R}.$$
+
+a) [5 Points] Find the impulse response of this system.
+
+b) [5 Points] Suppose that the input to this system is given by $u(t) = e^{-t} 1_{\{t \geq 0\}}$. What is $\lim_{t \to \infty} y(t)$.
+
+c) [5 Points] Suppose that the input $u$ to this system is given by $u(t) = e^{i2\pi 4t}$. What is $y(t)$ for any given $t \in \mathbb{R}$?
+
+d) [5 Points] Write this system in state space form (that is, in the form given in (2) in Problem 2).
+
+</Problem>
+
+<Solution>
+**a) Impulse response. [5 Points]**
+
+**Step 1: Take the Laplace transform of the ODE.**
+
+$$\frac{d^2 y}{dt^2} + 3\frac{dy}{dt} + 2y = u$$
+
+Taking the (two-sided) Laplace transform (or equivalently, the Fourier transform with $s = i2\pi f$):
+
+$$s^2 H(s) + 3s H(s) + 2H(s) = 1$$
+
+where $H(s)$ is the transfer function. So:
+
+$$H(s) = \frac{1}{s^2 + 3s + 2} = \frac{1}{(s+1)(s+2)}$$
+
+**Step 2: Partial fraction decomposition.**
+
+$$H(s) = \frac{1}{(s+1)(s+2)} = \frac{A}{s+1} + \frac{B}{s+2}$$
+
+$$1 = A(s+2) + B(s+1)$$
+
+Setting $s = -1$: $1 = A(1) \implies A = 1$
+
+Setting $s = -2$: $1 = B(-1) \implies B = -1$
+
+$$H(s) = \frac{1}{s+1} - \frac{1}{s+2}$$
+
+**Step 3: Inverse Laplace transform.**
+
+Using $\mathcal{L}^{-1}\left(\frac{1}{s+a}\right) = e^{-at}1_{\{t \geq 0\}}$ (for a causal, BIBO stable system with poles in the left-half plane):
+
+$$\boxed{h(t) = (e^{-t} - e^{-2t})1_{\{t \geq 0\}}}$$
+
+---
+
+**b) Output for $u(t) = e^{-t}1_{\{t \geq 0\}}$; find $\lim_{t \to \infty} y(t)$. [5 Points]**
+
+**Step 1: Compute the output in the Laplace domain.**
+
+$$U(s) = \frac{1}{s+1}$$
+
+$$Y(s) = H(s) U(s) = \frac{1}{(s+1)(s+2)} \cdot \frac{1}{s+1} = \frac{1}{(s+1)^2(s+2)}$$
+
+**Step 2: Partial fraction decomposition.**
+
+$$\frac{1}{(s+1)^2(s+2)} = \frac{A}{s+1} + \frac{B}{(s+1)^2} + \frac{C}{s+2}$$
+
+Multiply through by $(s+1)^2(s+2)$:
+
+$$1 = A(s+1)(s+2) + B(s+2) + C(s+1)^2$$
+
+Setting $s = -1$: $1 = B(1) \implies B = 1$
+
+Setting $s = -2$: $1 = C(-1)^2 = C \implies C = 1$
+
+Setting $s = 0$: $1 = A(1)(2) + 1(2) + 1(1) = 2A + 3 \implies A = -1$
+
+$$Y(s) = \frac{-1}{s+1} + \frac{1}{(s+1)^2} + \frac{1}{s+2}$$
+
+**Step 3: Inverse Laplace transform.**
+
+Using $\mathcal{L}^{-1}\left(\frac{1}{(s+a)^2}\right) = te^{-at}1_{\{t \geq 0\}}$:
+
+$$y(t) = \left(-e^{-t} + te^{-t} + e^{-2t}\right)1_{\{t \geq 0\}}$$
+
+**Step 4: Take the limit.**
+
+$$\lim_{t \to \infty} y(t) = \lim_{t \to \infty} \left(-e^{-t} + te^{-t} + e^{-2t}\right) = 0 + 0 + 0 = 0$$
+
+(Since $te^{-t} \to 0$ as $t \to \infty$.)
+
+$$\boxed{\lim_{t \to \infty} y(t) = 0}$$
+
+*Alternative via Final Value Theorem:* $\lim_{t\to\infty} y(t) = \lim_{s \to 0} s Y(s) = \lim_{s \to 0} \frac{s}{(s+1)^2(s+2)} = 0$.
+
+---
+
+**c) Eigenfunction input $u(t) = e^{i2\pi 4t}$. [5 Points]**
+
+**Step 1: Apply the eigenfunction property.**
+
+For an LTI system with transfer function $H(s)$, if the input is $u(t) = e^{st}$ for all $t \in \mathbb{R}$, the steady-state output is $y(t) = H(s) e^{st}$.
+
+With $s = i2\pi(4) = i8\pi$:
+
+$$y(t) = H(i8\pi) \cdot e^{i8\pi t}$$
+
+**Step 2: Compute $H(i8\pi)$.**
+
+$$H(i8\pi) = \frac{1}{(i8\pi)^2 + 3(i8\pi) + 2} = \frac{1}{-64\pi^2 + i24\pi + 2} = \frac{1}{(2 - 64\pi^2) + i24\pi}$$
+
+**Step 3: Write the answer.**
+
+$$\boxed{y(t) = \frac{e^{i8\pi t}}{(2 - 64\pi^2) + i24\pi}}$$
+
+This can also be expressed in polar form. The magnitude is $|H(i8\pi)| = \frac{1}{\sqrt{(2-64\pi^2)^2 + (24\pi)^2}}$ and the phase is $\angle H(i8\pi) = -\arctan\!\left(\frac{24\pi}{2-64\pi^2}\right)$.
+
+---
+
+**d) State-space form. [5 Points]**
+
+**Step 1: Introduce state variables.**
+
+Let $x_1(t) = y(t)$ and $x_2(t) = \frac{dy(t)}{dt}$.
+
+Then:
+
+$$\frac{dx_1}{dt} = x_2$$
+
+$$\frac{dx_2}{dt} = \frac{d^2y}{dt^2} = u - 3\frac{dy}{dt} - 2y = -2x_1 - 3x_2 + u$$
+
+**Step 2: Write in matrix form.**
+
+$$\frac{d}{dt}\begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 0 & 1 \\ -2 & -3 \end{pmatrix}\begin{pmatrix} x_1 \\ x_2 \end{pmatrix} + \begin{pmatrix} 0 \\ 1 \end{pmatrix} u(t)$$
+
+$$y(t) = \begin{pmatrix} 1 & 0 \end{pmatrix}\begin{pmatrix} x_1 \\ x_2 \end{pmatrix} + 0 \cdot u(t)$$
+
+$$\boxed{A = \begin{pmatrix} 0 & 1 \\ -2 & -3 \end{pmatrix}, \quad B = \begin{pmatrix} 0 \\ 1 \end{pmatrix}, \quad C = \begin{pmatrix} 1 & 0 \end{pmatrix}, \quad D = 0}$$
+</Solution>
+
+## Problem 4
+
+<Problem id="4" title="Projection in Hilbert Space">
+
+**[15 points]**
+
+Let $n \in \mathbb{Z}_+$ be given. Consider the minimization of
+
+$$\int_{-1}^{1} (t^n - m(t))^2 \, dt$$
+
+over all $m$ such that
+
+$$m \in M := \left\{ f : f \in L_2([-1, 1]; \mathbb{R}) \quad \text{where} \quad f(t) = \alpha t + \beta t^2, \quad \alpha, \beta \in \mathbb{R} \right\}$$
+
+a) [5 Points] State the problem as a Projection problem by identifying the Hilbert space, and the projected subspace.
+
+b) [10 Points] Compute the solution; that is, find the minimizing $m$ for any $n \in \mathbb{Z}_+$.
+
+</Problem>
+
+<Solution>
+**a) State the Projection problem. [5 Points]**
+
+**Step 1: Identify the Hilbert space.**
+
+The Hilbert space is $H = L_2([-1, 1]; \mathbb{R})$ with the inner product:
+
+$$\langle f, g \rangle = \int_{-1}^{1} f(t) g(t) \, dt$$
+
+**Step 2: Identify the signal and the subspace.**
+
+- The signal to be projected is $x(t) = t^n$.
+- The subspace is $M = \{f \in L_2([-1,1]; \mathbb{R}) : f(t) = \alpha t + \beta t^2, \; \alpha, \beta \in \mathbb{R}\} = \text{span}\{t, t^2\}$.
+
+**Step 3: State the problem.**
+
+By the Projection Theorem, we seek $m^* \in M$ such that $(x - m^*) \perp M$. That is, we minimize $\|t^n - (\alpha t + \beta t^2)\|$ over $\alpha, \beta \in \mathbb{R}$, and the minimizer satisfies:
+
+$$\langle t^n - m^*, \phi \rangle = 0, \quad \forall \phi \in M$$
+
+---
+
+**b) Compute the minimizing $m$. [10 Points]**
+
+**Step 1: Set up the orthogonality conditions.**
+
+The subspace $M = \text{span}\{t, t^2\}$. We need:
+
+$$\langle t^n - \alpha t - \beta t^2, \, t \rangle = 0 \quad \text{and} \quad \langle t^n - \alpha t - \beta t^2, \, t^2 \rangle = 0$$
+
+**Step 2: Compute the necessary inner products.**
+
+For general powers, using the integral $\int_{-1}^{1} t^k \, dt$:
+
+$$\int_{-1}^{1} t^k \, dt = \begin{cases} \frac{2}{k+1} & \text{if } k \text{ is even} \\ 0 & \text{if } k \text{ is odd} \end{cases}$$
+
+Now compute each inner product:
+
+$$\langle t, t \rangle = \int_{-1}^{1} t^2 \, dt = \frac{2}{3}$$
+
+$$\langle t^2, t \rangle = \int_{-1}^{1} t^3 \, dt = 0 \quad \text{(odd integrand)}$$
+
+$$\langle t^2, t^2 \rangle = \int_{-1}^{1} t^4 \, dt = \frac{2}{5}$$
+
+$$\langle t^n, t \rangle = \int_{-1}^{1} t^{n+1} \, dt = \begin{cases} \frac{2}{n+2} & \text{if } n \text{ is odd} \\ 0 & \text{if } n \text{ is even} \end{cases}$$
+
+$$\langle t^n, t^2 \rangle = \int_{-1}^{1} t^{n+2} \, dt = \begin{cases} \frac{2}{n+3} & \text{if } n \text{ is even} \\ 0 & \text{if } n \text{ is odd} \end{cases}$$
+
+**Step 3: Write the system of equations.**
+
+From $\langle t^n - \alpha t - \beta t^2, t \rangle = 0$:
+
+$$\langle t^n, t \rangle - \alpha \langle t, t \rangle - \beta \langle t^2, t \rangle = 0$$
+
+$$\langle t^n, t \rangle = \alpha \cdot \frac{2}{3} + \beta \cdot 0$$
+
+From $\langle t^n - \alpha t - \beta t^2, t^2 \rangle = 0$:
+
+$$\langle t^n, t^2 \rangle - \alpha \langle t, t^2 \rangle - \beta \langle t^2, t^2 \rangle = 0$$
+
+$$\langle t^n, t^2 \rangle = \alpha \cdot 0 + \beta \cdot \frac{2}{5}$$
+
+Since $\langle t, t^2 \rangle = \langle t^2, t \rangle = 0$, the system decouples!
+
+**Step 4: Solve for $\alpha$ and $\beta$.**
+
+$$\alpha = \frac{3}{2}\langle t^n, t \rangle, \qquad \beta = \frac{5}{2}\langle t^n, t^2 \rangle$$
+
+**Case 1: $n$ is odd.**
+
+$$\alpha = \frac{3}{2} \cdot \frac{2}{n+2} = \frac{3}{n+2}, \qquad \beta = \frac{5}{2} \cdot 0 = 0$$
+
+$$\boxed{m^*(t) = \frac{3}{n+2} \, t \quad \text{(n odd)}}$$
+
+**Case 2: $n$ is even.**
+
+$$\alpha = \frac{3}{2} \cdot 0 = 0, \qquad \beta = \frac{5}{2} \cdot \frac{2}{n+3} = \frac{5}{n+3}$$
+
+$$\boxed{m^*(t) = \frac{5}{n+3} \, t^2 \quad \text{(n even)}}$$
+
+**Step 5: Verify with specific cases.**
+
+For $n = 1$ (odd): $m^*(t) = \frac{3}{3}t = t$. This makes sense since $t^1 = t \in M$, so the projection is exact.
+
+For $n = 2$ (even): $m^*(t) = \frac{5}{5}t^2 = t^2$. Again $t^2 \in M$, so the projection is exact.
+
+For $n = 3$ (odd): $m^*(t) = \frac{3}{5}t$. This is the best linear approximation of $t^3$ on $[-1,1]$.
+
+For $n = 4$ (even): $m^*(t) = \frac{5}{7}t^2$. This is the best quadratic (even) approximation of $t^4$ on $[-1,1]$.
+
+*Note: The decoupling occurs because $t$ is an odd function and $t^2$ is an even function, so they are orthogonal on the symmetric interval $[-1,1]$.*
+</Solution>
+
+## Problem 5
+
+<Problem id="5" title="LTI Convolution Systems">
+
+**[20 Points]**
+
+Consider a linear time-invariant (convolution) system described by the relation:
+
+$$y(t) = \int_{\tau \in \mathbb{R}} h(t - \tau) u(\tau) \, d\tau, \quad t \in \mathbb{R} \qquad \text{(3)}$$
+
+for some $h : \mathbb{R} \to \mathbb{R}$. Suppose that $\|h\|_1 < \infty$. Suppose further that $\|u\|_2 < \infty$.
+
+a) [8 Points] Is it the case that $\|y\|_2 < \infty$?
+
+b) [6 Points] Does this linear system (3), mapping $u$ to $y$, define a continuous map from $L_2(\mathbb{R}; \mathbb{C})$ to $L_2(\mathbb{R}; \mathbb{C})$?
+
+c) [6 Points] Is it the case that, with $\hat{y} = \mathcal{F}_{CC}(y)$, $\|\hat{y}\|_2 < \infty$?
+
+Prove/explain your arguments.
+
+</Problem>
+
+<Solution>
+**a) Is $\|y\|_2 < \infty$? [8 Points]**
+
+**Yes.** We prove that $y \in L_2(\mathbb{R}; \mathbb{C})$.
+
+**Step 1: Use the Fourier transform.**
+
+By the convolution property of the Fourier transform, $\hat{y}(f) = \hat{h}(f) \hat{u}(f)$, where $\hat{h} = \mathcal{F}_{CC}(h)$ and $\hat{u} = \mathcal{F}_{CC}(u)$.
+
+**Step 2: Bound $\hat{h}$.**
+
+Since $h \in L_1(\mathbb{R})$, its Fourier transform $\hat{h}$ is bounded and continuous (by the Riemann-Lebesgue lemma):
+
+$$|\hat{h}(f)| = \left|\int h(t) e^{-i2\pi ft} \, dt\right| \leq \int |h(t)| \, dt = \|h\|_1 < \infty$$
+
+So $\|\hat{h}\|_\infty \leq \|h\|_1$.
+
+**Step 3: Apply Plancherel's theorem.**
+
+By Plancherel's theorem, $\|y\|_2 = \|\hat{y}\|_2$ and $\|u\|_2 = \|\hat{u}\|_2$. Then:
+
+$$\|y\|_2^2 = \|\hat{y}\|_2^2 = \int |\hat{h}(f)|^2 |\hat{u}(f)|^2 \, df \leq \|\hat{h}\|_\infty^2 \int |\hat{u}(f)|^2 \, df = \|\hat{h}\|_\infty^2 \|\hat{u}\|_2^2 \leq \|h\|_1^2 \|u\|_2^2 < \infty$$
+
+Therefore:
+
+$$\boxed{\|y\|_2 \leq \|h\|_1 \cdot \|u\|_2 < \infty}$$
+
+---
+
+**b) Is the map $u \mapsto y$ continuous from $L_2$ to $L_2$? [6 Points]**
+
+**Yes.** The map is continuous (in fact, bounded/Lipschitz).
+
+**Step 1: Use the bound from part (a).**
+
+We showed that $\|y\|_2 \leq \|h\|_1 \|u\|_2$. This means the map $T: u \mapsto y = h * u$ is a bounded linear operator from $L_2(\mathbb{R}; \mathbb{C})$ to $L_2(\mathbb{R}; \mathbb{C})$ with operator norm:
+
+$$\|T\| \leq \|h\|_1$$
+
+**Step 2: Bounded linear operators are continuous.**
+
+A linear operator between normed spaces is continuous if and only if it is bounded. Since $\|T(u)\|_2 = \|y\|_2 \leq \|h\|_1 \|u\|_2$ for all $u \in L_2$, the operator $T$ is bounded with $\|T\| \leq \|h\|_1 < \infty$.
+
+More explicitly, for any sequence $u_n \to u$ in $L_2$ (i.e., $\|u_n - u\|_2 \to 0$):
+
+$$\|T(u_n) - T(u)\|_2 = \|T(u_n - u)\|_2 \leq \|h\|_1 \|u_n - u\|_2 \to 0$$
+
+$$\boxed{\text{Yes, the map is continuous, with } \|T\| \leq \|h\|_1.}$$
+
+---
+
+**c) Is $\|\hat{y}\|_2 < \infty$? [6 Points]**
+
+**Yes.**
+
+**Step 1: Apply Plancherel's theorem.**
+
+By Plancherel's theorem (Theorem 5.3.4 in the notes), the Fourier transform is a unitary operator on $L_2(\mathbb{R}; \mathbb{C})$, meaning:
+
+$$\|\hat{y}\|_2 = \|y\|_2$$
+
+**Step 2: Conclude.**
+
+From part (a), we showed $\|y\|_2 < \infty$. Therefore:
+
+$$\boxed{\|\hat{y}\|_2 = \|y\|_2 \leq \|h\|_1 \|u\|_2 < \infty}$$
+
+This is a direct consequence of the isometric property of the CCFT on $L_2$.
+</Solution>

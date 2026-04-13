@@ -1,0 +1,251 @@
+---
+title: "Homework 3 Solutions"
+homework: 3
+---
+
+## Problem 1: Orthonormal Vectors
+
+<Problem id="1" title="Orthonormal Vectors">
+Let $\{e_n, n \in \mathbb{N}\}$ be a complete orthonormal sequence in a real Hilbert space $H$. Let $\mathcal{M}$ be a subspace of $H$, spanned by $\{e_k, k \in S\}$, for some finite set $S \subset \mathbb{N}$. That is,
+
+$$\mathcal{M} = \{v \in H : \exists \alpha_k \in \mathbb{R}, k \in S, \quad v = \sum_{k \in S} \alpha_k e_k\}$$
+
+Let $x \in H$ be given. Find $x^* \in \mathcal{M}$ which is the solution to the following:
+
+$$\min_{x_0 \in \mathcal{M}} \|x - x_0\|,$$
+
+in terms of $x$, and $\{e_n, n \in \mathbb{N}\}$.
+
+Hint: By our arguments in class, any vector in $H$ can be written as $x = \sum_{n \in \mathbb{N}} \langle x, e_n \rangle e_n$.
+</Problem>
+
+<Solution>
+An optimal $x_0^*$ would need to satisfy that
+
+$$\langle x - x_0^*, m \rangle = 0, \quad m \in \mathcal{M}$$
+
+Observe that if we have
+
+$$x_0^* = \sum_{n \in S} \langle x, e_n \rangle e_n,$$
+
+then
+
+$$\langle x - x_0^*, e_k \rangle = 0, \quad k \in S$$
+
+and thus
+
+$$\langle x - x_0^*, m \rangle = 0, \quad m \in \mathcal{M}$$
+</Solution>
+
+## Problem 2: Haar Wavelets
+
+<Problem id="2" title="Haar Wavelets">
+One practically important basis is the class of Haar functions (wavelets). We defined in class Haar functions as follows.
+
+$$\Psi_{0,0}(x) = \begin{cases} 1, & \text{if } 0 \le x \le 1 \\ 0 & \text{else} \end{cases}$$
+
+and for $n \in \mathbb{Z}_+, k \in \{0, 1, 2, \ldots, 2^n - 1\}$,
+
+$$\Phi_{n,k}(x) = \begin{cases} 2^{n/2}, & \text{if } k2^{-n} \le x < (k + 1/2)2^{-n} \\ -2^{n/2}, & \text{if } (k+1/2)2^{-n} \le x \le (k+1)2^{-n} \\ 0 & \text{else} \end{cases}$$
+
+Show that the family
+
+$$\{\Psi_{0,0}, \Phi_{n,k}, n \in \mathbb{Z}_+, k \in \{0, 1, 2, \ldots, 2^n - 1\}\}$$
+
+is **complete** and **orthonormal** in $L_2([0,1]; \mathbb{R})$ and is a **sequence** (that is, countable).
+
+Hint: You may use/assume the fact that the space of $\mathbb{R}$-valued continuous functions on $[0,1]$ are dense in $L_2([0,1]; \mathbb{R})$.
+</Problem>
+
+<Solution>
+We will show that the set is **orthonormal**, **countable** and **complete**.
+
+**Orthonormality:** For any two pair $(n, k), (n', k')$ which are different, we will show that $\langle \phi_{n,k}, \phi_{n',k'} \rangle = 0$. If $n \neq n'$, suppose $n > n'$; then $\phi_{n'k'}$ is either zero or one (thus it is constant) on the support set (that is the set of points on which the function is non-zero) of $\phi_{n,k}$, that is for the interval $[\frac{k}{2^n}, \frac{k+1}{2^n}]$: If $\phi_{n'k'}$ is zero on the support of $\phi_{n,k}$, then the inner product will just be the area under $\phi_{n,k}$, which is zero; if $\phi_{n'k'}$ is zero on the support of $\phi_{n,k}$, then the inner product is zero. If $n = n'$, then for $k \neq k'$, the support sets are disjoint. These ensure that the signals are orthogonal. Furthermore, for any allowable pair $n, k$
+
+$$\|\phi_{n,k}\| = 2^n 2^{-n} = 1.$$
+
+As such, the family is **orthonormal**.
+
+**Countability:** The sequence is **countable**, since we can enumerate the entries starting from $0, 0$ to $\{n, k, \{k \in 0, 1, 2, \ldots, 2^n - 1\}, n \in \mathbb{N}\}$, and by this ordering ensure that every element will eventually be included in the counting enumeration.
+
+**Completeness:** The sequence is also **complete**, as we argue in the following.
+
+For every continuous function $h_C$, it follows that under the $L_2$ norm:
+
+$$\sum_{i=0}^{n} \langle h_C, e_i \rangle e_i \to h_C,$$
+
+where $e_i$ are the ordered elements in the Haar basis. This follows by a Riemann integration argument. A continuous function over a compact set is uniformly continuous, and therefore by truncating the domain $[0,1]$ by $2^n$ intervals of length $2^{-n}$, we can obtain a uniform approximation for the signal by step functions for every $n$, which then will converge in the supremum norm and also in the $L_2$ norm to $h_C$.
+
+Now, suppose that $h \in L_2([0,1]; \mathbb{R})$ is orthogonal to each of the orthonormal vectors. Since continuous functions are dense in $L_2([0,1]; \mathbb{R})$, it follows that (by arguments we followed in class), for any $\epsilon > 0$, there exists a finite $n$ such that (by using $\epsilon/2$ to represent the signal with a continuous signal, and by using another $\epsilon/2$ to represent the continuous signal with a finite expansion)
+
+$$\|h\|^2 = |\langle h, h \rangle| = |\langle h - \sum_i \alpha_i e_i, h \rangle| \le \epsilon \|h\|$$
+
+This leads to the result that $\|h\| = 0$, since $\epsilon > 0$ is arbitrary.
+</Solution>
+
+## Problem 3: Polynomials
+
+<Problem id="3" title="Polynomials">
+Let $C([0,1]; \mathbb{R})$ denote the normed linear space of continuous functions from $[-1,1]$ to $\mathbb{R}$ under the supremum norm. We observed earlier that polynomials can be used to approximate any function in this space with arbitrary precision, under the supremum norm (Weierstrass Theorem).
+
+Given this, repeating the arguments we made in class, argue that the family of polynomials $\{1, t, t^2, \cdots\}$ can be used to form a complete orthonormal sequence in $L_2([0,1]; \mathbb{R})$. This also establishes that $L_2([0,1]; \mathbb{R})$ is separable.
+
+These polynomials are not orthonormal, but we could orthonormalize them via the Gram-Schmidt procedure. This leads to what is known as the Legendre Polynomials.
+</Problem>
+
+<Solution>
+The argument was made in class. Suppose that $h \in L_2([0,1]; \mathbb{R})$ is orthogonal to each of the polynomials $t^i, i \in \mathbb{Z}_+$. Then, for any $n$ and $\alpha_i \in \mathbb{R}$,
+
+$$|\langle h, h \rangle| = |\langle h - \sum_{i=0}^{n} \alpha_i e_i, h \rangle|,$$
+
+where $e_i(t) = t^i$ for $t \in [0,1]$. In the following, we will apply the Cauchy-Schwarz inequality to the term above. Since continuous functions are dense in $L_2([0,1]; \mathbb{R})$, it follows that (by arguments we followed in class), for any $\epsilon > 0$, there exists a finite $n$ such that (by using $\epsilon/2$ to represent the signal with a continuous signal, and by using another $\epsilon/2$ to represent that continuous signal with a polynomial of order $n$, for some $n \in \mathbb{N}$)
+
+$$\|h\|^2 = |\langle h - \sum_{i=0}^{n} \alpha_i e_i, h \rangle| \le \|h - \sum_{i=0}^{n} \alpha_i e_i\| \|h\| \le \epsilon \|h\|,$$
+
+This leads to the result that $\|h\| = 0$, since $\epsilon > 0$ is arbitrary.
+</Solution>
+
+## Problem 4: Linear Functionals on a Normed Space
+
+<Problem id="4" title="Linear Functionals on a Normed Space">
+Let $f$ be a linear functional on a normed linear space $X$ (mapping $X$ to $\mathbb{R}$). Suppose that we define $f$ to be bounded if there is a constant $M$ such that $|f(x)| \le M\|x\|$ for all $x \in X$.
+
+The smallest such $M$ is called the norm of $f$ and is denoted by $\|f\|$. The space of all bounded, linear functionals on $X$ is called the dual space of $X$.
+
+Show that a linear functional on a normed linear space is bounded if and only if it is continuous.
+</Problem>
+
+<Solution>
+**a) Boundedness implies continuity:** For every $\epsilon > 0$, there exists a $\delta > 0$ such that $\|x - y\| \le \delta$ implies that $|f(x) - f(y)| = |f(x - y)| \le M\|x - y\| \le \epsilon$, with $\delta = \epsilon/M$.
+
+**b) Continuity implies boundedness:** We will prove the contrapositive. We will show that if the linear function is not bounded then it cannot be continuous.
+
+Recall that a linear function on a normed linear space is continuous at any point if and only if it is continuous at the null element, as we discussed earlier. Suppose the function is not bounded. This means that with $M_n \to \infty$, there exists a sequence $\{x_n\}$ such that $|f(x_n)| \ge M_n \|x_n\|$, where we can also take $M_n/n \to \infty$. We can construct the sequence of signals $x_n^* = \frac{1}{n\|x_n\|} x_n$ such that $x_n^* \to 0$. By linearity,
+
+$$f(x_n^*) = \frac{1}{n\|x_n\|} f(x_n) \ge \frac{1}{n} M_n \to \infty.$$
+
+Thus, sequence $f(x_n^*)$ does not converge to 0, hence the system cannot be continuous.
+</Solution>
+
+## Problem 5: Riesz Representation Theorem
+
+<Problem id="5" title="Riesz Representation Theorem">
+Let $f$ be a linear and continuous functional on $l_2(\mathbb{N}; \mathbb{R})$; thus, mapping $l_2(\mathbb{N}; \mathbb{R})$ to $\mathbb{R}$.
+
+Show that for every such $f$, there exists a vector $\kappa \in l_2(\mathbb{N}; \mathbb{R})$ such that
+
+$$f(x) = \langle x, \kappa \rangle, \quad \forall x \in l_2(\mathbb{N}; \mathbb{R}),$$
+
+where the inner-product is the one giving rise to the $l_2$-norm in $l_2(\mathbb{N}; \mathbb{R})$.
+</Problem>
+
+<Solution>
+Let $e_i \in l_2(\mathbb{N}; \mathbb{R}), i \in \mathbb{N}$ be given by:
+
+$$e_i(m) = 1_{\{i=m\}}, \quad m \in \mathbb{N}.$$
+
+Note that $\{e_i, i \in \mathbb{N}\}$ is a complete, orthonormal sequence in $l_2(\mathbb{N}; \mathbb{R})$. Thus, for every $x \in l_2(\mathbb{N}; \mathbb{R})$, we can write:
+
+$$x = \sum_{m \in \mathbb{N}} \langle x, e_i \rangle e_m = \sum_{m \in \mathbb{N}} x(m) e_m$$
+
+For every $\epsilon > 0$, there exists $N$ such that $\|x - x_N\| \le \epsilon$ with $x_N = \sum_{m \le N} x(m) e_m$. Now,
+
+$$f(x_N) = f\left(\sum_{m \le N} x(m)e_m\right) = \sum_{m \le N} x(m) f(e_m)$$
+
+By taking $N \to \infty$ and the continuity of $f$, we have that
+
+$$f(x) = f\left(\sum_{m \in \mathbb{N}} x(m)e_m\right) = \sum_{m \in \mathbb{N}} x(m) f(e_m) = \langle x, \kappa \rangle,$$
+
+where
+
+$$\kappa(k) = f(e_k), \quad \forall k \in \mathbb{N}.$$
+
+Now, for every $N$:
+
+$$|f(x_N)| \le \|f\| \|x_N\| \le \|f\| \|x\|$$
+
+Taking the limit
+
+$$\lim_{N\to\infty} |f(x_N)| = \lim_{N\to\infty} |\sum_{m \le N} x(m)f(e_m)| = |\langle x, \kappa \rangle| \le \|f\| \|x\|$$
+
+We finally end the proof by arguing that $\kappa \in l_2(\mathbb{N}; \mathbb{R})$.
+
+Suppose that $\kappa \notin l_2(\mathbb{N}; \mathbb{R})$. We will show that there exists an $x \in l_2(\mathbb{N}; \mathbb{R})$ such that $\langle \kappa, x \rangle = \infty$. Since $\sum_k |\kappa(k)|^2 = \infty$, there must exist an infinite sequence $z_1, z_2, \ldots$, such that
+
+$$A_{i+1} = \sum_{n=z_i}^{z_{i+1}-1} |\kappa(n)|^2 \ge 1$$
+
+Define now,
+
+$$x(n) = \kappa(n) \frac{1}{A_{i+1}(i+1)}, \quad \text{if} \quad z_i \le n < z_{i+1} - 1$$
+
+Now,
+
+$$\sum_n |x(n)|^2 = \sum_{i=0}^{\infty} \left(\frac{1}{A_{i+1}(i+1)}\right)^2 \left(\sum_{n=z_i}^{z_{i+1}-1} |\kappa(n)|^2\right) = \sum_{i=0}^{\infty} \frac{1}{A_{i+1}(i+1)^2} \le \sum_{i=0}^{\infty} \frac{1}{(i+1)^2} < \infty.$$
+
+Hence, $x \in l_2(\mathbb{N}; \mathbb{R})$. But,
+
+$$\langle \kappa, x \rangle = \sum_{i=0}^{\infty} \frac{1}{A_{i+1}(i+1)} \sum_{n=z_i}^{z_{i+1}-1} |\kappa(n)|^2 = \sum_i \frac{1}{i+1} = \infty,$$
+
+leading to a contradiction to the boundedness of the function on $l_2(\mathbb{N}; \mathbb{R})$. Hence, a function defined by $\langle \kappa, x \rangle$ cannot define an element on the dual space of $l_2(\mathbb{N}; \mathbb{R})$ and we must have that $\kappa \in l_2(\mathbb{N}; \mathbb{R})$.
+</Solution>
+
+## Problem 6: Weak Convergence
+
+<Problem id="6" title="Weak Convergence">
+In this problem we will show that the usual notion of convergence (that is strong convergence) implies weak convergence for a Hilbert space. Let $x_n \in L_2(\mathbb{R}_+; \mathbb{R})$.
+
+a) Show that if $x_n \to x$, then $\langle x_n, f \rangle \to \langle x, f \rangle \quad \forall f \in L_2(\mathbb{R}_+; \mathbb{R})$, that is convergence in strong sense implies convergence in weak sense.
+
+b) Possibly via a counterexample, show that $x_n \to x$ weakly does not imply convergence in the strong sense.
+</Problem>
+
+<Solution>
+**a)** The proof is immediate once one observes:
+
+$$\langle x_n, f \rangle - \langle x^*, f \rangle = \langle x_n - x^*, f \rangle \le \|x_n - x^*\|_2 \|f\|_2 \le M\|x_n - x^*\|_2,$$
+
+for some $M < \infty$. Hence, if $x_n \to x^*$, weak convergence follows.
+
+**b)** Consider the sequence:
+
+$$x_n(t) = 1_{\{n \le t \le n+1\}}.$$
+
+Clearly
+
+$$\|x_n - 0\| = 1, \quad \forall n \in \mathbb{N}$$
+
+On the other hand, for any $v \in L_2(\mathbb{R}_+; \mathbb{R})$:
+
+$$\langle x_n, v \rangle = \int_n^{n+1} v(t) dt$$
+
+Since $\|v\|_2 < \infty$, it follows that $\int_n^{n+1} v(t) dt \to 0$ as $n \to \infty$. This implies that the sequence $\{x_n\}$ converges to the null element $\underline{0}$ weakly, but not in the $L_2$ norm.
+</Solution>
+
+## Problem 7: Bernstein Polynomials (Matlab Assignment)
+
+<Problem id="7" title="Bernstein Polynomials (Matlab Assignment)">
+In class we observed that the space of polynomials is a dense subset of the space of continuous functions $C([0,1])$ under the supremum norm. One class of polynomials which can be used to constructively provide an approximation is the family of Bernstein polynomials, defined as follows: Let for some $f \in C([0,1])$:
+
+$$B_{n,f}(t) = \sum_{k=0}^{n} f\left(\frac{k}{n}\right) \binom{n}{k} t^k (1-t)^{n-k}$$
+
+In this exercise, you are asked to write a Matlab (or an alternative program) function which admits a trigonometric function $f \in C([0,1])$, and $n$ as its inputs and generates the Bernstein polynomial approximation of the signal.
+
+You may take $f$ to be for example $f(t) = 2\sin(\frac{1}{4}\pi t) + 3\cos(\frac{1}{2}\pi t)$.
+
+Given a trigonometric function of your choice, compute the Bernstein approximations of order $n$, where $n$ can take three values and verify that the supremum difference
+
+$$\sup_{t \in [0,1]} |f(t) - B_{n,f}(t)|,$$
+
+decreases as $n$ increases.
+</Problem>
+
+<Solution>
+This is a computational/programming problem. The Bernstein polynomial approximation is given by the formula above. Implement this in Matlab or Python:
+
+1. Define $f(t) = 2\sin(\frac{1}{4}\pi t) + 3\cos(\frac{1}{2}\pi t)$
+2. Compute $B_{n,f}(t)$ for several values of $n$ (e.g., $n = 10, 50, 100$)
+3. Plot $f(t)$ and the Bernstein approximations
+4. Compute $\sup_{t \in [0,1]} |f(t) - B_{n,f}(t)|$ and verify it decreases with increasing $n$
+
+By the Weierstrass approximation theorem, the Bernstein polynomials converge uniformly to $f$ on $[0,1]$, confirming that the supremum difference decreases as $n$ increases.
+</Solution>

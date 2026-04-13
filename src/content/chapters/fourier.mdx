@@ -1,0 +1,1132 @@
+---
+title: "The Fourier Transformation"
+chapter: 5
+---
+
+## The Big Idea: What Fourier Transforms Actually Do
+
+The central insight behind all Fourier transforms is surprisingly simple: **every signal can be built by adding up sine waves at different frequencies**. A musical chord is the sum of its individual notes. A square wave is the sum of infinitely many harmonics. Even a sharp spike can be constructed from sinusoids, if you use enough of them.
+
+The Fourier transform answers the question: **"How much of each frequency is present in my signal?"**
+
+There are two complementary operations:
+
+- **Forward transform (Analysis / Decomposition):** Takes a signal and produces its **frequency recipe** -- a function (or sequence) that tells you the amplitude and phase of each frequency component. This is like hearing a chord and identifying the individual notes.
+- **Inverse transform (Synthesis / Reconstruction):** Takes the frequency recipe and **rebuilds the original signal** by adding up weighted sinusoids. This is like reading sheet music and playing the chord.
+
+**How the forward transform works, conceptually:**
+
+To detect "how much" of frequency $f$ is in a signal $x$, the transform multiplies $x$ by the complex sinusoid $e^{-i2\pi ft}$ and then sums (or integrates) the result. The exponential $e^{-i2\pi ft}$ acts like a **tuning fork** tuned to frequency $f$:
+
+- If the signal contains energy at frequency $f$, the product $x(t) \cdot e^{-i2\pi ft}$ will have a steady, non-cancelling component, and the sum/integral will be **large**.
+- If the signal does *not* contain frequency $f$, the product oscillates symmetrically around zero, and the sum/integral **cancels out to zero** (or near zero).
+
+The result is a complex number $\hat{x}(f)$ whose **magnitude** $|\hat{x}(f)|$ tells you the amplitude (strength) of frequency $f$, and whose **angle** $\angle \hat{x}(f)$ tells you the phase (timing offset) of that component.
+
+**A concrete example:** If $x(t) = \cos(2\pi \cdot 5 \cdot t)$, a pure 5 Hz tone, then the Fourier transform will show a spike at $f = 5$ and $f = -5$, and zero everywhere else. The negative frequency appears because $\cos(2\pi \cdot 5 \cdot t) = \frac{1}{2}e^{i2\pi \cdot 5 \cdot t} + \frac{1}{2}e^{-i2\pi \cdot 5 \cdot t}$ -- cosine is the sum of two complex exponentials rotating in opposite directions.
+
+**Why four transforms?** The four Fourier transforms (DDFT, CDFT, DCFT, CCFT) all implement this same idea, but differ in whether the input signal and the output spectrum are discrete or continuous. These choices depend on the mathematical setting -- whether your signal is finite-length, periodic, or defined over all of $\mathbb{R}$.
+
+We have seen earlier in Theorem 2.3.5 that in a Hilbert space $H$, a complete orthonormal sequence $\{e_n, n \in \mathbb{N}\}$ can be used to express any $x \in H$ via the relation
+
+$$
+x = \lim_{N \to \infty} \sum_{k=1}^{N} \langle x, e_k \rangle e_k
+$$
+
+We have also seen in Chapters 2 and 3 that complex exponentials provide such a complete orthonormal sequence, and therefore can be used to approximate any square integrable signal arbitrarily well. We saw in Chapter 4 that complex exponentials possess the eigenfunction property for linear time-invariant systems.
+
+The above motivate the use of the representation of signals in terms of complex exponentials and the spectral properties of frequency response / transfer functions. This study is achieved by Fourier transforms. Accordingly, Fourier transforms play a significant role in systems theory and applied mathematics at large. There are four types of Fourier transformations: Discrete-to-Discrete (DDFT), Continuous-to-Discrete (CDFT), Discrete-to-Continuous (DCFT), Continuous-to-Continuous (CCFT).
+
+<FourierTransformGrid />
+
+We will start with the first two of the above. Before we proceed, recall that a bijective transformation $\mathcal{T}$ is a map from a signal set $X$ to another one $\hat{X}$, such that $\mathcal{T}$ is onto and one-to-one; the Fourier transforms will constitute examples of such transformations with further very useful structural and regularity properties to be studied in this chapter and beyond.
+
+## 5.1 Discrete-to-Discrete (DDFT) and Continuous-to-Discrete (CDFT) Fourier Transforms
+
+<FourierSeriesDemo />
+
+### 5.1.1 Fourier Series Expansions
+
+**Discrete Time**
+
+The $N$-dimensional complex vector space $l_2(\{0, 1, 2, \ldots, N-1\}; \mathbb{C})$ is a Hilbert space with the inner product:
+
+$$
+\langle h_1, h_2 \rangle = \sum_{n=0}^{N-1} h_1(n) \overline{h_2(n)},
+$$
+
+where, as earlier, the bar notation $\overline{(\cdot)}$ denotes the complex conjugate of its argument.
+
+The set of complex harmonic signals:
+
+$$
+\left\{ \frac{1}{\sqrt{N}} e^{i2\pi k n}, \quad n = 0, 1, 2, \ldots, N-1, \quad k \in \left\{0, \frac{1}{N}, \ldots, \frac{N-1}{N}\right\} \right\},
+$$
+
+provides a complete orthonormal sequence, hence, provides a basis for $l_2(\{0, 1, 2, \ldots, N-1\}; \mathbb{C})$. The Fourier series expansion is given by:
+
+$$
+x(n) = \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} \hat{x}\!\left(\frac{k}{N}\right) e^{i2\pi \frac{k}{N} n}, \quad n \in \{0, 1, \ldots, N-1\}
+$$
+
+where
+
+$$
+\hat{x}\!\left(\frac{k}{N}\right) = \frac{1}{\sqrt{N}} \sum_{n=0}^{N-1} x(n) e^{-i2\pi \frac{k}{N} n}, \quad k \in \{0, 1, \ldots, N-1\}
+$$
+
+<Remark id="5.1">
+Observe that $\hat{x}(\frac{k}{N}) = \langle x, e_{\frac{k}{N}} \rangle$ with $e_{\frac{k}{N}}(n) = \frac{1}{\sqrt{N}} e^{i2\pi \frac{k}{N} n}$, for $n = 0, 1, 2, \ldots, N-1$.
+</Remark>
+
+**Continuous Time**
+
+The complex vector space $L_2([0, P]; \mathbb{C})$ is a Hilbert space with the inner product:
+
+$$
+\langle h_1, h_2 \rangle = \int_0^P h_1(t) \overline{h_2(t)}\, dt.
+$$
+
+The countably infinite sequence of complex harmonic signals:
+
+$$
+\frac{1}{\sqrt{P}} e^{i2\pi f t}, \quad f \in \left\{\frac{k}{P}, k \in \mathbb{Z}\right\},
+$$
+
+provides a complete orthogonal sequence, hence, provides a basis for $L_2([0, P]; \mathbb{C})$.
+
+The completeness of Fourier series in $L_2[0, P]$ is based on the argument that trigonometric polynomials are dense in $L_2([0, P]; \mathbb{C})$ (see Theorem 3.4.4 and the discussion in Section 3.4.3).
+
+The Fourier series expansion is given by:
+
+$$
+x(t) = \frac{1}{\sqrt{P}} \sum_k \hat{x}\!\left(\frac{k}{P}\right) e^{i2\pi \frac{k}{P} t}, \quad t \in [0, P]
+$$
+
+where
+
+$$
+\hat{x}(f) = \frac{1}{\sqrt{P}} \int_0^P x(t) e^{-i2\pi f t}\, dt, \quad f \in \left\{\frac{k}{P}, k \in \mathbb{Z}\right\}
+$$
+
+<Remark id="5.2">
+Observe that $\hat{x}(f) = \langle x, e_f \rangle$ with $e_f(t) = \frac{1}{\sqrt{P}} e^{i2\pi f t}$, for $t \in [0, P]$ with $f \in \{\frac{k}{P}, k \in \mathbb{Z}\}$.
+
+Thus, in the context of Section 2.3, a Fourier series expansion is the representation of a square integrable signal in terms of a collection of a complete orthonormal harmonic signal sequence.
+</Remark>
+
+### 5.1.2 Discrete-to-Discrete (DDFT) and Continuous-to-Discrete (CDFT) Fourier Transforms
+
+In view of the above, we define Discrete-to-Discrete (DDFT), Continuous-to-Discrete (CDFT) as follows:
+
+<Definition id="5.1" title="DDFT">
+$$
+\mathcal{F}_{DD} : l_2(\{0, 1, \ldots, N-1\}; \mathbb{C}) \to l_2\!\left(\left\{\frac{0}{N}, \frac{1}{N}, \ldots, \frac{N-1}{N}\right\}; \mathbb{C}\right)
+$$
+
+$$
+\hat{x} = \mathcal{F}_{DD}(x)
+$$
+
+and
+
+$$
+\hat{x}(f) = \sum_{n=0}^{N-1} \frac{1}{\sqrt{N}} x(n) e^{-i2\pi f n}, \quad f \in \left\{\frac{0}{N}, \frac{1}{N}, \ldots, \frac{N-1}{N}\right\}
+$$
+</Definition>
+
+<Remark>
+**Intuition:** The DDFT takes a finite-length discrete signal (N samples) and produces N frequency coefficients. Both the input and output are finite sequences, making this the version of the Fourier transform that computers actually compute. It decomposes a finite signal into N harmonic components equally spaced in frequency.
+</Remark>
+
+<Remark>
+**What each part of the equation does (DDFT forward):**
+
+$$\hat{x}(f) = \sum_{n=0}^{N-1} \frac{1}{\sqrt{N}} x(n) \, e^{-i2\pi f n}, \quad f \in \left\{\frac{0}{N}, \frac{1}{N}, \ldots, \frac{N-1}{N}\right\}$$
+
+- **$x(n)$** -- the original signal: a sequence of $N$ numbers (samples), indexed by $n = 0, 1, \ldots, N-1$
+- **$e^{-i2\pi f n}$** -- a complex sinusoid at frequency $f$, evaluated at discrete time $n$. By Euler's formula, $e^{-i2\pi f n} = \cos(2\pi f n) - i\sin(2\pi f n)$. This is the "detector" for frequency $f$
+- **$x(n) \cdot e^{-i2\pi f n}$** -- multiplying the signal by the detector at each sample. If the signal oscillates at frequency $f$, this product will tend to align (not cancel out)
+- **$\frac{1}{\sqrt{N}}$** -- a normalization factor that ensures the transform is unitary (energy-preserving). Some conventions put $1/N$ on the forward transform and $1$ on the inverse, but the symmetric $1/\sqrt{N}$ keeps the transform an isometry
+- **$\sum_{n=0}^{N-1}$** -- sum over all $N$ samples. This is the discrete analogue of integration. If frequency $f$ is present, the terms reinforce and the sum is large; if not, the terms cancel and the sum is small or zero
+- **$\hat{x}(f)$** -- the result: a complex number for each frequency $f$. Its magnitude $|\hat{x}(f)|$ is the amplitude of that frequency component, and its angle $\angle \hat{x}(f)$ is the phase shift
+</Remark>
+
+<Definition id="5.2" title="CDFT">
+$$
+\mathcal{F}_{CD} : L_2([0, P]; \mathbb{C}) \to l_2\!\left(\mathbb{Z}\frac{1}{P}; \mathbb{C}\right)
+$$
+
+$$
+\hat{x} = \mathcal{F}_{CD}(x)
+$$
+
+and
+
+$$
+\hat{x}(f) = \int_{\tau=0}^{P} \frac{1}{\sqrt{P}} x(\tau) e^{-i2\pi f \tau}\, d\tau, \quad f \in \left\{\frac{k}{P}, k \in \mathbb{Z}\right\}
+$$
+</Definition>
+
+<Remark>
+**Intuition:** The CDFT takes a continuous-time signal defined on a finite interval $[0,P]$ and produces a discrete (countable) set of Fourier coefficients at frequencies $k/P$. This is the classical Fourier series: a periodic continuous signal is decomposed into a countable set of harmonics. The spacing $1/P$ between frequencies is inversely proportional to the period -- longer signals yield finer frequency resolution.
+</Remark>
+
+<Remark>
+**What each part of the equation does (CDFT forward):**
+
+$$\hat{x}(f) = \int_{\tau=0}^{P} \frac{1}{\sqrt{P}} x(\tau) \, e^{-i2\pi f \tau} \, d\tau, \quad f \in \left\{\frac{k}{P},\, k \in \mathbb{Z}\right\}$$
+
+- **$x(\tau)$** -- the original continuous-time signal defined on the interval $[0, P]$
+- **$e^{-i2\pi f \tau}$** -- a complex sinusoid at frequency $f$, acting as the detector. By Euler's formula, $e^{-i2\pi f \tau} = \cos(2\pi f \tau) - i\sin(2\pi f \tau)$
+- **$x(\tau) \cdot e^{-i2\pi f \tau}$** -- the product of the signal with the detector. When the signal has energy at frequency $f$, this product has a non-zero average over the interval
+- **$\frac{1}{\sqrt{P}}$** -- normalization factor. Dividing by $\sqrt{P}$ makes the transform unitary, so energy is preserved between the time and frequency representations
+- **$\int_0^P d\tau$** -- integration over one full period. This is the continuous analogue of summation: it accumulates the correlation between the signal and the detector sinusoid. If frequency $f$ is present, the integral is large; if not, positive and negative contributions cancel out
+- **$\hat{x}(f)$** -- the Fourier coefficient at frequency $f = k/P$. Note that the output is discrete: you only get coefficients at the harmonic frequencies $0, \pm 1/P, \pm 2/P, \ldots$ The magnitude $|\hat{x}(f)|$ gives the amplitude of harmonic $k$, and the angle gives its phase
+</Remark>
+
+The inverses of these can also be defined:
+
+<Definition id="5.3" title="Inverse DDFT">
+$$
+\mathcal{F}_{DD}^{-1} : l_2(\{0/N, 1/N, \ldots, (N-1)/N\}; \mathbb{C}) \to l_2(\{0, 1, \ldots, N-1\}; \mathbb{C})
+$$
+
+$$
+x = \mathcal{F}_{DD}^{-1}(\hat{x})
+$$
+
+and
+
+$$
+x(n) = \sum_{k=0}^{N-1} \frac{1}{\sqrt{N}} \hat{x}\!\left(\frac{k}{N}\right) e^{i2\pi \frac{k}{N} n}, \quad n \in \{0, 1, \ldots, N-1\}
+$$
+</Definition>
+
+<Remark>
+**Intuition:** The inverse DDFT reconstructs the original time-domain samples from their frequency coefficients. The fact that this inverse exists and perfectly recovers the signal means no information is lost when transforming to the frequency domain -- the two representations are equivalent.
+</Remark>
+
+<Remark>
+**What each part of the equation does (Inverse DDFT -- Synthesis):**
+
+$$x(n) = \sum_{k=0}^{N-1} \frac{1}{\sqrt{N}} \hat{x}\!\left(\frac{k}{N}\right) e^{i2\pi \frac{k}{N} n}, \quad n \in \{0, 1, \ldots, N-1\}$$
+
+- **$\hat{x}(k/N)$** -- the Fourier coefficient at frequency $k/N$. This complex number encodes the amplitude and phase of the $k$-th harmonic component. It controls **how much** of that frequency to add back
+- **$e^{i2\pi \frac{k}{N} n}$** -- a complex sinusoid at frequency $k/N$, evaluated at time $n$. Note the **positive sign** in the exponent (compare with $e^{-i2\pi f n}$ in the forward transform). This generates the actual oscillation at frequency $k/N$
+- **$\hat{x}(k/N) \cdot e^{i2\pi \frac{k}{N} n}$** -- one frequency component, weighted by its coefficient. Each term in the sum adds one sinusoidal "ingredient" back into the signal
+- **$\frac{1}{\sqrt{N}}$** -- the same normalization as the forward transform, ensuring unitarity
+- **$\sum_{k=0}^{N-1}$** -- sum over all $N$ frequency components. By adding all the weighted oscillations together, you reconstruct the original signal sample $x(n)$ exactly. This is the **synthesis** step: the frequency recipe is turned back into a signal
+</Remark>
+
+<Definition id="5.4" title="Inverse CDFT">
+$$
+\mathcal{F}_{CD}^{-1} : l_2\!\left(\mathbb{Z}\frac{1}{P}; \mathbb{C}\right) \to L_2([0, P]; \mathbb{C})
+$$
+
+$$
+x = \mathcal{F}_{CD}^{-1}(\hat{x})
+$$
+
+and
+
+$$
+x(t) = \sum_{k \in \mathbb{Z}} \frac{1}{\sqrt{P}} \hat{x}\!\left(\frac{k}{P}\right) e^{i2\pi \frac{k}{P} t}\, dt, \quad t \in [0, P]
+$$
+</Definition>
+
+<Remark>
+**Intuition:** The inverse CDFT synthesizes a continuous-time signal from its countably many Fourier coefficients. Each coefficient $\hat{x}(k/P)$ weights a complex exponential at frequency $k/P$, and the sum of all these weighted harmonics reconstructs the original signal. This is the synthesis formula of the Fourier series.
+</Remark>
+
+<Remark>
+**What each part of the equation does (Inverse CDFT -- Synthesis):**
+
+$$x(t) = \sum_{k \in \mathbb{Z}} \frac{1}{\sqrt{P}} \hat{x}\!\left(\frac{k}{P}\right) e^{i2\pi \frac{k}{P} t}, \quad t \in [0, P]$$
+
+- **$\hat{x}(k/P)$** -- the Fourier coefficient at frequency $k/P$. This tells you the amplitude and phase of the $k$-th harmonic. It controls **how much** of that frequency to include in the reconstruction
+- **$e^{i2\pi \frac{k}{P} t}$** -- a complex sinusoid at frequency $k/P$, now as a continuous function of time $t$. The **positive sign** in the exponent (vs. negative in the forward CDFT) indicates this is synthesis, not analysis
+- **$\hat{x}(k/P) \cdot e^{i2\pi \frac{k}{P} t}$** -- one harmonic component, weighted by its Fourier coefficient. Each term in the sum contributes one "pure tone" to the reconstructed signal
+- **$\frac{1}{\sqrt{P}}$** -- normalization matching the forward transform
+- **$\sum_{k \in \mathbb{Z}}$** -- sum over all integer harmonics $k$, from $-\infty$ to $+\infty$. Unlike the finite DDFT inverse, this sum is infinite -- you need infinitely many harmonics to perfectly reconstruct a continuous-time signal from its Fourier series. In practice, the partial sums converge in the $L_2$ sense
+</Remark>
+
+### 5.1.3 Properties of the Discrete Fourier Transforms
+
+<Theorem id="5.1.1" title="Parseval's Equality">
+The transformations $\mathcal{F}_{DD}$ and $\mathcal{F}_{CD}$ are unitary, that is:
+
+$$
+\langle x, x \rangle = \langle \hat{x}, \hat{x} \rangle
+$$
+</Theorem>
+
+<Remark>
+**Intuition:** Parseval's equality says that energy is conserved when you transform between time and frequency domains. The total energy of a signal, computed by summing/integrating its squared amplitude over time, equals the total energy computed from its frequency coefficients. This is why the Fourier transform is called a "unitary" or "isometric" transformation -- it preserves distances and energies.
+</Remark>
+
+<Proof>
+We prove this for $\mathcal{F}_{CD}$ ($\mathcal{F}_{DD}$ follows more directly using the following arguments). Let $x \in L_2([0, P]; \mathbb{C})$. Define $x_K := \sum_{-K}^{K} \hat{x}(\frac{k}{P}) \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} t}$. We know that $\lim_{K \to \infty} \|x_K - x\|_2 = 0$. Consider
+
+$$
+\langle x, x \rangle = \lim_{K \to \infty} \langle x, x_K \rangle
+$$
+
+$$
+= \lim_{K \to \infty} \int_0^P x(t) \sum_{k=-K}^{K} \overline{\hat{x}\!\left(\frac{k}{P}\right)} \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} t}\, dt
+$$
+
+$$
+= \lim_{K \to \infty} \sum_{k=-K}^{K} \overline{\hat{x}\!\left(\frac{k}{P}\right)} \int_0^P x(t) \frac{1}{\sqrt{P}} e^{-i2\pi \frac{k}{P} t}\, dt
+$$
+
+$$
+= \lim_{K \to \infty} \sum_{k=-K}^{K} \overline{\hat{x}\!\left(\frac{k}{P}\right)} \hat{x}\!\left(\frac{k}{P}\right)
+$$
+
+$$
+= \langle \hat{x}, \hat{x} \rangle
+$$
+
+$\square$
+</Proof>
+
+<Remark id="5.3">
+Time-shift, periodicity and differentiation will also be discussed. An important property is with regard to convolution. Suppose that in the following, we write $f(t) = f(t \mod P)$, in which case the convolution operation is also termed *cyclical convolution*.
+</Remark>
+
+<Theorem id="5.1.2" title="Convolution Theorem for CDFT">
+Let $f, g \in L_2([0, P])$. Then,
+
+$$
+\mathcal{F}_{CD}(f * g)(k) = \sqrt{P}\, \mathcal{F}_{CD}(f)(k)\, \mathcal{F}_{CD}(g)(k), \quad k \in \mathbb{Z}\!\left(\frac{1}{P}\right).
+$$
+
+That is, convolution is equivalent to point-wise multiplication in the frequency domain.
+</Theorem>
+
+<Remark>
+**Intuition:** The convolution theorem is one of the most practically important results in signal processing. Computing a convolution directly requires integrating a product over all time shifts, but in the frequency domain it reduces to simple pointwise multiplication. This is why filtering is often done by transforming to the frequency domain, multiplying, and transforming back -- especially with the FFT, this is far more efficient.
+</Remark>
+
+<Proof>
+Let $f, g \in L_2([0, P])$ where we write $f(t) = f(t \mod P)$ (cyclical convolution). We compute:
+
+$$
+\mathcal{F}_{CD}(f * g)\!\left(\frac{k}{P}\right) = \frac{1}{\sqrt{P}} \int_0^P (f * g)(t)\, e^{-i2\pi \frac{k}{P} t}\, dt
+$$
+
+$$
+= \frac{1}{\sqrt{P}} \int_0^P \left(\int_0^P f(\tau) g(t - \tau)\, d\tau\right) e^{-i2\pi \frac{k}{P} t}\, dt
+$$
+
+By Fubini's theorem, we can change the order of integration:
+
+$$
+= \frac{1}{\sqrt{P}} \int_0^P f(\tau) \left(\int_0^P g(t - \tau)\, e^{-i2\pi \frac{k}{P} t}\, dt\right) d\tau
+$$
+
+Substituting $u = t - \tau$ and using the periodicity of $g$:
+
+$$
+= \frac{1}{\sqrt{P}} \int_0^P f(\tau)\, e^{-i2\pi \frac{k}{P} \tau} \left(\int_0^P g(u)\, e^{-i2\pi \frac{k}{P} u}\, du\right) d\tau
+$$
+
+$$
+= \sqrt{P} \left(\frac{1}{\sqrt{P}} \int_0^P f(\tau)\, e^{-i2\pi \frac{k}{P} \tau}\, d\tau\right) \left(\frac{1}{\sqrt{P}} \int_0^P g(u)\, e^{-i2\pi \frac{k}{P} u}\, du\right)
+$$
+
+$$
+= \sqrt{P}\, \mathcal{F}_{CD}(f)\!\left(\frac{k}{P}\right) \mathcal{F}_{CD}(g)\!\left(\frac{k}{P}\right)
+$$
+
+$\square$
+</Proof>
+
+### 5.1.5 Worked Exercise
+
+<Example id="5.1.1" title="Fourier Series of Indicator Functions">
+**Exercise 5.1.1.** 
+
+**a)** For some $N \in \mathbb{N}$, let $x \in l_2\big((-N, -(N-1), \ldots, N-1, N); \mathbb{C}\big)$ with $x(n) = 1_{\{|n| \le N_1\}}$. Find the Fourier series expansion of $x$. Study the case with $N_1 = N$, and the case with $N_1 = 0$.
+
+**b)** For some $T \in \mathbb{R}_+$, let $x \in L_2([-\frac{T}{2}, \frac{T}{2}]; \mathbb{C})$ with $x(t) = 1_{\{|t| \le T_1\}}$. Find the Fourier series expansion. Study the cases with (i) $T_1 = \frac{T}{2}$, and (ii) the case where, with $T_1 = \frac{1}{2n}$, we have $x_n(t) = n \cdot 1_{\{|t| \le \frac{1}{2n}\}}$, as $n \to \infty$.
+
+**Solution.** **a)** We have for $k = 0, 1, \ldots, 2N+1$:
+
+$$
+\hat{x}\!\left(\frac{k}{2N+1}\right) = \sum_{n=-N_1}^{N_1} \frac{1}{2N+1} e^{-i\frac{2\pi k}{2N+1}n} = \frac{1}{2N+1} e^{-i\frac{2\pi k}{2N+1}N_1} \sum_{n=0}^{2N_1} e^{-i\frac{2\pi k}{2N+1}n}
+$$
+
+For $k \neq 0$, we have:
+
+$$
+\hat{x}\!\left(\frac{k}{2N+1}\right) = \frac{1}{2N+1} e^{-i\frac{2\pi k N_1}{2N+1}} \frac{1 - e^{-i\frac{2\pi(2N_1+1)}{2N+1}}}{1 - e^{-i\frac{2\pi k}{2N+1}}}
+$$
+
+For $k = 0$, we have:
+
+$$
+\hat{x}\!\left(\frac{0}{2N+1}\right) = \frac{2N_1 + 1}{\sqrt{2N+1}}
+$$
+
+If $N_1 = N$: For $k \neq 0$, $\hat{x}\!\left(\frac{k}{2N+1}\right) = 0$, and for $k = 0$, $\hat{x}\!\left(\frac{0}{2N+1}\right) = \sqrt{2N+1}$.
+
+For the other extreme, if $N_1 = 0$, we have for all $k \in \{0, \ldots, 2N+1\}$: $\hat{x}\!\left(\frac{k}{2N+1}\right) = \frac{1}{\sqrt{2N+1}}$.
+
+**b)** We have the expansion (in the $L_2$-sense):
+
+$$
+x(t) = \sum_{k \in \mathbb{Z}} \hat{x}\!\left(\frac{k}{T}\right) \frac{1}{\sqrt{T}} e^{i2\pi \frac{k}{T} t}
+$$
+
+with
+
+$$
+\hat{x}\!\left(\frac{k}{T}\right) = \int_{-T/2}^{T/2} x(t) \frac{1}{\sqrt{T}} e^{-i\frac{2\pi k}{T} t}\, dt
+$$
+
+Thus, with $x$ as given, we have:
+
+$$
+\hat{x}\!\left(\frac{k}{T}\right) = \int_{-T_1}^{T_1} \frac{1}{\sqrt{T}} e^{-i\frac{2\pi k}{T} t}\, dt = \frac{e^{i\frac{2\pi k T_1}{T}} - e^{-i\frac{2\pi k T_1}{T}}}{i2\pi k / \sqrt{T}} = \frac{\sin(2\pi k \frac{T_1}{T})}{2\pi k \frac{1}{T}} \frac{2T_1}{\sqrt{T}}
+$$
+
+If $T_1 = \frac{T}{2}$, we have that $\hat{x}(\frac{k}{T}) = 0$ for all $k \neq 0$ and $\hat{x}(\frac{0}{T}) = \sqrt{T}$.
+
+If $T_1 = \frac{1}{2n}$, with $x_n(t) = n \cdot 1_{\{|t| \le T_1\}}$, then we observe that $\hat{x}_n(\frac{k}{T}) \to \frac{1}{\sqrt{T}}$ for all $k \in \mathbb{Z}$.
+
+We observe from these examples that, as a general insight (which can be made more rigorous under additional conditions), **if we expand the signal in time domain, we shrink it in the frequency domain; and if we shrink it in time domain, we expand it in the frequency domain**.
+</Example>
+
+### 5.1.4 Computational Aspects: The FFT Algorithm
+
+The Fast Fourier Transform (FFT) is a very important algorithm to implement DTFT ($\mathcal{F}_{DD}$) in a computationally efficient fashion in practice. The *fft* command in Matlab generates the transform.
+
+Observe that for the operations described in the DDFT definition:
+
+$$
+\mathcal{F}_{DD} : l_2(\{0, 1, \ldots, N-1\}; \mathbb{C}) \to l_2\!\left(\left\{\frac{0}{N}, \frac{1}{N}, \ldots, \frac{N-1}{N}\right\}; \mathbb{C}\right)
+$$
+
+so that $\hat{x} = \mathcal{F}_{DD}(x)$, with
+
+$$
+\hat{x}(f) = \sum_{n=0}^{N-1} \frac{1}{\sqrt{N}} x(n) e^{-i2\pi f n}, \quad f \in \left\{\frac{0}{N}, \frac{1}{N}, \ldots, \frac{N-1}{N}\right\},
+$$
+
+there are $N$ complex multiplications and $N$ complex additions for each $f$ (and thus there will be $N$ such computations). Thus, the FFT algorithm in the form above has the computational complexity of $N^2$ complex operations (with one complex operation being equivalent to one complex addition and one complex multiplication).
+
+If $N$ is even, we can write
+
+$$
+\hat{x}\!\left(\frac{k}{N}\right) = \sum_{n=0}^{N-1} \frac{1}{\sqrt{N}} x(n) e^{-i2\pi \frac{k}{N} n}
+$$
+
+$$
+= \sum_{m=0}^{N/2 - 1} \frac{1}{\sqrt{N}} x(2m) e^{-i2\pi \frac{k}{N} 2m} + \sum_{m=0}^{N/2 - 1} \frac{1}{\sqrt{N}} x(2m+1) e^{-i2\pi \frac{k}{N}(2m+1)}
+$$
+
+$$
+= \sum_{m=0}^{N/2 - 1} \frac{1}{\sqrt{N}} x(2m) e^{-i2\pi \frac{k}{N/2} m} + \left(\sum_{m=0}^{N/2 - 1} \frac{1}{\sqrt{N}} x(2m+1) e^{-i2\pi \frac{k}{N/2} m}\right) e^{-i2\pi \frac{k}{N}}
+$$
+
+Define $x_0(m) = x(2m)$ and $x_1(m) = x(2m+1)$, for $m = 0, 1, \ldots, \frac{N}{2} - 1$. Then, the above leads to
+
+$$
+\hat{x}\!\left(\frac{k}{N}\right) = \frac{1}{\sqrt{2}} \hat{x}_0\!\left(\frac{k}{N/2}\right) + e^{-i2\pi \frac{k}{N}} \frac{1}{\sqrt{2}} \hat{x}_1\!\left(\frac{k}{N/2}\right)
+$$
+
+Thus, as we see, the above leads to a parallel processing of two smaller length transforms. If $N$ is a power of 2, we can continue with this approach to a building block of length $N = 2$. By inductively splitting the summations in the expansions as above, the FFT algorithm then reduces the computational complexity for the $\mathcal{F}_{DD}$ from $N^2$ complex operations to $N \log_2(N)$ (with $N$ being a power of 2) such operations.
+
+<Remark id="5.4">
+The FFT algorithm achieves a dramatic speedup: for $N = 1024$, the naive DFT requires about $10^6$ operations, while the FFT requires only about $10^4$. This makes real-time signal processing practical.
+</Remark>
+
+## 5.2 The Discrete-to-Continuous Fourier Transform (DCFT): $\mathcal{F}_{DC}$
+
+The Discrete-to-Continuous Fourier Transform can be viewed as the inverse of $\mathcal{F}_{CD}$ (with $P$ taken to be 1 and a negation in the index):
+
+<Definition id="5.5" title="DCFT">
+A signal $x \in l_2(\mathbb{Z}; \mathbb{R})$ can be expanded as:
+
+$$
+x(n) = \int_0^1 \hat{x}(f) e^{i2\pi f n}\, df, \quad n \in \mathbb{Z}
+$$
+
+with
+
+$$
+\hat{x}(f) = \sum_{n \in \mathbb{Z}} x(n) e^{-i2\pi f n}, \quad f \in [0, 1)
+$$
+
+We write $\hat{x} = \mathcal{F}_{DC}(x)$.
+</Definition>
+
+<Remark id="5.5">
+The DCFT maps a discrete-time signal to a continuous function of frequency. The output $\hat{x}(f)$ is periodic with period 1. This transform is the workhorse of discrete-time signal processing -- it takes a sequence of numbers and produces a continuous frequency spectrum.
+</Remark>
+
+<Remark>
+**What each part of the equation does (DCFT forward):**
+
+$$\hat{x}(f) = \sum_{n \in \mathbb{Z}} x(n) \, e^{-i2\pi f n}, \quad f \in [0, 1)$$
+
+- **$x(n)$** -- the original discrete-time signal: an infinite sequence of numbers indexed by all integers $n \in \mathbb{Z}$
+- **$e^{-i2\pi f n}$** -- a complex sinusoid at frequency $f$, evaluated at discrete time $n$. By Euler's formula, $e^{-i2\pi f n} = \cos(2\pi f n) - i\sin(2\pi f n)$. This is the frequency detector, just as in the other transforms
+- **$x(n) \cdot e^{-i2\pi f n}$** -- the product of the signal sample with the detector at that sample. If $x$ oscillates at frequency $f$, these products reinforce rather than cancel
+- **$\sum_{n \in \mathbb{Z}}$** -- sum over all integer time indices, from $-\infty$ to $+\infty$. This replaces integration (since the signal is discrete) and replaces the finite sum of the DDFT (since the signal is now infinite-length)
+- **$\hat{x}(f)$** -- the result is a **continuous** function of frequency $f \in [0,1)$, and it is periodic with period 1. The output lives on a continuous interval because the input is an infinite-length sequence -- more input data yields a denser (continuous) frequency representation. The magnitude $|\hat{x}(f)|$ gives the spectral amplitude at frequency $f$, and the angle gives the phase
+
+Note that there is no explicit $1/\sqrt{P}$ normalization here because the convention uses $P = 1$ and the normalization is absorbed into the inverse transform's integration.
+</Remark>
+
+<Remark>
+**What each part of the equation does (DCFT inverse -- Synthesis):**
+
+$$x(n) = \int_0^1 \hat{x}(f) \, e^{i2\pi f n} \, df, \quad n \in \mathbb{Z}$$
+
+- **$\hat{x}(f)$** -- the continuous frequency spectrum. For each frequency $f$, this complex-valued function tells you the amplitude and phase of that component
+- **$e^{i2\pi f n}$** -- a complex sinusoid at frequency $f$, evaluated at discrete time $n$. The **positive sign** (vs. negative in the forward transform) signals that this is synthesis
+- **$\hat{x}(f) \cdot e^{i2\pi f n}$** -- one infinitesimal frequency component, weighted by the spectrum. Each value of $f$ contributes a tiny sinusoidal piece to the reconstructed signal
+- **$\int_0^1 df$** -- integration over all frequencies in one period $[0,1)$. Since the spectrum is continuous, reconstruction requires integrating (not summing) over all frequency components. This integral adds up a continuum of weighted oscillations to recover $x(n)$
+- **$x(n)$** -- the reconstructed signal sample at time $n$, perfectly recovered from the continuous spectrum
+</Remark>
+
+## 5.3 The CCFT: $\mathcal{F}_{CC}$ on $\mathcal{S}$ and its Extension to $L_2(\mathbb{R})$
+
+We will define the CCFT by the relation
+
+<Definition id="5.6" title="CCFT">
+$$
+x(t) = \int_{f=-\infty}^{\infty} \hat{x}(f) e^{i2\pi f t}\, df, \quad f \in \mathbb{R}
+$$
+
+with
+
+$$
+\hat{x}(f) = \int_{\tau=-\infty}^{\infty} x(t) e^{-i2\pi f t}\, dt, \quad f \in \mathbb{R}
+$$
+
+We write $\hat{x} = \mathcal{F}_{CC}(x)$.
+</Definition>
+
+<Remark>
+**Intuition:** The CCFT is the "fully continuous" Fourier transform: it maps a continuous-time signal defined on all of $\mathbb{R}$ to a continuous frequency spectrum on all of $\mathbb{R}$. Unlike the Fourier series (which produces discrete frequencies), the CCFT produces a continuous frequency density. This is the appropriate transform for non-periodic signals of finite energy, and it is the transform most commonly meant when engineers simply say "the Fourier transform."
+</Remark>
+
+<Remark>
+**What each part of the equation does (CCFT forward):**
+
+$$\hat{x}(f) = \int_{\tau=-\infty}^{\infty} x(t) \, e^{-i2\pi f t} \, dt, \quad f \in \mathbb{R}$$
+
+- **$x(t)$** -- the original signal in continuous time, defined for all $t \in \mathbb{R}$
+- **$e^{-i2\pi ft}$** -- a complex sinusoid at frequency $f$ (the "detector"). By Euler's formula, this equals $\cos(2\pi ft) - i\sin(2\pi ft)$. It probes the signal for content at frequency $f$
+- **$x(t) \cdot e^{-i2\pi ft}$** -- multiplying the signal by the detector. If the signal contains frequency $f$, this product will have a steady (non-cancelling) component
+- **$\int_{-\infty}^{\infty} dt$** -- integrating (summing up) over all time. If frequency $f$ is present, the integral is large; if not, positive and negative parts cancel and the integral is small or zero
+- **$\hat{x}(f)$** -- the result: a complex number for each frequency $f \in \mathbb{R}$, forming a continuous spectrum. The magnitude $|\hat{x}(f)|$ tells you the amplitude at frequency $f$, and the angle $\angle \hat{x}(f)$ tells you the phase shift of that component
+
+This is the "fully continuous" version: continuous time in, continuous frequency out. Both the signal and its transform live on $\mathbb{R}$, and neither is assumed periodic.
+</Remark>
+
+<Remark>
+**What each part of the equation does (CCFT inverse -- Synthesis):**
+
+$$x(t) = \int_{f=-\infty}^{\infty} \hat{x}(f) \, e^{i2\pi f t} \, df, \quad t \in \mathbb{R}$$
+
+- **$\hat{x}(f)$** -- the continuous frequency spectrum (the "frequency recipe"). For each frequency $f$, this complex number encodes the amplitude and phase of that component
+- **$e^{i2\pi ft}$** -- a complex sinusoid at frequency $f$. Note the **positive sign** in the exponent (vs. $e^{-i2\pi ft}$ in the forward transform). This generates the actual oscillation at frequency $f$
+- **$\hat{x}(f) \cdot e^{i2\pi ft}$** -- one infinitesimal frequency component, weighted by the spectrum. The coefficient $\hat{x}(f)$ controls how much of frequency $f$ to add back
+- **$\int_{-\infty}^{\infty} df$** -- integrating over all frequencies. Since the spectrum is continuous, we sum a continuum of weighted oscillations. Each infinitesimal frequency band $[f, f+df]$ contributes $\hat{x}(f) e^{i2\pi ft} df$ to the total signal
+- **$x(t)$** -- the reconstructed signal at time $t$, perfectly recovered by summing all frequency contributions
+
+The synthesis integral assembles the original signal from its frequency ingredients, just as the forward transform decomposed it. The two operations are perfect inverses of each other.
+</Remark>
+
+Two important properties are given in the following.
+
+<Theorem id="5.3.1" title="Differentiation Properties of CCFT">
+For $\phi \in \mathcal{S}$ and $m \in \mathbb{Z}_+$:
+
+a) $\displaystyle \mathcal{F}_{CC}\!\left(\frac{d^m}{dt^m} \phi\right)\!(f) = (i2\pi f)^m \mathcal{F}_{CC}(\phi)(f)$.
+
+b) $\displaystyle \frac{d^m}{df^m} \mathcal{F}_{CC}(\phi)(f) = \mathcal{F}_{CC}\!\left((-i2\pi t)^m \phi\right)\!(f)$
+</Theorem>
+
+<Proof title="Proof of part (a)">
+Take $m = 1$. Applying integration by parts,
+
+$$
+\int \frac{d}{dt} \phi(t) e^{-i2\pi f t}\, dt
+$$
+
+$$
+= \lim_{A \to \infty} \int_{-A}^{A} \frac{d}{dt} \phi(t) e^{-i2\pi f t}\, dt
+$$
+
+$$
+= \lim_{A \to \infty} \left( \phi(t) e^{-i2\pi f t} \Big|_{-A}^{A} - \int_{-A}^{A} \phi(t)(-i2\pi f) e^{-i2\pi f t}\, dt \right)
+$$
+
+$$
+= (i2\pi f) \mathcal{F}_{CC}(\phi)(f)
+$$
+
+In the above, since $\phi \in \mathcal{S}$, the first term on the right (the boundary term) is zero. For $m > 1$, the result follows by repeating the above.
+</Proof>
+
+<Proof title="Proof of part (b)">
+$$
+\frac{d}{df} \int \phi(t) e^{-i2\pi f t}\, dt = \lim_{h \to 0} \frac{\int \phi(t)(e^{-i2\pi(f+h)t} - e^{-i2\pi f t})\, dt}{h}
+$$
+
+$$
+= \lim_{h \to 0} \frac{\int \phi(t)(e^{-i2\pi h t} - 1) e^{-i2\pi f t}\, dt}{h}
+$$
+
+$$
+= \lim_{h \to 0} \frac{\int \phi(t)\Big((\cos(2\pi h t) - 1) + -i(\sin(2\pi h t) - 0)\Big) e^{-i2\pi f t}\, dt}{h}
+$$
+
+$$
+= \lim_{h \to 0} \frac{\int \phi(t)(\cos(2\pi h t) - 1) e^{-i2\pi f t}\, dt}{h} - \lim_{h \to 0} \frac{\int \phi(t) i \sin(2\pi h t) e^{-i2\pi f t}\, dt}{h}
+$$
+
+$$
+= \int \phi(t)(-i2\pi t) e^{-i2\pi f t}\, dt,
+$$
+
+where the last line follows from splitting the integral so that the imaginary and the real parts involving $(\cos(2\pi h t) - 1) + -i(\sin(2\pi h t) - 0)$ are integrated separately (provided that the limits exist, which do by the dominated convergence theorem) and then applying the dominated convergence theorem to each integral as in the proof of Theorem A.2.1 in the Appendix.
+
+For $m > 1$, the result follows by repeating the above. $\square$
+</Proof>
+
+<Remark id="5.6">
+Theorem 5.3.1 is one of the most powerful properties of the Fourier transform. Part (a) says that differentiation in time corresponds to multiplication by $i2\pi f$ in frequency. Part (b) says that multiplication by $t$ in time corresponds to differentiation in frequency (up to a constant). These properties are what make the Fourier transform so useful for solving differential equations.
+</Remark>
+
+<Theorem id="5.3.2" title="CCFT maps Schwartz space to itself">
+$\mathcal{F}_{CC}$ is a continuous linear map on $\mathcal{S}$ to $\mathcal{S}$.
+</Theorem>
+
+<Remark>
+**Intuition:** Schwartz functions are "maximally well-behaved" signals -- they are infinitely smooth and decay faster than any polynomial. This theorem says the Fourier transform preserves this niceness: transforming a Schwartz function gives another Schwartz function. This makes the Schwartz space a natural starting point for Fourier analysis, from which results can then be extended to larger spaces like $L_2$.
+</Remark>
+
+<Proof>
+Let $\hat{\phi} = \mathcal{F}_{CC}(\phi)$. We first show that $\hat{\phi} \in \mathcal{S}$. We use Theorem 5.3.1 in the following. We have
+
+$$
+\sup_{f \in \mathbb{R}} \left|f^m \frac{d^k}{df^k} \hat{\phi}(f)\right| = \sup_{f \in \mathbb{R}} \left|f^m \mathcal{F}_{CC}\!\left((-i2\pi t)^k \phi(t)\right)\!(f)\right|
+$$
+
+$$
+= \sup_{f \in \mathbb{R}} \left|\mathcal{F}_{CC}\!\left(\frac{d^m}{dt^m}\left(\frac{1}{(i2\pi)^m} (-i2\pi t)^k \phi(t)\right)\right)\!(f)\right| < \infty
+$$
+
+Note that $\left(\frac{d^m}{dt^m}\left((2\pi t)^k \phi(t)\right)\right) \in \mathcal{S}$. It follows that the term above is bounded for every $m, k \in \mathbb{Z}_+$ and we have that $\hat{\phi} \in \mathcal{S}$.
+
+We now discuss continuity. With $\hat{\phi}_n = \mathcal{F}_{CC}(\phi_n)$, let $\phi_n \to \phi \equiv 0$ (that is $\phi(t) = 0$ for all $t$) in the Schwartz space $\mathcal{S}$. Then, building on the analysis above for every $m, k \in \mathbb{Z}_+$,
+
+$$
+\sup_{f \in \mathbb{R}} \left|f^m \frac{d^k}{df^k} \hat{\phi}_n(f)\right| \to 0.
+$$
+
+It follows that $\mathcal{F}_{CC}(\phi_n) \to \hat{\phi}$ (in the Schwartz space) where $\hat{\phi}(f) = 0$ for all $f \in \mathbb{R}$. $\square$
+</Proof>
+
+We will see in the following that the CCFT is a transformation also from $L_2(\mathbb{R}; \mathbb{C}) \to L_2(\mathbb{R}; \mathbb{C})$.
+
+### 5.3.1 The Inverse Transform
+
+The following is known as the Riemann-Lebesgue lemma.
+
+<Theorem id="5.3.3" title="Riemann-Lebesgue Lemma">
+Let $g \in L_1(\mathbb{R}; \mathbb{R})$. Then,
+
+$$
+\lim_{f \to \infty} \int g(t) e^{-i2\pi f t}\, dt = 0
+$$
+</Theorem>
+
+<Remark>
+**Intuition:** The Riemann-Lebesgue lemma says that the Fourier transform of any integrable signal decays to zero at extreme frequencies. Physically, this means an $L_1$ signal cannot have unbounded high-frequency content -- eventually, the frequency components must die out. This is a fundamental regularity property of the Fourier transform.
+</Remark>
+
+<Proof>
+By Theorem 2.3.12, for every $\epsilon > 0$ there exists $f_c \in C_c$ (that is $f_c$ is continuous with compact support) such that $\|f - f_c\| \leq \epsilon/2$. Furthermore, we can approximate a continuous function with a function $g_c$ which is differentiable (even with continuous derivatives, a function in $C_c^1$ -- say by polynomials) so that $\|f - g_c\| \leq \epsilon$. Now, for any $a, b \in \mathbb{R}$, using integration by parts
+
+$$
+\left|\int_a^b g_c(t) e^{-i2\pi f t}\, dt\right| \leq \left|\frac{i}{2\pi f} g_c(t) e^{-2i\pi f t} \Big|_a^b\right| + \left|\frac{1}{2\pi f} \int_a^b |g_c'(t)|\, dt\right|
+$$
+
+The right hand side converges to 0 as $|f| \to \infty$. This holds for every $\epsilon > 0$. $\square$
+</Proof>
+
+<Lemma id="5.3.1">
+The following holds for all $\phi \in \mathcal{S}$:
+
+$$
+\lim_{n \to \infty} \int \frac{\sin(nx)}{\pi x}\, \phi(x)\, dx \to \tilde{\delta}(\phi) = \phi(0)
+$$
+</Lemma>
+
+<Remark>
+**Intuition:** This lemma shows that the "sinc-like" function $\frac{\sin(nx)}{\pi x}$ behaves like a Dirac delta as $n$ grows large -- it concentrates all its mass at the origin and "picks out" the value $\phi(0)$. This is the key technical fact that makes the Fourier inversion formula work: the integral of the inverse transform converges to the original signal value.
+</Remark>
+
+<Proof>
+Recall from Exercise 3.4.1 that Theorem 5.3.3 (Riemann-Lebesgue Lemma) was utilized to arrive at this result. The key idea is as follows.
+
+Write $\phi(x) = \phi(0) + (\phi(x) - \phi(0))$. Then:
+
+$$
+\int \frac{\sin(nx)}{\pi x} \phi(x)\, dx = \phi(0) \int \frac{\sin(nx)}{\pi x}\, dx + \int \frac{\sin(nx)}{\pi x} (\phi(x) - \phi(0))\, dx
+$$
+
+For the first term, by the well-known identity $\int_{-\infty}^{\infty} \frac{\sin(nx)}{\pi x}\, dx = 1$ for all $n > 0$, this equals $\phi(0)$.
+
+For the second term, define $g(x) = \frac{\phi(x) - \phi(0)}{\pi x}$. Since $\phi \in \mathcal{S}$, $g$ is smooth near $x = 0$ (with $g(0) = \frac{\phi'(0)}{\pi}$) and decays rapidly as $|x| \to \infty$. In particular, $g \in L_1(\mathbb{R})$. By the Riemann-Lebesgue lemma (Theorem 5.3.3):
+
+$$
+\lim_{n \to \infty} \int g(x) \sin(nx)\, dx = 0
+$$
+
+Combining both terms gives $\lim_{n \to \infty} \int \frac{\sin(nx)}{\pi x} \phi(x)\, dx = \phi(0)$. $\square$
+</Proof>
+
+With this discussion, we can show that the inverse $\mathcal{F}_{CC}^{-1}$ is defined on $\mathcal{S}$ as:
+
+$$
+\mathcal{F}_{CC}^{-1}(\hat{\phi}) := \int \hat{\phi}(f) e^{i2\pi f t}\, df.
+$$
+
+Observe that
+
+$$
+\int_{-\infty}^{\infty} \hat{\phi}(f) e^{i2\pi f t}\, df
+$$
+
+$$
+= \lim_{A \to \infty} \int_{f=-A}^{A} \hat{\phi}(f) e^{i2\pi f t}\, df
+$$
+
+$$
+= \lim_{A \to \infty} \int_{f=-A}^{A} \left(\int \phi(\tau) e^{-i2\pi f \tau}\, d\tau\right) e^{i2\pi f t}\, df
+$$
+
+$$
+= \lim_{A \to \infty} \int \phi(\tau) \int_{f=-A}^{A} e^{-i2\pi f \tau} e^{i2\pi f t}\, df\, d\tau
+$$
+
+$$
+= \lim_{A \to \infty} \int \phi(\tau) \left(\int_{f=-A}^{A} e^{-i2\pi f(\tau - t)}\, df\right) d\tau
+$$
+
+For every fixed $A$, we can justify the above by (Fubini's) Theorem A.3.1. By Lemma 5.3.1, the fact that
+
+$$
+\int_{f=-A}^{A} e^{-i2\pi f(\tau - t)}\, df = \frac{1}{\pi(t - \tau)} \sin(2A\pi(t - \tau)),
+$$
+
+represents a distribution which converges to the $\tilde{\delta}_t$ distribution (which then satisfies $\int \phi(\tau)\tilde{\delta}_t(\tau)\, d\tau \equiv \int \phi(\tau)\delta(t - \tau)\, d\tau = \phi(t)$) leads to the desired result.
+
+### 5.3.2 Plancherel's Identity / Parseval's Theorem
+
+<Theorem id="5.3.4" title="Plancherel's Identity / Parseval's Theorem">
+For every $h, g \in \mathcal{S}$ (as well as $L_2(\mathbb{R}; \mathbb{C})$), the Fourier transforms $\hat{f}, \hat{g}$ satisfy:
+
+$$
+\langle \hat{h}, \hat{g} \rangle = \langle h, g \rangle
+$$
+</Theorem>
+
+<Proof>
+The proof of this follows from the following: First suppose $h, g \in \mathcal{S}$ are Schwartz signals (where we allow such signals to take complex values). Then, observe that
+
+$$
+\int \hat{h}(f) \overline{\hat{g}(f)}\, df = \int_f \left(\int_t h(t) e^{-i2\pi f t}\, dt\right) \overline{\hat{g}(f)}\, df
+$$
+
+$$
+= \int_t h(t) \left(\int_f \overline{\hat{g}(f)} e^{-i2\pi f t}\, df\right) dt
+$$
+
+$$
+= \int_t h(t) \overline{\int_f \hat{g}(f) e^{i2\pi f t}\, df}\, dt
+$$
+
+$$
+= \int_t h(t) \overline{g(t)}\, dt
+$$
+
+Here, the second step follows from Fubini's theorem. Hence, it follows that
+
+$$
+\langle \hat{h}, \hat{g} \rangle = \langle h, g \rangle,
+$$
+
+as required. $\square$
+</Proof>
+
+<Remark id="5.7">
+When $h = g$, Plancherel's identity reduces to Parseval's theorem: $\|\hat{h}\|^2 = \|h\|^2$. This says that the Fourier transform preserves energy -- the total energy of a signal computed in the time domain equals the total energy computed in the frequency domain. In engineering terms, the Fourier transform is an isometry (distance-preserving map).
+</Remark>
+
+### 5.3.3 Extension of $\mathcal{F}_{CC}$ on $L_2(\mathbb{R}; \mathbb{C})$ and Plancherel's Theorem
+
+The above discussion applies for $h, g \in \mathcal{S}$ (where we also allow for $\mathbb{C}$-valued functions in $\mathcal{S}$). We will show that one can extend the Fourier transform for signals in $L_2(\mathbb{R}; \mathbb{C})$. Furthermore, as not every function in $L_2(\mathbb{R})$ is also in $L_1(\mathbb{R})$ (for example: $f(t) = \frac{1}{\sqrt{1+t^2}}$ is in $L_2$ but not in $L_1$), one cannot define a Fourier transform of a general function in $L_2(\mathbb{R})$ pointwise directly by an integral.
+
+Recall from Theorem 2.3.8, and the discussions following it, that continuous functions are dense in integrable functions, and from Corollary 3.4.1 one can approximate a continuous function by its convolution with a smooth approximate identity sequence leading to a smooth approximation. These lead to the following.
+
+<Theorem id="5.3.5" title="Density of Schwartz Space">
+$\mathcal{S}$ is dense in $L_2(\mathbb{R})$.
+</Theorem>
+
+<Remark>
+**Intuition:** This density result is what allows us to extend the Fourier transform from Schwartz functions (where everything converges nicely) to all of $L_2(\mathbb{R})$. Since every $L_2$ signal can be approximated by Schwartz functions, we can define its Fourier transform as the limit of the transforms of the approximating Schwartz functions.
+</Remark>
+
+With this theorem, our goal will be to define the CCFT of a signal $f$ in $L_2(\mathbb{R}; \mathbb{C})$ as follows. Let $\{\phi_n\}$ be a sequence of functions in $\mathcal{S}$ converging to $f$ (This is possible by the denseness of $\mathcal{S}$ in $L_2$). We **define** the CCFT of $f$ as the $L_2$ limit of a sequence of CCFTs of $\{\phi_n\}$. Such an extension defines the **unique extension** of $\mathcal{F}_{CC}$ from $\mathcal{S}$ to $\mathcal{S}$ which is continuous on $L_2$. This result builds on the following theorem.
+
+<Theorem id="5.3.6" title="Bounded Linear Extension">
+Let $T : M \to Y$ be a linear mapping, $Y$ a Banach space, $M$ a dense linear subspace of a normed linear space $X$. Furthermore, let $T$ be bounded in the sense that
+
+$$
+\|T\| = \sup_{x \in M, x \neq 0} \frac{\|Tx\|}{\|x\|} < \infty.
+$$
+
+Then, there exists a unique extension of $T$ on $X$ to $Y$, denoted by $\bar{T} : X \to Y$, such that $\bar{T}(x) = T(x)$ for $x \in M$ (that is, $T$ and $\bar{T}$ are in agreement on $M$). Furthermore, with
+
+$$
+\|\bar{T}\| := \sup_{x \in X, x \neq 0} \frac{\|\bar{T}x\|}{\|x\|},
+$$
+
+we have $\|T\| = \|\bar{T}\|$.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem is the general machine for extending operators from a dense subspace to the entire space. If a linear map is bounded (continuous) on a dense subset of a normed space, it can be uniquely extended to the whole space without increasing its norm. This is precisely how the CCFT is extended from the Schwartz space to all of $L_2$ -- the Fourier transform is bounded on $\mathcal{S}$ (by Parseval), so it extends uniquely and continuously to $L_2$.
+</Remark>
+
+<Proof>
+For every $x$ there exists a sequence $x_n \in M$ so that $x_n \to x$ in $X$. We want to define for every $x \in X$
+
+$$
+\bar{T}(x) = \lim_{x_n \to x} T(x_n) = \lim_{n \to \infty} T(x_n)
+$$
+
+First note that $x_n$ is Cauchy, as it is converging to $x$, and therefore since for every $\epsilon > 0$ there exists $N$ so that for $n, m \geq N$, $\|x_n - x_m\| \leq \epsilon$. It follows that sequence $T(x_n)$ is also Cauchy since for every $\epsilon' = \|T\|\epsilon > 0$ there exists $N$ so that for $n, m \geq N$, $|T(x_n) - T(x_m)| = |T(x_n - x_m)| \leq \|T\|\|x_n - x_m\| \leq \|T\|\epsilon = \epsilon'$. Therefore $\lim_{n \to \infty} T(x_n)$ exists. Furthermore $\bar{T}(x)$ is well-defined in the sense that for any other sequence $y_n \to x$, we will have that
+
+$$
+\|\lim_{n \to \infty} T(x_n) - \lim_{n \to \infty} T(y_n)\| = \|\lim_{n \to \infty} T(x_n - y_n)\| \leq \lim_{n \to \infty} \|T\|\|x_n - y_n\| \leq \lim_{n \to \infty} \|T\|(\|x_n - x\| + \|y_n - x\|) = 0,
+$$
+
+since both $x_n$ and $y_n$ converge to $x$. Thus, there is a unique value for $\bar{T}(x)$ for any $x \in X$. Finally, we show that $\|\bar{T}\| = \|T\|$. First, for any $x \in X$, with $M \ni x_n \to x$,
+
+$$
+|\bar{T}(x)| = |\lim_{n \to \infty} T(x_n)| \leq \|T\| \lim_{n \to \infty} \|x_n\| = \|T\|\|x\|,
+$$
+
+and thus $\|\bar{T}\| \leq \|T\|$. On the other hand, $\bar{T}(x) = T(x)$ for $x \in M$ and thus we must have $\|T\| \leq \|\bar{T}\|$. Thus, the norms must be equal. $\square$
+</Proof>
+
+Now, let $M = \mathcal{S}$, $X = Y = L_2(\mathbb{R}; \mathbb{C})$, $T = \mathcal{F}_{CC}$ and note by Theorem 5.3.4 that $\|\mathcal{F}_{CC}\| = 1$ (**when viewed as a mapping from a subset of $L_2(\mathbb{R}; \mathbb{C})$**). In view of this, **we define $\mathcal{F}_{CC}$ on $L_2(\mathbb{R}; \mathbb{C})$ to be the unique extension of $\mathcal{F}_{CC}$ from $\mathcal{S} \to L_2(\mathbb{R}; \mathbb{C})$**. Thus, for $h \in L_2(\mathbb{R}; \mathbb{C})$,
+
+$$
+\langle h, h \rangle = \langle \hat{h}, \hat{h} \rangle, \quad \hat{h} = \mathcal{F}_{CC}(h).
+$$
+
+In view of the above, we have that Plancherel's Theorem also applies to signals in $L_2(\mathbb{R}; \mathbb{C})$.
+
+$$
+\langle g, h \rangle = \langle \hat{g}, \hat{h} \rangle, \quad h, g \in \mathcal{S}
+$$
+
+that
+
+$$
+\|\mathcal{F}_{CC}\| = 1.
+$$
+
+By the stated (extension) theorem, it follows that $\mathcal{F}_{CC}$ is also unitary on $L_2(\mathbb{R}; \mathbb{C})$ with the same operator norm, that is:
+
+$$
+\langle g, h \rangle = \langle \hat{g}, \hat{h} \rangle, \quad h, g \in L_2(\mathbb{R}; \mathbb{C}).
+$$
+
+To verify this, let $g$ and $h$ be in $L_2(\mathbb{R}; \mathbb{C})$ and $g_n \to g$, and let $h_n \to h$ with $g_n, h_n \in \mathcal{S}$ being Schwartz signals. By Plancherel's identity:
+
+$$
+\langle g_n, h_n \rangle = \langle \hat{g}_n, \hat{h}_n \rangle
+$$
+
+Let us take the limit as $n \to \infty$ on both sides. For the left hand side the Cauchy-Schwarz inequality implies that
+
+$$
+\lim \langle g_n, h_n \rangle = \langle g, h \rangle,
+$$
+
+because
+
+$$
+|\langle g_n, h_n \rangle - \langle g, h \rangle| = |\langle g_n - g, h_n \rangle + \langle g, h_n - h \rangle| \leq \|g_n - g\|\|h_n\| + \|g\|\|h_n - h\| \to 0
+$$
+
+Likewise
+
+$$
+|\langle \hat{g}_n, \hat{h}_n \rangle - \langle \hat{g}, \hat{h} \rangle| = |\langle \hat{g}_n - \hat{g}, \hat{h}_n \rangle + \langle \hat{g}, \hat{h}_n - \hat{h} \rangle| \leq \|\hat{g}_n - \hat{g}\|\|\hat{h}_n\| + \|\hat{g}\|\|\hat{h}_n - \hat{h}\| \to 0
+$$
+
+Here, the convergence to zero follows from the fact that $\|\hat{g}_n - \hat{g}\| \to 0$ (since $\|g_n - g\| = \|\hat{g}_n - \hat{g}\| \to 0$ by the discussion above) and that $\|\hat{h}_n\|$ is bounded. This generalizes Plancherel's identity for signals in $L_2(\mathbb{R}; \mathbb{C})$.
+
+## 5.4 Fourier Transform of Distributions ($\mathcal{F}_{CC}$ on $\mathcal{S}^*$)
+
+Recall that $\mathcal{S}^*$ is the dual space on $\mathcal{S}$, that is the space of distributions (linear and continuous functions) on $\mathcal{S}$.
+
+<Definition id="5.7" title="Fourier Transform of a Distribution">
+The Fourier transform of a distribution is defined by the following relation: Let $T \in \mathcal{S}^*$. Then, with $\hat{T} = \mathcal{F}_{CC}(T)$, we have
+
+$$
+\hat{T}(\phi) = T(\hat{\phi}) \quad \phi \in \mathcal{S}
+$$
+
+This definition is consistent with the Fourier transform of a regular distribution (represented by some function $\psi \in \mathcal{S}$) being a distribution which is represented by the Fourier transform of $\psi$. That is,
+
+$$
+\int \hat{\psi}(f) \phi(f)\, df = \int \psi(t) \hat{\phi}(t)\, dt.
+$$
+
+This equality follows from Fubini's theorem by expressing $\hat{\psi}(f) = \int \psi(t) e^{-i2\pi f t}\, dt$.
+</Definition>
+
+<Remark>
+**Intuition:** Defining the Fourier transform of a distribution via $\hat{T}(\phi) = T(\hat{\phi})$ is an elegant "trick": instead of trying to transform the distribution directly (which may not be a regular function), we transform the test function and let the distribution act on the result. This allows us to take Fourier transforms of objects like the Dirac delta, step functions, and periodic signals that do not have classical Fourier transforms.
+</Remark>
+
+<Definition id="5.8" title="Inverse Fourier Transform of a Distribution">
+The inverse $\mathcal{F}_{CC}^{-1}$ of a distribution is defined with the relation
+
+$$
+\mathcal{F}_{CC}^{-1}(T)(\phi) = T(\mathcal{F}_{CC}^{-1}(\phi)) \quad \phi \in \mathcal{S}
+$$
+</Definition>
+
+<Remark>
+**Intuition:** The inverse Fourier transform of a distribution follows the same "dual" strategy: apply the inverse transform to the test function, then let the distribution act on the result. Together with the forward transform, this gives us a complete and invertible Fourier theory on the space of distributions.
+</Remark>
+
+With the above, we can conclude that $\hat{T}$ itself is a distribution. Just as the CCFT is a map from $\mathcal{S}$ to itself, the CCFT is also a mapping from $\mathcal{S}^*$ to itself. Thus, every distribution has a Fourier Transform.
+
+Furthermore, the map $\mathcal{F}_{CC} : \mathcal{S}^* \to \mathcal{S}^*$ is continuous, linear, and one-to-one. The continuity follows from the definition of the Fourier transform and continuity in $\mathcal{S}^*$.
+
+Since any singular distribution can be expressed as a weak* limit of such regular distributions (represented by signals in $\mathcal{S}$), the definition above is consistent with the $\mathcal{F}_{CC}$ of regular distributions.
+
+<Remark id="5.8">
+The power of defining the Fourier transform on distributions is that we can take Fourier transforms of objects that are not ordinary functions -- like the Dirac delta $\delta$, the unit step function, and periodic signals. This vastly extends the applicability of Fourier analysis.
+</Remark>
+
+<Example id="5.1" title="Fourier Transform of the Dirac Delta">
+Show that $\hat{\delta}$ has its $\mathcal{F}_{CC}$ as a distribution represented by the function $h(f) = 1$ for all $f \in \mathbb{R}$.
+
+Accordingly, if we approximate the Dirac Delta distribution $\delta$ as a limit in $\mathcal{S}^*$ of a sequence of regular distributions represented by an approximate identity sequence, the Fourier transform of this sequence converges to the $\mathcal{F}_{CC}$ of $\hat{\delta}$, which is the distribution represented by $h(f) = 1$. Often, informally, we write $\hat{\delta}(f) = 1$ for all $f \in \mathbb{R}$.
+
+This is important for applications in systems theory: the impulse response and its Fourier transform, the frequency response, of a linear time-invariant system are critical functions defining such a system. When the input is idealized as a Dirac delta function, viewed as a distribution, the output is the impulse response. And when the Fourier of the Dirac delta function, $\hat{\delta}(f) = 1$ is taken as the input in frequency domain, also to be viewed as a distribution, the output of the system is the frequency response.
+</Example>
+
+<Example id="5.2" title="Fourier Transform of Cosine">
+We can compute the Fourier transform of $\cos(2\pi f_0 t)$ by viewing it as a distribution, in the sense that it represents a distribution. Observing that $\cos(2\pi f_0 t) = \frac{1}{2}e^{i2\pi f_0 t} + \frac{1}{2}e^{-i2\pi f_0 t}$, we consider:
+
+$$
+\lim_{T \to \infty} \int_{-T}^{T} e^{i2\pi f_0 f} \hat{\phi}(f)\, df
+$$
+
+$$
+= \lim_{T \to \infty} \int_{-T}^{T} e^{i2\pi f_0 f} \left(\int \phi(t) e^{-i2\pi f t}\, dt\right) df
+$$
+
+$$
+= \lim_{T \to \infty} \int \phi(t) \left(\int_{-T}^{T} e^{i2\pi f_0 f} e^{-i2\pi f t}\, df\right) dt
+$$
+
+$$
+= \lim_{T \to \infty} \int \phi(t) \left(\int_{-T}^{T} e^{i2\pi(f_0 - t)f}\, df\right) dt
+$$
+
+$$
+= \lim_{T \to \infty} \int \phi(t) \frac{\sin(2\pi(f_0 - t)T)}{\pi(f_0 - t)}\, dt
+$$
+
+$$
+= \delta_{f_0}(\phi) \left(\equiv \int \phi(t) \delta_{f_0}(t)\, dt\right)
+$$
+
+In the analysis above, we use the fact that $\hat{\phi} \in \mathcal{S}$, use Fubini's Theorem to change the order of the integrations and finally invoke Lemma 5.3.1. Thus, the CCFT of a cosine will be $1/2\,\delta_{f_0}(t) + 1/2\,\delta_{-f_0}(t)$. Here, the last equation in brackets is meant to be in an intuitive sense.
+</Example>
+
+## 5.5 $\mathcal{F}_{CC}$ of Periodic Signals
+
+The CCFT of a periodic signal can also be viewed as a distribution. Let $x(t)$ be continuous and periodic with period $P$ and $\phi \in \mathcal{S}$. Then,
+
+$$
+\langle \hat{x}, \phi \rangle = \langle x, \hat{\phi} \rangle
+$$
+
+$$
+= \int x(f) \hat{\phi}(f)\, df
+$$
+
+$$
+= \lim_{N \to \infty} \int \sum_{k=-N}^{N} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} f}\, \hat{\phi}(f)\, df
+$$
+
+$$
+= \lim_{N \to \infty} \lim_{T \to \infty} \int_{-T}^{T} \sum_{k=-N}^{N} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} f}\, \hat{\phi}(f)\, df
+$$
+
+$$
+= \lim_{N \to \infty} \lim_{T \to \infty} \int \phi(t) \left(\sum_{k=-N}^{N} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} f}\left(\int \phi(t) e^{-i2\pi f t}\, dt\right) df\right)
+$$
+
+$$
+= \lim_{N \to \infty} \lim_{T \to \infty} \int \phi(t) \left(\sum_{k=-N}^{N} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} \int_{-T}^{T} e^{i2\pi \frac{k}{P} f} e^{-i2\pi f t}\, df\right) dt
+$$
+
+$$
+= \lim_{N \to \infty} \lim_{T \to \infty} \int \phi(t) \left(\sum_{k=-N}^{N} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} \frac{\sin(2\pi(\frac{k}{P} - t)T)}{\pi(\frac{k}{P} - t)}\right) dt
+$$
+
+$$
+= \sum_{k=-\infty}^{\infty} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} \delta_{\frac{k}{P}}(\phi)
+$$
+
+$$
+\left(\equiv \int \phi(t) \sum_{k=-\infty}^{\infty} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} \delta_{\frac{k}{P}}(t)\, dt\right)
+$$
+
+In the above, the step involving the limit over $N$ builds on the dominated convergence theorem (Theorem A.1.5) given that $\hat{\phi} \in \mathcal{S}$.
+
+**Thus, we can essentially first view a periodic signal with its CDFT and then replace the values at $\frac{k}{P}$ with $\delta_{\frac{k}{P}}$.** This is in agreement with an engineering insight: If one is to express a periodic signal with its $\mathcal{F}_{CD}$ expression:
+
+$$
+x(t) = \sum_{k \in \mathbb{Z}} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} t}
+$$
+
+one would expect that this would be equivalent to the integral form:
+
+$$
+x(t) = \int \sum_{k \in \mathbb{Z}} \hat{x}\!\left(\frac{k}{P}\right) \frac{1}{\sqrt{P}} \delta_{\frac{k}{P}}(f) e^{i2\pi f t}\, df,
+$$
+
+whose equivalence is made precise through a distributional approach presented above.
+
+<Remark id="5.9">
+The Fourier transform of a periodic signal is a train of Dirac deltas located at the harmonic frequencies $\frac{k}{P}$, weighted by the Fourier series coefficients. This is the mathematical formalization of the intuitive idea that a periodic signal "lives" only at discrete frequencies.
+</Remark>
+
+## 5.6 Band-limited vs Time-limited Functions
+
+Let $\{x(t), \quad t \in \mathbb{R}\}$ be a continuous-time signal with $\hat{x} = \mathcal{F}_{CC}(x)$. If this signal has a finite (or bounded) bandwidth $B$, that is if
+
+$$
+\hat{x}(f) = 0, \quad |f| > B,
+$$
+
+(in which case we also say that $\hat{x}$ has bounded support), then it is not possible for the signal $x$ to have a bounded support.
+
+<Theorem id="5.6.1" title="Band-limited Signals Cannot Be Time-limited">
+Let $g$, with $\|g\|_2 \neq 0$ have a finite bandwidth. Then, $g$ cannot have a bounded support.
+</Theorem>
+
+<Proof title="Sketch of Proof">
+The proof uses ideas from complex analysis, and the Paley-Wiener Theorem. Let $g$ have bounded support. Consider the integral
+
+$$
+\int g(t) e^{zt}\, dt : \mathbb{C} \to \mathbb{C},
+$$
+
+which is an extension from the real-line to $\mathbb{C}$ of the Fourier transform $\int g(t) e^{-i2\pi f t}\, dt : \mathbb{R} \to \mathbb{C}$. Then, due to the bounded support condition on $g$, it can be shown that the complex differential
+
+$$
+\frac{d}{dz} \int g(t) e^{-zt}\, dt = \lim_{h = a + ib \to 0} \int g(t) e^{-zt} \frac{e^{-ht} - 1}{h}\, dt
+$$
+
+is well-defined and finite (where $h = a + ib \to 0$ denotes that the limit to 0 is to be taken along all complex valued sequences), and likewise for any $k \in \mathbb{N}$
+
+$$
+\frac{d^k}{dz^k} \int g(t) e^{-zt}\, dt,
+$$
+
+is finite, due to the bounded support condition on $g$. Since the integral $\int g(t) e^{-zt}\, dt$ is $\mathbb{C}$-valued, having finite derivatives for all $k$ implies that the function is analytic and the Taylor series can be used to express the signal in some neighborhood of any given point. Since this argument holds for every $z \in \mathbb{C}$, the integral is in fact an *entire function* and thus the Taylor series expansion must converge everywhere: Thus, if $\int g(t) e^{-zt}\, dt$ is zero in a continuum of points, then the integral has to be identically zero for all $z$, leading to a contradiction which would contradict the condition that $\|g\|_2 = \|\hat{g}\|_2 \neq 0$. $\square$
+</Proof>
+
+<Remark id="5.10">
+This is a fundamental result in signal processing known as the **uncertainty principle** for the Fourier transform. It says you cannot simultaneously have a signal that is both time-limited (zero outside some interval) and band-limited (zero outside some frequency interval). This is analogous to the Heisenberg uncertainty principle in quantum mechanics -- you cannot simultaneously localize a signal perfectly in both time and frequency. A further interpretation and derivation of such a result will be provided in Chapter 10.
+</Remark>
+
+## 5.8 Transform Quick Reference
+
+This section consolidates all four Fourier transforms into a single reference for comparison.
+
+### Summary of the Four Fourier Transforms
+
+**DDFT (Discrete-to-Discrete Fourier Transform) -- $\mathcal{F}_{DD}$**
+
+| | |
+|---|---|
+| **Input domain** | Discrete time: $x(n)$, $n \in \{0, 1, \ldots, N-1\}$ |
+| **Output domain** | Discrete frequency: $\hat{x}(k/N)$, $k \in \{0, 1, \ldots, N-1\}$ |
+| **Forward** | $\displaystyle \hat{x}(f) = \frac{1}{\sqrt{N}} \sum_{n=0}^{N-1} x(n)\, e^{-i2\pi f n}$ |
+| **Inverse** | $\displaystyle x(n) = \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} \hat{x}(k/N)\, e^{i2\pi \frac{k}{N} n}$ |
+| **When to use** | Finite-length discrete signals ($N$ samples). This is the transform that computers compute (via the FFT). |
+| **Key properties** | Parseval: $\sum |x(n)|^2 = \sum |\hat{x}(k/N)|^2$. Convolution in time $\leftrightarrow$ pointwise multiplication in frequency. Computable in $O(N \log N)$ via FFT. |
+
+**CDFT (Continuous-to-Discrete Fourier Transform) -- $\mathcal{F}_{CD}$**
+
+| | |
+|---|---|
+| **Input domain** | Continuous time on a finite interval: $x(t)$, $t \in [0, P]$ |
+| **Output domain** | Discrete frequency: $\hat{x}(k/P)$, $k \in \mathbb{Z}$ |
+| **Forward** | $\displaystyle \hat{x}(f) = \frac{1}{\sqrt{P}} \int_0^P x(t)\, e^{-i2\pi f t}\, dt$ |
+| **Inverse** | $\displaystyle x(t) = \frac{1}{\sqrt{P}} \sum_{k \in \mathbb{Z}} \hat{x}(k/P)\, e^{i2\pi \frac{k}{P} t}$ |
+| **When to use** | Periodic continuous-time signals with period $P$. This is the classical Fourier series. |
+| **Key properties** | Parseval: $\int_0^P |x(t)|^2\, dt = \sum_k |\hat{x}(k/P)|^2$. Cyclical convolution $\leftrightarrow$ pointwise multiplication. Frequency spacing $\Delta f = 1/P$ (longer period = finer resolution). |
+
+**DCFT (Discrete-to-Continuous Fourier Transform) -- $\mathcal{F}_{DC}$**
+
+| | |
+|---|---|
+| **Input domain** | Discrete time (infinite sequence): $x(n)$, $n \in \mathbb{Z}$ |
+| **Output domain** | Continuous frequency on $[0,1)$ (periodic with period 1): $\hat{x}(f)$ |
+| **Forward** | $\displaystyle \hat{x}(f) = \sum_{n \in \mathbb{Z}} x(n)\, e^{-i2\pi f n}$ |
+| **Inverse** | $\displaystyle x(n) = \int_0^1 \hat{x}(f)\, e^{i2\pi f n}\, df$ |
+| **When to use** | Infinite-length discrete-time signals. The workhorse of discrete-time signal processing and digital filter design. |
+| **Key properties** | Parseval: $\sum_n |x(n)|^2 = \int_0^1 |\hat{x}(f)|^2\, df$. Output is periodic in $f$ with period 1. Convolution of sequences $\leftrightarrow$ multiplication of spectra. |
+
+**CCFT (Continuous-to-Continuous Fourier Transform) -- $\mathcal{F}_{CC}$**
+
+| | |
+|---|---|
+| **Input domain** | Continuous time: $x(t)$, $t \in \mathbb{R}$ |
+| **Output domain** | Continuous frequency: $\hat{x}(f)$, $f \in \mathbb{R}$ |
+| **Forward** | $\displaystyle \hat{x}(f) = \int_{-\infty}^{\infty} x(t)\, e^{-i2\pi f t}\, dt$ |
+| **Inverse** | $\displaystyle x(t) = \int_{-\infty}^{\infty} \hat{x}(f)\, e^{i2\pi f t}\, df$ |
+| **When to use** | Non-periodic, continuous-time signals of finite energy. This is "the" Fourier transform in most engineering and physics contexts. Extends to distributions for periodic signals and impulses. |
+| **Key properties** | Plancherel/Parseval: $\int |x(t)|^2\, dt = \int |\hat{x}(f)|^2\, df$. Convolution $\leftrightarrow$ multiplication. Differentiation $\leftrightarrow$ multiplication by $i2\pi f$. Band-limited signals cannot be time-limited (uncertainty principle). |
+
+### Pattern Summary
+
+All four transforms share the same structure:
+
+- **Forward (analysis):** multiply $x$ by $e^{-i2\pi f \cdot (\text{time})}$, then sum or integrate over time
+- **Inverse (synthesis):** multiply $\hat{x}$ by $e^{+i2\pi f \cdot (\text{time})}$, then sum or integrate over frequency
+- The sign in the exponent distinguishes analysis ($-$) from synthesis ($+$)
+- All four are **unitary** (energy-preserving): $\|x\| = \|\hat{x}\|$
+- All four turn **convolution** in one domain into **pointwise multiplication** in the other
+
+The discrete/continuous distinction follows a duality:
+
+- **Discrete in one domain $\Leftrightarrow$ periodic in the other.** A finite-length (or periodic) time signal has a discrete frequency spectrum. An infinite-length, non-periodic time signal has a continuous frequency spectrum.
+- **Continuous in one domain $\Leftrightarrow$ non-periodic in the other.** This duality is why there are exactly four combinations.
+

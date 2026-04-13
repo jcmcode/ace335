@@ -1,0 +1,300 @@
+---
+title: "Homework 2 Solutions"
+homework: 2
+---
+
+## Problem 1: Projection Theorem
+
+<Problem id="1" title="Projection Theorem">
+In class, we stated the following theorem.
+
+**Theorem (Projection Theorem)** Let $H$ be a Hilbert space and $B$ a subspace of $H$. Consider the problem:
+
+$$\inf_{m \in B} \|x - m\|$$
+
+(i) A necessary and sufficient condition for $m^* \in B$ to be the minimizing element in $B$ so that
+
+$$\inf_{m \in B} \|x - m\| = \|x - m^*\|$$
+
+is that, $x - m^*$ be orthogonal $B$; that is
+
+$$\|x - m^*\| \le \|x - y\|, \qquad \forall y \in B.$$
+
+If exists, such an $m^*$ is unique.
+
+(ii) Let $H$ be a Hilbert space and $B$ a closed subspace of $H$. For any vector $x \in H$, there is a unique vector $m^* \in B$ satisfying (1).
+
+Prove the theorem by visiting your class notes or the online notes.
+</Problem>
+
+<Solution>
+Let
+
+$$\delta = \inf_{m \in M} \|x - m\|$$
+
+Let $\{m_k, k \in \mathbb{N}\}$ be so that $\{\|x - m_k\|\} \to \delta$. Observe that
+
+$$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle + \langle x - m_k - (x - m_n), x - m_k - (x - m_n) \rangle$$
+
+$$= 2\langle x - m_k, x - m_k \rangle + 2\langle x - m_n, x - m_n \rangle$$
+
+Write
+
+$$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle = \langle 2(x - \frac{m_k + m_n}{2}), 2(x - \frac{m_k + m_n}{2}) \rangle$$
+
+$$= 4\langle x - \frac{m_k + m_n}{2}, x - \frac{m_k + m_n}{2} \rangle$$
+
+Since $\frac{m_k + m_n}{2} \in B$, by the definition of $\delta$,
+
+$$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle \ge \delta,$$
+
+we have that
+
+$$\|m_k - m_n\|^2 \le 2\|x - m_n\|^2 + 2\|x - m_k\|^2 - 4\delta^2$$
+
+As a result, as $|x - m_n|^2 \to \delta^2$, we have that $m_k$ is Cauchy. Since $M$ is closed, it has a limit; call the limit $\tilde{m}$. We claim that the limit is optimal and hence is $m^*$: Consider the difference:
+
+$$\langle x - m_n, x - m_n \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle$$
+
+We claim that the difference goes to zero. Indeed,
+
+$$|\langle x - m_n, x - m_n \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle|$$
+
+$$= |\langle x - m_n, x - m_n \rangle - \langle x - m_n, x - \tilde{m}\rangle + \langle x - m_n, x - \tilde{m}\rangle - \langle x - \tilde{m}, x - \tilde{m}|\rangle|$$
+
+$$\le |\langle x - m_n, x - m_n \rangle - \langle x - m_n, x - \tilde{m}\rangle| + |\langle x - m_n, x - \tilde{m}\rangle - \langle x - \tilde{m}, x - \tilde{m}\rangle|$$
+
+$$= |\langle x - m_n, m_n - \tilde{m}\rangle| + |\langle m_n - \tilde{m}, x - \tilde{m}\rangle|$$
+
+$$\le \|x - m_n\| \|m_n - \tilde{m}\| + \|m_n - \tilde{m}\| \|x - \tilde{m}\|$$
+
+where the final inequality is due to Cauchy-Schwarz. Now, since $\|x - m_n\| \to \delta$, we have that $\|x - m_n\|$ is bounded. Finally, as $\|m_n - \tilde{m}\| \to 0$, both terms in the final line go to zero and we conclude that
+
+$$\delta = \lim_{n\to\infty} \|x - m_n\| = \|x - \tilde{m}\|$$
+
+And therefore $\tilde{m}$ is a minimizing vector. By part (i), this has to be the only minimizing vector in $B$.
+</Solution>
+
+## Problem 2: Application of the Projection Theorem
+
+<Problem id="2" title="Application of the Projection Theorem">
+Recall a problem that we solved in class on projection to a subspace. We now modify that problem with the minimization of
+
+$$\int_{-1}^{1} (t^n - m(t))^2 dt,$$
+
+for some $n \in \mathbb{Z}_+$, over all $m$ such that
+
+$$m \in M := \{f : f \in L_2([-1,1]; \mathbb{R}), f(t) = \alpha + \beta t + \gamma t^2; \alpha, \beta, \gamma \in \mathbb{R}\}$$
+
+a) State the problem as a Projection problem by identifying the Hilbert space, and the projected subspace.
+
+b) Compute the solution, that is find the minimizing $m$.
+
+Hint: Note here that the projected subspace is different.
+</Problem>
+
+<Solution>
+**a)** The Hilbert space $H$ is the space of real-valued signals $L_2([-1,1])$ with the inner product:
+
+$$\langle h_1, h_2 \rangle = \int_{-1}^{1} h_1(t) h_2(t) dt$$
+
+The subspace is:
+
+$$m \in M := \{f : f \in L_2([-1,1]; \mathbb{R}), f(t) = \alpha + \beta t + \gamma t^2; \alpha, \beta, \gamma \in \mathbb{R}\}$$
+
+The projection theorem applies, since $M$ is a closed subspace. Hence, there exists a unique vector $m_0 \in M$ with
+
+$$m_0(t) = a + bt + ct^2,$$
+
+which minimizes $\langle t^n - m, t^n - m \rangle$: This vector satisfies
+
+$$\langle t^n - m_0, \alpha + \beta t + \gamma t^2 \rangle = \int_{-1}^{1} (t^n - a - bt - ct^2)(\alpha + \beta t + \gamma t^2) dt = 0,$$
+
+for every real $\alpha, \beta$. It suffices to check that the following holds:
+
+$$\langle t^n - m_0(t), 1 \rangle = \int_{-1}^{1} (t^n - a - bt - ct^2) dt = 0$$
+
+$$\langle t^n - m_0(t), t \rangle = \int_{-1}^{1} (t^n - a - bt - ct^2) t\,dt = 0$$
+
+$$\langle t^n - m_0(t), t^2 \rangle = \int_{-1}^{1} (t^n - a - bt - ct^2) t^2\,dt = 0$$
+
+**b)** It follows that, when $n$ is even, we have
+
+$$a = \frac{3}{4}\frac{4 - 2n}{(n+1)(n+3)}, \quad b = 0, \quad c = \frac{15}{4}\frac{2n}{(n+1)(n+3)}$$
+
+When $n$ is odd,
+
+$$a = 0, \quad b = \frac{3}{n+2}, \quad c = 0$$
+</Solution>
+
+## Problem 3: Orthonormal Sequences
+
+<Problem id="3" title="Orthonormal Sequences">
+Show that the family of complex exponentials in $L_2([0, 2\pi]; \mathbb{C})$:
+
+$$\{e_n(t)\} = \left\{\frac{1}{\sqrt{2\pi}} e^{int}, \quad n \in \mathbb{Z}\right\}$$
+
+forms an orthonormal sequence. This sequence is used for the Fourier expansion of functions in $L_2([0, 2\pi]; \mathbb{C})$.
+</Problem>
+
+<Solution>
+With the inner product, $\langle h_1, h_2 \rangle = \int_0^{2\pi} h_1(t) h_2^*(t) dt$, we have that $\langle e_n(t), e_m(t) \rangle$ equals
+
+$$\int_0^{2\pi} \frac{1}{2\pi} e^{i(n-m)t} dt = \frac{1}{2\pi} \int_0^{2\pi} \left(\cos((n-m)t) + i\sin((n-m)t)\right) dt = 0,$$
+
+if $n \neq m$. Otherwise, if $n = m$, we have
+
+$$\langle e_n, e_m \rangle = 1$$
+</Solution>
+
+## Problem 4: Convergence in a Hilbert Space
+
+<Problem id="4" title="Convergence in a Hilbert Space">
+Let $\{e_i\}$ be a sequence of orthonormal vectors in a Hilbert space $H$. Let $\{x_n = \sum_{i=1}^{n} \xi_i e_i\}$ be a sequence of vectors in $H$. Show that this sequence converges to a vector $x$ if and only if
+
+$$\sum_{i=1}^{\infty} |\xi_i|^2 < \infty.$$
+</Problem>
+
+<Solution>
+The main point is to observe that if
+
+$$\sum_{i=1}^{\infty} |\xi_i|^2 < \infty,$$
+
+the sequence $\{x_n\}$ becomes Cauchy since $\|x_n\|^2 = \sum_{i=1}^{n} |\xi_i|^2$ is Cauchy, and by completeness, the sequence of sums has a limit. On the other hand, if $\sum_{i=1}^{\infty} |\xi_i|^2 < \infty$, $x_n$ is not Cauchy and hence will not converge (since every converging sequence has to be Cauchy).
+</Solution>
+
+## Problem 5: Orthonormal Sequences and Unique Representations
+
+<Problem id="5" title="Orthonormal Sequences and Unique Representations">
+Let $H$ be a Hilbert space, and $\{e_i\}$ a complete orthonormal sequence in $H$. That is, the only element in the Hilbert space which is orthogonal to each of the $e_i$ vectors is the null vector.
+
+Show that there is a unique representation for every $h \in H$ in terms of linear expansions involving the sequence $\{e_i\}$.
+</Problem>
+
+<Solution>
+We first show that every element in $H$ can be represented by $\sum_i a_i e_i$, for some complex-valued $\{a_i\}$. Suppose this is not the case, that is there is a vector $h$ such that $\|h - \sum_{i=1}^{\infty} a_i e_i\|$ is non-zero for all $a_i \in \mathbb{C}$. As such
+
+$$x - \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i \neq \underline{0}$$
+
+But, $x - \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i \in H$ and
+
+$$\langle x - \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i, e_m \rangle = 0, \quad \forall m \in \mathbb{N}$$
+
+But, by completeness of the orthonormal sequence, the only vector which is orthogonal to all of the elements of the complete sequence is the zero vector. Thus, we arrive at a contradiction.
+
+Now, suppose there are two representations for a vector $h = \sum_i a_i e_i$ and $h = \sum_i b_i e_i$. Subtracting both sides, we obtain
+
+$$\underline{0} = \sum_i (a_i - b_i) e_i$$
+
+Taking the inner product,
+
+$$0 = \langle 0, e_i \rangle = \langle \sum_i (a_i - b_i) e_i, e_j \rangle = (a_j - b_j)\langle e_j, e_j \rangle = (a_j - b_j)$$
+
+Hence, $a_j = b_j$ for all $j$. The representation needs to be unique.
+</Solution>
+
+## Problem 6: Separability
+
+<Problem id="6" title="Separability">
+Show that $l_2(\mathbb{Z}_+; \mathbb{R})$ is separable.
+</Problem>
+
+<Solution>
+Consider the set of all functions
+
+$$V = \cup_{n \in \mathbb{Z}_+} \{v : v = \sum_{i=0}^{n} \alpha_i e_i, \alpha_i \in \mathbb{Q}\},$$
+
+and $e_i$ is the standard basis, that is $e_i(n) = 1_{\{n=i\}}$, where $1_{\{.\}}$ is the indicator function. It follows that $V$ is a countable set, as it consists of the Cartesian product of **finitely many** countable sets (consisting of rational numbers) and the countable union of such sets. This set is countable, by arguments we made in class.
+
+Now let $x \in l_2(\mathbb{Z}_+; \mathbb{R})$. Let $z_K$ be defined such that for all $\in \mathbb{Z}_+$:
+
+$$z_k(i) = z(i)1_{\{i \le K\}}$$
+
+It follows that, by the convergence of a sequence of vectors in a Hilbert space:
+
+$$\sum_{i=1}^{K} (z_k(i))^2 \to \|z\|_2$$
+
+As such, for every $\epsilon$, there exists an $N$ such that
+
+$$\sum_{i=N+1}^{\infty} (z_k(i))^2 \le \epsilon/2$$
+
+Now, pick $\{\alpha_i\}$ such that
+
+$$\sum_{m=0}^{N} (z_k(m) - \sum_{i=1}^{N} \alpha_i e_i(m))^2 \le \epsilon/2$$
+
+And, finally, for $x \in l_2(\mathbb{Z}_+; \mathbb{R})$ and every $\epsilon$ there exists an $v \in V$ such that
+
+$$\|x - v\|_2 \le \epsilon.$$
+
+Since $V$ is countable, $l_2(\mathbb{Z}_+; \mathbb{R})$ is separable.
+
+A more direct way to establish this result would be to verify the existence of a complete, orthonormal sequence, as we did in class.
+</Solution>
+
+## Problem 7: A More General Projection Theorem
+
+<Problem id="7" title="A More General Projection Theorem">
+**Theorem:** Let $\mathcal{M}$ be a closed subspace of a Hilbert space $H$. Let $x$ be a fixed element in $H$ and let $V \subset H$ be a subset such that $V = \{v : x + y, y \in \mathcal{M}\}$ (also called a *linear variety* of $\mathcal{M}$). Then there is a unique vector $m_0 \in V$ of minimum norm. Furthermore, $m_0$ is orthogonal to $\mathcal{M}$.
+
+The following is an application of this result. Let $x \in \mathbb{R}^n$. Consider the following optimization problem:
+
+$$\min\, x^T Q x,$$
+
+such that
+
+$$Ax = b,$$
+
+where $A$ is an $m \times n$ matrix $m \le n$, with rank $m$ and $Q$ a symmetric, positive definite matrix.
+
+Show that, using the Projection Theorem, the optimal $x^*$ minimizing $x^T Q x$ is given by:
+
+$$x^* = Q^{-1}A^T(AQ^{-1}A^T)^{-1}b$$
+</Problem>
+
+<Solution>
+We have the Hilbert space as $\mathbb{R}^n$ with the inner product
+
+$$\langle x, y \rangle = x^T Q y, \quad x, y \in \mathbb{R}^n.$$
+
+The set of possible $x$ values live on the space $\{x_0 + h : Ax_0 = b, Ah = 0\}$ for some $x_0$.
+
+It follows that we wish to find the optimal $h \in \mathcal{M} = \{h : Ah = 0\}$ such that $(x_0 + h)$ has minimum norm. By the projection theorem, we would like to find the $h^*$ such that
+
+$$\langle \underline{0} - (x_0 + h^*), h \rangle = 0, \quad \forall h \in \mathcal{M}$$
+
+Let $x_0 + h^* = x^*$.
+
+It should be observed that $h$ lives in the null space of $A$. Since $h^T Q x^* = 0$, $Q^T x^*$ lives in the row space of $A$, which is equivalent to the range of $A^T$. This means that, there exists some $\eta$ such that $A^T \eta = Q^T x^*$, or $x^* = Q^{-1}A^T \eta$, and
+
+$$Ax^* = AQ^{-1}A^T \eta = b$$
+
+We now show that the $m \times m$ matrix $AQ^{-1}A^T$ is invertible: Suppose the matrix is not invertible. This means that there exists a non-zero vector $y \in \mathbb{R}^m$ such that $AQ^{-1}A^T y = 0$. This implies that $A(Q^{-1}A^T y) = 0$ and $Q^{-1}A^T y \neq 0$, since $A^T$ has its column rank as $m$ and $Q^{-1}$ is a full-rank matrix. Furthermore $v = (Q^{-1}A^T y)$ has a non-zero component in the space spanned by the rows of $A$, that is the projection of $Q^{-1}A^T y$ onto the range space of rows of $A$ is non-zero. But $Av = 0$ implies that $v$ is orthogonal to the rows of $A$. This is a contradiction, and hence there cannot be a vector $y \neq 0$ for which $AQ^{-1}A^T y = 0$. As such, we can invert $AQ^{-1}A^T$. Thus, we have $\eta = (AQ^{-1}A^T)^{-1}b$ and the optimal $x^*$ writes as
+
+$$x^* = Q^{-1}A^T(AQ^{-1}A^T)^{-1}b.$$
+</Solution>
+
+## Problem 8: Gram-Schmidt Procedure (Matlab Assignment)
+
+<Problem id="8" title="Gram-Schmidt Procedure (Matlab Assignment)">
+Using Matlab (or any other program), generate a (function) code named GramSchmidtProcedure, which takes as input a fixed number of linearly independent vectors and generates a family of orthonormal vectors as a result. Apply your code to the following problem:
+
+Let
+
+$$x_1 = \begin{bmatrix} -4 \\ -4 \\ 2 \\ 1 \\ 0 \end{bmatrix}, \quad x_2 = \begin{bmatrix} 0 \\ 1 \\ 1 \\ 3 \\ 0 \end{bmatrix}, \quad x_3 = \begin{bmatrix} 0 \\ 4 \\ 0 \\ 2 \\ 1 \end{bmatrix}, \quad x_4 = \begin{bmatrix} 0 \\ 0 \\ 0 \\ -2 \\ 1 \end{bmatrix}$$
+
+Generate a sequence of orthonormal vectors $\{e_1, e_2, e_3, e_4\}$ which span the same space that is spanned by $\{x_1, x_2, x_3, x_4\}$.
+</Problem>
+
+<Solution>
+This is a computational problem. Apply the Gram-Schmidt procedure as follows:
+
+1. $e_1 = x_1 / \|x_1\|$
+
+2. $\tilde{e}_2 = x_2 - \langle x_2, e_1 \rangle e_1$, then $e_2 = \tilde{e}_2 / \|\tilde{e}_2\|$
+
+3. $\tilde{e}_3 = x_3 - \langle x_3, e_1 \rangle e_1 - \langle x_3, e_2 \rangle e_2$, then $e_3 = \tilde{e}_3 / \|\tilde{e}_3\|$
+
+4. $\tilde{e}_4 = x_4 - \langle x_4, e_1 \rangle e_1 - \langle x_4, e_2 \rangle e_2 - \langle x_4, e_3 \rangle e_3$, then $e_4 = \tilde{e}_4 / \|\tilde{e}_4\|$
+
+The resulting orthonormal vectors $\{e_1, e_2, e_3, e_4\}$ span the same space as $\{x_1, x_2, x_3, x_4\}$. Implement this in Matlab or Python to obtain numerical values.
+</Solution>

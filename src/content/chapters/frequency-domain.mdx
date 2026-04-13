@@ -1,0 +1,418 @@
+---
+title: "Frequency Domain Analysis of Linear Time-Invariant (LTI) Systems"
+chapter: 6
+---
+
+## 6.1 Input-Output Relations for Linear Time-Invariant Systems via Fourier Analysis
+
+As we discussed in Section 4.5, a very important property of convolution systems is that if the input is a harmonic function, so is the output.
+
+**Continuous-Time Case.** Let $u \in L_\infty(\mathbb{R}; \mathbb{C})$ given with
+
+$$
+u(t) = e^{i2\pi f t},
+$$
+
+be the input to a linear time-invariant system
+
+$$
+y(t) = \int_{\tau=-\infty}^{\infty} h(t - \tau) u(\tau)\, d\tau = \int_{\tau=-\infty}^{\infty} h(\tau) u(t - \tau)\, d\tau
+$$
+
+Then, the output satisfies
+
+$$
+y(t) = \left(\int_{-\infty}^{\infty} h(s) e^{-i2\pi f s}\, ds\right) e^{i2\pi f t}
+$$
+
+The integral
+
+$$
+\hat{h}(f) := \left(\int h(t) e^{-i2\pi f t}\, dt\right),
+$$
+
+is $\mathcal{F}_{CC}(h)$ evaluated at $f$. We call this value, the **frequency response** of the system at frequency $f$, whenever it exists.
+
+<Remark id="6.1">
+The frequency response $\hat{h}(f)$ tells us how the system scales and phase-shifts a pure sinusoid at frequency $f$. The magnitude $|\hat{h}(f)|$ gives the gain and $\angle \hat{h}(f)$ gives the phase shift. This is the fundamental connection between the time-domain description (impulse response $h$) and the frequency-domain description (frequency response $\hat{h}$) of an LTI system.
+</Remark>
+
+**Discrete-Time Case.** A similar discussion applies for a discrete-time system: Let $h \in l_1(\mathbb{Z}; \mathbb{C})$. If $u(n) = e^{i2\pi f n}$ is the input to a linear time-invariant system given with
+
+$$
+y(n) = \sum_{m=-\infty}^{\infty} h(n - m) u(m) = \sum_{m=-\infty}^{\infty} h(m) u(n - m).
+$$
+
+then
+
+$$
+y(n) = \left(\sum_{m=-\infty}^{\infty} h(m) e^{-i2\pi f m}\right) e^{i2\pi f n}.
+$$
+
+We recognize that
+
+$$
+\hat{h}(f) := \sum_{m=-\infty}^{\infty} h(m) e^{-i2\pi f m} = \left(\mathcal{F}_{DC}(h)\right)(f),
+$$
+
+and call $\hat{h}$ the **frequency response function**.
+
+Convolution systems are used as filters through the characteristics of the frequency response.
+
+**Some Properties.**
+
+Recall the following properties of $\mathcal{F}_{CC}$.
+
+**(i) Convolution Property.** Let $u, v \in \mathcal{S}$. We have that
+
+$$
+\left(\mathcal{F}_{CC}(u * v)\right)(f) = \hat{u}(f)\hat{v}(f)
+$$
+
+<Proof title="Proof of Convolution Property">
+To see this, apply the definition of $\mathcal{F}_{CC}$ to
+
+$$
+y(t) = (u * v)(t) = \int_{\tau \in \mathbb{R}} h(\tau) u(t - \tau)\, d\tau
+$$
+
+so that
+
+$$
+\hat{y}(f) = \int_{\mathbb{R}} \left(\int_{\mathbb{R}} h(\tau) u(t - \tau)\, d\tau\right) e^{-i2\pi f t}\, dt
+$$
+
+$$
+= \int_{\mathbb{R}} \left(\int_{\mathbb{R}} h(\tau) u(t - \tau)\, d\tau\right) e^{-i2\pi f \tau} e^{-i2\pi f(t-\tau)}\, dt
+$$
+
+$$
+= \int_{\mathbb{R}} h(\tau) e^{-i2\pi f \tau} \left(\int_{\mathbb{R}} u(t - \tau) e^{-i2\pi f(t-\tau)}\, dt\right) d\tau
+$$
+
+$$
+= \int_{\mathbb{R}} h(\tau) e^{-i2\pi f \tau}\, \hat{u}(f)\, d\tau
+$$
+
+$$
+= \hat{u}(f) \int_{\mathbb{R}} h(\tau) e^{-i2\pi f \tau}\, d\tau
+$$
+
+$$
+= \hat{u}(f)\hat{v}(f)
+$$
+
+Observe that we use Fubini's theorem in the third step. $\square$
+</Proof>
+
+<Remark id="6.2">
+This is the most important property for LTI system analysis: convolution in time becomes multiplication in frequency. If $y = h * u$, then $\hat{y}(f) = \hat{h}(f)\hat{u}(f)$. This means the output spectrum is simply the input spectrum scaled by the frequency response at each frequency -- a tremendous simplification compared to evaluating the convolution integral directly.
+</Remark>
+
+**(ii) Differentiation Property.** If $v = \frac{d}{dt}u$, then $\hat{v}(f) = i2\pi f\, \hat{u}(f)$.
+
+**(iii) Time-Shift Property for $\mathcal{F}_{DC}$.** Let $v = \sigma^\theta(u)$ for some $\theta \in \mathbb{Z}$, that is $v(n) = u(n + \theta)$. Then,
+
+$$
+\hat{v}(f) = \sum_{n \in \mathbb{Z}} u(n + \theta) e^{-i2\pi f n} = e^{i2\pi \theta f}\, \hat{u}(f)
+$$
+
+The above will be very useful properties for studying LTI systems. We can also obtain converse differentiation properties, which will be considered in further detail in Section 7.2 while studying the Z and the Laplace transformations. Nonetheless, we will present two such properties in the following (see Section A.2 for a justification on changing the order of differentiations and summations/integrations):
+
+**(iv) Differentiation in Frequency for $\mathcal{F}_{DC}$.** Let
+
+$$
+\mathcal{F}_{DC}(x)(f) = \hat{x}(f) = \sum_n x(n) e^{-i2\pi f n}
+$$
+
+Then, through changing the order of limit and summation:
+
+$$
+\frac{d\hat{x}(f)}{df} = \sum_n \frac{dx(n) e^{-i2\pi f n}}{df} = \sum_n (-2i\pi n\, x(n)) e^{-i2\pi f n}
+$$
+
+This leads to the conclusion that with $v(n) = -n\, x(n)$, with $v$ absolutely summable,
+
+$$
+\mathcal{F}_{DC}(v)(f) = \frac{1}{i2\pi} \frac{d\hat{x}(f)}{df}
+$$
+
+**(v) Differentiation in Frequency for $\mathcal{F}_{CC}$.** Likewise, for the continuous-time case with $x \in \mathcal{S}$
+
+$$
+\mathcal{F}_{CC}(x)(f) = \hat{x}(f) = \int_t x(t) e^{-i2\pi f t}\, dt
+$$
+
+Via the analysis in Section A.2, through changing the order of limit and integration,
+
+$$
+\frac{d\hat{x}(f)}{df} = \int \frac{dx(t) e^{-i2\pi f t}}{df}\, dt = \int (-2i\pi t\, x(t)) e^{-i2\pi t}\, dt
+$$
+
+This leads to the conclusion that with $v(t) = -t\, x(t)$, with $v(t)$ (absolutely) integrable,
+
+$$
+\mathcal{F}_{CC}(v)(f) = \frac{1}{i2\pi} \frac{d\hat{x}(f)}{df}
+$$
+
+**Useful Transform Pairs.** In the context of LTI systems, we will occasionally build on the following properties:
+
+- If $u(t) = 1_{\{t \geq 0\}} e^{at}$, with $a < 0$, then $\hat{u}(f) = \frac{1}{-a + i2\pi f}$.
+- Likewise for $\mathcal{F}_{DC}$, for $|a| < 1$, if $u(n) = a^{n-1} 1_{\{n \geq 1\}}$, then $\hat{u}(f) = e^{-i2\pi f} \frac{1}{1 - a e^{-i2\pi f}}$.
+
+The properties above are crucial, and typically sufficient, for studying a large class of linear time invariant systems described by differential and difference equations (convolution systems).
+
+## 6.2 Transfer Functions and their Computation for Convolution Systems via Fourier Transforms
+
+In applications for control, communications, and signal processing, one may design systems or filters using the properties of the frequency response functions.
+
+### Continuous-Time Systems
+
+Consider the following continuous-time system with input $u$ and output $y$:
+
+$$
+\sum_{k=0}^{N} a_k \frac{d^k}{dt^k} y(t) = \sum_{m=0}^{M} b_m \frac{d^m}{dt^m} u(t)
+$$
+
+Taking the $\mathcal{F}_{CC}$ of both sides, we obtain
+
+$$
+\left(\sum_{k=0}^{N} a_k (i2\pi f)^k\right) \hat{y}(f) = \left(\sum_{m=0}^{M} b_m (i2\pi f)^m\right) \hat{u}(f)
+$$
+
+This leads to:
+
+$$
+\hat{h}(f) = \frac{\sum_{m=0}^{M} b_m (i2\pi f)^m}{\sum_{k=0}^{N} a_k (i2\pi f)^k}
+$$
+
+<Remark id="6.3">
+The transfer function $\hat{h}(f)$ is a rational function of frequency. The numerator polynomial comes from the input side of the differential equation, and the denominator from the output side. This algebraic relationship is far easier to work with than the original differential equation -- system analysis reduces to algebraic manipulation of polynomials.
+</Remark>
+
+<Example id="6.1" title="First-Order Continuous-Time System">
+As an example, let us consider
+
+$$
+\frac{dy}{dt} = -ay(t) + u(t), \quad a > 0
+$$
+
+For this system, we obtain by taking the $\mathcal{F}_{CC}$ of both sides (assuming this exists), we have
+
+$$
+\hat{h}(f) = \frac{1}{a + i2\pi f}
+$$
+
+which is consistent with a direct computation, as done earlier, of the Fourier transform of
+
+$$
+h(t) = e^{-at} 1_{\{t \geq 0\}}.
+$$
+</Example>
+
+### Discrete-Time Systems
+
+Likewise, for discrete-time systems:
+
+$$
+\sum_{k=0}^{N} a_k\, y(n-k) = \sum_{m=0}^{M} b_m\, u(n-m)
+$$
+
+Taking the $\mathcal{F}_{DC}$ of both sides (assuming the $\mathcal{F}_{DC}$ exist), we obtain
+
+$$
+\hat{h}(f) = \frac{\hat{y}(f)}{\hat{u}(f)} = \frac{\sum_{m=0}^{M} b_m e^{-i2\pi m f}}{\sum_{k=0}^{N} a_k e^{-i2\pi k f}}
+$$
+
+<Example id="6.2" title="First-Order Discrete-Time System">
+As an example, consider
+
+$$
+y(n+1) = ay(n) + u(n), \quad |a| < 1
+$$
+
+For this system, we obtain by taking the $\mathcal{F}_{DC}$ of both sides (assuming this exists), we arrive at $(e^{i2\pi f} - a)\hat{y}(f) = \hat{u}(f)$ and thus
+
+$$
+\hat{h}(f) = \frac{1}{e^{i2\pi f} - a} = \frac{e^{-i2\pi f}}{1 - a e^{-i2\pi f}}
+$$
+
+Once again, as in the continuous-time setup, as discussed earlier, this is consistent with taking the $\mathcal{F}_{DC}$ of the impulse response function given by
+
+$$
+h(n) = a^{n-1} 1_{\{n-1 \geq 0\}}
+$$
+</Example>
+
+### Computing the Inverse Transform via Partial Fractions
+
+**How to compute the inverse transform?** One can, using $\hat{h}$, compute $h(t)$ or $h(n)$, if one is able to compute the inverse transform. A useful method is the partial fraction expansion method. More general techniques will be discussed in the following chapter. Let
+
+$$
+R(\lambda) = \frac{P(\lambda)}{Q(\lambda)} = \frac{p_0 + p_1 \lambda + \cdots + p_M \lambda^M}{q_0 + q_1 \lambda + \cdots + q_N \lambda^N}, \quad \lambda \in \mathbb{C}
+$$
+
+If $M < N$, we call this fraction strictly proper. If $M \leq N$, the fraction is called proper and if $M > N$, it is called improper.
+
+If $M > N$, we can write
+
+$$
+R(\lambda) = T(\lambda) + \tilde{R}(\lambda),
+$$
+
+where $T$ has degree $M - N$ and $\tilde{R}(\lambda)$ is strictly proper. We can in particular write:
+
+$$
+\tilde{R}(\lambda) = \sum_{i=1}^{K} \left(\sum_{k=1}^{m_i} \frac{A_{ik}}{(\lambda - \lambda_i)^k}\right)
+$$
+
+where $\lambda_i$ are the roots of $Q$ and $m_i$ is the multiplicity of $\lambda_i$.
+
+This is important because we can use the expansion and the properties of $\mathcal{F}_{CC}$ and $\mathcal{F}_{DC}$ presented earlier in the chapter to compute the inverse transforms. Such approaches will be studied in further detail in the following chapter. In the following, we present two examples.
+
+<Example id="6.3" title="Continuous-Time System with Exponential Input">
+Consider a linear time invariant (LTI) system characterized by:
+
+$$
+y^{(1)}(t) = -ay(t) + u(t), \quad t \in \mathbb{R}
+$$
+
+with $a > 0$.
+
+a) Find the impulse response of this system.
+
+b) Find the frequency response of the system.
+
+c) Let $u(t) = e^{-t} 1_{\{t \geq 0\}}$. Find $y(t)$.
+
+**Solution.** a-b) Taking the Fourier transform of the terms in the differential equation, we obtain
+
+$$
+(i2\pi f + a)\hat{y}(f) = \hat{u}(f)
+$$
+
+Hence, the frequency response is:
+
+$$
+\hat{h}(f) = \frac{1}{a + i2\pi f}
+$$
+
+The impulse response corresponds to the inverse Fourier transform of this, which is
+
+$$
+h(t) = e^{-at} 1_{\{t \geq 0\}}
+$$
+
+c) The function $u$ has its Fourier as:
+
+$$
+\hat{u}(f) = \frac{1}{1 + i2\pi f}
+$$
+
+Hence, the frequency response of the output will be
+
+$$
+\hat{y}(f) = \frac{1}{1 + i2\pi f} \cdot \frac{1}{a + i2\pi f} = \frac{1}{a - 1} \cdot \frac{1}{1 + i2\pi f} + \frac{1}{1 - a} \cdot \frac{1}{a + i2\pi f},
+$$
+
+when $a \neq 1$. This leads to an inverse transform of:
+
+$$
+y(t) = \frac{1}{a - 1} e^{-t} 1_{\{t \geq 0\}} + \frac{1}{1 - a} e^{-at} 1_{\{t \geq 0\}}
+$$
+
+When $a = 1$, we have
+
+$$
+\hat{y}(f) = \left(\frac{1}{1 + i2\pi f}\right)^2
+$$
+
+Once we observe that $\left(\frac{1}{1+i2\pi f}\right)^2$ is the derivative $-(1/(i2\pi)) \frac{d \frac{1}{1+i2\pi f}}{df}$, and that differentiation in frequency domain leads to multiplication by $-i2\pi t$ in time domain as was discussed in class, the result becomes (with $a = 1$)
+
+$$
+y(t) = t e^{-at} 1_{\{t \geq 0\}}
+$$
+</Example>
+
+<Example id="6.4" title="Second-Order Discrete-Time System">
+Let a non-anticipative LTI system be given by:
+
+$$
+y(n) = \frac{3}{4}y(n-1) - \frac{1}{8}y(n-2) + u(n)
+$$
+
+a) Compute the frequency response of this system.
+
+b) Compute the impulse response of the system.
+
+c) Find the output when the input is $u(n) = \left(\frac{1}{2}\right)^n 1_{\{n \geq 0\}}$.
+
+**Solution.** a) We obtain the frequency response with the following: We have
+
+$$
+\hat{y}(f)\left(1 - \frac{3}{4}e^{-i2\pi f} + \frac{1}{8}e^{-i4\pi f}\right) = \hat{u}(f)
+$$
+
+This leads to:
+
+$$
+\hat{h}(f) = \frac{1}{1 - \frac{3}{4}e^{-i2\pi f} + \frac{1}{8}e^{-i4\pi f}}
+$$
+
+b) We write the second degree polynomial (in terms of $e^{i2\pi f}$) in the denominator, in terms of first degree polynomials as follows:
+
+$$
+\hat{h}(f) = \frac{1}{1 - \frac{3}{4}e^{-i2\pi f} + \frac{1}{8}e^{-i4\pi f}} = \frac{1}{(1 - \frac{1}{2}e^{-i2\pi f})(1 - \frac{1}{4}e^{-i2\pi f})}
+$$
+
+This can be written as
+
+$$
+\frac{2}{1 - \frac{1}{2}e^{-i2\pi f}} + \frac{-1}{1 - \frac{1}{4}e^{-i2\pi f}}
+$$
+
+Hence, the output in time domain becomes:
+
+$$
+h(n) = 2\left(\frac{1}{2}\right)^n 1_{\{n \geq 0\}} - \left(\frac{1}{4}\right)^n 1_{\{n \geq 0\}}
+$$
+
+c) The input has its Fourier as
+
+$$
+\hat{u}(f) = \frac{1}{1 - \frac{1}{2}e^{-i2\pi f}}
+$$
+
+Hence, by multiplication with $\hat{h}(f)$ above:
+
+$$
+\hat{y}(f) = \frac{1}{(1 - \frac{1}{4}e^{-i2\pi f})(1 - \frac{1}{2}e^{-i2\pi f})^2}
+$$
+
+This can be expanded as
+
+$$
+\hat{y}(f) = \frac{A}{1 - \frac{1}{4}e^{-i2\pi f}} + \frac{B}{1 - \frac{1}{2}e^{-i2\pi f}} + \frac{C}{(1 - \frac{1}{2}e^{-i2\pi f})^2}
+$$
+
+The values for $A, B, C$ can be shown to be equal to: $A = 1, B = -2, C = 2$.
+
+The first and the second terms above can be converted to the time-domain by the property that $x(n) = r^n 1_{n \geq 0}$ gets mapped by $\mathcal{F}_{DC}$ to $\frac{1}{1 - r e^{-i2\pi f}}$ for $|r| < 1$. For the last term, we observe that
+
+$$
+\frac{C}{(1 - \frac{1}{2}e^{-i2\pi f})^2} = \frac{C}{2} \frac{d}{df}\left(\frac{1}{(1 - \frac{1}{2}e^{-i2\pi f})}\right) \frac{e^{i2\pi f}}{-i2\pi}
+$$
+
+Using the fact that the derivative in the frequency domain leads to multiplication by $(-i2\pi)n$ by the time domain, and that multiplication by $e^{i2\pi f}$ leads to a shift in the time-domain, we obtain that the contribution of the last term in time-domain would be
+
+$$
+(n+1)\left(\frac{1}{2}\right)^{n+1} 1_{\{n+1 \geq 0\}}
+$$
+
+Hence, the output becomes (by the observation that, derivative in frequency domain leads to a polynomial multiplication in the time domain)
+
+$$
+y(n) = \left(\left(\frac{1}{4}\right)^n - 2\left(\frac{1}{2}\right)^n\right) 1_{\{n \geq 0\}} + (n+1)\left(\frac{1}{2}\right)^{n+1} 1_{\{n+1 \geq 0\}}
+$$
+</Example>
+

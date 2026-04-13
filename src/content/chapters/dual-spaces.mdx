@@ -1,0 +1,820 @@
+---
+title: "Dual Spaces, the Schwartz Space and Distribution Theory, and the Dirac Delta Function"
+chapter: 3
+---
+
+In this chapter, we study dual spaces, distribution theory, and the Dirac delta function. The key motivation is that important objects like the impulse function do not live in the usual spaces of real-valued functions, yet they are indispensable in signal processing, circuit analysis, control, and communications. By working with *test functions* and defining the impulse as a *functional* (an element of a dual space), we place these objects on rigorous footing. Along the way, we develop the Schwartz space, weak convergence, and approximate identity sequences -- all essential tools for Fourier analysis later in the course.
+
+---
+
+## 3.1 Introduction and Motivation
+
+To gain some insight and intuition on what this chapter entails, consider the function $\sin(nt)$ where $n \in \mathbb{N}$. This function does not have a pointwise limit (in $t$) as $n \to \infty$. However, with $f$ an arbitrary continuous function, the integral $\int \sin(nt)f(t)dt$ has a well-defined limit, which is zero (see the Riemann-Lebesgue Lemma, presented as Theorem 5.3.3). In this sense, $\sin(nt)$ can be viewed to admit a limit which is equivalent to the constant function with value $0$. That is, $\sin(nt) \to \underline{0}(t)$ in the sense that when we take the integral $\int \sin(nt)f(t)dt \to \int \sin(nt)\underline{0}(t)dt$, for $f$ in a set of test functions. This motivates the notion of *weak convergence* (and weak$^*$ convergence).
+
+In our course, one important application which arises while studying linear systems as well as Laplace and Fourier transforms is with regard to the use of the impulse (or Dirac delta) function. Such functions do not live in the set of $\mathbb{R}$-valued functions, and hence many operations such as integration become ill-stated. However, the Dirac delta function is such an important and crucial object that one has to know how to work with it even in the most elementary applications in signal processing, circuit analysis, control, and communications, in addition to many other areas of engineering and applied mathematics. We will see that the appropriate way to study the impulse function is to always work *under an integral with test functions*, not unlike what we discussed above.
+
+A complete understanding of Fourier transforms is possible through an investigation building on distribution theory: A distribution is a continuous and linear function on a sufficiently large space of test functions. The space of test functions we will consider, the Schwartz space, will prove to be very useful in arriving at several additional technical results with significant implications.
+
+The above will motivate us to introduce dual spaces, weak convergence concepts, and distribution theory. There will be some additional useful properties: Every distribution is differentiable, and the differentiation is continuous. Most importantly, a function whose Fourier transform is not defined as a function might have a transform in a distributional sense.
+
+---
+
+## 3.2 Dual Space of a Normed Linear Space
+
+Let $f$ be a linear functional on a normed linear space $X$ (thus mapping $X$ to $\mathbb{R}$). We say $f$ is bounded (in the operator norm) if there is a constant $M$ such that $|f(x)| \leq M\|x\|$ for all $x \in X$. The smallest such $M$ is called the norm of $f$ and is denoted by $\|f\|$, also given by:
+
+$$\|f\| := \sup_{x:\|x\| \neq 0} \frac{|f(x)|}{\|x\|}. \qquad \text{(3.1)}$$
+
+Let us define the **dual space** of $X$ as the set of linear and bounded functions on $X$ to $\mathbb{R}$ or $\mathbb{C}$, and let us denote this space by $X^*$. The space $X^*$ is called the (topological) dual space of $X$. This is equivalent to the space of all continuous and linear functions, as continuity and boundedness imply each other:
+
+<Theorem id="3.2.1" title="Bounded iff Continuous">
+A linear functional on a normed linear space is bounded if and only if it is continuous.
+</Theorem>
+
+<Remark>
+**Intuition:** For linear functionals, "bounded" and "continuous" are the same thing. If a linear map does not blow up relative to the size of its input, it is automatically continuous, and vice versa. This means we can freely switch between these two characterizations when working with dual spaces.
+</Remark>
+
+<Proof>
+**a) Boundedness implies continuity:** For every $\epsilon > 0$, there exists a $\delta > 0$ such that $\|x - y\| \leq \delta$ implies that $|f(x) - f(y)| = |f(x-y)| \leq M\|x - y\| \leq \epsilon$, with $\delta = \epsilon / M$.
+
+**b) Continuity implies boundedness:** We will prove the contrapositive: if the linear function is not bounded then it cannot be continuous. Recall by Theorem 2.1.4 that a linear function on a normed linear space is continuous at any point if and only if it is continuous at the null element. Suppose the function is not bounded. This means that for any sequence $M_n \to \infty$, for every $M_n < \infty$ there exists $x_n$ so that $\frac{|f(x_n)|}{\|x_n\|} \geq M_n$. We can take $\frac{M_n}{n} \to \infty$. We can construct the sequence of vectors $x_n^* = \frac{1}{n\|x_n\|}x_n$ such that $x_n^* \to 0$. By linearity,
+
+$$f(x_n^*) = \frac{1}{n\|x_n\|}f(x_n) \geq \frac{1}{n}M_n \to \infty.$$
+
+Thus, the sequence $f(x_n^*)$ does not converge to $0$, hence the system cannot be continuous. $\square$
+</Proof>
+
+The space $X^*$ is a linear space, under pointwise addition and scalar multiplication of functions in it. Furthermore, $X^*$ is itself a normed space with the norm given above in (3.1).
+
+<Remark>
+The dual space $(X^*, \|\cdot\|)$ is a Banach space, even if $X$ itself is not Banach.
+</Remark>
+
+A key result for identifying the dual spaces for $l_p(\mathbb{Z}_+; \mathbb{R})$ or $L_p(\mathbb{R}_+; \mathbb{R})$ spaces is Holder's inequality (see Theorem 2.1.2): Let $1 \leq p, q < \infty$ or possibly $\infty$. Then,
+
+$$\sum_{i \in \mathbb{Z}_+} x_i y_i \leq \|x\|_p \|y\|_q,$$
+
+where $\frac{1}{p} + \frac{1}{q} = 1$.
+
+<Theorem id="3.2.2" title="Riesz Representation Theorem">
+**(i)** Every linear bounded function $F : l_p(\mathbb{Z}_+; \mathbb{R}) \to \mathbb{R}$, $1 \leq p < \infty$, is representable uniquely in the form, with $x = \{x_i, i \in \mathbb{Z}_+\} \in l_p(\mathbb{Z}_+; \mathbb{R})$:
+
+$$F(x) = \sum_{i=0}^{\infty} \eta_i x_i,$$
+
+where $\eta = \{\eta_i\}$ is in $l_q(\mathbb{Z}_+; \mathbb{R})$ with $\frac{1}{p} + \frac{1}{q} = 1$.
+
+**(ii)** Furthermore, every vector $\eta$ in $l_q(\mathbb{Z}_+; \mathbb{R})$ defines such a vector $F$ (as above) in $l_p(\mathbb{Z}_+; \mathbb{R})^*$ with
+
+$$\|F\| = \|\eta\|_q. \qquad \text{(3.2)}$$
+
+**(iii)** This also applies to $L_p(\mathbb{R}_+; \mathbb{R})$ spaces.
+</Theorem>
+
+<Remark>
+**Intuition:** The Riesz Representation Theorem tells us that every continuous linear functional on $l_p$ (or $L_p$) can be written as a "dot product" with some fixed element from the conjugate space $l_q$ (or $L_q$). In other words, the dual of $l_p$ is $l_q$. This is the infinite-dimensional generalization of the fact that every linear functional on $\mathbb{R}^n$ is an inner product with some fixed vector.
+</Remark>
+
+<Proof>
+**Proof sketch.**
+
+**(i)** We provide a proof sketch for the dual space of $l_p(\mathbb{Z}_+; \mathbb{R})$, $1 \leq p < \infty$. Let $\{e_m, m \in \mathbb{Z}_+\}$ be defined as: $e_m(n) = 1_{\{n=m\}}$, $n \in \mathbb{Z}_+$. Let $x = (x_m, m \in \mathbb{Z}_+) \in l_p(\mathbb{Z}_+; \mathbb{R})$. Then, for $f \in l_p(\mathbb{Z}_+; \mathbb{R})^*$,
+
+$$f(x) = f\left(\sum_{m=0}^{\infty} x_m e_m\right) = f\left(\lim_{N \to \infty} \sum_{m=0}^{N} x_m e_m\right) = \lim_{N \to \infty} f\left(\sum_{m=0}^{N} x_m e_m\right) = \lim_{N \to \infty} \sum_{m=0}^{N} x_m f(e_m) = \lim_{N \to \infty} \sum_{m=0}^{N} x_m \eta_m,$$
+
+where $\eta_m := f(e_m)$ for $m \in \mathbb{Z}_+$. In the above, the equalities follow from the fact that $x \in l_p(\mathbb{Z}_+; \mathbb{R})$, $f$ is continuous, and it is linear. We will show that $\eta = (\eta_m, m \in \mathbb{Z}_+) \in l_q(\mathbb{Z}_+; \mathbb{R})$. To see this, first define for $N \in \mathbb{N}$:
+
+$$x_N = \sum_{i=0}^{N} |\eta_m|^{q/p} \operatorname{sign}(\eta_m)$$
+
+and observe that
+
+$$\|x_N\|_p = \left(\sum_{i=0}^{N} |\eta_m|^q\right)^{1/p}$$
+
+Now,
+
+$$f(x_N) = \sum_{m=0}^{N} |\eta_m||\eta_m|^{q/p} = \sum_{m=0}^{N} |\eta_m|^{1+q/p} = \sum_{m=0}^{N} |\eta_m|^q,$$
+
+where we used $\frac{1}{p} + \frac{1}{q} = 1$. Now, since for all $f \in l_p(\mathbb{Z}_+; \mathbb{R})^*$ there exists $M$ so that $|f(x)| \leq M\|x\|_p$, we have that
+
+$$\frac{f(x_N)}{\|x_N\|_p} = \frac{\sum_{m=0}^{N} |\eta_m|^q}{(\sum_{i=0}^{N} |\eta_m|^q)^{1/p}} = \left(\sum_{i=0}^{N} |\eta_m|^q\right)^{1/q} \leq M$$
+
+Now, take the limit as $N \to \infty$ to conclude that $\eta \in l_q(\mathbb{Z}_+; \mathbb{R})$.
+
+**(ii)** This follows from Holder's inequality (see Theorem 2.1.2). The special case with $p = q = 2$ follows from the Cauchy-Schwarz inequality.
+
+**(iii)** We will not discuss the $L_p$ case, though the arguments are parallel. $\square$
+</Proof>
+
+The Riesz Representation Theorem tells us that while studying spaces such as $L_p(\mathbb{R}_+; \mathbb{R})$ or $l_p(\mathbb{N}; \mathbb{R})$, we can use an inner-product like (but not really an inner-product in the way we defined Hilbert spaces) expression to represent the set of all linear functions on $X$ by:
+
+$$\langle \cdot, y \rangle : X \ni x \mapsto \langle x, y \rangle = \int_{\mathbb{R}} x(t)y(t)dt \in \mathbb{R}$$
+
+where $\langle \cdot, y \rangle$ is a continuous linear function on $X$, but this is equivalent to the function $y \in L_q(\mathbb{R}_+; \mathbb{R})$ having an inner-product like expression with $x \in X$. Thus, every vector in $L_p(\mathbb{R}_+; \mathbb{R})^*$ is identified with some vector $y \in L_q(\mathbb{R}_+; \mathbb{R})$.
+
+Likewise, for a discrete-time signal:
+
+$$\langle \cdot, y \rangle : X \ni x \mapsto \langle x, y \rangle = \sum_{i=1}^{\infty} x(i)y(i) \in \mathbb{R},$$
+
+is a linear function on $X$.
+
+Thus, if $X = L_p(\mathbb{R}_+; \mathbb{R})$ for $1 \leq p < \infty$, we can show that the dual space of $X$ is representable by elements in $L_q(\mathbb{R}_+; \mathbb{R})$ where $\frac{1}{p} + \frac{1}{q} = 1$.
+
+**In the special case of $p = 2$ we have the space $L_2(\mathbb{R}_+; \mathbb{R})$, which has its dual space as itself.**
+
+The following is a general result for Hilbert spaces.
+
+<Theorem id="3.2.3" title="Riesz Representation Theorem for Hilbert Spaces">
+Every linear bounded function $f$ on a Hilbert space $H$ admits a representation of the form:
+
+$$f(x) = \langle x, y \rangle$$
+
+for some $y \in H$.
+</Theorem>
+
+<Remark>
+**Intuition:** In a Hilbert space, the dual space is the space itself. Every continuous linear functional is secretly just an inner product with some fixed element. This is why $L_2$ is so special in signal processing: signals and the functionals that measure them live in the same space.
+</Remark>
+
+We say that $x \in X$ and $x^* \in X^*$ are **aligned** if
+
+$$\langle x, x^* \rangle = \|x\|\|x^*\|.$$
+
+<Remark>
+Some observations beyond the scope of our course follow.
+
+**(i)** The dual space of $l_\infty(\mathbb{Z}_+; \mathbb{R})$ or $L_\infty(\mathbb{R}_+; \mathbb{R})$ is more complicated (due to the fact that such functions do not converge to zero as the index goes unbounded), and will not be considered in this course. On the other hand, let $c_0 \in \Gamma(\mathbb{Z}_+; \mathbb{R})$ be the set of functions which decay to zero. The dual of this space is (associated with, in the sense of the representation result presented earlier) $l_1(\mathbb{Z}; \mathbb{R})$.
+
+**(ii)** The dual of $C([a,b]; \mathbb{R})$ can be associated with the space of signed measures with bounded *total variation*. Likewise, let $C_0(\mathbb{R}; \mathbb{R})$ denote the space of continuous functions $f$ which satisfy $\lim_{|x| \to \infty} f(x) = 0$. The dual of this space is (associated with) the space of finite signed measures with bounded *total variation*.
+
+**(iii)** Those of you who will take further courses on probability will study the concept of weak convergence of probability measures. A sequence of probability measures $\mu_n$ converges to some probability measure $\mu$ weakly if for every $f$ in $C_b(\mathbb{R}; \mathbb{R})$ (that is the set of continuous and bounded functions on $\mathbb{R}$):
+
+$$\int \mu_n(dx)f(x) \to \int \mu(dx)f(x).$$
+
+If we had replaced $C_b(\mathbb{R}; \mathbb{R})$ with $C_0(\mathbb{R}; \mathbb{R})$ here, note that this would coincide with the weak$^*$-convergence of $\mu_n \to \mu$ (to be studied in the following). Nonetheless, in probability theory the convergence stated above is so important that this is simply called *weak convergence*.
+</Remark>
+
+### 3.2.1 Weak and Weak* Convergence
+
+Earlier, we discussed that in a normed space $X$, a sequence of vectors $\{x_n\}$ converges to a vector $x$ if
+
+$$\|x_n - x\| \to 0.$$
+
+The above is also called **strong convergence**.
+
+<Definition id="3.2.1" title="Weak Convergence">
+A sequence $\{x_n\}$ in $X$ is said to **converge weakly** to $x$ if
+
+$$f(x_n) \to f(x)$$
+
+for all $f \in X^*$.
+</Definition>
+
+<Remark>
+**Intuition:** Weak convergence says that even though the sequence $x_n$ might not get close to $x$ in norm, every continuous linear measurement you can make on $x_n$ eventually agrees with the measurement on $x$. It is a much less demanding notion of convergence -- two signals can be "weakly close" even if they look quite different pointwise.
+</Remark>
+
+We note however that, weak convergence does not imply strong convergence.
+
+A related convergence notion, one that we will adopt while studying distributions, is that of weak$^*$ convergence, defined next.
+
+<Definition id="3.2.2" title="Weak* Convergence">
+A sequence $\{f_n\}$ in $X^*$ is said to **converge in the weak$^*$ sense** to $f$ if
+
+$$f_n(x) \to f(x)$$
+
+for all $x \in X$.
+</Definition>
+
+<Remark>
+**Intuition:** Weak$^*$ convergence is about a sequence of functionals (dual elements) converging: $f_n$ converges to $f$ in the weak$^*$ sense if, for every fixed input $x$, the numbers $f_n(x)$ converge to $f(x)$. This is exactly the notion of convergence used for distributions: a sequence of distributions converges if it converges when applied to every test function.
+</Remark>
+
+We note that such a convergence notion is very useful in the study of solutions of differential equations (ordinary and partial), optimal control theory, and probability theory as well, even though we will not be able to discuss these in our course.
+
+---
+
+## 3.3 Distribution Theory
+
+A distribution is a *linear* and *continuous* $\mathbb{R}$-valued function (that is, a functional) on a space of test functions. Thus, a distribution can be viewed to be an element of the dual space of a linear space of test functions (even though we will see that the linear space of test functions does not need to form a normed linear space).
+
+Studying distributions and sets of test functions present many benefits for our course. For example, the delta function has a natural representation as a distribution. Furthermore, Fourier analysis will be observed to be a bijective mapping from a space of test functions to another one, and this space of test functions is rich enough to approximate many functions that we encounter in applications sufficiently well. Furthermore, we will define the Fourier transform first on a space of test functions and extend it from this space to larger spaces, such as $L_2(\mathbb{R}; \mathbb{C})$.
+
+### 3.3.1 Space $\mathcal{D}$ and $\mathcal{S}$ of Test Functions
+
+Let $\mathcal{D}$ denote a set of test functions from $\mathbb{R}$ to $\mathbb{R}$, which are smooth (infinitely differentiable) and which have bounded support sets. Such functions exist, for example
+
+$$f(t) = 1_{\{|t| \leq 1\}} e^{\frac{1}{t^2 - 1}},$$
+
+is one such function.
+
+We say a sequence of functions $\{x_i\}$ in $\mathcal{D}$ converges to the null element $\underline{0}$ if a) For every $i \in \mathbb{N}$, there exists a compact, continuous-time domain $T \subset \mathbb{R}$ such that the support set of $x_i$ is contained in $T$ (we define the support for a function $f$ to be the closure of the set of points $\{t : f(t) > 0\}$). b) For every $\epsilon > 0$, and $k$ there exists an $N_k \in \mathbb{Z}_+$ such that for all $n \geq N_k$, $p_k(x) \leq \epsilon$, where $p_k = \sup_{t \in \mathbb{R}} |\frac{d^k}{dt^k} x(t)|$ (that is, all the derivatives of $x$ converge to zero uniformly on $\mathbb{R}$).
+
+In applications we usually encounter functions with unbounded support. Hence, a theory based on the above test functions might not be satisfactory. Furthermore, the Fourier transform of a function in $\mathcal{D}$ is not in the same space (a topic to be discussed further). As such, we will find it convenient to slightly extend the space of test functions.
+
+<Definition id="3.3.1" title="Schwartz Function Space S">
+An infinitely differentiable function $\phi : \mathbb{R} \to \mathbb{R}$ is in the **Schwartz function space**, denoted with $\mathcal{S}$, if for each $k \in \mathbb{Z}_+$ and for each $l \in \mathbb{Z}_+$
+
+$$\sup_{t \in \mathbb{R}} |t^l \phi^{(k)}(t)| < \infty,$$
+
+where $\phi^{(k)}(t) = \frac{d^k}{dt^k}\phi(t)$.
+</Definition>
+
+<Remark>
+**Intuition:** A Schwartz function is one that is infinitely smooth and decays to zero faster than any polynomial (along with all its derivatives). The space $\mathcal{S}$ is larger than $\mathcal{D}$ (compact-support functions) but still small enough to be well-behaved. It is the ideal space of test functions for Fourier analysis because, as we will see, the Fourier transform maps $\mathcal{S}$ bijectively onto itself.
+</Remark>
+
+For example the function $\phi(t) = e^{-t^2}$ is a Schwartz function.
+
+One can equip $\mathcal{S}$ with a notion of convergence generated by a countable number of *semi-norms*:
+
+$$p_{\alpha,\beta}(\phi) := \sup_t |t^\alpha \frac{d^\beta}{d^\beta}\phi(t)|,$$
+
+for $\alpha, \beta \in \mathbb{N}$. That is, we say, a sequence of functions $\phi_n$ in $\mathcal{S}$ converges to another one $\phi$ if
+
+$$\lim_{n \to \infty} p_{\alpha,\beta}(\phi_n - \phi) = 0, \quad (\alpha, \beta) \in \mathbb{Z}_+ \times \mathbb{Z}_+.$$
+
+With the above, we could define a metric by working with the above seminorms: for $x, y \in \mathcal{S}$, let us define a metric between the two vectors as:
+
+$$d(x,y) = \sum_n \frac{1}{2^n} \frac{p_n(x)}{1 + p_n(x)}, \qquad \text{(3.3)}$$
+
+where $n$ is a countable enumeration of the pairs $(\alpha, \beta) \in \mathbb{Z}_+ \times \mathbb{Z}_+$.
+
+The Schwartz space of functions equipped with such a metric will be a complete space. Furthermore, differentiation operator becomes a continuous operation in $\mathcal{S}$, under this metric; a topic which we will discuss further.
+
+As had been discussed before (slightly generalizing Theorem 2.1.3), a functional $T$ from $\mathcal{S} \to C$ is continuous if and only if for every convergent sequence in $\mathcal{S}$, $\phi_n \to \phi$, we have $T(\phi_n) \to T(\phi)$. We note that checking sequential continuity is typically easier than continuity, since in the space $\mathcal{S}$, it is not convenient to compute the distance between two vectors given the quite involved construction of the metric in (3.3).
+
+<Definition id="3.3.2" title="Distribution">
+A **distribution** is a linear, continuous functional on the space of test functions $\mathcal{S}$.
+</Definition>
+
+<Remark>
+**Intuition:** A distribution is a generalized function. Instead of assigning a value at each point, it assigns a number to each test function. Regular functions give rise to distributions through integration, but distributions also include "singular" objects like the Dirac delta that cannot be represented as ordinary functions. Think of a distribution as something that is only meaningful "under an integral sign" against test functions.
+</Remark>
+
+Thus, a distribution is an element of the **dual space** of $\mathcal{S}$ (that is, $\mathcal{S}^*$), even though $\mathcal{S}$ is not defined as a normed space, but as a metric space which is nonetheless a linear space.
+
+### General Distributions and Singular Distributions
+
+Distributions can be regular and singular. **Regular distributions** can be expressed as an integral of a test function and a locally integrable function (that is a function which has a finite absolute integral on any compact domain on which it is defined). For example if $\gamma$ is a real-valued integrable function on $\mathbb{R}$, and $\phi \in \mathcal{S}$ the distribution given by
+
+$$\bar{\gamma}(\phi) := \int_{\mathbb{R}} \gamma(t)\phi(t)dt \qquad \text{(3.4)}$$
+
+is a regular distribution on $\mathcal{S}$, **represented** by the function $\gamma(t)$.
+
+<Definition id="3.3.3" title="Tempered Function">
+A **tempered function**, $x(t)$ is one which satisfies small growth, that is, for some $\beta, \gamma \in \mathbb{R}$, $N \in \mathbb{Z}_+$:
+
+$$|x(t)| \leq \beta|t|^N + \gamma, \quad \forall t \in \mathbb{R}$$
+</Definition>
+
+<Remark>
+**Intuition:** A tempered function is one that does not grow faster than some polynomial. Any tempered function can represent a regular distribution via integration against test functions, because the rapid decay of Schwartz functions compensates for the polynomial growth.
+</Remark>
+
+Any tempered function can represent a regular distribution.
+
+**Singular distributions** do not admit such a representation. For example the Dirac delta distribution $\bar{\delta}$, defined for all $\phi \in \mathcal{S}$:
+
+$$\bar{\delta}(\phi) = \phi(0),$$
+
+does not admit a representation in the form $\int g(t)\phi(t) = \phi(0)$. Even when there is no function which can be used to represent a singular distribution, one occasionally represents a singular distribution as if such a function exists and call the representing function a singular or a generalized function. The informal expression $\int \delta(t)\phi(t) = \phi(0)$ is a common example for this, where $\delta$ is the generalized impulse function which takes the value $\infty$ at $0$, and zero elsewhere.
+
+<Theorem id="3.3.1" title="Dirac Delta is a Distribution">
+The map $\bar{\delta}(\phi) = \phi(0)$ defines a distribution on $\mathcal{S}$. This distribution is called the **Dirac delta distribution**.
+</Theorem>
+
+<Remark>
+**Intuition:** The Dirac delta is a perfectly well-defined object when viewed as a distribution: it simply evaluates a test function at the origin. It is linear (evaluating a linear combination at zero gives the linear combination of evaluations) and continuous (if test functions converge, their values at zero converge). The Dirac delta only becomes problematic if you try to treat it as an ordinary function.
+</Remark>
+
+<Proof>
+We need to show that $\bar{\delta}(\phi)$ is linear and continuous. Linearity is immediate. To show continuity, let $\phi_n \to \phi$. This implies that $\sup_t |\phi_n(t) - \phi(t)| = 0$, by the definition of convergence. Hence
+
+$$\bar{\delta}(\phi_n) = \phi_n(0) \to \phi(0) = \bar{\delta}(\phi). \quad \square$$
+</Proof>
+
+### Equivalence and Convergence of Distributions
+
+Two distributions $\bar{\gamma}$ and $\bar{\zeta}$ are **equal** if
+
+$$\bar{\gamma}(f) = \bar{\zeta}(f), \quad \forall f \in \mathcal{S}$$
+
+<Definition id="3.3.4" title="Convergence of Distributions">
+A sequence of distributions $\{\bar{\gamma}_n\}$ **converges** to a distribution $\bar{\gamma}$ if
+
+$$\bar{\gamma}_n(f) \to \bar{\gamma}(f), \quad \forall f \in \mathcal{S}$$
+</Definition>
+
+<Remark>
+**Intuition:** Convergence of distributions is exactly weak$^*$ convergence in the dual space $\mathcal{S}^*$. A sequence of distributions converges if and only if it converges pointwise on every test function. This is a very permissive notion of convergence, which is exactly why objects like the Dirac delta can be obtained as limits of ordinary functions.
+</Remark>
+
+Observe that the above notion is identical to the weak$^*$ convergence notion discussed earlier in Definition 3.2.2.
+
+<Example id="3.3.1" title="Regular Distributions Converging to the Dirac Delta">
+Let for $j \in \mathbb{Z}_+$, $j > 0$
+
+$$f_j(t) = \begin{cases} j, & \text{if } 0 \leq t \leq \frac{1}{j} \\ 0 & \text{else} \end{cases} \qquad \text{(3.5)}$$
+
+**a)** For any real-valued function $g \in \mathcal{S}$, define
+
+$$\bar{f}_j(g) := \int_0^{\infty} f_j(t)g(t)dt.$$
+
+Then $\bar{f}_j$ is a distribution on $\mathcal{S}$ for every $j \in \mathbb{N}$.
+
+**b)** We have that
+
+$$\lim_{j \to \infty} \int_0^{\infty} f_j(t)g(t)dt = \bar{\delta}(g) = g(0).$$
+
+Conclude that, the sequence of regular distributions $\bar{f}_j$, represented by a real-valued, integrable function $f_j$, converges to the Dirac delta distribution $\bar{\delta}$ on the space of test functions in $\mathcal{S}$.
+</Example>
+
+In fact, we can find many other functions which can define regular distributions whose limit is the delta distribution. This motivates the following section.
+
+---
+
+## 3.4 Approximate Identity Sequences
+
+<ApproximateIdentityDemo />
+
+<Definition id="3.4.1" title="Approximate Identity Sequence">
+Let $\psi_n : \mathbb{R} \to \mathbb{R}$ be a sequence such that
+
+- $\psi_n(t) \geq 0$, $\quad t \in \mathbb{R}, n \in \mathbb{N}$.
+- $\int \psi_n(t)dt = 1$, $\quad n \in \mathbb{N}$.
+- $\lim_{n \to \infty} \int_{\delta \leq |t|} \psi_n(t)dt = 0$, $\quad \forall \delta > 0$.
+
+Such $\psi_n$ sequences are called **approximate identity sequences**.
+</Definition>
+
+<Remark>
+**Intuition:** An approximate identity sequence is a family of functions that become more and more concentrated around the origin while maintaining unit area. As $n \to \infty$, they "squeeze" all their mass into an infinitesimally small region near $t = 0$. In the limit, they behave like the Dirac delta: integrating them against any test function $\phi$ yields $\phi(0)$. They provide a concrete, constructive way to approach the delta distribution through ordinary functions.
+</Remark>
+
+We have seen one example in (3.5). The result discussed generalizes to any approximate identity sequence:
+
+<Theorem id="3.4.1" title="Approximate Identity Sequences Converge to delta">
+Distributions represented by approximate identity sequences converge to the Dirac delta distribution as $n \to \infty$.
+</Theorem>
+
+<Remark>
+**Intuition:** No matter how you construct your approximate identity sequence (rectangles, Gaussians, sinc-like functions, etc.), the associated distributions always converge to the Dirac delta. This universality is what makes the delta distribution a robust and natural object -- it is the unique limit of any sequence of non-negative unit-area functions concentrating at the origin.
+</Remark>
+
+<Proof>
+Let $\phi \in \mathcal{S}$. Then,
+
+$$\int \psi_n(t)\phi(t)dt - \phi(0)$$
+
+$$= \int \psi_n(t)\phi(t)dt - \int \psi_n(t)\phi(0)dt$$
+
+$$= \int \psi_n(t)(\phi(t) - \phi(0))dt$$
+
+Since $\phi$ is continuous, for every $\epsilon > 0$, there exists a $\delta_\epsilon > 0$ such that for all $|t| \leq \delta_\epsilon$, we have that $|\phi(t) - \phi(0)| \leq \epsilon$. Accordingly,
+
+$$\limsup_{n \to \infty} \left|\int \psi_n(t)\phi(t)dt - \phi(0)\right|$$
+
+$$= \limsup_{n \to \infty} \left|\int \psi_n(t)(\phi(t) - \phi(0))dt\right|$$
+
+$$\leq \limsup_{n \to \infty} \left|\int_{t:|t|>\delta_\epsilon} \psi_n(t)(\phi(t) - \phi(0))dt\right| + \limsup_{n \to \infty} \left|\int_{t:|t|\leq\delta_\epsilon} \psi_n(t)(\phi(t) - \phi(0))dt\right|$$
+
+$$\leq \limsup_{n \to \infty} \int_{t:|t|>\delta_\epsilon} \psi_n(t)|(\phi(t) - \phi(0))|dt + \limsup_{n \to \infty} \int_{t:|t|\leq\delta_\epsilon} \psi_n(t)|\phi(t) - \phi(0)|dt$$
+
+$$\leq \left(2\sup_{t \in \mathbb{R}} |\phi(t)|\right) \limsup_{n \to \infty} \int_{t:|t|>\delta_\epsilon} \psi_n(t)dt + \limsup_{n \to \infty} \epsilon \int_{t:|t|\leq\delta_\epsilon} \psi_n(t)dt$$
+
+$$\leq \epsilon, \qquad \text{(3.6)}$$
+
+where we use the properties of the approximate identity sequences above. Since $\epsilon > 0$ is arbitrary, the result follows so that the limit above exists and is zero. Thus, we conclude that
+
+$$\int \psi_n(t)\phi(t)dt \to \bar{\delta}(\phi) = \phi(0). \quad \square$$
+</Proof>
+
+### 3.4.1 Examples of Approximate Identity Sequences
+
+<Example id="3.4.1" title="Rectangle Approximate Identity">
+Let for $n \in \mathbb{N}$,
+
+$$f_n(t) = \begin{cases} n, & \text{if } 0 \leq t \leq \frac{1}{n} \\ 0 & \text{else} \end{cases}$$
+
+Such a sequence is an example of an approximate identity sequence.
+
+Observe that for $\phi \in \mathcal{S}$, if we define
+
+$$\bar{f}_n(\phi) := \int_0^{\infty} f_n(t)\phi(t)dt,$$
+
+it follows that $\bar{f}_n$ is a distribution on $\mathcal{S}$ and we can show that
+
+$$\lim_{n \to \infty} \int_0^{\infty} f_n(t)\phi(t)dt = \bar{\delta}(\phi) = \phi(0).$$
+
+We thus conclude that, the sequence of **regular** distributions $\bar{f}_n$, represented by the real-valued, integrable function $f_n$, converges to the Dirac delta distribution $\bar{\delta}$.
+</Example>
+
+<Example id="3.4.2" title="Gaussian Approximate Identity">
+Another very important example for such approximate identity sequences is the following **Gaussian** sequence of functions given by
+
+$$f_n(t) = \frac{1}{\sqrt{2\pi\frac{1}{n}}}e^{-\frac{1}{2}\frac{t^2}{\frac{1}{n}}} \qquad \text{(3.7)}$$
+
+Observe that each element $f_n$ of this sequence lives in $\mathcal{S}$, which will be very consequential.
+</Example>
+
+<Theorem id="3.4.2" title="Cosine Approximate Identity (Proposition 3.4.1)">
+Consider the sequence
+
+$$\psi_n(x) = c_n(1 + \cos(x))^n 1_{\{|x| \leq \pi\}}$$
+
+where $c_n$ is so that $\int \psi_n(x)dx = 1$. We have that
+
+$$\lim \int_{|x| \geq \delta} \psi_n(x)dx = 0 \qquad \forall \delta > 0.$$
+</Theorem>
+
+<Remark>
+**Intuition:** The sequence $(1 + \cos(x))^n$ concentrates more and more sharply around $x = 0$ as $n$ grows, because $1 + \cos(x)$ achieves its maximum value of $2$ at $x = 0$ and is strictly less than $2$ everywhere else on $[-\pi, \pi]$. After normalizing to have unit integral, this becomes an approximate identity sequence.
+</Remark>
+
+<Proof>
+Note that for any $A, B$ with $0 < A < B < \pi$,
+
+$$\int_A^B c_n(1 + \cos(x))^n \leq \frac{1}{2},$$
+
+and observe that
+
+$$c_n(1 + \cos(B))^n(B - A) \leq \int_A^B c_n(1 + \cos(x))^n \leq c_n(1 + \cos(A))^n(B - A)$$
+
+Thus,
+
+$$c_n \leq \frac{1}{2}\left(\int_A^B (1 + \cos(x))^n\right)^{-1} \leq \frac{1}{2(B-A)}(1 + \cos(B))^{-n},$$
+
+Now, given $\delta > 0$, let $0 < A < B < \delta < \pi$. Then,
+
+$$\int_{|x| \geq \delta} \psi_n(x)dx \leq 2c_n(\pi - \delta)(1+\cos(\delta))^n \leq \frac{1}{(B-A)}(1 + \cos(B))^{-n}(\pi - \delta)(1 + \cos(\delta))^n \to 0. \quad \square$$
+</Proof>
+
+<Example id="3.4.3" title="Sinc Approximate Identity">
+One further very useful sequence, which does not satisfy the non-negativity property above, but nonetheless satisfies the convergence property (to $\bar{\delta}$) is the following sequence:
+
+$$\psi_n(x) = \frac{\sin(nx)}{\pi x}. \qquad \text{(3.8)}$$
+</Example>
+
+<Theorem id="3.4.3" title="Sinc Sequence Converges to delta">
+For any $\phi \in \mathcal{S}$, with $\psi_n$ as in (3.8)
+
+$$\lim_{n \to \infty} \int \psi_n(x)\phi(x)dx = \phi(0) \qquad \text{(3.9)}$$
+</Theorem>
+
+<Remark>
+**Intuition:** Even though the sinc function $\frac{\sin(nx)}{\pi x}$ takes negative values and thus is not a true approximate identity sequence, it still converges to the Dirac delta when integrated against Schwartz functions. This particular sequence is intimately connected to the Fourier transform and plays a central role in sampling theory.
+</Remark>
+
+<Proof>
+We use the following supporting results:
+
+**(i)**
+
+$$\lim_{R \to \infty} \int_{-R}^{R} \frac{\sin(x)}{x} dx = \pi$$
+
+**(ii)** Riemann-Lebesgue Lemma (see Theorem 5.3.3): For any integrable function $g$, $\lim_{|f| \to \infty, f \in \mathbb{R}} \int g(x)e^{ifx}dx = 0$.
+
+**(iii)** We have $\lim_{|x| \to 0} \frac{\phi(x) - \phi(0)}{x} = h(x)$ for some smooth $h$.
+
+Let us express the integration as
+
+$$\int_{|x| \geq 1} \psi_n(x)\phi(x) + \int_{|x| \leq 1} \psi_n(x)\phi(x)dx$$
+
+The first expression goes to zero, by the Riemann-Lebesgue Lemma. For the second term, we write
+
+$$\int_{|x| \leq 1} \psi_n(x)\phi(x) = \int_{|x| \leq 1} \phi(0)\psi_n(x)dx + \int_{|x| \leq 1} \frac{\phi(x) - \phi(0)}{\pi x} \sin(nx)dx.$$
+
+The second term in this expression goes to zero, by the Riemann-Lebesgue Lemma through the relation $\lim_{|x| \to 0} \frac{\phi(x) - \phi(0)}{x} = h(x)$ for some smooth $h$ and splitting the integral to an arbitrarily small interval $(-\delta, \delta)$ and its complement $[-1,1] \setminus (-\delta, \delta)$ and studying these separately, noting the convergence of the smaller interval integration to that involving the smooth function $h$. The first term $\int_{|x| \leq 1} \phi(0)\psi_n(x)dx$ converges to $\phi(0)$: By writing $u = nx$, we obtain
+
+$$\int_{|x| \leq 1} \frac{\sin(nx)}{\pi x} dx = \int_{|u| \leq n} \frac{\sin(u)}{\pi u} du$$
+
+and using the fact that $\lim_{n \to \infty} \int_{-n}^{n} \frac{\sin(x)}{\pi x}dx = 1$, the result follows. $\square$
+</Proof>
+
+### 3.4.2 Convolution and its use in approximations
+
+The convolution of two functions (whenever this integration is well-defined) is defined as:
+
+$$(\psi * \phi)(t) = \int \psi(\tau)\phi(t - \tau)d\tau = \int \phi(\tau)\psi(t - \tau)d\tau$$
+
+The convolution can be defined for any pair of functions which are in $L_2(\mathbb{R}; \mathbb{R})$. The convolution of two functions in $\mathcal{S}$ is also in $\mathcal{S}$.
+
+A very useful result is the following.
+
+<Theorem id="3.4.4" title="Approximate Identity Convolution">
+If $\psi_n$ is an approximate identity sequence, then,
+
+$$(\psi_n * f)(t) \to f(t),$$
+
+for every continuous and bounded function $f : \mathbb{R} \to \mathbb{R}$, uniformly on compact sets $[a,b] \subset \mathbb{R}$.
+</Theorem>
+
+<Remark>
+**Intuition:** Convolving a function with an approximate identity sequence "smooths" it, and as $n \to \infty$ the smoothed version converges back to the original function. This is the precise sense in which the Dirac delta is the identity element for convolution: convolving with $\delta$ leaves a function unchanged, and approximate identities approximate this behavior.
+</Remark>
+
+<Proof>
+Write
+
+$$(\psi_n * f)(t) - f(t)$$
+
+$$= \int \psi_n(\tau)f(t - \tau)d\tau - f(t)$$
+
+$$= \int \psi_n(\tau)f(t-\tau)d\tau - \int \psi_n(\tau)f(t)d\tau$$
+
+$$= \int \psi_n(\tau)\Big(f(t-\tau) - f(t)\Big)d\tau$$
+
+Since $f$ is continuous, for every $\epsilon > 0$, there exists a $\delta_\epsilon > 0$ such that for $|\tau| \leq \delta_\epsilon$, $|f(t) - f(t-\tau)| \leq \epsilon$. Accordingly,
+
+$$\limsup_{n \to \infty} |(\psi_n * f)(t) - f(t)|$$
+
+$$= \limsup_{n \to \infty} \left|\int \psi_n(\tau)\Big(f(t-\tau) - f(t)\Big)d\tau\right|$$
+
+$$\leq \limsup_{n \to \infty} \left|\int_{\tau:|\tau|>\delta_\epsilon} \psi_n(\tau)\Big(f(t-\tau) - f(t)\Big)d\tau\right| + \limsup_{n \to \infty} \left|\int_{\tau:|\tau|\leq\delta_\epsilon} \psi_n(\tau)\Big(f(t-\tau) - f(t)\Big)d\tau\right|$$
+
+$$\leq \limsup_{n \to \infty} \int_{\tau:|\tau|>\delta_\epsilon} \psi_n(\tau)|f(t-\tau) - f(t)|d\tau + \limsup_{n \to \infty} \int_{\tau:|\tau|\leq\delta_\epsilon} \psi_n(\tau)|f(t-\tau) - f(t)|d\tau$$
+
+$$\leq \left(2\sup_{t \in \mathbb{R}} |f(t)|\right) \limsup_{n \to \infty} \int_{\tau:|\tau|>\delta_\epsilon} \psi_n(\tau)d\tau + \limsup_{n \to \infty} \int_{\tau:|\tau|\leq\delta_\epsilon} \psi_n(\tau)\epsilon\, d\tau$$
+
+$$\leq \epsilon \qquad \text{(3.10)}$$
+
+Since $\epsilon > 0$ is arbitrary, the result follows so that the limit above exists and is zero. Note that for compact $K$, the $\delta, \epsilon$ pair can be taken to be uniform for all $t \in K$, that is, for every $\epsilon > 0$, there exists a $\delta_{\epsilon, K} > 0$ such that $|f(t) - f(t - \delta_\epsilon)| \leq \epsilon$ for all $t \in K$. Therefore, the convergence is uniform over compact sets, in the sense that
+
+$$\lim_{n \to \infty} \sup_{t \in K} |(\psi_n * f)(t) - f(t)| = 0. \quad \square$$
+</Proof>
+
+Note that with $\psi_n$ defined as in (3.7), $(\psi_n \star \phi)$ is always infinitely differentiable, and one may conclude the following:
+
+<Corollary id="3.4.1" title="Density of Smooth Functions">
+The space of smooth functions are dense in the space of continuous functions with a compact support under the supremum norm.
+</Corollary>
+
+<Remark>
+**Intuition:** Any continuous function with compact support can be approximated arbitrarily well (in supremum norm) by a smooth function. This is achieved by convolving with a Gaussian approximate identity, which always produces an infinitely differentiable result.
+</Remark>
+
+### 3.4.3 Completeness of complex exponentials in $L_2([-\pi, \pi]; \mathbb{C})$
+
+Using Theorem 3.4.4, with
+
+$$\psi_n(t) = c_n(1 + \cos(t))^n,$$
+
+(which is an approximate identity sequence as shown in Proposition 3.4.1, when $c_n$ is picked so that $\int \psi_n(t)dt = 1$), we can prove the following:
+
+<Theorem id="3.4.5" title="Completeness of Complex Exponentials">
+The family of complex exponentials in $L_2([-\pi, \pi]; \mathbb{C})$:
+
+$$\{e_n(t)\} = \left\{\frac{1}{\sqrt{2\pi}}e^{int}, \quad n \in \mathbb{Z}\right\}$$
+
+forms an orthonormal sequence which is **complete**.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem justifies the Fourier series: the complex exponentials $\{e^{int}\}$ form a complete orthonormal basis for $L_2([-\pi, \pi]; \mathbb{C})$, meaning every square-integrable periodic function can be represented as a (possibly infinite) sum of these exponentials with no information lost. There is no "missing direction" in the space that the exponentials cannot reach.
+</Remark>
+
+<Proof>
+The proof follows from Theorem 3.4.4, by writing
+
+$$(\psi_n * f)(t) = \int \psi_n(t - \tau)f(\tau) = \int c_n(1 + \cos(t - \tau))^n f(\tau)d\tau$$
+
+Now,
+
+$$(1 + \cos(t - \tau))^n = \sum_{k=0}^{n} \binom{n}{k} (\cos(t-\tau))^k$$
+
+$$= \sum_{k=0}^{n} \binom{n}{k} \left(\frac{e^{i(t-\tau)} + e^{-i(t-\tau)}}{2}\right)^k$$
+
+$$= \sum_{k=-n}^{n} b_{n,k} e^{ik(t-\tau)} \qquad \text{(3.11)}$$
+
+for some collection of coefficients $b_{n,k}$, $k = -n, -n+1, \cdots, n$, which can be obtained by expanding $\left(\frac{e^{i(t-\tau)} + e^{-i(t-\tau)}}{2}\right)^k$ for each $k$. Thus,
+
+$$(\psi_n * f)(t) = \int \sum_{k=-n}^{n} b_{n,k}e^{ik(t-\tau)}f(\tau)d\tau = \sum_{k=-n}^{n} e^{ikt} a_{n,k}$$
+
+where
+
+$$a_{n,k} := b_{n,k} \int e^{-ik\tau} f(\tau) d\tau, \qquad k = -n, -n+1, \cdots, n$$
+
+That is, we have that, as $n \to \infty$,
+
+$$\sum_{k=-n}^{n} e^{ikt} a_{n,k} \to f(t)$$
+
+uniformly over $t \in [-\pi, \pi]$. Accordingly, via the arguments as in (2.13), it follows that the only vector in $L_2([-\pi, \pi]; \mathbb{C})$ which is orthogonal to $\{e^{ikt}, t \in [-\pi, \pi]\}$ for $k \in \mathbb{Z}$ is the null vector and thus, the collection
+
+$$\{e_n(t)\} = \left\{\frac{1}{\sqrt{2\pi}}e^{int}, \quad n \in \mathbb{Z}\right\},$$
+
+forms a complete orthonormal sequence in $L_2([-\pi, \pi]; \mathbb{C})$. $\square$
+</Proof>
+
+This sequence is used for the Fourier expansion of functions in $L_2([0, 2\pi]; \mathbb{C})$; see Section 2.3.4.
+
+---
+
+## 3.5 Some Operations on Distributions [Optional]
+
+While studying several properties of distributions, one typically first starts with a generalized distribution and tries to extend the properties to singular distributions.
+
+One important property of distributions is that every distribution has a derivative. Furthermore, we will also be taking the Fourier transform of distributions, but the derivative, once again, will have a meaning as a distribution; that is it will only have a meaning when it is applied to a class of test functions.
+
+<Definition id="3.5.1" title="Derivative of a Distribution">
+The **derivative** of a distribution $\bar{\gamma} \in \mathcal{S}^*$ is defined as:
+
+$$(D\bar{\gamma})(\phi) = -\bar{\gamma}\left(\frac{d\phi}{dt}\right), \qquad \phi \in \mathcal{S}.$$
+</Definition>
+
+<Remark>
+**Intuition:** The derivative of a distribution is defined by "shifting" the derivative onto the test function (with a sign change), which is just integration by parts without boundary terms (since Schwartz functions vanish at infinity). This means every distribution -- even singular ones like the Dirac delta -- is differentiable, a stark contrast to ordinary calculus where most functions are not differentiable everywhere.
+</Remark>
+
+We can check if this definition is consistent with a distribution represented by a regular function. Consider (3.4) and note that through integration by parts
+
+$$\int \frac{d}{dt}\gamma(t)\phi(t)dt = -\int \gamma(t)\frac{d}{dt}\phi(t) = -\bar{\gamma}\left(\frac{d\phi}{dt}\right).$$
+
+<Example id="3.5.1" title="Derivative of the Step Function Distribution">
+Given the definition of a distributional derivative, we show that the distributional derivative of the distribution $\bar{u}$ represented by the unit step function is the Dirac delta distribution: Let $u(t)$ denote the step function: that is $u(t) = 1_{\{t \geq 0\}}$ ($1_{\{\cdot\}}$ being the indicator function). Define for $\phi \in \mathcal{S}$,
+
+$$\bar{u}(\phi) = \int_{\mathbb{R}} u(t)\phi(t)dt = \int_0^{\infty} \phi(t)dt.$$
+
+We can verify that the Dirac delta distribution is the derivative of the step distribution above:
+
+$$D\bar{u}(\phi) = -\bar{u}(D\phi) = -\int_0^{\infty} (D\phi)(t) = -\lim_{t \to \infty} \phi(t) + \phi(0) = \bar{\delta}(\phi),$$
+
+for all $\phi \in \mathcal{S}$ (in the above equation, $\phi \in \mathcal{S}$ allows us to use that $\lim_{t \to \infty} \phi(t) = 0$).
+
+This is an important relationship in engineering applications; for example, the step function often models a *turn-on* event for a switch in circuit theory and its derivative is often approximated to be the Dirac delta function (to be cautiously interpreted).
+</Example>
+
+### Convolution of Distributions
+
+Let $\bar{F}$ be a distribution given by $\bar{F}(\phi) = \int F(t)\phi(t)dt$.
+
+The convolution of $F$ with $\phi \in \mathcal{S}$ would be:
+
+$$\int F(\tau)\phi(t - \tau)d\tau$$
+
+We can interpret this as a distribution in the following sense. Let $T_t(\phi)(\tau) = \phi(\tau - t)$ be the shifting operator and $Rg(x) = g(-x)$ be the inversing operator. Then,
+
+$$\int F(\tau)\phi(t - \tau)d\tau = \int F(\tau)(RT_t\phi)(\tau) = \bar{F}((RT_t\phi))$$
+
+This then motivates the following: The convolution of a function $\phi$ in $\mathcal{S}$ and a distribution $\bar{f}$ is defined by:
+
+$$(\phi * \bar{f})(t) = \int f(\tau)\phi(t - \tau)d\tau = \bar{f}(RT_t\phi),$$
+
+where, as before, $Rg(x) = g(-x)$ is the inversing operator and $T_t(\phi)(\tau) = \phi(\tau - t)$ is the shifting operator.
+
+<Theorem id="3.5.1" title="Convolution with a Distribution">
+For any distribution $\bar{f}$ and $\phi$ in $\mathcal{S}$, $\phi * \bar{f}$ is an infinitely differentiable function and can be used to represent a regular distribution.
+</Theorem>
+
+<Remark>
+**Intuition:** Convolving any distribution (even a singular one) with a Schwartz function always produces a smooth, well-behaved function. This is a powerful regularization property: the smoothness of the test function "wins out" and tames any singularity.
+</Remark>
+
+Let $\bar{f}, \bar{g}$ be two regular distributions represented by $f, g$, respectively. The convolution of $\bar{f} \star \bar{g}$ is given by the relation, whenever this is well-defined:
+
+$$\left(\bar{f} \star \bar{g}\right)(\phi) = \bar{f}(h_g(\phi)), \quad \forall \phi \in \mathcal{S},$$
+
+with
+
+$$h_g(\phi) = \int_{-\infty}^{\infty} g(\tau - t)\phi(\tau)d\tau$$
+
+It should be observed that, with the above definition:
+
+$$\left(\bar{f} \star \bar{\delta}\right)(\phi) = \bar{f}(\phi), \quad \forall \phi \in \mathcal{S},$$
+
+that is the delta distribution is the **identity element** in distributions under the operation of convolution.
+
+Let $\psi_n$ be the approximate identity sequence given by (3.7), so that $\psi_n \in \mathcal{S}$. Then, it can be shown that for any singular $\bar{g}$, $\psi_n * \bar{g}$ is a smooth function, and can be used to represent a regular distribution such that $(\psi_n * \bar{g})(\phi) = \bar{g}(\int \psi_n(t - \tau)\phi(t)dt) \to \bar{g}(\phi)$ for any $\phi \in \mathcal{S}$ (by linearity and by continuity of $\bar{g}$). Accordingly, for any singular distribution, there exists a sequence of regular distributions which converges to the singular distribution.
+
+---
+
+## 3.6 Fourier Transform of Schwartz Functions
+
+We will continue the discussion of Schwartz functions in the context of Fourier transforms. One appealing aspect of Schwartz functions is that the Fourier transform of a Schwartz function lives in the space of Schwartz functions. In fact, the Fourier transform on the space of Schwartz functions is both onto and one to one (hence a bijection). This will be proven later. Since the space of continuous functions is dense in the space of square integrable functions, and $\mathcal{S}$ is dense in the space of continuous functions under the supremum norm by Theorem 3.4.4, we will use the bijection property of the Fourier transform on $\mathcal{S}$ to define the Fourier transform of square integrable functions.
+
+---
+
+## 3.7 Appendix
+
+### 3.7.1 Optional: Application to Optimization Problems and the Generalization of the Projection Theorem
+
+The duality results and Holder's inequality are important in applications to optimization problems. The geometric ideas we reviewed in the context of the projection theorem apply very similarly to such spaces, where the inner-product is replaced by the duality pairings. Let us make this more explicit: Let for a subspace $M$,
+
+$$M^\perp := \{x^* : \langle m, x^* \rangle = 0, \forall m \in M\}.$$
+
+<Theorem id="3.7.1" title="Distance and Dual Characterization (Projection Generalization)">
+**(i)** Let $x$ be an element in a real normed space $X$ and let $d$ denote its distance from a subspace $M$. Then,
+
+$$d = \inf_{m \in M} \|x - m\| = \max_{\{\|x^*\| \leq 1, x^* \in M^\perp\}} \langle x, x^* \rangle$$
+
+If the infimum is achieved, then the maximum on the right is achieved for some $x_0^*$ such that $x - m_0$ is aligned with $x_0^*$.
+
+**(ii)** In particular, if $m_0$ satisfies
+
+$$\|x - m_0\| \leq \|x - m\|, \forall m \in M,$$
+
+there must be a non-zero vector $x^* \in X^*$ such that $\langle m, x_0^* \rangle = 0$ for all $m$ and $x^*$ is aligned with $x - m_0$.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem generalizes the projection theorem from Hilbert spaces to general normed spaces using duality. The distance from a point to a subspace can be computed by maximizing a dual functional over unit-norm elements in the annihilator $M^\perp$. This is the foundation of duality in optimization: the "primal" problem (minimizing distance) equals the "dual" problem (maximizing a linear functional).
+</Remark>
+
+<Proof>
+**(i)** For any $\epsilon > 0$, let $m_\epsilon \in M$ be such that $\|x - m_\epsilon\| \leq d + \epsilon$. For any $x^* \in M^\perp$ with $\|x^*\| \leq 1$, we have
+
+$$\langle x, x^* \rangle = \langle x - m_\epsilon, x^* \rangle \leq \|x^*\|\|x - m_\epsilon\| \leq d + \epsilon.$$
+
+Since $\epsilon$ is arbitrary, it follows that $\langle x, x^* \rangle \leq d$.
+
+It remains to be shown if we could find an $x_0^*$ for which $\langle x, x_0^* \rangle = d$.
+
+Let $N$ be the subspace spanned by the vectors in the collection $x + M$; every vector in $N$ can be written as $n = \alpha x + m$ for some $m \in M$ and $\alpha \in \mathbb{R}$. One can define a linear function on $N$ by the equation
+
+$$f(n) = \alpha d,$$
+
+and note that this basically assigns the value zero for those vectors in $N$ that are strictly in $M$.
+
+We have:
+
+$$\|f\| = \sup_{n \in N} \frac{|f(n)|}{\|n\|} = \sup \frac{|\alpha| d}{\|\alpha x + m\|} = \sup \frac{|\alpha| d}{|\alpha|\|x + \frac{m}{\alpha}\|} = 1,$$
+
+since $\inf \|x + \frac{m}{\alpha}\| = d$. Now, define an extension of $f$ from $N$ to all of $X$ (this is possible due to an extension theorem known as Hahn-Banach Extension theorem). Call this extension $x_0^*$ and such an extension can be made so that $\|x_0^*\| = \|f\| = 1$ and $x_0^*(n) = f(n)$ for $n \in N$. Since $f(m) = 0$ for $m \in M$, we have that $x^*(m) = 0$ as well for $m \in M$ (so $x_0^* \in M^\perp$). Thus, $\langle x, x_0^* \rangle = d$ (since $x = x + \underline{0}$ with the view that $\underline{0} \in M$).
+
+**(ii)** Now let $m_0$ exist so that $\|x - m_0\| = d$ and let $x_0^*$ be any element so that $x_0^* \in M^\perp$, $\|x_0^*\| = 1$ and $\langle x, x_0^* \rangle = d$ (the construction above is an example). Then,
+
+$$\langle x - m_0, x_0^* \rangle = \langle x, x_0^* \rangle = d = \|x_0^*\|\|x - m_0\|,$$
+
+where the last equality holds since $\|x_0^*\| = 1$ and $\|x - m_0\| = d$. Thus, $x_0^*$ is aligned with $x - m_0$. $\square$
+</Proof>
+
+<Theorem id="3.7.2" title="Dual Distance Characterization">
+Let $M$ be a subspace in a real normed space $X$. Let $x^* \in X^*$ be at a distance $d$ from $M^\perp$. Then, **(i)**
+
+$$d = \min_{m^* \in M^\perp} \|x^* - m^*\| = \sup_{x \in M, \|x\| \leq 1} \langle x, x^* \rangle,$$
+
+where the minimum on the left is achieved for $m_0^* \in M^\perp$. **(ii)** If the supremum on the right is achieved for some $x_0 \in M$, then $x^* - m_0^*$ is aligned with $x_0$.
+</Theorem>
+
+<Remark>
+**Intuition:** This is the "dual version" of the previous theorem: now we are measuring the distance of a dual element $x^*$ from the annihilator $M^\perp$, and this equals the supremum of $\langle x, x^* \rangle$ over unit-norm elements in $M$. Together with Theorem 3.7.1, these results establish the symmetric duality between primal and dual optimization problems.
+</Remark>
+
+<Proof>
+**(i)** For any $m^* \in M^\perp$, we have
+
+$$\|x^* - m^*\| = \sup_{\|x\| \leq 1} \langle x, x^* - m^* \rangle \geq \sup_{\|x\| \leq 1, x \in M} \langle x, x^* - m^* \rangle = \sup_{\|x\| \leq 1, x \in M} \langle x, x^* \rangle =: \|x^*\|_M.$$
+
+Thus, $\|x^* - m^*\| \geq \|x^*\|_M$. We now seek for $m_0^* \in M^\perp$ giving an equality. Consider $x^*$ restricted to $M$. Let $y^*$ be the (Hahn-Banach) extension of the restriction of $x^*$ to $M$, to the whole $X$. Thus, $\|y^*\|_M = \|x^*\|_M$ and $(x^* - y^*)(m) = 0$ for $m \in M$. Define $m_0^* = x^* - y^*$. Then, $m_0^* \in M^\perp$ and $\|x^* - m_0^*\| = \|y^*\| = \|x^*\|_M$.
+
+**(ii)** If the supremum on the right-hand side is achieved for some $x_0 \in M$, then with $\|x_0\| = 1$, $\|x^* - m_0^*\| = \langle x_0, x^* \rangle = \langle x_0, x^* - m_0^* \rangle$. Thus, $x^* - m_0^*$ is aligned with $x_0$. $\square$
+</Proof>
+
+### An Application: Constrained Dual Optimization Problems
+
+Consider the following constrained optimization problem:
+
+$$d = \min_{x^*: \langle y_i, x^* \rangle = c_i, 1 \leq i \leq n} \|x^*\|$$
+
+Observe that if $\bar{x}^*$ is any vector satisfying the constraints, then
+
+$$d = \min_{x^*: \langle y_i, x^* \rangle = c_i, 1 \leq i \leq n} \|x^*\| = \min_{m^* \in M^\perp} \|\bar{x}^* - m^*\|,$$
+
+where $M$ denotes the space spanned by $\{y_1, y_2, \cdots, y_n\}$ and $\bar{x}^*$ is some vector satisfying the constraints.
+
+From Theorem 3.7.2, we have that
+
+$$d = \min_{m^* \in M^\perp} \|\bar{x}^* - m^*\| = \sup_{x \in M, \|x\| \leq 1} \langle x, \bar{x}^* \rangle,$$
+
+Now, any vector in $M$ is of the form $m = Ya$ where $Y = \begin{bmatrix} y_1 & y_2 & \cdots & y_n \end{bmatrix}$ is a matrix and $a$ is a column vector. Thus,
+
+$$d = \min_{x^*: \langle y_i, x^* \rangle = c_i, 1 \leq i \leq n} |x^*| = \sup_{\|Ya\| \leq 1} \langle Ya, \bar{x}^* \rangle = \sup_{\|Ya\| \leq 1} c^T a,$$
+
+where the last equality follows because $\bar{x}^*$ satisfies the constraints and that
+
+$$\langle Ya, \bar{x}^* \rangle = \langle a, Y^T \bar{x}^* \rangle = c^T a$$
+
+Thus, the optimal solution to the constrained problem can be written as
+
+$$\sup_{\|Ya\| \leq 1} c^T a,$$
+
+where the optimal $x^*$ is aligned with the optimal $Ya$.
+
+In the following, we present another approach to arrive at the above.
+
+$$\min_{x^*: \langle y_i, x^* \rangle = c_i, 1 \leq i \leq n} \|x^*\|$$
+
+$$= \min_{x^*} \max_{\lambda} \|x^*\| + \lambda^T(c - Y^T x^*)$$
+
+$$= \max_{\lambda} \min_{x^*} \|x^*\| + \langle \lambda, c \rangle - \lambda^T(Y^T x^*) \qquad \text{(3.12)}$$
+
+$$= \max_{\lambda} \min_{x^*} \|x^*\| + \langle \lambda, c \rangle - (Y\lambda)^T(x^*)$$
+
+$$= \max_{\lambda} \min_{x^*} \|x^*\| + \langle \lambda, c \rangle - \|Y\lambda\|\|x^*\|$$
+
+$$= \max_{\lambda} \min_{x^*} \|x^*\|(1 - \|Y\lambda\|) + \langle \lambda, c \rangle$$
+
+$$= \max_{\lambda: \|Y\lambda\| \leq 1} \min_{x^*} \|x^*\|(1 - \|Y\lambda\|) + \langle \lambda, c \rangle$$
+
+$$= \max_{\lambda: \|Y\lambda\| \leq 1} \langle \lambda, c \rangle \qquad \text{(3.13)}$$
+
+where the optimal $x^*$ is aligned with $Y\lambda$. In the above, (3.12) follows from Sion's minimax theorem. In the above, $\lambda$ serves as a **Lagrangian multiplier**.

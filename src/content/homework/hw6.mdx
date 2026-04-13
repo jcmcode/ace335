@@ -1,0 +1,345 @@
+---
+title: "Homework 6 Solutions"
+homework: 6
+---
+
+## Problem 1: Fourier Series
+
+<Problem id="1" title="Fourier Series">
+a) For some $N \in \mathbb{N}$, let $x \in l_2\Big( (-N, -(N-1), \cdots, N-1, N); \mathbb{C} \Big)$ with
+
+$$x(n) = 1_{\{|n| \le N_1\}}$$
+
+Find the Fourier series expansion of $x$. Study the case with $N_1 = N$, and the case with $N_1 = 0$.
+
+b) For some $T \in \mathbb{R}_+$, let $x \in L_2([-\frac{T}{2}, \frac{T}{2}]; \mathbb{C})$ with
+
+$$x(t) = 1_{\{|t| \le T_1\}}$$
+
+Find the Fourier series expansion of $x$. Study the cases with (i) $T_1 = \frac{T}{2}$, and (ii) the case where, with $T_1 = \frac{1}{2n}$, we have
+
+$$x_n(t) = n1_{\{|t| \le \frac{1}{2n}\}},$$
+
+as $n \to \infty$.
+</Problem>
+
+<Solution>
+**a)** We have for $k = 0, 1, \cdots, 2N+1$,
+
+$$\hat{x}\left(\frac{k}{2N+1}\right) = \sum_{n=-N_1}^{N_1} \frac{1}{\sqrt{2N+1}} e^{-i\frac{2\pi k}{2N+1}n} = \frac{1}{\sqrt{2N+1}} e^{i\frac{2\pi k}{2N+1}N_1} \sum_{n=0}^{2N_1} e^{-i\frac{2\pi k}{2N+1}n}$$
+
+For $k \neq 0$, we have
+
+$$\hat{x}\left(\frac{k}{2N+1}\right) = \frac{1}{\sqrt{2N+1}} e^{i\frac{2\pi k N_1}{2N+1}} \frac{(1 - e^{-i\frac{2\pi k(2N_1+1)}{2N+1}})}{1 - e^{-i\frac{2\pi k}{2N+1}}}$$
+
+For $k = 0$, we have
+
+$$\hat{x}\left(\frac{0}{2N+1}\right) = \frac{2N_1 + 1}{\sqrt{2N+1}}$$
+
+If $N_1 = N$: For $k \neq 0$
+
+$$\hat{x}\left(\frac{k}{2N+1}\right) = 0$$
+
+and for $k = 0$, we have
+
+$$\hat{x}\left(\frac{0}{2N+1}\right) = \sqrt{2N+1}$$
+
+For the other extreme, if $N_1 = 0$, we have for all $k \in \{0, \cdots, 2N+1\}$
+
+$$\hat{x}\left(\frac{k}{2N+1}\right) = \frac{1}{\sqrt{2N+1}}$$
+
+**b)** We have the expansion (in the $L_2$-sense):
+
+$$x(t) = \sum_{k \in \mathbb{Z}} \hat{x}\left(\frac{k}{T}\right) \frac{1}{\sqrt{T}} e^{i\frac{2\pi k}{T}t}$$
+
+with
+
+$$\hat{x}\left(\frac{k}{T}\right) = \int_{-\frac{T}{2}}^{\frac{T}{2}} x(t) \frac{1}{\sqrt{T}} e^{-i\frac{2\pi k}{T}t} dt$$
+
+Thus, with $x$ as given, we have
+
+$$\hat{x}\left(\frac{k}{T}\right) = \int_{-T_1}^{T_1} \frac{1}{\sqrt{T}} e^{i\frac{2\pi k}{T}t} = \frac{e^{i\frac{2\pi k T_1}{T}} - e^{-i\frac{2\pi k T_1}{T}}}{i2\pi k / \sqrt{T}} = \frac{\sin(2\pi k \frac{T_1}{T})}{2\pi k \frac{T_1}{T}} \cdot \frac{2T_1}{\sqrt{T}}$$
+
+If $T_1 = \frac{T}{2}$, we have that $\hat{x}(\frac{k}{T}) = 0$ for all $k \neq 0$ and $\hat{x}(\frac{0}{T}) = \sqrt{T}$.
+
+If $T_1 = \frac{1}{2n}$, with $x_n(t) = n1_{\{|t| \le T_1\}}$, then we observe that $\hat{x}_n(\frac{k}{T}) \to \frac{1}{\sqrt{T}}$ for all $k \in \mathbb{Z}$.
+
+We observe from these examples that, as a general insight (which can be made more rigorous under additional conditions), if we expand the signal in time domain, we shrink it in the frequency domain; and if we shrink it in time domain, we expand it in the frequency domain.
+</Solution>
+
+## Problem 2: Fourier Series
+
+<Problem id="2" title="Fourier Series">
+In $l_2\Big( \{0, 1, \ldots, N-1\}; \mathbb{C} \Big)$, we observed that the Fourier series
+
+$$\frac{1}{\sqrt{N}} e^{i2\pi \frac{k}{N}n}, \quad k \in \{0, 1, \ldots, N-1\},$$
+
+provides a complete orthonormal sequence, hence, provides a basis. Let $x \in l_2\Big( \{0, 1, \ldots, N-1\}; \mathbb{C} \Big)$ be given as:
+
+$$x(n) = 2 + 3\cos\left(\frac{4\pi}{N}n\right) + \cos\left(\frac{6\pi}{N}n\right) + \cos\left(\frac{6\pi}{N}n + \frac{\pi}{2}\right),$$
+
+for all $n$.
+
+What is the Fourier series expansion of $x$?
+</Problem>
+
+<Solution>
+One writes
+
+$$x(n) = 2 + 3\cos\left(\frac{4\pi}{N}n\right) + \cos\left(\frac{6\pi}{N}n\right) + \cos\left(\frac{6\pi}{N}n + \frac{\pi}{2}\right),$$
+
+as
+
+$$x(n) = 2 + \frac{3}{2}(e^{i\frac{4\pi}{N}n} + e^{-i\frac{4\pi}{N}n}) + \frac{1}{2}(e^{i\frac{6\pi}{N}n} + e^{-i\frac{6\pi}{N}n}) + \frac{1}{2}(e^{i(\frac{6\pi}{N}n + \frac{\pi}{2})} + e^{-i(\frac{6\pi}{N}n + \frac{\pi}{2})})$$
+
+And finally,
+
+$$x(n) = 2 + \frac{3}{2}e^{i\frac{2\pi \cdot 2}{N}n} + \frac{3}{2}e^{i\frac{(N-2)2\pi}{N}n} + \frac{1}{2}(1 + e^{i\frac{\pi}{2}})e^{i\frac{2\pi \cdot 3}{N}n} + \frac{1}{2}(1 - e^{-i\frac{\pi}{2}})e^{i\frac{2\pi(N-3)}{N}n}$$
+
+By matching the terms with the Fourier expansion:
+
+$$x(n) = \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} \hat{x}\left(\frac{k}{N}\right) e^{i(2\pi \frac{k}{N})n},$$
+
+we obtain:
+
+$$\hat{x}(0) = 2\sqrt{N}, \quad \hat{x}\left(\frac{2}{N}\right) = \hat{x}\left(\frac{N-2}{N}\right) = \sqrt{N}\frac{3}{2}$$
+
+$$\hat{x}\left(\frac{3}{N}\right) = \sqrt{N}\frac{1}{2}(1+i), \quad \hat{x}\left(\frac{N-3}{N}\right) = \sqrt{N}\frac{1}{2}(1-i)$$
+
+where we use $e^{i\frac{\pi}{2}} = i$. The rest of the coefficients: $\hat{x}(\frac{k}{N})$ are all zero for $k \notin \{0, 2, 3, N-3, N-2\}$.
+</Solution>
+
+## Problem 3: Fourier Series
+
+<Problem id="3" title="Fourier Series">
+In class, we observed that in $L_2([-\frac{P}{2}, \frac{P}{2}]; \mathbb{C})$, the sequence of signals
+
+$$\left\{ \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P}t}, k \in \mathbb{Z} \right\}$$
+
+provides a complete orthonormal sequence.
+
+Let $f \in L_2([-\frac{P}{2}, \frac{P}{2}]; \mathbb{C})$ such that $f(-\frac{P}{2}) = f(\frac{P}{2})$. Suppose $f$ is differentiable.
+
+Find the Fourier expansion of $g(t) = f'(t)$ for $t \in [-\frac{P}{2}, \frac{P}{2}]$ in terms of the Fourier series coefficients of $f$.
+</Problem>
+
+<Solution>
+Let $\hat{f}(\frac{k}{\sqrt{P}})$ be the coefficient multiplying $e^{i2\pi \frac{k}{P}t}$ for $k \in \mathbb{Z}$ in the expansion. Considering the same for $g$, we obtain from Integration by Parts:
+
+$$\hat{g}\left(\frac{k}{\sqrt{P}}\right) = \int_{-\frac{P}{2}}^{\frac{P}{2}} \frac{1}{\sqrt{P}} g(t) e^{-i2\pi \frac{k}{P}t} dt$$
+
+$$= \frac{1}{\sqrt{P}} f(t) e^{-i2\pi \frac{k}{P}t} \Big|_{-\frac{P}{2}}^{\frac{P}{2}} - \int_{-\frac{P}{2}}^{\frac{P}{2}} (-i2\pi \frac{k}{P}) \frac{1}{\sqrt{P}} f(t) e^{-i2\pi \frac{k}{P}t} dt$$
+
+$$= (i2\pi \frac{k}{P}) \int_{-\frac{P}{2}}^{\frac{P}{2}} \frac{1}{\sqrt{P}} f(t) e^{-i2\pi \frac{k}{P}t} dt$$
+
+$$= (i2\pi \frac{k}{P}) \hat{f}\left(\frac{k}{\sqrt{P}}\right)$$
+</Solution>
+
+## Problem 4: Matlab Assignment
+
+<Problem id="4" title="Matlab Assignment">
+In this assignment, you are asked to generate (with the help of Matlab) the Fourier series expansion of the following function: $x \in l_2(\{-N, -(N-1), \cdots -1, 0, 1, \ldots, N-1, N\})$ where $x(n) = 1$ for $|n| \le N_1$ and $0$ elsewhere. That is
+
+$$x(n) = 1_{\{|n| \le N_1\}}, \quad -N \le n \le N$$
+
+with $1_{\{.\}}$ denoting the indicator function.
+
+You are asked to obtain a representation of the form:
+
+$$\tilde{x}(n) = \frac{1}{\sqrt{2N+1}} \sum_{k=-N}^{N} a_k e^{ik(2\pi/(2N+1))n}$$
+
+where
+
+$$a_k = \frac{1}{\sqrt{2N+1}} \sum_{n=-N}^{N} x(n) e^{-ik(2\pi/(2N+1))n}.$$
+
+By defining a FourSeries function, obtain the expansion coefficients with Matlab. Your function should take the signal as its input and generate the Fourier series coefficients as the output.
+
+Now, let $(N = 2, N_1 = 1)$; $(N = 20, N_1 = 5)$; and $(N = 20, N_1 = 20)$ and obtain $\tilde{x}(n)$ above for $n \in \mathbb{Z}, n \in [-25, 25]$. Plot the Fourier series coefficients for $x$.
+
+For $N = 20, N_1 = 1$, plot $\tilde{x}(n)$ for $n \in \mathbb{Z}, n \in [-25, 25]$. What is the relationship between $x(n)$ and $\tilde{x}(n)$?
+</Problem>
+
+<Solution>
+This is a computational/programming problem. Implement the DFT and inverse DFT in Matlab or Python:
+
+1. Define the signal $x(n) = 1_{\{|n| \le N_1\}}$ for $-N \le n \le N$
+2. Compute the Fourier coefficients $a_k$ using the formula above
+3. Reconstruct $\tilde{x}(n)$ and plot both the coefficients and the reconstructed signal
+4. Compare $x(n)$ and $\tilde{x}(n)$ -- they should agree on $[-N, N]$ and $\tilde{x}$ is the periodic extension outside this range
+</Solution>
+
+## Problem 5: Matlab and Fourier Series
+
+<Problem id="5" title="Matlab and Fourier Series">
+a) Let $x \in L_2([0,2]; \mathbb{C})$ be given by:
+
+$$x(t) = 1_{\{t \le 1\}}t + 1_{\{1 \le t \le 2\}}(1 - t)$$
+
+Let $\hat{x}(\frac{k}{2})$ denote the Fourier series coefficient corresponding to $\{\frac{1}{\sqrt{2}}e^{i2\pi \frac{k}{2}t}, t \in [0,2]\}$.
+
+With Matlab, generate the plot of the signal
+
+$$x_N(t) = \sum_{k=-N}^{N} \hat{x}\left(\frac{k}{2}\right) \frac{1}{\sqrt{2}} e^{i2\pi \frac{k}{2}t}, \quad t \in [0,2]$$
+
+for $N = 5, 10$ and $15$. Here $\hat{x}(\frac{k}{P})$ are the Fourier Series expansion coefficients.
+
+Observe that, the signal looks more and more like the original signal as $N$ gets larger.
+
+b) Prove that $\lim_{N \to \infty} \int (x(t) - x_N(t))^2 dt = 0$.
+
+Hint: Use the properties of Hilbert spaces and the fact that $\{\frac{1}{\sqrt{P}}e^{i2\pi \frac{k}{P}}\}$ forms a complete orthonormal sequence. We had proved a related theorem in class in the context of Hilbert spaces. You could invoke this result directly in your argument.
+
+c) Does for a general $x \in L_2([0,2]; \mathbb{C})$,
+
+$$\sup_{t \in [0,2]} |x(t) - x_N(t)| \to 0,$$
+
+as $N \to \infty$? Explain your argument.
+</Problem>
+
+<Solution>
+**b)** We note here that for a given Hilbert space $H$ and a complete orthonormal sequence $\{e_k, k \in \mathbb{Z}\}$ in $H$, if for $x \in H$, we can write $x = \sum_i \alpha_i e_i$, it must be that
+
+$$\lim_{N \to \infty} \sum_{i=-N}^{N} \alpha_i e_i = x$$
+
+and, furthermore
+
+$$\lim_{N \to \infty} \sum_{i=-N}^{N} |\alpha_i|^2 = (\|x\|_2)^2$$
+
+This was proven in class while studying Hilbert spaces. Since the space $L_2([0,2]; \mathbb{C})$ is a separable Hilbert space and Fourier series is a complete orthonormal sequence, the discussion applies.
+
+**c)** The convergence in $L_2([0,P]; \mathbb{C})$ is, naturally, in the $L_2$ norm (and not necessarily in the supremum norm). Recall the way we proved the result that complex exponentials are complete: we showed first that continuous functions can be approximated uniformly; and then used the fact that continuous functions are a dense family in $L_2$. Fourier series can be used to reconstruct any continuous function supported on a compact set pointwise (and in fact uniformly over compact sets).
+
+However, Fourier series expansions may not converge pointwise for general functions!
+
+Consider the following signal. Let
+
+$$x(t) = 1_{\{0 \le t \le M\}},$$
+
+and $x \in L_2([0, 2\pi]; \mathbb{C})$. The Fourier series expansion of this signal can be obtained by the computation of the following for all $k \in \mathbb{Z}$: For $k \neq 0$:
+
+$$\hat{x}\left(\frac{k}{2\pi}\right) = \int_0^{M} \frac{1}{\sqrt{2\pi}} e^{-ikt} dt = \frac{1}{\sqrt{2\pi}} \frac{1}{-ik}[e^{-ikM} - 1] = \frac{1}{\sqrt{2\pi}} \frac{1}{ik}[1 - e^{-ikM}]$$
+
+For $k = 0$, we obtain
+
+$$\hat{x}\left(\frac{0}{2\pi}\right) = M/\sqrt{2\pi}$$
+
+The expansion is
+
+$$\tilde{x}(t) = \lim_{N \to \infty} \sum_{k \in [-N,N] \cap \mathbb{Z} \setminus \{0\}} \frac{1}{2\pi} \frac{1}{ik}[1 - e^{-ikM}]e^{ikt} + \frac{M}{2\pi}$$
+
+Let $t = 0$ and $M = \pi$. Then,
+
+$$\tilde{x}(0) = \frac{M}{2\pi} + \lim_{N \to \infty} \sum_{k \in [-N,N] \cap \mathbb{Z} \setminus \{0\}} \frac{1}{2\pi} \frac{1}{ik}[1 - e^{-ikM}] = \frac{M}{2\pi} + \lim_{N \to \infty} \sum_{k=1}^{N} \frac{\sin(k\pi)}{\pi k}$$
+
+which is equal to $1/2$ since the second term is zero.
+
+As such, the reconstruction is not equal to the original signal. For our problem, we can write the function as
+
+$$\left( 1_{\{t \le 1\}}t + 1_{\{1 \le t \le 2\}}(2-t) \right) - 1_{\{1 \le t \le 2\}}$$
+
+The first term is continuous. The second term, however, will lead to discontinuity, and ultimately a reconstruction which will be equal to $-1/2$ at $t = 1$. Therefore, the reconstruction will not be exact at $t = 1$, following the discussion above.
+</Solution>
+
+## Problem 6: Fourier Transforms Summary
+
+<Problem id="6" title="Fourier Transforms Summary">
+Summarize the Fourier transformations DDFT (Discrete-to-Discrete), CDFT (Continuous-to-Discrete), DCFT (Discrete-to-Continuous), and CCFT (Continuous-to-Continuous) by explicitly stating the input and the output spaces.
+</Problem>
+
+<Solution>
+For a summary of these transforms, see the lecture notes on Fourier transforms on the notes given on onQ.
+</Solution>
+
+## Problem 7: CCFT Continuity
+
+<Problem id="7" title="CCFT Continuity">
+Follow your notes and study the theorem that CCFT is a continuous map from $\mathcal{S}$ to $\mathcal{S}$.
+</Problem>
+
+<Solution>
+That CCFT maps $\mathcal{S}$ to $\mathcal{S}$ and is a continuous map on $\mathcal{S}$ follows from a theorem we proved in class, building on two properties: The effects of differentiation in $f$ and multiplication by $f$ in time-domain. Furthermore, $\sup_f |f^k \frac{d^m}{df^m}(F_{CC}\phi_n)(f)| \to 0$ for every $k, m \in \mathbb{Z}_+$, if $\phi_n \to 0$ in $\mathcal{S}$. Please follow your class notes where the details were presented.
+</Solution>
+
+## Problem 8: CCFT is Unitary
+
+<Problem id="8" title="CCFT is Unitary">
+Show that CCFT is a unitary transformation from $L_2(\mathbb{R}; \mathbb{C})$ to itself.
+
+Hint: You may use the construction we discussed in class where the $\mathcal{F}_{CC}$ is first defined on $\mathcal{S}$ and then extended to $L_2(\mathbb{R}; \mathbb{C})$.
+</Problem>
+
+<Solution>
+In class, we proved the following:
+
+**Theorem:** Let $T : M \to Y$ be a linear mapping, $Y$ a Banach space, $M$ a dense linear subspace of a space $X$. Furthermore, let $T$ be bounded in the sense that
+
+$$\|T\| = \sup_{x \in M, x \neq 0} \frac{\|Tx\|}{\|x\|} < \infty.$$
+
+Then, there exists a unique extension of $T$ on $X$ to $Y$, denoted by $\bar{T} : X \to Y$, such that $\bar{T}(x) = T(x)$ for $x \in M$ (that is, $T$ and $\bar{T}$ are in agreement on $M$). Furthermore, $\|T\| = \|\bar{T}\|$.
+
+Now, let $M = \mathcal{S}$ (with the functions taking complex values), $X = Y = L_2(\mathbb{R}; \mathbb{C})$, $T = \mathcal{F}_{CC}$ and note by Plancherel's Theorem
+
+$$\langle g, h \rangle = \langle \hat{g}, \hat{h} \rangle, \qquad h, g \in \mathcal{S}$$
+
+that
+
+$$\|\mathcal{F}_{CC}\| = 1.$$
+
+We define $F_{CC}$ on $L_2(\mathbb{R}; \mathbb{C})$ to be the unique extension of $\mathcal{F}_{CC}$ from $\mathcal{S} \to L_2(\mathbb{R}; \mathbb{C})$ to $L_2(\mathbb{R}; \mathbb{C}) \to L_2(\mathbb{R}; \mathbb{C})$. Thus, for $h \in L_2(\mathbb{R}; \mathbb{C})$,
+
+$$\langle h, h \rangle = \langle \hat{h}, \hat{h} \rangle, \quad \hat{h} = \mathcal{F}_{CC}(h).$$
+
+By the stated (extension) theorem, it follows that $\mathcal{F}_{CC}$ is also unitary on $L_2(\mathbb{R}; \mathbb{C})$ with the same operator norm, that is:
+
+$$\langle g, h \rangle = \langle \hat{g}, \hat{h} \rangle, \qquad h, g \in L_2(\mathbb{R}; \mathbb{C}).$$
+
+Let us make this more explicit. Let $g$ and $h$ be in $L_2(\mathbb{R}; \mathbb{C})$ and $g_n \to g$, and let $h_n \to h$ with $g_n, h_n \in \mathcal{S}$ being Schwartz signals. By Plancherel's identity:
+
+$$\langle g_n, h_n \rangle = \langle \hat{g}_n, \hat{h}_n \rangle$$
+
+Let us take the limit as $n \to \infty$ on both sides. For the left hand side the Cauchy-Schwarz inequality implies that
+
+$$\lim_{n \to \infty} \langle g_n, h_n \rangle = \langle g, h \rangle,$$
+
+because (since $\|h_n\|$ is bounded)
+
+$$|\langle g_n, h_n \rangle - \langle g, h \rangle| = |\langle g_n - g, h_n \rangle + \langle g, h_n - h \rangle| \le \|g_n - g\|\|h_n\| + \|g\|\|h_n - h\| \to 0$$
+
+Likewise
+
+$$|\langle \hat{g}_n, \hat{h}_n \rangle - \langle \hat{g}, \hat{h} \rangle| = |\langle \hat{g}_n - \hat{g}, \hat{h}_n \rangle + \langle \hat{g}, \hat{h}_n - \hat{h} \rangle| \le \|\hat{g}_n - \hat{g}\|\|\hat{h}_n\| + \|\hat{g}\|\|\hat{h}_n - \hat{h}\| \to 0$$
+
+Here, the convergence to zero follows from the fact that $\|\hat{g}_n - \hat{g}\| \to 0$ (since $\|g_n - g\| = \|\hat{g}_n - \hat{g}\| \to 0$ by the discussion above) and that $\|\hat{h}_n\|$ is bounded. This generalizes Plancherel's identity for signals in $L_2(\mathbb{R}; \mathbb{C})$.
+</Solution>
+
+## Problem 9: The Fast Fourier Transform (FFT) Algorithm
+
+<Problem id="9" title="The Fast Fourier Transform (FFT) Algorithm">
+Describe the Fast Fourier Transform (FFT) Algorithm and explain why the computational complexity is reduced when compared with the usual Fourier Transform computations.
+</Problem>
+
+<Solution>
+Recall that
+
+$$\mathcal{F}_{DD} : l_2(\{0, 1, \ldots, N-1\}; \mathbb{C}) \to l_2(\{\frac{0}{N}, \frac{1}{N}, \ldots, \frac{N-1}{N}\}; \mathbb{C})$$
+
+so that $\hat{x} = \mathcal{F}_{DD}(x)$ with
+
+$$\hat{x}(f) = \sum_{n=0}^{N-1} \frac{1}{\sqrt{N}} x(n) e^{-i2\pi fn}, \quad f \in \{\frac{0}{N}, \frac{1}{N}, \ldots, \frac{N-1}{N}\}$$
+
+In the above, we see that there are $N$ complex multiplications and $N$ complex additions for each $f$ (and thus there will be $N$ such computations). Thus, the FFT algorithm in the form above has the computational complexity of $N^2$ complex operations (with one complex operation being equivalent to one complex addition and one complex multiplication).
+
+If $N$ is even, we can write
+
+$$\hat{x}\left(\frac{k}{N}\right) = \sum_{n=0}^{N-1} \frac{1}{\sqrt{N}} x(n) e^{-i2\pi \frac{k}{N}n}$$
+
+$$= \sum_{m=0}^{\frac{N}{2}-1} \frac{1}{\sqrt{N}} x(2m) e^{-i2\pi \frac{k}{N}2m} + \sum_{m=0}^{\frac{N}{2}-1} \frac{1}{\sqrt{N}} x(2m+1) e^{-i2\pi \frac{k}{N}(2m+1)}$$
+
+$$= \sum_{m=0}^{\frac{N}{2}-1} \frac{1}{\sqrt{N}} x(2m) e^{-i2\pi \frac{k}{N/2}m} + \left( \sum_{m=0}^{\frac{N}{2}-1} \frac{1}{\sqrt{N}} x(2m+1) e^{-i2\pi \frac{k}{N/2}m} \right) e^{-i2\pi \frac{k}{N}}$$
+
+Define $x_0(m) = x(2m)$ and $x_1(m) = x(2m+1)$, for $m = 0, 1, \cdots, \frac{N}{2} - 1$. Then, the above leads to
+
+$$\hat{x}\left(\frac{k}{N}\right) = \frac{1}{\sqrt{2}} \hat{x}_0\left(\frac{k}{\frac{N}{2}}\right) + e^{-i2\pi \frac{k}{N}} \frac{1}{\sqrt{2}} \hat{x}_1\left(\frac{k}{\frac{N}{2}}\right)$$
+
+Thus, as we see, the above leads to a parallel processing of two smaller length transforms. If $N$ is a power of 2, we can continue with this approach to a building block of length $N = 2$. By inductively splitting the summations in the expansions as above, the FFT algorithm then reduces the computational complexity for the $\mathcal{F}_{DD}$ from $N^2$ complex operations to $N \log_2(N)$ (with $N$ being a power of 2) such operations.
+</Solution>

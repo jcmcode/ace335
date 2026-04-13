@@ -1,0 +1,923 @@
+---
+title: "Signal Spaces: Linear, Banach and Hilbert Spaces, and Basis Expansions"
+chapter: 2
+---
+
+In this chapter, we present a general review of signal spaces. These spaces form the mathematical foundation for everything that follows in the course: systems, transforms, stability, and control all rely on understanding the structure of the spaces in which signals live.
+
+---
+
+## 2.1 Normed Linear (Vector) Spaces and Metric Spaces
+
+<NormBalls />
+
+### Linear Spaces
+
+<Definition id="2.1.1" title="Linear (Vector) Space">
+A **linear (vector) space** $\mathbb{X}$ is a space which is closed under addition operation $+$ and a scalar multiplication operation $\cdot$, such that
+
+$$+ : \mathbb{X} \times \mathbb{X} \to \mathbb{X}$$
+
+$$\cdot : \mathbb{C} \times \mathbb{X} \to \mathbb{X}$$
+
+with the following properties (we note that we may take the scalars to be either real or complex numbers). The following are satisfied for all $x, y \in \mathbb{X}$ and $\alpha, \beta$ scalars:
+
+**(i)** $x + y = y + x \in \mathbb{X}$
+
+**(ii)** $(x + y) + z = x + (y + z)$
+
+**(iii)** $\alpha \cdot (x + y) = \alpha \cdot x + \alpha \cdot y \in \mathbb{X}$
+
+**(iv)** $(\alpha + \beta) \cdot x = \alpha \cdot x + \beta \cdot x$
+
+**(v)** There is a null vector $\underline{0}$ such that $x + \underline{0} = x$
+
+**(vi)** $\alpha \cdot (\beta \cdot x) = (\alpha\beta) \cdot x$
+
+**(vii)** $1 \cdot x = x$
+
+**(viii)** For every $x \in \mathbb{X}$, there exists an element, called the (additive) inverse of $x$ and denoted with $-x$ with the property $x + (-x) = \underline{0}$.
+</Definition>
+
+<Remark>
+**Intuition:** A linear space is the most basic algebraic structure for working with signals: it guarantees you can add signals together, scale them, and these operations behave predictably. Think of it as the minimal "sandbox" in which superposition -- the cornerstone of linear systems theory -- makes sense.
+</Remark>
+
+Intuitively, a linear space is a set where you can add elements together and scale them, and these operations behave the way you would expect. This is the most basic algebraic structure we need to talk about "signals" in a mathematically precise way.
+
+<Example id="2.1" title="Examples of Linear Spaces">
+**(i)** The space $\mathbb{R}^n$ with the pointwise addition and scalar multiplication is a linear space. The null vector is $\underline{0} = \begin{bmatrix} 0 & 0 & \cdots & 0 \end{bmatrix} \in \mathbb{R}^n$.
+
+**(ii)** Consider the interval $[a, b]$. The collection of real-valued continuous functions on $[a, b]$, with pointwise addition and scalar multiplication is a linear space. The null element $\underline{0}$ is the function which is identically $0$. This space is called the space of real-valued continuous functions on $[a, b]$.
+
+**(iii)** With pointwise addition and scalar multiplication, the set of all infinite sequences of real numbers mapping $\mathbb{Z}_+$ to $\mathbb{R}$, each having only a finite number of elements not equal to zero is a vector space; for example, if one adds two such sequences, the sum also belongs to this space. This space is called the space of finitely many non-zero sequences.
+
+**(iv)** The collection of all polynomial functions defined on an interval $[a, b]$ with complex coefficients
+
+$$\left\{f : [a, b] \to \mathbb{C},\, f(x) = \sum_{i=0}^{n} \alpha_i x^i;\;\; n \in \mathbb{N};\, x \in [0, 1],\, \alpha_0, \alpha_1, \cdots, \alpha_n \in \mathbb{C}\right\},$$
+
+forms a complex linear space. Note that the sum of polynomials is another polynomial.
+
+**(v)** The $n$-dimensional integer lattice $\mathbb{Z}^n = \{v : v = \{v_1, \cdots, v_n\} \in \mathbb{R}^n, v_k \in \mathbb{Z}, k = 1, \cdots, n\}$ with pointwise addition and scalar multiplication is **not** a linear space.
+</Example>
+
+<Definition id="2.1.2" title="Subspace">
+A non-empty subset $M$ of a (real) linear vector space $\mathbb{X}$ is called a **subspace** of $\mathbb{X}$ if
+
+$$\alpha x + \beta y \in M, \qquad \forall x, y \in M \quad \text{and} \quad \alpha, \beta \in \mathbb{R}.$$
+</Definition>
+
+<Remark>
+**Intuition:** A subspace is a "self-contained" portion of a vector space -- any linear combination of elements in the subspace stays in the subspace. In signal processing, subspaces often represent restricted signal classes (e.g., band-limited signals or signals spanned by a finite set of basis functions) within a larger signal space.
+</Remark>
+
+In particular, the null element $\underline{0}$ is an element of every subspace. For $M$, $N$ two subspaces of a vector space $\mathbb{X}$, $M \cap N$ is also a subspace of $\mathbb{X}$.
+
+### Normed Linear Spaces
+
+<Definition id="2.1.3" title="Normed Linear Space">
+A **normed linear space** $\mathbb{X}$ is a linear vector space on which a map from $\mathbb{X}$ to $\mathbb{R}_+$, called its **norm**, is defined such that:
+
+- $\|x\| \geq 0 \quad \forall x \in \mathbb{X}$, and $\|x\| = 0$ if and only if $x$ is the null element of $\mathbb{X}$.
+- $\|x + y\| \leq \|x\| + \|y\|$ (triangle inequality)
+- $\|\alpha x\| = |\alpha|\|x\|, \quad \forall \alpha \in \mathbb{R}, \quad \forall x \in \mathbb{X}$.
+</Definition>
+
+<Remark>
+**Intuition:** A norm gives us a way to measure "size" or "distance" in a vector space -- just like absolute value does for real numbers, but generalized to arbitrary signal spaces. Without a norm, we can add and scale vectors but have no notion of how large a signal is or how far apart two signals are. The choice of norm (e.g., peak value vs. total energy) determines what "closeness" means for your application.
+</Remark>
+
+The norm gives us a way to measure the "size" of a signal. Different norms measure size in different ways -- for instance, the maximum value of a signal vs. its total energy. The choice of norm profoundly affects which signals are "small" or "large."
+
+Let for two linear spaces $\mathbb{X}$, $\mathbb{Y}$, $\Gamma(\mathbb{X}; \mathbb{Y})$ denote the set of all maps $\gamma : \mathbb{X} \to \mathbb{Y}$ such that for all $x \in \mathbb{X}$, $\gamma(x) \in \mathbb{Y}$.
+
+<Example id="2.2" title="Examples of Normed Linear Spaces">
+**a)** The space $C([a, b]; \mathbb{R})$ of continuous functions from $[a, b]$ to $\mathbb{R}$ with the norm $\|x\| = \max_{\{a \leq t \leq b\}} |x(t)|$ is a normed linear space.
+
+**b)** For $1 \leq p < \infty$:
+
+$$l_p(\mathbb{Z}_+; \mathbb{R}) := \left\{x \in \Gamma(\mathbb{Z}_+; \mathbb{R}) : \|x\|_p = \left(\sum_{i \in \mathbb{Z}_+} |x(i)|^p\right)^{1/p} < \infty\right\}$$
+
+is a normed linear space for all $1 \leq p < \infty$.
+
+**c)** Recall that if $S$ is a set of real numbers bounded from above, then there is a smallest real number $y$ such that $x \leq y$ for all $x \in S$. The number $y$ is called the **least upper bound** or **supremum** of $S$. If $S$ is not bounded from above, then the supremum is $\infty$. In view of this, for $p = \infty$, we define
+
+$$l_\infty(\mathbb{Z}_+; \mathbb{R}) := \left\{x \in \Gamma(\mathbb{Z}_+; \mathbb{R}) : \|x\|_\infty = \sup_{i \in \mathbb{Z}_+} |x(i)| < \infty\right\}.$$
+
+**d)** $L_p([a, b]; \mathbb{R}) = \left\{x \in \Gamma([a, b]; \mathbb{R}) : \|x\|_p = \left(\int_a^b |x(t)|^p\,dt\right)^{1/p} < \infty\right\}$ is a normed linear space. For $p = \infty$, we typically write: $L_\infty([a, b]; \mathbb{R}) := \left\{x \in \Gamma([a, b]; \mathbb{R}) : \|x\|_\infty = \sup_{t \in [a,b]} |x(t)| < \infty\right\}$. However, for $1 \leq p < \infty$, to satisfy the condition that $\|x\|_p = 0$ implies that $x(t) = 0$, we need to assume that functions which are equal to zero almost everywhere are equivalent; for $p = \infty$ the definition is often revised with essential supremum instead of supremum so that
+
+$$\|x\|_\infty = \inf_{y:\, y(t) = x(t)\,\text{a.e.}} \sup_{t \in [a, b]} |y(t)|$$
+
+This subtle difference needs to be made explicit in some applications.
+</Example>
+
+To show that $l_p$ defined above is a normed linear space, we need to show that $\|x + y\|_p \leq \|x\|_p + \|y\|_p$.
+
+<Theorem id="2.1.1" title="Minkowski's Inequality">
+For $x, y \in l_p(\mathbb{Z}_+; \mathbb{R})$ with $1 \leq p \leq \infty$,
+
+$$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
+</Theorem>
+
+<Remark>
+**Intuition:** Minkowski's inequality is the triangle inequality for $l_p$ spaces. It says the "length" of the sum of two sequences is at most the sum of their "lengths." This is the key property that confirms $l_p$ norms are genuine norms, and it generalizes the familiar fact that the shortest path between two points is a straight line.
+</Remark>
+
+See Exercise 2.4.2, which also studies a proof of Holder's Inequality, that is critically used in the proof of Minkowski's inequality.
+
+<Theorem id="2.1.2" title="Holder's Inequality">
+Let $1 \leq p, q \leq \infty$ with $1/p + 1/q = 1$. Then, for $x \in l_p(\mathbb{Z}_+; \mathbb{R})$, $y \in l_q(\mathbb{Z}_+; \mathbb{R})$,
+
+$$\sum_k x(k)y(k) \leq \|x\|_p \|y\|_q,$$
+</Theorem>
+
+<Remark>
+**Intuition:** Holder's inequality bounds the "interaction" between two sequences living in dual $l_p$ spaces. When $p = q = 2$, this reduces to Cauchy-Schwarz. In practice, it is the workhorse behind proving that convolutions, inner products, and many signal processing operations produce finite results.
+</Remark>
+
+### Transformations and Continuity
+
+<Definition id="2.1.5" title="Transformation">
+Let $X$ and $Y$ be two normed linear spaces, and let $B \subset X$ be a subset of $X$. A law (rule, relation) $T$ which relates with every element of $B$ an element in $Y$, is called a **transformation** from $X$ to $Y$ with domain $B$. The relation is often expressed as $x \mapsto y = T(x)$.
+
+If for every $y \in Y$ there is an $x$ such that $y = T(x)$, the transformation is said to be **onto** (or **surjective**). If for every element of $Y$, there is at most one $x$ such that $y = T(x)$, the transformation is said to be **one-to-one** (or **injective**). If these two properties hold simultaneously, the transformation is said to be **bijective**.
+</Definition>
+
+<Remark>
+**Intuition:** A transformation is simply a rule that maps inputs to outputs -- this is the abstract notion of a "system." Surjectivity means every possible output is reachable, injectivity means distinct inputs always produce distinct outputs, and bijectivity means the mapping is perfectly reversible. These properties are essential when asking whether a system can be inverted or whether information is lost.
+</Remark>
+
+<Definition id="2.1.6" title="Linear Transformation">
+A transformation $T : X \to Y$ (or $T \in \Gamma(X; Y)$) is **linear** if for every $x_1, x_2 \in X$ and $\alpha_1, \alpha_2 \in \mathbb{R}$, we have $T(\alpha_1 x_1 + \alpha_2 x_2) = \alpha_1 T(x_1) + \alpha_2 T(x_2)$.
+</Definition>
+
+<Remark>
+**Intuition:** Linearity means the system obeys superposition: the response to a sum of inputs equals the sum of the individual responses, and scaling the input scales the output by the same factor. This is the defining property of the systems we study in this course, and it is what makes Fourier analysis so powerful -- we can decompose any input into simple components, analyze each one separately, and add the results.
+</Remark>
+
+<Definition id="2.1.7" title="Continuity">
+A transformation $T : X \to Y$ for normed linear spaces $X, Y$ is **continuous** at $x_0 \in X$, if for every $\epsilon > 0$, $\exists \delta > 0$ such that $\|x - x_0\| \leq \delta$ implies that $\|T(x) - T(x_0)\| \leq \epsilon$ (here the norms depend on the vector spaces $X$ and $Y$). $T$ is said to be **continuous**, if it is continuous at every $x_0 \in X$.
+</Definition>
+
+<Remark>
+**Intuition:** Continuity means that small perturbations in the input produce small perturbations in the output -- the system does not "blow up" from tiny changes. This is the mathematical formalization of robustness: a continuous system behaves predictably under small measurement errors or noise.
+</Remark>
+
+<Definition id="2.1.8" title="Sequential Continuity">
+A transformation $T : X \to Y$ is **sequentially continuous** at $x_0 \in X$, if $x_n \to x$ implies that $T(x_n) \to T(x)$.
+</Definition>
+
+<Remark>
+**Intuition:** Sequential continuity says the same thing as continuity but in the language of sequences: if a sequence of inputs converges to some input, then the corresponding outputs converge to the corresponding output. This formulation is often easier to verify in practice, since you can work with concrete sequences rather than abstract $\epsilon$-$\delta$ arguments.
+</Remark>
+
+<Theorem id="2.1.3" title="Equivalence of Sequential Continuity and Continuity">
+Sequential continuity and continuity are equivalent for normed linear spaces.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem tells us that in normed linear spaces, the $\epsilon$-$\delta$ definition of continuity and the sequence-based definition are interchangeable. You can use whichever is more convenient for the problem at hand -- they will always give the same answer.
+</Remark>
+
+<Proof>
+We need to prove two directions:
+
+**(i) Continuity implies sequential continuity:** Let $T$ be continuous at $x_0$. Therefore, for every $\epsilon > 0$, $\exists \delta_\epsilon > 0$ such that $\|x - x_0\| \leq \delta_\epsilon$ implies that $\|T(x) - T(x_0)\| \leq \epsilon$. Now, let $x_n \to x$. This implies that for all $\delta > 0$, $\exists N_\delta$ so that for all $n > N_\delta$ we have $\|x_n - x_0\| \leq \delta$. Now, take $\delta$ to be $\delta_\epsilon$ above. Thus, for all $n > N_{\delta_\epsilon}$, $\|x_n - x_0\| \leq \delta_\epsilon$; given the continuity above, this implies that for every $\epsilon > 0$, there exists $N_{\delta_\epsilon}$ such that for $n > N_{\delta_\epsilon}$, $\|T(x_n) - T(x_0)\| \leq \epsilon$. This implies that $T$ is sequentially continuous.
+
+**(ii) Continuity is implied by sequential continuity:** Equivalently, not being continuous implies not being sequentially continuous. Let $T$ not continuous at $x_0$. This implies that $\exists \epsilon > 0$ with the property that for every $\delta > 0$, $\exists z_\delta : \|z_\delta - x_0\| \leq \delta$ and $\|T(z_\delta) - T(x_0)\| \geq \epsilon$. Now take $\delta = \frac{1}{n}$, $n \in \mathbb{N}$, and $z_\delta =: x_n$. It follows then that $\exists x_n$ with $\|x_n - x_0\| \leq \frac{1}{n}$ but $\|T(x_n) - T(x_0)\| \geq \epsilon$; that is $x_n \to x_0$ but $T(x_n) \nrightarrow T(x_0)$.
+</Proof>
+
+<Theorem id="2.1.4" title="Continuity of Linear Transformations">
+If the transformation $T$ is a linear one, then continuity is equivalent to being continuous at the null element.
+</Theorem>
+
+<Remark>
+**Intuition:** For a linear transformation, you only need to check continuity at the origin -- continuity there automatically guarantees continuity everywhere. This is because linearity lets you "translate" any neighborhood to the origin. In practice, this greatly simplifies verifying that a linear system is well-behaved.
+</Remark>
+
+<Proof>
+Let $T$ be continuous at the null element. By Theorem 2.1.3, this implies that for any sequence $h_n$, with $\|h_n\| \to 0$, we have that $T(h_n) \to T(\underline{0}) = 0$. Now, let $x_0 \in \mathbb{X}$. Suppose $x_n \to x_0$. With $h_n := x_n - x_0$, we then have that $T(h_n) \to 0$. However, by linearity, $T(h_n) = T(x_n - x_0) = T(x_n) - T(x_0)$. This implies that whenever $x_n \to x_0$, $T(x_n) \to T(x_0)$. Thus, being continuous at the null element implies being continuous everywhere.
+</Proof>
+
+For some applications, sequential continuity may be more convenient to work with as one may not need to quantify $(\epsilon, \delta)$ pairs to verify continuity.
+
+### Metric Spaces
+
+<Definition id="2.1.9" title="Metric Spaces">
+A **metric** defined on a set $X$, is a function $d : X \times X \to \mathbb{R}$ such that:
+
+- $d(x, y) \geq 0, \quad \forall x, y \in X$ and $d(x, y) = 0$ if and only if $x = y$.
+- $d(x, y) = d(y, x), \quad \forall x, y \in X$.
+- $d(x, y) \leq d(x, z) + d(z, y), \quad \forall x, y, z \in X$.
+
+A **metric space** $(X, d)$ is the set $X$ equipped with metric $d$.
+</Definition>
+
+<Remark>
+**Intuition:** A metric generalizes the concept of "distance" to sets that may not be vector spaces. While a norm requires linear structure (addition and scaling), a metric only requires a sensible notion of distance between pairs of points. This makes metric spaces useful for analyzing convergence and continuity in settings where addition of elements may not be defined.
+</Remark>
+
+A normed linear space is also a metric space, with metric $d(x, y) = \|x - y\|$. Many spaces of functions that we encounter are not linear spaces. For such spaces the concept of *metric*, defined above, provides an appropriate generalization of the notion of *norm* studied earlier.
+
+### Banach Spaces
+
+<Definition id="2.1.10" title="Cauchy Sequence">
+A sequence $\{x_n\}$ in a normed space $X$ is **Cauchy** if for every $\epsilon > 0$, there exists an $N$ such that $\|x_n - x_m\| \leq \epsilon$, for all $n, m \geq N$.
+</Definition>
+
+<Remark>
+**Intuition:** A Cauchy sequence is one whose elements get arbitrarily close to each other as you go further along -- the sequence "wants" to converge, even if we do not yet know the limit. Think of it as a sequence that is "trying to settle down." The key question is whether the space contains the point it is settling toward.
+</Remark>
+
+An important observation on Cauchy sequences is that every converging sequence is Cauchy, however, not all Cauchy sequences are convergent: This is because the limit might not live in the original space where the sequence elements take values from. This motivates the property of completeness.
+
+<Definition id="2.1.11" title="Banach Spaces">
+A normed linear space $X$ is **complete**, if every Cauchy sequence in $X$ has a limit in $X$. A complete normed linear space is called **Banach**.
+</Definition>
+
+<Remark>
+**Intuition:** Completeness means there are "no holes" in the space -- every sequence that looks like it should converge actually does converge to something inside the space. A Banach space is the right setting for iterative algorithms and approximations, because you are guaranteed that limits of approximating sequences exist. Without completeness, a perfectly reasonable iterative procedure might converge to something that is not even in your space.
+</Remark>
+
+Banach spaces are important for many applications in engineering and applied mathematics: In many mathematical applications (such as existence of and numerical methods for solutions to differential equations), machine learning problems (such as iterative updates of data driven dynamics), stochastic analysis or optimization problems (for which a sequence of approximating solutions may be obtained for example via dynamic programming methods), sometimes we would like to know whether a given sequence converges, without necessarily knowing what the limit of the sequence may be. Banach spaces allow us to use Cauchy sequence arguments to ensure the existence of limits and some of their properties.
+
+An example is the following: consider the solutions to the equation $Ax = b$ for $A$ a square matrix and $b$ a vector. One can identify conditions on an iteration of the form $x_{k+1} = (I - A)x_k + b$ to form a Cauchy sequence and converge to a solution through the *contraction principle*. As noted above, existence of solutions to ordinary differential equations also follow from Cauchy sequence arguments.
+
+A subset of a Banach space $X$ is complete if and only if it is closed. If the set is closed, every Cauchy sequence in this set has a limit in $X$ and this limit should be a member of this set, hence the set is complete. If it is not closed, one can provide a counterexample sequence which does not converge to a point in the subset.
+
+The real space $\mathbb{R}$ with the usual distance $d(x, y) = |x - y|$ is a complete space.
+
+<Theorem id="2.1.5" title="Completeness of Function Spaces">
+**a)** Let $C([0, 1]; \mathbb{R})$ be the space of continuous functions in $\Gamma([0, 1]; \mathbb{R})$ with the supremum norm
+
+$$\|f\| = \sup_{t \in [0, 1]} |f(t)|.$$
+
+This space is a Banach space.
+
+**b)** Let $C([0, 1]; \mathbb{R})$ be the space of continuous functions in $\Gamma([0, 1]; \mathbb{R})$ with the norm
+
+$$\|f\| = \int_0^1 |f(t)|\,dt$$
+
+This space is **not** a Banach space.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem shows that completeness depends critically on the choice of norm. Under the supremum norm, the limit of continuous functions must be continuous (uniform convergence preserves continuity). But under the $L_1$ norm, a sequence of continuous functions can converge to a discontinuous function that is not in the original space. The lesson: the same set of functions can be "complete" or "incomplete" depending on how you measure distance.
+</Remark>
+
+<Proof>
+**a)** We will show that every Cauchy sequence in $C([0, 1]; \mathbb{R})$ has a limit in $C([0, 1]; \mathbb{R})$. Let $\{x_n, n \in \mathbb{N}\}$ be Cauchy in $C([0, 1]; \mathbb{R})$ under the supremum norm; thus, given $\epsilon > 0$, there exists $N$ such that $\|x_n(t) - x_m(t)\| \leq \epsilon$ for all $t$ and $n, m \geq N$. This implies that for each fixed $t \in [0, 1]$, the real valued sequence $\{x_n(t), n \in \mathbb{N}\}$ is also Cauchy, and hence $x_n(t) \to a_t$ for some $a_t$ since $\mathbb{R}$ is complete. Define $x(t) = a_t$, $t \in [0, 1]$. We will prove that $\|x_n - x\| \to 0$ and that $x$ is continuous.
+
+As noted, for any $\epsilon > 0$, there exists $N$ such that $|x_n(t) - x_m(t)| \leq \epsilon$ for all $t$ and $n, m \geq N$. For each $t$,
+
+$$\lim_{m \to \infty} |x_n(t) - x_m(t)| \leq \epsilon$$
+
+and hence
+
+$$|x_n(t) - x(t)| \leq \epsilon, \qquad \text{(2.1)}$$
+
+for all $n \geq N$. Accordingly,
+
+$$\|x_n - x\| \leq \epsilon,$$
+
+and thus $\|x_n - x\| \to 0$. Note that this also implies that $\|x\| = \|x - x_N\| + \|x_N\| < \infty$.
+
+We now show now that $x$ is continuous to conclude that $x \in C([0, 1]; \mathbb{R})$. Now,
+
+$$|x(t + h) - x(t)|$$
+$$= |x(t + h) - x_n(t + h) + x_n(t + h) - x_n(t) + x_n(t) - x(t)|$$
+$$\leq |x(t + h) - x_n(t + h)| + |x_n(t + h) - x_n(t)| + |x_n(t) - x(t)| \to 0 \qquad \text{(2.2)}$$
+
+as $h \to 0$, since $x_n \to x$ and $x_n$ is continuous. We now make this more explicit: For every $\epsilon > 0$ pick $n \in \mathbb{N}$ such that $|x(t + h) - x_n(t + h)| \leq \epsilon/3$ and $|x_n(t) - x(t)| \leq \epsilon/3$ for all $t + h \in [0, 1]$ (note that this convergence is uniform by (2.1)), and for the fixed $n$, pick $\delta > 0$ sufficiently small so that for all $|h| \leq \delta$, $|x_n(t + h) - x_n(t)| \leq \epsilon/3$ (since $x_n$ is continuous). As a result, for every $\epsilon > 0$ there exists $\delta$ such that $|h| \leq \delta$ implies $|x(t + h) - x(t)| < \epsilon$.
+
+**b)** We will show that under the norm $\|f\| = \int_0^1 |f(t)|\,dt$, the space of continuous functions $C([0, 1]; \mathbb{R})$ is not complete. Consider the sequence
+
+$$x_n(t) = \begin{cases} 1, & \text{if } 0 \leq t \leq 1/2 \\ -2^n(t - 1/2) + 1 & \text{if } 1/2 < t < (1/2) + (1/2)^n \\ 0, & \text{if } (1/2) + (1/2)^n \leq t \leq 1 \end{cases} \qquad \text{(2.3)}$$
+
+We first show the Cauchy property. Let $n \leq m$. We have that:
+
+$$\|x_n - x_m\| = \int_0^1 |x_n(t) - x_m(t)|\,dt = \frac{1}{2}\left(\frac{1}{2^n} - \frac{1}{2^m}\right) \to 0,$$
+
+as $n, m \to \infty$. Hence, the sequence is indeed Cauchy (or, for every $\epsilon > 0$, there is an $N = -\log_2(\epsilon) + 1$, such that, for $n, m > N$, $\|x_n - x_m\| < \epsilon$). The sequence converges to (the discontinuous function) $x$:
+
+$$x = \begin{cases} 1, & \text{if } 0 \leq t \leq 1/2 \\ 0, & \text{if } (1/2) < t \leq 1 \end{cases} \qquad \text{(2.4)}$$
+
+As $x \notin C([0, 1]; \mathbb{R})$, the space is not complete.
+</Proof>
+
+This theorem illustrates a crucial point: the same set of functions can be complete or incomplete depending on the norm. The supremum norm is "strong enough" to prevent discontinuous limits, while the $L_1$ norm is not.
+
+<Theorem id="2.1.6" title="Completeness of lp Spaces">
+$l_p(\mathbb{Z}_+; \mathbb{R}) := \left\{x \in \Gamma(\mathbb{Z}_+; \mathbb{R}) : \|x\|_p = \left(\sum_{i \in \mathbb{Z}_+} |x(i)|^p\right)^{1/p} < \infty\right\}$ is a Banach space for all $1 \leq p < \infty$. The same holds for $p = \infty$.
+</Theorem>
+
+<Remark>
+**Intuition:** The $l_p$ sequence spaces are complete, meaning they are safe to work in: any "convergent-looking" sequence of signals in $l_p$ will converge to something that is still in $l_p$. This is essential because many algorithms in signal processing and control construct solutions as limits of iterative approximations, and completeness guarantees those limits are well-defined.
+</Remark>
+
+<Proof>
+Consider $1 \leq p < \infty$.
+
+**(i)** Let $\{x_n\}$ be Cauchy. This implies that for every $\epsilon > 0$, $\exists N$ such that for all $n, m \geq N$, $\|x_n - x_m\|_p \leq \epsilon$. This also implies that for all $n > N$, $\|x_n\|_p \leq \|x_N\|_p + \epsilon$. Now let us denote $x_n$ by the vector $\{x_1^n, x_2^n, x_3^n, \ldots\}$. It follows that for every $k$ the sequence $\{x_k^n\}$ is also Cauchy. Since $x_k^n \in \mathbb{R}$, and $\mathbb{R}$ is complete, $x_k^n \to x_k$ for some $x_k$. Thus, the sequence $x_n$ pointwise converges to some vector $x_*$.
+
+**(ii)** Is $x_* \in l_p(\mathbb{Z}_+; \mathbb{R})$? Define
+
+$$x_{n,K} = \{x_1^n, x_2^n, \ldots, x_{K-1}^n, x_K^n, 0, 0, \ldots\},$$
+
+that is, the vector which truncates after the $K$'th coordinate. Now, it follows that
+
+$$\|x_{n,K}\|_p \leq \|x_n\|_p \leq \|x_N\|_p + \epsilon,$$
+
+for every $n \geq N$ and $K$ and
+
+$$\lim_{n \to \infty} \|x_{n,K}\|_p^p = \lim_{n \to \infty} \sum_{i=1}^{K} |x_i^n|^p = \sum_{i=1}^{K} |x_i|^p,$$
+
+since there are only finitely many elements in the summation. We have $\|x_{n,K}\|_p \leq \|x_N\|_p + \epsilon$, and thus
+
+$$\lim_{n \to \infty} \|x_{n,K}\|_p = \|x_{*,K}\|_p \leq \|x_N\|_p + \epsilon.$$
+
+Let us take another limit, by the monotone convergence theorem (recall that this theorem states that a monotonically increasing sequence which is bounded has a limit).
+
+$$\lim_{K \to \infty} \|x_{*,K}\|_p^p = \lim_{K \to \infty} \sum_{i=1}^{K} |x_i|^p = \|x_*\|_p^p \leq (\|x_N\|_p + \epsilon)^p.$$
+
+**(iii)** The final question is: Does $\|x_n - x_*\|_p \to 0$? Since the sequence is Cauchy, it follows that for $n, m \geq N$
+
+$$\|x_n - x_m\|_p \leq \epsilon$$
+
+Thus, for every $K \in \mathbb{N}$, $\|x_{n,K} - x_{m,K}\|_p \leq \epsilon$, and since $K$ is finite
+
+$$\lim_{m \to \infty} \|x_{n,K} - x_{m,K}\|_p = \|x_{n,K} - x_{*,K}\|_p \leq \epsilon$$
+
+Now, we take another limit
+
+$$\lim_{K \to \infty} \|x_{n,K} - x_{*,K}\|_p \leq \epsilon$$
+
+By the monotone convergence theorem again,
+
+$$\lim_{K \to \infty} \|x_{n,K} - x_{*,K}\|_p = \|x_n - x_*\|_p \leq \epsilon$$
+
+Hence, $\|x_n - x_*\|_p \to 0$.
+
+For $p = \infty$, the analysis follows closely the steps above and is more direct.
+</Proof>
+
+<Remark id="2.3">
+A brief remark on some typical notations: When the range space is $\mathbb{R}$, the notation $l_p(\Omega)$ denotes $l_p(\Omega; \mathbb{R})$ for a discrete-time index set $\Omega$ and likewise for a continuous-time index set $\Omega$, $L_p(\Omega)$ denotes $L_p(\Omega; \mathbb{R})$.
+</Remark>
+
+<Definition id="2.1.4" title="Convergence">
+In a normed linear space $\mathbb{X}$, an infinite sequence of elements $\{x_n\}$ **converges** to an element $x$, if the sequence $\{\|x_n - x\|\}$ converges to zero.
+</Definition>
+
+<Remark>
+**Intuition:** Convergence in a normed space means the distance between the sequence elements and the limit shrinks to zero. Note that what "distance" means depends on the norm -- convergence in the supremum norm (uniform convergence) is a much stronger statement than convergence in the $L_2$ norm (energy convergence). Always be aware of which norm you are working with.
+</Remark>
+
+---
+
+## 2.2 Hilbert Spaces
+
+<Definition id="2.2.1" title="Pre-Hilbert Space">
+A **pre-Hilbert space** $X$ is a linear vector space on which an **inner product** $\langle \cdot, \cdot \rangle : X \times X \to \mathbb{C}$ is defined, where the following are satisfied:
+
+1. $\langle x, y \rangle = \langle y, x \rangle^*$ (the superscript denotes the complex conjugate) (we will also use $\overline{\langle y, x \rangle}$ to denote the complex conjugate)
+2. $\langle x + y, z \rangle = \langle x, z \rangle + \langle y, z \rangle$
+3. $\langle \alpha x, y \rangle = \alpha \langle x, y \rangle$
+4. $\langle x, x \rangle \geq 0$, equals $0$ iff $x$ is the null element.
+</Definition>
+
+<Remark>
+**Intuition:** An inner product enriches a vector space with geometric structure: it gives us notions of "angle" and "projection" between signals, not just "size." This is what allows us to decompose a signal into orthogonal components -- the mathematical foundation for Fourier series, least-squares fitting, and matched filtering.
+</Remark>
+
+Thus, corresponding to each pair $(x, y) \in X \times X$ the inner product $\langle x, y \rangle$ is a scalar. The inner product gives us a notion of "angle" between signals and allows us to define orthogonality -- concepts that are essential for signal decomposition and optimal approximation.
+
+<Theorem id="2.2.1" title="Cauchy-Schwarz Inequality">
+For $x, y \in X$,
+
+$$|\langle x, y \rangle| \leq \sqrt{\langle x, x \rangle}\sqrt{\langle y, y \rangle},$$
+
+where equality occurs if and only if $x = \alpha y$ for some scalar $\alpha$.
+</Theorem>
+
+<Remark>
+**Intuition:** Cauchy-Schwarz is the abstract generalization of "the dot product of two vectors cannot exceed the product of their lengths." It bounds how much two signals can be "aligned" -- and equality holds precisely when one signal is a scaled copy of the other. This inequality underpins nearly every bound and estimate in signal processing and statistics.
+</Remark>
+
+<Proof title="Proof Sketch">
+Let $x, y \in X$ with $\|y\| \neq 0$. For any $\lambda \in \mathbb{C}$, we have $0 \leq \langle x - \lambda y, x - \lambda y \rangle$. Take $\lambda = \frac{\langle x, y \rangle}{\langle y, y \rangle}$ to arrive at the inequality.
+</Proof>
+
+The Cauchy-Schwarz inequality is one of the most important inequalities in all of mathematics. It tells us that the inner product of two signals is bounded by the product of their norms.
+
+In a pre-Hilbert space, the inner-product defines a norm: $\|x\| = \sqrt{\langle x, x \rangle}$
+
+The proof for this result requires one to show that $\sqrt{\langle x, x \rangle}$ satisfies the triangle inequality, that is
+
+$$\|x + y\| \leq \|x\| + \|y\|,$$
+
+which can be proven by an application of the Cauchy-Schwarz inequality.
+
+In a given problem or application, the inner-product is to be defined. The inner product, in the special case of $\mathbb{R}^N$, is typically the usual inner vector product; hence $\mathbb{R}^N$ with the usual inner-product is a pre-Hilbert space.
+
+<Definition id="2.2.2" title="Hilbert Spaces">
+A complete pre-Hilbert space, is called a **Hilbert space**.
+</Definition>
+
+<Remark>
+**Intuition:** A Hilbert space is the "best of all worlds" for signal analysis: it has addition and scaling (linear space), a notion of distance (norm), a notion of angle and projection (inner product), and no missing limits (completeness). The spaces $L_2$ and $l_2$ are the prototypical Hilbert spaces in signal processing -- they capture signals with finite energy.
+</Remark>
+
+Hence, a Hilbert space is a Banach space, endowed with an inner product, which induces its norm. For example, if we define $C([0, 1]; \mathbb{R})$ as a pre-Hilbert space with the inner-product $\langle x, y \rangle = \int_0^1 x(t)y(t)\,dt$, this would not be a Hilbert space, since this would not be a complete space.
+
+The space $l_2(\mathbb{Z}_+; \mathbb{R})$ is a Hilbert space with $\langle x, y \rangle = \sum_{n \in \mathbb{Z}_+} x(n)y(n)$ for $x, y \in l_2(\mathbb{Z}_+; \mathbb{R})$. Furthermore, $\|x\| = \sqrt{\langle x, x \rangle}$ defines a norm in $l_2(\mathbb{Z}_+; \mathbb{R})$.
+
+Likewise, the space $L_2(\mathbb{R}_+; \mathbb{R})$ is a Hilbert space with $\langle x, y \rangle = \int_{t \in \mathbb{R}_+} x(t)y(t)\,dt$ for $x, y \in L_2(\mathbb{R}_+; \mathbb{R})$ and its norm is $\|x\| = \sqrt{\langle x, x \rangle}$.
+
+<Theorem id="2.2.2" title="Continuity of Inner Product">
+The inner product is continuous: if $x_n \to x$, and $y_n \to y$, then $\langle x_n, y_n \rangle \to \langle x, y \rangle$ for $x_n, y_n$ in a Hilbert space.
+</Theorem>
+
+<Remark>
+**Intuition:** Continuity of the inner product means that if two sequences of signals converge, then their "correlation" (inner product) converges to the correlation of the limits. This is practically important because it guarantees that Fourier coefficients, projections, and energy computations are stable under approximation.
+</Remark>
+
+### 2.2.1 Why are we interested in Hilbert Spaces?
+
+Hilbert spaces have several very useful properties:
+
+1. Hilbert spaces allow us to have a geometric insight on a set of signals via the inner-product, orthogonality, and basis expansions.
+2. If a Hilbert space is separable (to be defined shortly), there exists a countably (or sometimes only finitely) many sequence of orthonormal vectors which can be used as basis to represent all the members in this space. This is used in many areas of applied mathematics and engineering, such as Fourier expansions among many others.
+3. A Hilbert space formulation allows us to develop approximations of signals using a finite number of basis signals.
+4. Also related to the item above, we can state a Projection Theorem which certifies optimality in a wide variety of applications. This geometric insight carries over to more general optimization problems in spaces which are not Hilbert (via duality analysis, to be discussed later).
+
+### Orthogonality and the Projection Theorem
+
+<Proposition id="2.2.1" title="Orthogonality">
+In a Hilbert space $X$, two vectors $x, y \in X$ are **orthogonal** if $\langle x, y \rangle = 0$. A vector $x$ is orthogonal to a set $S \subset X$ if $\langle x, y \rangle = 0 \quad \forall y \in S$.
+</Proposition>
+
+<Remark>
+**Intuition:** Orthogonality is the generalization of perpendicularity to abstract signal spaces. Two orthogonal signals have zero "overlap" or correlation -- they carry completely independent information. This concept is at the heart of Fourier analysis, where signals are decomposed into mutually orthogonal frequency components.
+</Remark>
+
+By the Pythagorean theorem, for $x, y$ orthogonal, we have that $\|x + y\|^2 = \|x\|^2 + \|y\|^2$.
+
+A set $A \subset X$ is **closed** if $A$ contains the limit of any converging sequence taking values from $A$.
+
+<Theorem id="2.2.3" title="Projection Theorem">
+Let $H$ be a Hilbert space and $B$ a subspace of $H$. Consider the problem:
+
+$$\inf_{m \in B} \|x - m\| \qquad \text{(2.5)}$$
+
+**(i)** A necessary and sufficient condition for $m^* \in B$ to be the minimizing element in $B$ so that
+
+$$\inf_{m \in B} \|x - m\| = \|x - m^*\|, \qquad \text{(2.6)}$$
+
+or equivalently
+
+$$\|x - m^*\| \leq \|x - y\|, \qquad \forall y \in B.$$
+
+is that, $x - m^*$ is orthogonal to $B$.
+
+If exists, such an $m^*$ is unique.
+
+**(ii)** Let $H$ be a Hilbert space and $B$ be a closed subspace of $H$. For any vector $x \in H$, there is a unique vector $m^* \in B$ satisfying (2.6).
+</Theorem>
+
+<Remark>
+**Intuition:** The Projection Theorem says that the best approximation to a signal from a subspace is obtained by "dropping a perpendicular" onto that subspace -- the approximation error is orthogonal to the subspace. This is exactly what happens in least-squares estimation, optimal filtering (Wiener filter), and signal compression: the optimal reconstruction is always the orthogonal projection.
+</Remark>
+
+The Projection Theorem is one of the most powerful results in Hilbert space theory. It says that the best approximation to a signal from a subspace is obtained by "projecting" orthogonally onto that subspace -- the error is perpendicular to the subspace. This has direct applications in optimal filtering, least squares estimation, and signal compression.
+
+<Proof>
+**Part (i):** We first show that if $x - m_0$ is not orthogonal to $B$, then $m_0$ cannot be optimal. Suppose that $m_0 \in B$ is such that $\exists m \in B$ with $\langle x - m_0, m \rangle > 0$. Without any loss, take $\|m\| = 1$ and $\langle x - m_0, m \rangle = \delta$. We can show that with $m_1 = m_0 + \delta m$, we will have $\|x - m_1\|^2 = \|x - m_0\|^2 - \delta^2 < \|x - m_0\|^2$, and thus $m_0$ cannot be a minimizer of (2.5).
+
+We now show that if $x - m^*$ is orthogonal to $B$, then it is optimal. If $\langle x - m^*, M \rangle = 0$, we have that for any $m \in B$, $\|x - m\|^2 = \|x - m^* + (m^* - m)\|^2 = \|x - m^*\|^2 + \|m - m^*\|^2 \geq \|x - m^*\|^2$, and thus $m^*$ is indeed the minimizer over all $m \in B$.
+
+Uniqueness of such a minimizer also follows from this argument since if there were another minimizer $\tilde{m} \neq m^*$, we would have
+
+$$\|x - \tilde{m}\|^2 = \|x - m^*\|^2 + \|\tilde{m} - m^*\|^2 > \|x - m^*\|^2,$$
+
+a contradiction.
+
+**Part (ii):** Let
+
+$$\delta = \inf_{m \in M} \|x - m\| \qquad \text{(2.7)}$$
+
+Let $\{m_k, k \in \mathbb{N}\}$ be so that $\{\|x - m_k\|\} \to \delta$. Observe that
+
+$$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle + \langle x - m_k - (x - m_n), x - m_k - (x - m_n) \rangle$$
+$$= 2\langle x - m_k, x - m_k \rangle + 2\langle x - m_n, x - m_n \rangle \qquad \text{(2.8)}$$
+
+Write
+
+$$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle = \langle 2(x - \frac{m_k + m_n}{2}), 2(x - \frac{m_k + m_n}{2}) \rangle$$
+$$= 4\langle x - \frac{m_k + m_n}{2}, x - \frac{m_k + m_n}{2} \rangle \qquad \text{(2.9)}$$
+
+Since $\frac{m_k + m_n}{2} \in B$, by (2.7),
+
+$$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle \geq \delta,$$
+
+we have that
+
+$$\|m_k - m_n\|^2 \leq 2\|x - m_n\|^2 + 2\|x - m_k\|^2 - 4\delta^2$$
+
+As a result, as $|x - m_n\|^2 \to \delta^2$, we have that $m_k$ is Cauchy. Since $M$ is closed, it has a limit; call the limit $\tilde{m}$. We claim that the limit is optimal and hence is $m^*$: Consider the difference:
+
+$$\langle x - m_n, x - m_n \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle$$
+
+We claim that the difference goes to zero; this follows from the continuity of inner product (Theorem 2.2.2). Indeed,
+
+$$|\langle x - m_n, x - m_n \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle|$$
+$$= |\langle x - m_n, x - m_n \rangle - \langle x - m_n, x - \tilde{m} \rangle + \langle x - m_n, x - \tilde{m} \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle|$$
+$$\leq |\langle x - m_n, x - m_n \rangle - \langle x - m_n, x - \tilde{m} \rangle| + |\langle x - m_n, x - \tilde{m} \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle|$$
+$$= |\langle x - m_n, m_n - \tilde{m} \rangle| + |\langle m_n - \tilde{m}, x - \tilde{m} \rangle|$$
+$$\leq \|x - m_n\|\|m_n - \tilde{m}\| + \|m_n - \tilde{m}\|\|x - \tilde{m}\| \qquad \text{(2.10)}$$
+
+where the final inequality is due to Cauchy-Schwarz. Now, since $\|x - m_n\| \to \delta$, we have that $\|x - m_n\|$ is bounded. Finally, as $\|m_n - \tilde{m}\| \to 0$, both terms in the final line (2.10) go to zero and we conclude that
+
+$$\delta = \lim_{n \to \infty} \|x - m_n\| = \|x - \tilde{m}\|$$
+
+And therefore $\tilde{m}$ is a minimizing vector. By Part (i), this has to be the only minimizing vector in $B$.
+</Proof>
+
+<Example id="2.2.2" title="Projection Theorem Application">
+Consider the minimization of
+
+$$\int_{-1}^{1} (t^n - m(t))^2\,dt,$$
+
+for some $n \in \mathbb{Z}_+$, over all $m$ such that
+
+$$m \in M := \{f : f \in L_2([-1, 1]; \mathbb{R}),\, f(t) = \alpha + \beta t + \gamma t^2;\; \alpha, \beta, \gamma \in \mathbb{R}\}.$$
+
+**(a)** State the problem as a Projection problem by identifying the Hilbert space, and the projected subspace.
+
+**(b)** Compute the solution, that is find the minimizing $m$.
+</Example>
+
+<Remark>
+**Intuition:** This exercise shows that finding the best polynomial approximation of degree $\leq 2$ to $t^n$ on $[-1,1]$ is exactly a projection problem in $L_2$. The Hilbert space is $L_2([-1,1]; \mathbb{R})$, the subspace $M$ is the set of polynomials of degree at most 2, and the minimizer is the orthogonal projection of $t^n$ onto $M$.
+</Remark>
+
+---
+
+## 2.3 Approximations and Signal Expansions
+
+<ProjectionVisualization />
+
+### 2.3.1 Orthogonality
+
+<Definition id="2.3.1" title="Orthogonal and Orthonormal Sets">
+A set of vectors in a Hilbert space $S$ is **orthogonal** if all elements of this set are orthogonal to each other. The set is **orthonormal** if each vector in this set has norm equal to one.
+</Definition>
+
+<Remark>
+**Intuition:** An orthonormal set is a collection of "perfectly independent, unit-sized" building blocks for signals. Orthogonality ensures no redundancy (each basis vector carries unique information), and normalization to unit length simplifies coefficient computation to simple inner products. The complex exponentials in Fourier analysis form the prototypical orthonormal set.
+</Remark>
+
+The **Gram-Schmidt orthogonalization procedure** can be invoked to generate a set of orthonormal sequences. This procedure states that given a sequence $\{x_i\}$ of linearly independent vectors, there exists an orthonormal sequence of vectors $\{e_i\}$ such that for every $x_k, \alpha_k, 1 \leq k \leq n$, there exists $\beta_k, 1 \leq k \leq n$ with
+
+$$\sum_{k=1}^{n} \alpha_k x_k = \sum_{k=1}^{n} \beta_k e_k,$$
+
+that is, the linear span of $\{x_k, 1 \leq k \leq n\}$ is equal to the linear span of $\{e_k, 1 \leq k \leq n\}$ for every $n \in \mathbb{N}$.
+
+Recall that a set of vectors $\{e_i\}$ is linearly dependent if there exists a complex-valued vector $\mathbf{c} = \{c_1, c_2, \ldots, c_N\}$ such that $\sum_i^N c_i e_i = 0$ with at least one coefficient $c_i \neq 0$.
+
+<Proposition id="2.3.1" title="Linear Independence of Orthonormal Vectors">
+A sequence of orthonormal vectors is a linearly independent collection.
+</Proposition>
+
+<Remark>
+**Intuition:** Because orthonormal vectors point in completely "different directions," no vector in the set can be built from the others. This guarantees there is no redundancy in an orthonormal basis -- each basis function contributes something genuinely new to the representation.
+</Remark>
+
+We say that a sequence $\sum_{i=1}^{n} \epsilon_i e_i$ converges to $x$, if for every $\epsilon > 0$ there exists $N \in \mathbb{N}$ such that $\|x - \sum_{i=1}^{n} \epsilon_i e_i\| < \epsilon$, for all $n \geq N$.
+
+<Theorem id="2.3.1" title="Convergence of Orthonormal Expansions">
+Let $\{e_i\}$ be a sequence of orthonormal vectors in a Hilbert space $H$. Let $\{x_n = \sum_{i=1}^{n} \epsilon_i e_i\}$ be a sequence of vectors in $H$. The sequence converges to some vector $\bar{x}$ if and only if
+
+$$\sum_{i=1}^{\infty} |\epsilon_i|^2 < \infty.$$
+
+In this case, we have that $\langle \bar{x}, e_i \rangle = \epsilon_i$.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem provides the bridge between abstract Hilbert space theory and practical signal representation: a signal can be expanded in an orthonormal basis if and only if the sum of squared coefficients is finite -- which is exactly the condition that the signal has finite energy. Moreover, the coefficients are simply inner products with the basis vectors, making them easy to compute.
+</Remark>
+
+This theorem provides the fundamental link between Hilbert space theory and signal representation: a signal can be expanded in an orthonormal basis if and only if the sum of squared coefficients is finite -- which is exactly the condition that the signal has finite energy.
+
+### 2.3.2 Separable Hilbert Spaces and Countable Expansions
+
+<Definition id="2.3.2" title="Dense Subset">
+Given a normed linear space $X$, a subset $D \subset X$ is **dense** in $X$, if for every $x \in X$, and each $\epsilon > 0$, there exists a member $d \in D$ such that $\|x - d\| \leq \epsilon$.
+</Definition>
+
+<Remark>
+**Intuition:** A dense subset can approximate any element in the space to arbitrary precision. Think of how rational numbers are dense in the reals -- every real number can be approximated as closely as you like by a rational. Similarly, saying that polynomials are dense in $L_2$ means any square-integrable signal can be approximated arbitrarily well by a polynomial.
+</Remark>
+
+<Definition id="2.3.3" title="Countable Set">
+A set is **countable** if either it has finitely many elements or there is a one-to-one correspondence between the set and the set $\mathbb{N}$ of natural numbers (which would then be an enumeration / counting map).
+</Definition>
+
+<Remark>
+**Intuition:** Countability means you can list all elements in a sequence, even if the list is infinite. This matters because computers and algorithms work with sequences of numbers. A countable basis for a signal space means you can, in principle, represent any signal by a list of coefficients -- which is exactly what digital signal processing does.
+</Remark>
+
+Examples of countable spaces are finite sets, the set $\mathbb{Z}$ of integers, and the set $\mathbb{Q}$ of rational numbers. An example of uncountable sets is the set $\mathbb{R}$ of real numbers.
+
+<Theorem id="2.3.2" title="Countability Properties">
+**(a)** A countable union of countable sets is countable.
+
+**(b)** Cartesian product of finitely many countable sets is countable.
+
+**(c)** Cartesian product of (countably) infinitely many finite sets may not be countable. The same holds even when each of the sets is finite.
+
+**(d)** $[0, 1]$ is not countable.
+</Theorem>
+
+<Remark>
+**Intuition:** These results establish the fundamental size distinctions between sets. Part (d) -- that $[0,1]$ is uncountable -- is especially important: it means continuous-time signals live in an inherently "larger" space than any list can capture. This is precisely why we need the machinery of dense subsets and basis expansions to represent continuous signals with countable data.
+</Remark>
+
+Cantor's diagonal argument and the triangular enumeration are important steps in proving the theorem above.
+
+<Definition id="2.3.4" title="Separable Space">
+A space $X$ is **separable**, if it contains a countable dense set.
+</Definition>
+
+<Remark>
+**Intuition:** Separability means that even though the space may contain uncountably many elements, a countable subset is "enough" to approximate everything. This is the mathematical guarantee that digital signal processing is possible: separable signal spaces can be faithfully represented using countably many basis functions (like Fourier harmonics) and their coefficients.
+</Remark>
+
+Separability states that it suffices to work with a countable set, when a set is uncountable, for computational purposes. Examples of separable sets are $\mathbb{R}$, and the set of continuous and bounded functions on a compact set metrized with the maximum distance between the functions.
+
+<Theorem id="2.3.3" title="Countability of Orthonormal Systems in Separable Spaces">
+Let $H$ be a separable Hilbert space. Then, every orthonormal system of vectors in $H$ has a finite or countably infinite number of elements.
+</Theorem>
+
+<Remark>
+**Intuition:** In a separable Hilbert space, you can never have an uncountable collection of mutually orthogonal directions. This limits the "dimensionality" of the space in a way that makes countable basis expansions (like Fourier series) sufficient to represent every signal. It is the reason why a countable set of frequencies captures all the information in a square-integrable signal.
+</Remark>
+
+<Proof>
+Let $D = \{x_1, x_2, \cdots\}$ be a countable set dense in $H$. Let $\{e_\alpha, \alpha \in \mathcal{A}\}$ be a set of orthonormal vectors. Observe that, for $\alpha \neq \beta$, $\|e_\alpha - e_\beta\|^2 = \|e_\alpha\|^2 + \|e_\beta\|^2 = 2$ and hence $\|e_\alpha - e_\beta\| = \sqrt{2}$.
+
+By denseness of $D$, for every $e_\alpha$, there exists some element $x_{k_\alpha}$ such that $\|e_\alpha - x_{k_\alpha}\| < \frac{1}{\sqrt{2}}$. Let $M$ be the collection of such vectors $\{x_{k_\alpha}\}$ and observe that since it is a subset of $D$, this set is countable as well. Now, for a given $x_{k_\alpha}$, for any $e_\beta$ with $\beta \neq \alpha$, we have, by the relation $|\|x\| - \|y\|| \leq \|x - y\|$,
+
+$$\|e_\beta - e_\alpha\| - \|(e_\alpha - x_{k_\alpha})\| \leq \|e_\beta - e_\alpha - (e_\alpha - x_{k_\alpha})\| = \|e_\beta - x_{k_\alpha}\|,$$
+
+and thus
+
+$$\sqrt{2} - \frac{1}{\sqrt{2}} \leq \|e_\beta - x_{k_\alpha}\|$$
+
+Therefore, for every $x_{\alpha_k}$ in $M$ there is one and only one $e_\alpha$ which has a distance strictly less than $\frac{1}{\sqrt{2}}$. Thus, we can associate with every element in $\{e_\alpha, \alpha \in \mathcal{A}\}$ a unique element in the countable set $M \subset D$. Thus, the set $\{e_\alpha\}$ is countable.
+</Proof>
+
+<Definition id="2.3.5" title="Complete Orthonormal Sequence">
+An orthonormal sequence in a Hilbert space $H$ is **complete** if the only vector in $H$ which is orthogonal to each of the vectors in the sequence is the null vector.
+</Definition>
+
+<Remark>
+**Intuition:** Completeness of an orthonormal sequence means there is "no signal left over" that the basis misses. If a signal is orthogonal to every basis vector, it must be zero. This is the condition that distinguishes a true basis (which can represent everything) from a partial set (which can only represent signals in a subspace).
+</Remark>
+
+<Theorem id="2.3.4" title="Separability and Complete Orthonormal Sequences">
+A Hilbert space $H$ contains a complete orthonormal sequence (that is, a countable collection of such vectors) if and only if it is separable.
+</Theorem>
+
+<Remark>
+**Intuition:** This is the central structural result: a Hilbert space admits a countable basis (enabling Fourier-type expansions) if and only if it is separable. Since the signal spaces we care about ($L_2$, $l_2$) are separable, this theorem guarantees that every finite-energy signal can be expressed as a countable sum of orthonormal basis functions.
+</Remark>
+
+<Proof>
+**(i)** Let $H$ be separable. Then, there exists a countable dense subset $D = \{x_1, x_2, \cdots\}$. Apply the Gram-Schmidt procedure to obtain $\{e_1, e_2, \cdots\}$, an orthonormal collection. We claim that this set is a complete orthonormal sequence. Suppose not; that is, let $h \in H$ be so that $\|h\| \neq 0$ and yet $\langle h, e_k \rangle = 0$ for every $k \in \mathbb{N}$. Now, for every $\epsilon > 0$, there exists $x_m \in D$ with $\|h - x_m\| \leq \epsilon$ and observe that $x_m = \sum_{k=1}^{m} \alpha_i e_i$ since the span of the vectors $\{e_1, e_2, \cdots, e_m\}$ contains $x_m$. Then,
+
+$$\|h\|^2 = \langle h, h \rangle = \langle h - \sum_{k=1}^{m} \alpha_i e_i, h \rangle = \langle h - x_m, h \rangle \leq \|h - x_m\| \|h\| \leq \epsilon \|h\|,$$
+
+which implies that $\|h\| \leq \epsilon$. Since $\epsilon > 0$ is arbitrary, this completes the proof that $\|h\| = 0$ and $h$ is the null element.
+
+**(ii)** Now, let $H$ have a complete orthonormal sequence $\{e_1, e_2, \cdots\}$. We will show that
+
+$$D = \bigcup_{n \in \mathbb{N}} \left\{x \in H : x = \sum_{k=1}^{n} \alpha_i e_i,\, \alpha_i \in \mathbb{Q}\right\},$$
+
+is a countable dense subset in $H$, and this $H$ is separable. That $D$ is countable follows from the fact that for every $n$, the set $\{x \in H : x = \sum_{k=1}^{n} \alpha_i e_i, \alpha_i \in \mathbb{Q}\}$ is countable as a Cartesian product of finitely many countable sets, and thus the countable union over $n$ leads to a countable set. We now show that this set is dense in $H$.
+
+Consider the sequence of vectors $x_n := \sum_{i=1}^{n} \langle x, e_i \rangle e_i$. Observe that $x_n$ converges to a limit by Theorem 2.3.1. To see that the sequence $\sum_{i=1}^{\infty} |\langle x, e_i \rangle|^2$ is summable, use orthonormality and apply the Pythagorean theorem to conclude that $\sum_{i=1}^{\infty} |\langle x, e_i \rangle|^2 \leq \|x\|^2$. Therefore, the limit $\sum_{i=1}^{\infty} \langle x, e_i \rangle e_i$ is well-defined.
+
+Now, let $h = x - \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i$. We claim that $\|h\| = 0$. For any $m \in \mathbb{N}$,
+
+$$\langle h, e_m \rangle = \langle x - \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i, e_m \rangle$$
+$$= \langle x, e_m \rangle - \langle \lim_{n \to \infty} \sum_{i=1}^{n} \langle x, e_i \rangle e_i, e_m \rangle$$
+$$= \langle x, e_m \rangle - \lim_{n \to \infty} \langle \sum_{i=1}^{n} \langle x, e_i \rangle e_i, e_m \rangle$$
+$$= \langle x, e_m \rangle - \langle x, e_m \rangle = 0. \qquad \text{(2.11)}$$
+
+But since $\{e_1, e_2, \cdots\}$ is a complete orthonormal sequence, it must be that $\|h\| = 0$. Hence, $x = \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i$. Now approximate this vector, by first truncating the sum so that for any $\epsilon > 0$,
+
+$$\left\|x - \sum_{i=1}^{N} \langle x, e_i \rangle e_i\right\| \leq \epsilon/2,$$
+
+and then approximating the coefficients by rational numbers so that $\left\|\sum_{i=1}^{N} \langle x, e_i \rangle e_i - \sum_{i=1}^{N} \alpha_i e_i\right\| \leq \epsilon/2$ with $\alpha_i \in \mathbb{Q}$. This implies that
+
+$$\left\|x - \sum_{i=1}^{N} \alpha_i e_i\right\|$$
+$$\leq \left\|x - \sum_{i=1}^{N} \langle x, e_i \rangle e_i\right\| + \left\|\sum_{i=1}^{N} \langle x, e_i \rangle e_i - \sum_{i=1}^{N} \alpha_i e_i\right\|$$
+$$\leq \epsilon \qquad \text{(2.12)}$$
+
+Since for every $\epsilon$ such an approximation can be made by some element in $D$, this completes the proof.
+</Proof>
+
+The proof above also showed the following result:
+
+<Theorem id="2.3.5" title="Basis Expansion in Hilbert Spaces">
+In a Hilbert space $H$, a complete orthonormal sequence $\{e_n, n \in \mathbb{N}\}$ defines a **basis** in the sense that for any $x \in H$, we have
+
+$$x = \lim_{N \to \infty} \sum_{k=1}^{N} \langle x, e_k \rangle e_k$$
+</Theorem>
+
+<Remark>
+**Intuition:** This is the master representation theorem: any signal in a separable Hilbert space can be perfectly reconstructed from its inner products with basis vectors. The coefficients $\langle x, e_k \rangle$ are the "coordinates" of the signal, and the reconstruction converges in the energy ($L_2$) sense. Fourier series, wavelet decompositions, and all other orthonormal expansions are special cases of this result.
+</Remark>
+
+This is the fundamental representation theorem for signals in Hilbert spaces. Every signal can be decomposed into a (possibly infinite) sum of orthonormal basis vectors, with coefficients given by inner products. This is the abstract framework underlying Fourier series, wavelet expansions, and many other signal representations.
+
+### 2.3.3 Separability of $l_2$ and $L_2$ spaces
+
+In view of Theorem 2.3.4, the following result builds on the fact that the sequence of orthonormal vectors
+
+$$\left\{e_n, n \in \mathbb{N} : \quad e_n : \mathbb{Z}_+ \to \mathbb{R}, \quad e_n(m) = 1_{\{m = n\}}, \quad m \in \mathbb{Z}_+\right\}$$
+
+is a countable complete orthonormal set in $l_2(\mathbb{Z}_+; \mathbb{R})$: Note that for any $h = \{h(1), h(2), \cdots\} \in l_2(\mathbb{Z}_+; \mathbb{R})$, $\langle h, e_n \rangle = h(n)$ and hence for any vector $v \in l_2(\mathbb{Z}_+; \mathbb{R})$
+
+$$\langle v, e_n \rangle = 0 \quad \forall n \in \mathbb{Z}_+ \implies \|v\| = 0.$$
+
+<Theorem id="2.3.6" title="Separability of l2">
+The Hilbert space $l_2(\mathbb{Z}_+; \mathbb{R})$ with inner product
+
+$$\langle h_1, h_2 \rangle = \sum_{n \in \mathbb{Z}_+} h_1(n) h_2(n),$$
+
+is separable.
+</Theorem>
+
+<Remark>
+**Intuition:** Separability of $l_2$ means that the space of square-summable sequences -- the natural home for discrete-time finite-energy signals -- can be spanned by a countable orthonormal basis. The standard basis vectors $e_n$ (which are 1 at position $n$ and 0 elsewhere) serve as this basis, and every sequence is simply a list of its values at each time index.
+</Remark>
+
+Next, we will show that $L_2([a, b]; \mathbb{R})$ is separable for $a, b \in \mathbb{R}$. To establish this result, we will review some useful facts.
+
+<Theorem id="2.3.7" title="Bernstein-Weierstrass' Theorem">
+Any function in $C([0, 1]; \mathbb{R})$ can be approximated arbitrarily well by a polynomial under the supremum norm.
+</Theorem>
+
+<Remark>
+**Intuition:** The Weierstrass theorem says that polynomials are "universal approximators" for continuous functions on a closed interval. No matter how complicated a continuous signal is, a polynomial of sufficiently high degree can match it to any desired accuracy. This foundational result is what lets us build toward proving that $L_2$ spaces are separable.
+</Remark>
+
+<Proof>
+This can be proven by construction. Define for some $f \in C([0, 1])$ and $n \in \mathbb{N}$ the Bernstein polynomial of order $n$ as:
+
+$$B_{n,f}(t) = \sum_{k=0}^{n} f\left(\frac{k}{n}\right) \binom{n}{k} t^k (1-t)^{n-k}.$$
+
+It can be proven that
+
+$$\lim_{n \to \infty} \sup_{t \in [0,1]} |f(t) - B_{n,f}(t)| = 0.$$
+
+See Exercise 2.4.14 for a probability theoretic proof, by noting that if $X_k$ is a collection of $\{0, 1\}$ valued independent and identically distributed random variables with $P(X_k = 1) = t$, we have that
+
+$$E\left[f\left(\frac{1}{N}\sum_{k=1}^{N} X_k\right)\right] \to f(t),$$
+
+where this holds uniformly over $t \in [0, 1]$. This expectation operation defines a polynomial on $[0, 1]$.
+</Proof>
+
+<Theorem id="2.3.8" title="Density of Continuous Functions in L2">
+The set $C([0, 1]; \mathbb{R})$, of continuous functions, is dense in $L_2([0, 1]; \mathbb{R})$.
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem says that any square-integrable function -- even one with discontinuities -- can be approximated arbitrarily well (in the energy sense) by a continuous function. This is reassuring for engineers: continuous, "well-behaved" signals are dense enough to represent all finite-energy signals, so working with smooth approximations does not lose generality.
+</Remark>
+
+<Proof title="Proof Sketch">
+First let us consider $f \in L_2([0, 1]; \mathbb{R})$ that is bounded. Such a function can be approximated by a simple function with an arbitrarily small error under the supremum norm, by the construction of the Lebesgue integration. By a result known as Urysohn's Lemma, for any Borel $E$, we can approximate any indicator function $1_{\{x \in E\}}$ with a continuous function $g$ so that $\int_{-K}^{K} |1_{\{x \in E\}} - g(x)|\,dx \leq \epsilon$ for any $\epsilon > 0$: This follows first by noting that for any measurable $E$, for any $\epsilon > 0$ there exist $F$ closed and $G$ open with $F \subset E \subset G$ and $\lambda(G \setminus F) < \epsilon$ where $\lambda$ is the Lebesgue measure, and then noting that one can construct a continuous function which takes the value 1 on $F$ and the value 0 outside $G$ (e.g., $g(x) = 1 - \frac{d(x, F)}{\max(d(x, F), d(x, [0,1] \setminus G))}$). Thus, given a finite number of indicator functions, their sum can be approximated by so many continuous functions with an arbitrarily small error. If the function $f$ is not bounded, it can be first represented as a sum of positive and negative parts, and each (say the positive part) can be approximated with a bounded function, since for a non-negative valued function $f$:
+
+$$\lim_{N \to \infty} \int_{t \in [0,1]} |f(t) - \min(N, f(t))|^2\,dt = 0.$$
+
+This argument follows from the fact that $|f(t) - \min(N, f(t))|^2 \leq f^2(t)$, and the dominated convergence theorem due to the fact that $f^2(t)$ is integrable. Thus, for any $\epsilon$, a bounded function can be used to approximate $f$. For such a function, the method presented above can be used to establish the denseness of continuous functions.
+</Proof>
+
+<Theorem id="2.3.9" title="Separability of L2([0,1]; R)">
+The space $L_2([0, 1]; \mathbb{R})$ is separable.
+</Theorem>
+
+<Remark>
+**Intuition:** Separability of $L_2([0,1])$ is the key result that justifies Fourier series: it guarantees that every finite-energy signal on $[0,1]$ can be represented by a countable orthonormal basis. The proof chains together polynomial approximation (Weierstrass) and density of continuous functions to construct such a basis -- and the complex exponentials of Fourier series are one natural choice.
+</Remark>
+
+<Proof>
+Given Theorem 2.3.8, we can show that polynomials $\{t^k, k \in \mathbb{Z}_+\}$ defined on $[0, 1]$ can be used to construct a complete orthogonal sequence. In view of Theorem 2.3.4, this will imply separability.
+
+To see this, let $\langle h, t^k \rangle = 0$ for all $k \in \mathbb{Z}_+$ but $\|h\| \neq 0$. Then for any finite $n$ and $\alpha_1, \alpha_2, \cdots, \alpha_n \in \mathbb{R}$:
+
+$$\langle h, h \rangle = \langle h - \sum_{i=1}^{n} \alpha_i t^k, h \rangle \leq \|h - \sum_{i=1}^{n} \alpha_i t^k\| \|h\| \qquad \text{(2.13)}$$
+
+The expression $\|h - \sum_{i=1}^{n} \alpha_i t^k\|$ can be made arbitrarily small by first approximating $h$ with a continuous function with a given approximation error (by Theorem 2.3.8) and then approximating that fixed continuous function with a polynomial of some finite degree with another arbitrarily small approximation error (by Theorem 2.3.7). Thus $\|h\|$ must be less than any positive real number. Therefore, there exists a complete sequence. This sequence can be made orthonormal by the Gram-Schmidt procedure.
+
+Thus, Bernstein polynomials are dense in $C([0, 1])$, but these are not orthogonal in $L_2([0, 1]; \mathbb{R})$; and if we apply the Gram-Schmidt procedure to $\{1, t, t^2, \cdots\}$, we can obtain an orthonormal collection of polynomials that is a complete sequence in $L_2([0, 1]; \mathbb{R})$ as we saw in the proof of Theorem 2.3.9. These orthonormal polynomials are called **Legendre polynomials**.
+
+For $L_2([0, 1]; \mathbb{R})$, there exist further complete orthonormal sequences, to be discussed shortly.
+</Proof>
+
+<Theorem id="2.3.10" title="Separability of L2 on the Positive Reals">
+$L_2(\mathbb{R}_+; \mathbb{R})$ is separable.
+</Theorem>
+
+<Remark>
+**Intuition:** Extending separability from a bounded interval to all of $\mathbb{R}_+$ means Fourier-type expansions work for signals defined on the entire positive real line, not just finite intervals. The key idea is that any finite-energy signal has most of its energy concentrated in some finite window, so the bounded-interval result can be "stitched together" to cover the whole line.
+</Remark>
+
+<Proof title="Proof Sketch">
+Consider the set of functions: $F_K = \{g : g(x) = f(x)1_{\{|x| \leq K\}}, f \in L_2(\mathbb{R}_+; \mathbb{R})\}$. Each $F_K$ is separable under the $L_2$ norm and there exists a countable dense subset in $F_K$, call them $N_K$. Furthermore, for every $f \in L_2(\mathbb{R}_+; \mathbb{R})$ and every $\epsilon > 0$, there exists some $K$ and some $g \in F_K$ such that $\|f - g\| \leq \epsilon$ (this follows from the dominated convergence theorem, or the monotone convergence theorem depending on how one may use either). Now, let $K$ range over positive integers, and observe that $\cup_{K \in \mathbb{N}} N_K$ is countable, as a countable union of countable sets. Hence, this set is a countable dense subset in $L_2(\mathbb{R}_+; \mathbb{R})$.
+</Proof>
+
+Two further results:
+
+<Theorem id="2.3.11" title="Density of L2 in L1">
+The set $L_2([1, \infty); \mathbb{R})$ is dense in $L_1([1, \infty); \mathbb{R})$.
+</Theorem>
+
+<Remark>
+**Intuition:** This says that any absolutely integrable signal on $[1,\infty)$ can be approximated by a square-integrable signal. In practice, this means results proven for $L_2$ signals (where we have Hilbert space tools) can often be extended to $L_1$ signals through approximation arguments.
+</Remark>
+
+<Proof>
+Let $g \in L_1([1, \infty); \mathbb{R})$. Let $g_K(t) = g(t)1_{\{|t| \leq K\}}$, $t \in \mathbb{R}$. It follows that $g_K \in L_2([1, \infty); \mathbb{R})$ and $\|g - g_K\|_1 \leq \epsilon$.
+</Proof>
+
+<Theorem id="2.3.12" title="Density of Continuous Functions with Compact Support">
+Let $C_c$ denote the space of continuous functions with compact support. $C_c$ is dense in $L_1(\mathbb{R}; \mathbb{R})$.
+</Theorem>
+
+<Remark>
+**Intuition:** This result says that any integrable signal can be approximated by a continuous function that is zero outside some finite interval. In engineering terms, every $L_1$ signal can be well-approximated by a "nice" signal that is both smooth and compactly supported -- a key step in proving results about Fourier transforms, since such signals are easy to integrate and transform.
+</Remark>
+
+<Proof title="Proof Sketch">
+Recall first that the support of a function $f$ is defined as the closure of the collection of points on which $f$ is non-zero. First let us assume that the bounded domain $[-K, K]$, for some finite $K$, contains the support of $f$. In this domain, we can approximate any $f \in L_1(\mathbb{R}; \mathbb{R})$ with a simple function with an arbitrarily small error under the $L_1$ norm $\|\cdot\|_1$, by the construction of the Lebesgue integration. Again by Urysohn's Lemma, we can approximate any indicator function $1_{\{x \in E\}}$ with a continuous function $g$ with compact support so that $\int_{-K}^{K} |1_{\{x \in E\}} - g(x)| \leq \epsilon$. Thus, given a finite number of indicator functions, their sum can be approximated by so many continuous functions with an arbitrarily small error. If the function $f$ has unbounded support, then we can truncate it first to obtain a function with a finite support, with some (arbitrarily small) approximation error.
+
+**The above is also important in that, it shows that in $L_p(\mathbb{R}_+), 1 \leq p < \infty$, the mass of a function cannot escape to infinity. We will revisit this important characteristic occasionally in particular while discussing Fourier transforms.**
+</Proof>
+
+### 2.3.4 Signal expansions in $L_2([a, b]; \mathbb{R})$ or $L_2([a, b]; \mathbb{C})$: Fourier, Haar and Polynomial Bases
+
+#### Fourier Signals as Basis Vectors and Fourier Series
+
+Fourier series is a very important class of orthonormal sequences which are used to represent both discrete-time and continuous-time signals. These will be studied later on in much detail. In particular, we will soon see that in $L_2([0, P]; \mathbb{C})$ the family of complex exponentials
+
+$$\left\{e_k : e_k(t) = \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} t}, k \in \mathbb{Z}\right\},$$
+
+provides a complete orthonormal sequence.
+
+Accordingly, for any $x \in L_2([0, P]; \mathbb{C})$, we can write
+
+$$x = \sum_{k \in \mathbb{Z}} \langle x, e_k \rangle e_k$$
+
+or by expanding the inner-product, we have
+
+$$x(t) = \sum_{k \in \mathbb{Z}} \left(\int_{\mathbb{R}} x(s) \frac{1}{\sqrt{P}} e^{-i2\pi \frac{k}{P} s}\,ds\right) \frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} t}$$
+
+where the convergence of the infinite sum is in the $L_2$ sense.
+
+This expansion is precisely the **Fourier series** expansion of the function $x$ in $L_2([0, P]; \mathbb{C})$. The inner-product $\langle x, e_k \rangle$ defines the Fourier transform.
+
+#### Legendre Polynomials as Basis Vectors
+
+We have seen, in the context of Theorems 2.3.7 and 2.3.8 (see the proof of 2.3.9), the functions $\{t^k, k \in \mathbb{Z}_+\}$ can be used to construct an orthonormal collection of signals which is complete in $L_2([a, b]; \mathbb{R})$. These complete orthonormal polynomials are called **Legendre polynomials**.
+
+#### Haar Functions as Basis Vectors
+
+One further practically very important basis is the class of Haar functions (known as wavelets). Define
+
+$$\Psi_{0,0}(x) = \begin{cases} 1, & \text{if } 0 \leq x \leq 1 \\ 0 & \text{else} \end{cases} \qquad \text{(2.14)}$$
+
+and for $n \in \mathbb{Z}_+$, $k \in \{0, 1, 2, \ldots, 2^n - 1\}$,
+
+$$\Phi_{n,k}(x) = \begin{cases} 2^{n/2}, & \text{if } k2^{-n} \leq x < (k + 1/2)2^{-n} \\ -2^{n/2}, & \text{if } (k + 1/2)2^{-n} \leq x < (k+1)2^{-n} \\ 0 & \text{else} \end{cases} \qquad \text{(2.15)}$$
+
+<Theorem id="2.3.13" title="Completeness of the Haar System">
+The (Haar) set of vectors
+
+$$\left\{\Psi_{0,0}, \Phi_{n,k}, n \in \mathbb{Z}_+, k \in \{0, 1, 2, \ldots, 2^n - 1\}\right\}$$
+
+is a complete orthonormal sequence in $L_2([0, 1]; \mathbb{R})$.
+</Theorem>
+
+<Remark>
+**Intuition:** The Haar system provides an alternative to Fourier series for representing $L_2$ signals. While Fourier basis functions are smooth sinusoids spread over the entire interval, Haar functions are localized step functions that capture information at specific locations and scales. This makes wavelets particularly effective for signals with sharp transitions or edges, which is why they are widely used in image compression (e.g., JPEG 2000).
+</Remark>
+
+The important observation to note here is that, different expansions might be suited for different engineering applications: for instance Haar series are occasionally used in image processing with certain *edge* behaviours, whereas Fourier expansion is extensively used in speech processing and communications theoretic applications.
+
+### 2.3.5 Approximations
+
+Approximations allow us to represent data using finitely many vectors. The basis expansions studied above can be used to obtain the best approximation of a signal up to finitely many terms to be used in an approximation: This can be posed as a projection problem, and we have seen that the best approximation is one in which the approximation error is orthogonal to all the vectors used in the approximation (defining an approximation subspace).

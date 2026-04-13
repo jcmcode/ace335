@@ -1,0 +1,290 @@
+---
+title: "Homework 5 Solutions"
+homework: 5
+---
+
+## Problem 1: Systems
+
+<Problem id="1" title="Systems">
+Consider a linear system described by the relation:
+
+$$y(n) = \sum_{m \in \mathbb{Z}} h(n,m)u(m), \quad n \in \mathbb{Z}$$
+
+for some $h : \mathbb{Z} \times \mathbb{Z} \to \mathbb{C}$.
+
+a) When is such a system causal?
+
+b) Show that such a system is time-invariant if and only if it is a convolution system.
+</Problem>
+
+<Solution>
+**a)** A linear system is causal if at any given time $n \in \mathbb{Z}$, future control actions cannot affect the current output of the system. As such $h(n,m) = 0$ for $m > n$ for a causal (non-anticipative) system.
+
+**b)** Suppose a linear system described by
+
+$$y(n) = \sum_m h(n,m)u(m),$$
+
+is time-invariant. Let, for some $\theta \in \mathbb{Z}$,
+
+$$v = \sigma^{-\theta}(u)$$
+
+Then: $v(m) = u(m - \theta)$. Let the signal $g$ be the output of the system when the input is the discrete-time signal $v$. It follows that
+
+$$g(n) = \sum_{m \in \mathbb{Z}} h(n,m)v(m) = \sum_{m \in \mathbb{Z}} h(n,m)u(m - \theta) = \sum_{m' \in \mathbb{Z}} h(n, m' + \theta)u(m')$$
+
+By time-invariance, it must be that $g = \sigma^{-\theta}(y)$. That is, $g(n) = y(n - \theta)$ or $g(n + \theta) = y(n)$. Thus,
+
+$$g(n + \theta) = \sum_{m' \in \mathbb{Z}} h(n + \theta, m' + \theta)u(m') = y(n)$$
+
+Therefore, $h(n + \theta, m + \theta) = h(n, m)$ for all $n, m$ values, and for all $\theta$ values. Therefore $h(n, m)$ should only be a function of the difference $n - m$.
+
+For the other direction; let a convolution system be given by
+
+$$y(n) = \sum_{m \in \mathbb{Z}} h(n - m)u(m)$$
+
+Let $v(m) = u(m - \theta)$ for some $\theta \in \mathbb{Z}$. Let the signal $g$ be the output of the system when the input is the discrete-time signal $v$. Then,
+
+$$g(n) = \sum_{m \in \mathbb{Z}} h(n - m)u(m - \theta) = \sum_{m' \in \mathbb{Z}} h(n - m - \theta)u(m) = \sum_{m' \in \mathbb{Z}} h(n - \theta - m)u(m) = y(n - \theta)$$
+
+Thus, $g(n) = y(n - \theta)$ for all $n$. Thus, a convolution system is linear and time-invariant.
+</Solution>
+
+## Problem 2: Continuous-Time State-Space Systems
+
+<Problem id="2" title="Continuous-Time State-Space Systems">
+Let $x(t) \in \mathbb{R}^N$ and $t \ge 0$ and real-valued. Recall that the solution to the following differential equation:
+
+$$x'(t) = Ax(t) + Bu(t),$$
+$$y(t) = Cx(t),$$
+
+with the initial condition $x(t_0) = x_0$ is given by
+
+$$x(t) = e^{A(t-t_0)}x_{t_0} + \int_{\tau=t_0}^{t} e^{A(t-\tau)}Bu(\tau)d\tau, \quad t \ge 0$$
+
+(a) Suppose that $x(t_0) = 0$ and all eigenvalues of $A$ have their real parts as negative and $\|u\|_{\infty} < \infty$. Let $t_0 \to -\infty$. Show that if one is to represent $x(t) = (h * u)(t)$, we have
+
+$$h(t) = Ce^{At}B1_{\{t \ge 0\}}.$$
+
+(b) Alternatively, we could skip the condition that the eigenvalues of $A$ have their real parts as negative, but require that $x(0) = 0$ and $u(t) = 0$ for $t < 0$. Express the solution as a convolution
+
+$$y(t) = (h * u)(t),$$
+
+and find $h(t)$.
+</Problem>
+
+<Solution>
+**a)** With this assumption that the system is *stable*, and control $u(t)$ is bounded, we have
+
+$$y(t) = Ce^{At-t_0}x(t_0) + C\int_{\tau=t_0}^{t} e^{A(t-\tau)}Bu(\tau)d\tau,$$
+
+and take the limit as $t_0 \to -\infty$, leading to $h(t) = Ce^{At}B1_{\{t \ge 0\}}$.
+
+**b)** We express:
+
+$$x(t) = \int_{\tau=0}^{t} e^{A(t-\tau)}Bu(\tau)d\tau, \quad t \ge 0$$
+
+with the expression $v = t - \tau$, $dv = -d\tau$, and that $u(t) = 0$ for $t < 0$
+
+$$x(t) = \int_{v=0}^{\infty} e^{Av}Bu(t - v)dv, \quad t \ge 0$$
+
+Thus, with the representation
+
+$$y(t) = \int h(t - \tau)u(\tau)d\tau = \int h(v)u(t-v)dv,$$
+
+it follows that
+
+$$h(t) = Ce^{At}B1_{\{t \ge 0\}}.$$
+
+Note that if one applies a continuous-time impulse signal at time $t = 0$, the output (and hence, the impulse response) becomes $h$ as given above.
+</Solution>
+
+## Problem 3: Discrete-Time State-Space Systems
+
+<Problem id="3" title="Discrete-Time State-Space Systems">
+Let $x(n) \in \mathbb{R}^N$ and $n \in \mathbb{Z}$. Consider a linear system given by
+
+$$x(n+1) = Ax(n) + Bu(n)$$
+$$y(n) = Cx(n), \quad n \ge 0$$
+
+with the initial condition $x(n_0) = 0$ for some $n_0$.
+
+(a) Suppose all the eigenvalues of $A$ are strictly inside the unit disk in the complex plane and $\|u\|_{\infty} < \infty$. Let $n_0 \to -\infty$. Express the solution $y(n)$ as a convolution
+
+$$y(n) = (h * u)(n),$$
+
+and find that
+
+$$h(n) = CA^{n-1}B1_{\{n \ge 1\}}.$$
+
+(b) Alternatively, we could skip the condition that the eigenvalues of $A$ are strictly inside the unit disk in the complex plane, but require that $n_0 = 0$ so that $x(0) = 0$ and also $u(n) = 0$ for $n < 0$. Express the solution as a convolution
+
+$$y(n) = (h * u)(n),$$
+
+and find $h(n)$.
+</Problem>
+
+<Solution>
+**a)** With this assumption that the system is *stable*, and control $u(n)$ is bounded, we have
+
+$$x(n) = A^{n-n_0}x(n_0) + \sum_{m=n_0}^{n-1} A^{n-m-1}Bu(m),$$
+
+and take the limit as $n_0 \to -\infty$ leading to $h(n) = A^{n-1}B1_{\{n \ge 1\}}$.
+
+**b)** In this case, we have that
+
+$$x(n) = \sum_{k=0}^{n-1} A^{n-k-1}Bu(k) = \sum_{s=1}^{n} A^{s-1}Bu(n-s) = \sum_{s=1}^{\infty} A^{s-1}Bu(n-s),$$
+
+where we use $u(n) = 0$ for $n < 0$. Thus, also considering the matrix $C$ in $y(n)$,
+
+$$h(n) = CA^{n-1}B1_{\{n \ge 1\}}$$
+
+Note that if one applies a unit impulse function at time $n = 0$, the output (and hence, the impulse response) becomes $h$ as given above.
+</Solution>
+
+## Problem 4: Kernel Representation of Linear Systems
+
+<Problem id="4" title="Kernel Representation of Linear Systems">
+Let $\mathcal{T}$ be a linear system mapping $l_1(\mathbb{Z}; \mathbb{R})$ to $l_1(\mathbb{Z}; \mathbb{R})$. Show that if this system is linear and continuous, it can be written so that $y = \mathcal{T}(u)$;
+
+$$y(n) = \sum_{m \in \mathbb{Z}} h(n,m)u(m), \quad n \in \mathbb{Z}$$
+
+for some $h : \mathbb{Z} \times \mathbb{Z} \to \mathbb{R}$.
+
+**Remark.** Building on this discussion, one takes the representation above as a definition of a linear system: As noted earlier, in our course and in standard terminology in engineering and applied science, we generally say that a discrete-time (DT) system is linear if the input output relation can be written as:
+
+$$y(n) = \sum_{m=-\infty}^{\infty} h(n,m)u(m).$$
+
+In the above, $h(n,m)$ is called the kernel of the system. The value $h(n,m)$ reveals to effect of an input at time $m$ to the output at time $n$.
+</Problem>
+
+<Solution>
+Since $u \in l_1(\mathbb{Z}; \mathbb{R})$, we can write $u = \lim_{N \to \infty} u_N$ (that is, $\|u - u_N\|_1 \to 0$ as $n \to \infty$), where $u_N = \sum_{m=-N}^{N} u_m \delta_m$ with
+
+$$\delta_m(n) = 1_{\{n=m\}}, \qquad n \in \mathbb{Z}$$
+
+Since $\mathcal{T}$ is continuous and linear,
+
+$$\mathcal{T}(u) = \mathcal{T}(\lim_{N \to \infty} u_N) = \lim_{N \to \infty} \mathcal{T}(u_N) = \lim_{N \to \infty} \sum_{m=-N}^{N} u_m \mathcal{T}(\delta_m).$$
+
+Thus,
+
+$$y(n) = \lim_{N \to \infty} \sum_{m=-N}^{N} u_m \Big( \mathcal{T}(\delta_m) \Big)(n).$$
+
+With $h(n,m) := \Big( \mathcal{T}(\delta_m) \Big)(n)$, the representation result above follows. Observe that $h(n,m) = \Big( \mathcal{T}(\delta_m) \Big)(n)$ is the output of the system at time $n$ when the input to the system is a unit pulse applied at time $m$.
+
+**Remark.** Observe that in the representation argument above, one can generalize the result for any $l_p(\mathbb{Z}; \mathbb{R})$ as the input space with $1 \le p < \infty$; and the output space can be any $l_q(\mathbb{Z}; \mathbb{R})$ space with $1 \le q \le \infty$.
+</Solution>
+
+## Problem 5: Continuous-Time LTI System
+
+<Problem id="5" title="Continuous-Time LTI System">
+Consider a continuous-time system described by the equation:
+
+$$\frac{dy(t)}{dt} = ay(t) + u(t), \quad t \in \mathbb{R},$$
+
+where $a < 0$.
+
+a) Find the impulse response of the system. Is the system bounded-input-bounded-output (BIBO) stable?
+
+b) Suppose that the input to this system is given by $\cos(2\pi f_0 t)$. Let $y_{f_0}$ be the output of the system. Find $y_{f_0}(t)$.
+
+c) If exists, find
+
+$$\lim_{f_0 \to \infty} y_{f_0}(t),$$
+
+for all $t \in \mathbb{R}$.
+</Problem>
+
+<Solution>
+**a)** As we saw in class, $h(t) = e^{at}1_{\{t \ge 0\}}$. Since $\int_{\mathbb{R}} |e^{at}1_{\{t \ge 0\}}|dt = \int_0^{\infty} e^{at}dt < \infty$, the system is BIBO stable.
+
+**b)** Let $\hat{h} = \mathcal{F}_{CC}(h)$ be defined as (which will be called the Fourier transform of $h$): $\hat{h}(f) := \int_0^{\infty} e^{at}e^{-i2\pi ft}dt = \frac{1}{-a+i2\pi f}$. Writing $\cos(2\pi f_0 t) = (e^{i2\pi f_0 t} + e^{-i2\pi f_0 t})/2$, and noting that for the input $u_1(t) := e^{i2\pi f_0 t}$ the output is
+
+$$\hat{h}(f_0)e^{i2\pi f_0 t}$$
+
+and for the input $u_2(t) := e^{-i2\pi f_0 t}$ the output is
+
+$$\hat{h}(-f_0)e^{-i2\pi f_0 t},$$
+
+the output would be equal to
+
+$$\frac{1}{2}\left( \hat{h}(f_0)e^{i2\pi f_0 t} + \hat{h}(-f_0)e^{-i2\pi f_0 t} \right)$$
+
+We can note also that $\hat{h}(-f_0)e^{-i2\pi f_0 t}$ is the complex conjugate of $\hat{h}(f_0)e^{i2\pi f_0 t}$.
+
+**c)** Since
+
+$$\lim_{|f| \to \infty} |\hat{h}(f)|^2 = \lim_{|f| \to \infty} \frac{1}{a^2 + 4\pi^2 f^2} = 0,$$
+
+we conclude that for all $t \in \mathbb{R}$
+
+$$\lim_{f_0 \to \infty} y_{f_0}(t) = \lim_{f_0 \to \infty} \frac{1}{2}\left( \hat{h}(f_0)e^{i2\pi f_0 t} + \hat{h}(-f_0)e^{i2\pi f_0 t} \right) = 0$$
+</Solution>
+
+## Problem 6: Steady-State vs. Transient Solutions
+
+<Problem id="6" title="Steady-State vs. Transient Solutions">
+Let $x(t) \in \mathbb{R}^N$. Consider a system defined with the relation:
+
+$$x'(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t) + Du(t), \qquad t \ge t_0,$$
+
+for some fixed $t_0$. Consider an input $u(t) = e^{st}, t \ge t_0$ for some $s \in \mathbb{C}$. Suppose $s$ is not an eigenvalue of $A$. Show that
+
+$$y(t) = Ce^{A(t-t_0)}\left( x(t_0) - (sI - A)^{-1}e^{st_0}B \right) + \left( C(sI-A)^{-1}B + D \right)e^{st}, \qquad t \in \mathbb{R}_+$$
+
+The first term is called the transient response of the system and the second term is called the steady-state response.
+
+If $A$ is a stable matrix, with all its eigenvalues inside the unit circle, the first term decays to zero as $t$ increases (or with fixed $t$, as $t_0 \to -\infty$). Alternatively, if we set $t_0 = 0$ and write
+
+$$x(0) = (sI - A)^{-1}B,$$
+
+the output becomes
+
+$$y(t) = \left( C(sI-A)^{-1}B + D \right)e^{st}, \qquad t \ge 0$$
+
+The map $C(sI-A)^{-1}B + D$ is called the transfer function of the system.
+
+Hint: Prove and use the relation, for $s$ not an eigenvalue of $A$:
+
+$$e^{At}(sI - A)^{-1}e^{-At} = (sI - A)^{-1}$$
+</Problem>
+
+<Solution>
+Equation (6) can be verified by multiplication both equations from the right with $e^{At}$, and then both sides with $(sI - A)$ from the left and then using $Ae^{At} = e^{At}A$. Now, with
+
+$$x'(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t) + Du(t), \qquad t \ge t_0,$$
+
+we have
+
+$$x(t) = e^{A(t-t_0)}x(t_0) + e^{At}\int_{t_0}^{t} e^{-A\tau}Be^{s\tau}d\tau$$
+
+$$x(t) = e^{A(t-t_0)}x(t_0) + e^{At}\int_{t_0}^{t} e^{(sI-A)\tau}Bd\tau$$
+
+$$x(t) = e^{A(t-t_0)}x(t_0) + e^{At}(sI-A)^{-1}\left( e^{(sI-A)t} - e^{(sI-A)t_0} \right)B$$
+
+$$x(t) = \left( e^{A(t-t_0)}x(t_0) - e^{At}(sI-A)^{-1}e^{(sI-A)t_0}B \right) + \left( e^{At}(sI-A)^{-1}e^{(sI-A)t}B \right)$$
+
+$$x(t) = \left( e^{A(t-t_0)}x(t_0) - e^{A(t-t_0)}e^{At_0}(sI-A)^{-1}e^{-At_0}e^{st_0}B \right) + \left( e^{At}(sI-A)^{-1}e^{-At}e^{st}B \right)$$
+
+$$x(t) = e^{A(t-t_0)}\left( x(t_0) - (sI-A)^{-1}e^{st_0}B \right) + (sI-A)^{-1}Be^{st}$$
+
+In the derivation above, we use the identity $e^{At}(sI-A)^{-1}e^{-At} = (sI-A)^{-1}$. Thus,
+
+$$y(t) = Ce^{A(t-t_0)}\left( x(t_0) - (sI-A)^{-1}e^{st_0}B \right) + \left( C(sI-A)^{-1}B + D \right)e^{st}$$
+</Solution>
+
+## Problem 7: Study Problems
+
+<Problem id="7" title="Study Problems">
+a) Following your class notes, study the impulse response for the RC circuit and the RLC circuit.
+
+b) Following the lecture notes, study the Bode plots of some common frequency response functions.
+</Problem>
+
+<Solution>
+These are reading/study problems. See the lecture notes for:
+
+a) The derivation of impulse responses for the RC and RLC circuits as examples of continuous-time LTI systems.
+
+b) The construction and interpretation of Bode plots (magnitude and phase) for common frequency response functions.
+</Solution>

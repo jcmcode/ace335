@@ -1,0 +1,450 @@
+---
+title: "Final Exam 2018"
+year: 2018
+---
+
+## Problem 1
+
+<Problem id="1" title="Continuous-Time System (ODE)">
+
+**[25 Points]**
+
+Consider a continuous-time system described by the equation:
+
+$$\frac{d^2 y(t)}{dt^2} + 3\frac{dy(t)}{dt} + 2y(t) = u(t), \quad t \in \mathbb{R}.$$
+
+a) Find the impulse response of this system.
+
+b) Suppose that the input to this system is given by $u(t) = e^{-t} 1_{\{t \geq 0\}}$. What is $\lim_{t \to \infty} y(t)$.
+
+c) Suppose that the input to this system is given by $u(t) = e^{i 2\pi 5 t}$. What is $y(t)$?
+
+</Problem>
+
+<Solution>
+**a) Impulse response. [~8 Points]**
+
+**Step 1: Find the transfer function.**
+
+The system is:
+
+$$\frac{d^2 y}{dt^2} + 3\frac{dy}{dt} + 2y = u$$
+
+Taking the Laplace transform:
+
+$$H(s) = \frac{1}{s^2 + 3s + 2} = \frac{1}{(s+1)(s+2)}$$
+
+**Step 2: Partial fraction decomposition.**
+
+$$\frac{1}{(s+1)(s+2)} = \frac{A}{s+1} + \frac{B}{s+2}$$
+
+$$1 = A(s+2) + B(s+1)$$
+
+Setting $s = -1$: $A = 1$. Setting $s = -2$: $B = -1$.
+
+$$H(s) = \frac{1}{s+1} - \frac{1}{s+2}$$
+
+**Step 3: Inverse Laplace transform.**
+
+$$\boxed{h(t) = (e^{-t} - e^{-2t}) \cdot 1_{\{t \geq 0\}}}$$
+
+The system is BIBO stable since both poles are in the left-half plane: $\|h\|_1 = \int_0^\infty |e^{-t} - e^{-2t}| \, dt = \int_0^\infty (e^{-t} - e^{-2t}) \, dt = 1 - \frac{1}{2} = \frac{1}{2} < \infty$.
+
+---
+
+**b) Output for $u(t) = e^{-t}1_{\{t \geq 0\}}$; find $\lim_{t \to \infty} y(t)$. [~8 Points]**
+
+**Step 1: Compute $Y(s)$.**
+
+$$U(s) = \frac{1}{s+1}, \quad Y(s) = H(s)U(s) = \frac{1}{(s+1)^2(s+2)}$$
+
+**Step 2: Partial fraction decomposition.**
+
+$$\frac{1}{(s+1)^2(s+2)} = \frac{A}{s+1} + \frac{B}{(s+1)^2} + \frac{C}{s+2}$$
+
+Multiply through: $1 = A(s+1)(s+2) + B(s+2) + C(s+1)^2$
+
+Setting $s = -1$: $1 = B(1) \implies B = 1$
+
+Setting $s = -2$: $1 = C(1) \implies C = 1$
+
+Setting $s = 0$: $1 = 2A + 2 + 1 \implies A = -1$
+
+$$Y(s) = \frac{-1}{s+1} + \frac{1}{(s+1)^2} + \frac{1}{s+2}$$
+
+**Step 3: Inverse Laplace transform.**
+
+$$y(t) = (-e^{-t} + te^{-t} + e^{-2t}) \cdot 1_{\{t \geq 0\}}$$
+
+**Step 4: Take the limit.**
+
+As $t \to \infty$: $e^{-t} \to 0$, $te^{-t} \to 0$, $e^{-2t} \to 0$.
+
+$$\boxed{\lim_{t \to \infty} y(t) = 0}$$
+
+*Alternative via Final Value Theorem:* All poles of $sY(s)$ are in the left-half plane, so $\lim_{t \to \infty} y(t) = \lim_{s \to 0} sY(s) = \lim_{s \to 0} \frac{s}{(s+1)^2(s+2)} = 0$.
+
+---
+
+**c) Eigenfunction input $u(t) = e^{i2\pi 5 t}$. [~9 Points]**
+
+**Step 1: Apply the eigenfunction property.**
+
+Complex exponentials are eigenfunctions of LTI systems. For input $u(t) = e^{st}$ with $s = i2\pi(5) = i10\pi$, the output is:
+
+$$y(t) = H(i10\pi) \cdot e^{i10\pi t}$$
+
+**Step 2: Compute $H(i10\pi)$.**
+
+$$H(i10\pi) = \frac{1}{(i10\pi + 1)(i10\pi + 2)} = \frac{1}{(1 + i10\pi)(2 + i10\pi)}$$
+
+**Step 3: Expand the denominator.**
+
+$$(1 + i10\pi)(2 + i10\pi) = 2 + i10\pi + i20\pi + (i10\pi)^2 = 2 + i30\pi - 100\pi^2$$
+
+$$= (2 - 100\pi^2) + i30\pi$$
+
+**Step 4: Write the answer.**
+
+$$\boxed{y(t) = \frac{e^{i10\pi t}}{(2 - 100\pi^2) + i30\pi}}$$
+</Solution>
+
+## Problem 2
+
+<Problem id="2" title="Fibonacci Sequence">
+
+**[20 Points]**
+
+Consider the Fibonacci sequence defined by the relation
+
+$$y(n+1) = y(n) + y(n-1)$$
+
+Let $y(0) = 0$ and $y(1) = 1$.
+
+Compute $y(1000)$.
+
+</Problem>
+
+<Solution>
+**Step 1: Write the recurrence in standard form.**
+
+$$y(n+1) = y(n) + y(n-1), \quad y(0) = 0, \quad y(1) = 1$$
+
+Equivalently: $y(n+1) - y(n) - y(n-1) = 0$.
+
+**Step 2: Apply the one-sided Z-transform.**
+
+Let $Y(z) = \mathcal{Z}_+\{y\}(z) = \sum_{n=0}^{\infty} y(n) z^{-n}$.
+
+Recall the shift property: $\mathcal{Z}_+\{y(n+1)\}(z) = z(Y(z) - y(0)) = zY(z)$ (since $y(0) = 0$).
+
+Also: $\mathcal{Z}_+\{y(n-1)\}(z) = z^{-1}Y(z) + y(-1)z^{0}$. But we need to be careful. Let's instead shift the recurrence.
+
+**Step 3: Rewrite as $y(n) = y(n-1) + y(n-2)$ for $n \geq 2$.**
+
+With $y(0) = 0$, $y(1) = 1$.
+
+Taking the one-sided Z-transform of $y(n) - y(n-1) - y(n-2) = 0$ for $n \geq 2$:
+
+Using the shift property for one-sided transforms:
+
+$$\mathcal{Z}_+\{y(n-1)\}(z) = z^{-1}Y(z) + y(-1) \cdot z^{0}$$
+
+Since $y(-1)$ is not defined in the standard Fibonacci sequence (it starts at $n=0$), let's use a cleaner approach.
+
+**Step 3 (revised): Use the characteristic equation.**
+
+The recurrence $y(n+1) = y(n) + y(n-1)$ has characteristic equation:
+
+$$\lambda^2 = \lambda + 1 \implies \lambda^2 - \lambda - 1 = 0$$
+
+**Step 4: Solve the characteristic equation.**
+
+$$\lambda = \frac{1 \pm \sqrt{1 + 4}}{2} = \frac{1 \pm \sqrt{5}}{2}$$
+
+Let $\phi = \frac{1 + \sqrt{5}}{2}$ (the golden ratio) and $\psi = \frac{1 - \sqrt{5}}{2}$.
+
+Note: $\phi \approx 1.618$ and $\psi \approx -0.618$.
+
+**Step 5: General solution.**
+
+$$y(n) = c_1 \phi^n + c_2 \psi^n$$
+
+**Step 6: Apply initial conditions.**
+
+From $y(0) = 0$:
+
+$$c_1 + c_2 = 0 \implies c_2 = -c_1$$
+
+From $y(1) = 1$:
+
+$$c_1 \phi + c_2 \psi = 1 \implies c_1(\phi - \psi) = 1 \implies c_1 = \frac{1}{\phi - \psi} = \frac{1}{\sqrt{5}}$$
+
+So $c_2 = -\frac{1}{\sqrt{5}}$.
+
+**Step 7: Binet's formula.**
+
+$$y(n) = \frac{1}{\sqrt{5}}\left(\phi^n - \psi^n\right) = \frac{1}{\sqrt{5}}\left[\left(\frac{1+\sqrt{5}}{2}\right)^n - \left(\frac{1-\sqrt{5}}{2}\right)^n\right]$$
+
+**Step 8: Compute $y(1000)$.**
+
+$$\boxed{y(1000) = \frac{1}{\sqrt{5}}\left[\left(\frac{1+\sqrt{5}}{2}\right)^{1000} - \left(\frac{1-\sqrt{5}}{2}\right)^{1000}\right]}$$
+
+Since $|\psi| = \left|\frac{1-\sqrt{5}}{2}\right| \approx 0.618 < 1$, we have $\psi^{1000} \approx 0$ (it is astronomically small). Therefore:
+
+$$y(1000) \approx \frac{1}{\sqrt{5}}\left(\frac{1+\sqrt{5}}{2}\right)^{1000}$$
+
+Furthermore, since $n = 1000$ is even, $\psi^{1000} > 0$ (positive), so:
+
+$$y(1000) = \frac{\phi^{1000} - \psi^{1000}}{\sqrt{5}}$$
+
+This is an integer (as all Fibonacci numbers are), and it is the closest integer to $\frac{\phi^{1000}}{\sqrt{5}}$.
+
+*Note: This number has approximately 209 digits.*
+</Solution>
+
+## Problem 3
+
+<Problem id="3" title="Fourier Transform">
+
+**[20 points]**
+
+a) Compute the inverse Fourier transform (i.e., $\mathcal{F}_{CC}^{-1}$) of
+
+$$\hat{x}(f) = 1_{\{|f| \leq 10\}}$$
+
+b) Let the Fourier transform of a signal $x$, $\hat{x}$, be such that $\hat{x}(f) = 0$ for $|f| \geq B$ for some $B \in \mathbb{R}$; that is, $\hat{x}$ has bounded support. Can the support of $x = \mathcal{F}_{CC}^{-1}(\hat{x})$ also be bounded? Explain.
+
+</Problem>
+
+<Solution>
+**a) Compute $\mathcal{F}_{CC}^{-1}(1_{\{|f| \leq 10\}})$. [~10 Points]**
+
+**Step 1: Apply the inverse CCFT formula.**
+
+$$x(t) = \mathcal{F}_{CC}^{-1}(\hat{x})(t) = \int_{-\infty}^{\infty} \hat{x}(f) e^{i2\pi ft} \, df = \int_{-10}^{10} 1 \cdot e^{i2\pi ft} \, df$$
+
+**Step 2: Evaluate the integral.**
+
+$$x(t) = \int_{-10}^{10} e^{i2\pi ft} \, df = \left[\frac{e^{i2\pi ft}}{i2\pi t}\right]_{f=-10}^{f=10} = \frac{e^{i20\pi t} - e^{-i20\pi t}}{i2\pi t}$$
+
+**Step 3: Simplify using Euler's formula.**
+
+Recall that $\frac{e^{i\theta} - e^{-i\theta}}{2i} = \sin(\theta)$. So:
+
+$$x(t) = \frac{2\sin(20\pi t)}{2\pi t} = \frac{\sin(20\pi t)}{\pi t}$$
+
+For $t = 0$, by L'Hopital's rule or direct evaluation: $x(0) = \lim_{t \to 0} \frac{\sin(20\pi t)}{\pi t} = \frac{20\pi}{\pi} = 20$.
+
+$$\boxed{x(t) = \frac{\sin(20\pi t)}{\pi t} = 20 \cdot \text{sinc}(20t)}$$
+
+where $\text{sinc}(u) = \frac{\sin(\pi u)}{\pi u}$.
+
+---
+
+**b) Can a bandlimited signal also have bounded time support? [~10 Points]**
+
+**No.** If $\hat{x}$ has bounded support (bandlimited) and $x \neq 0$, then $x$ cannot also have bounded support.
+
+**Step 1: Part (a) gives intuition.**
+
+The result from part (a) shows that the inverse Fourier transform of $1_{\{|f| \leq 10\}}$ is $\frac{\sin(20\pi t)}{\pi t}$, which is nonzero for all $t \neq \frac{k}{20}$ (where $k$ is a nonzero integer). This function extends infinitely in both directions -- it does not have bounded support.
+
+**Step 2: General argument using analyticity.**
+
+Since $\hat{x}(f) = 0$ for $|f| \geq B$, we can write:
+
+$$x(t) = \int_{-B}^{B} \hat{x}(f) e^{i2\pi ft} \, df$$
+
+This integral defines an entire function of $z$ when we replace $t$ by a complex variable $z \in \mathbb{C}$:
+
+$$x(z) = \int_{-B}^{B} \hat{x}(f) e^{i2\pi fz} \, df$$
+
+This converges for all $z \in \mathbb{C}$, so $x(z)$ is an entire (analytic) function.
+
+**Step 3: Apply the Identity Theorem.**
+
+If $x(t) = 0$ for all $|t| > D$ (bounded support), then $x$ vanishes on the interval $(D, \infty)$, which has a limit point. By the Identity Theorem for analytic functions, $x$ must be identically zero everywhere.
+
+**Step 4: Conclusion.**
+
+$$\boxed{\text{No. A nonzero bandlimited signal cannot have bounded time support.}}$$
+
+This is a fundamental result in signal processing: a signal cannot be simultaneously time-limited and bandlimited (unless it is the zero signal). This is closely related to the Heisenberg uncertainty principle.
+</Solution>
+
+## Problem 4
+
+<Problem id="4" title="Signal Approximation with Sines and Cosines">
+
+**[20 points]**
+
+Suppose that $x \in L_2([-\pi, \pi]; \mathbb{C})$ is a complex valued speech signal. We would like to record this speech signal, but can only store the signal in terms of sines and cosines up to a finite frequency since the recording device has finite memory: The recorded signal should be of the following form:
+
+$$\tilde{x}(t) = \sum_{k=-N}^{N} a_k \cos(kt) + b_k \sin(kt), \quad t \in [-\pi, \pi]$$
+
+for some given $N \in \mathbb{Z}_+$.
+
+You are asked to find the complex-valued coefficients $(a_k, b_k)$ such that the following is minimized:
+
+$$\int_{-\pi}^{\pi} |x(t) - \tilde{x}(t)|^2 dt = \int_{-\pi}^{\pi} (x(t) - \tilde{x}(t))\overline{(x(t) - \tilde{x}(t))} \, dt$$
+
+Find optimal $\left\{(a_k, b_k), k \in \{-N, -N+1, \cdots, N-1, N\}\right\}$, in terms of $x$ or its Fourier transform.
+
+</Problem>
+
+<Solution>
+**Step 1: Rewrite the problem using complex exponentials.**
+
+Recall the Euler identities:
+
+$$\cos(kt) = \frac{e^{ikt} + e^{-ikt}}{2}, \qquad \sin(kt) = \frac{e^{ikt} - e^{-ikt}}{2i}$$
+
+So:
+
+$$a_k \cos(kt) + b_k \sin(kt) = a_k \cdot \frac{e^{ikt} + e^{-ikt}}{2} + b_k \cdot \frac{e^{ikt} - e^{-ikt}}{2i}$$
+
+$$= \frac{a_k - ib_k}{2} e^{ikt} + \frac{a_k + ib_k}{2} e^{-ikt}$$
+
+Therefore:
+
+$$\tilde{x}(t) = \sum_{k=-N}^{N} \left(a_k \cos(kt) + b_k \sin(kt)\right) = \sum_{k=-N}^{N} c_k e^{ikt}$$
+
+where the $c_k$ are appropriate combinations of the $a_k, b_k$ values. The key insight is that the span of $\{\cos(kt), \sin(kt)\}_{k=-N}^{N}$ is the same as the span of $\{e^{ikt}\}_{k=-N}^{N}$ (actually, note that $\cos(-kt) = \cos(kt)$ and $\sin(-kt) = -\sin(kt)$, so the span of $\{\cos(kt), \sin(kt)\}_{k=-N}^{N}$ equals $\text{span}\{e^{ikt} : k = -N, \ldots, N\}$).
+
+**Step 2: Identify the orthonormal basis.**
+
+In $L_2([-\pi, \pi]; \mathbb{C})$ with inner product $\langle f, g \rangle = \int_{-\pi}^{\pi} f(t) \overline{g(t)} \, dt$, the functions:
+
+$$e_k(t) = \frac{1}{\sqrt{2\pi}} e^{ikt}, \quad k \in \mathbb{Z}$$
+
+form a complete orthonormal sequence. We have:
+
+$$\langle e_j, e_k \rangle = \frac{1}{2\pi}\int_{-\pi}^{\pi} e^{i(j-k)t} \, dt = \begin{cases} 1 & \text{if } j = k \\ 0 & \text{if } j \neq k \end{cases}$$
+
+**Step 3: Apply the Projection Theorem.**
+
+The subspace is $M = \text{span}\{e_k : k = -N, \ldots, N\}$, which is a $(2N+1)$-dimensional closed subspace. By the Projection Theorem, the best approximation is:
+
+$$\tilde{x}(t) = \sum_{k=-N}^{N} \langle x, e_k \rangle \, e_k(t) = \sum_{k=-N}^{N} \hat{x}_k \cdot \frac{1}{\sqrt{2\pi}} e^{ikt}$$
+
+where:
+
+$$\hat{x}_k = \langle x, e_k \rangle = \int_{-\pi}^{\pi} x(t) \cdot \frac{1}{\sqrt{2\pi}} e^{-ikt} \, dt = \frac{1}{\sqrt{2\pi}} \int_{-\pi}^{\pi} x(t) e^{-ikt} \, dt$$
+
+So:
+
+$$\tilde{x}(t) = \sum_{k=-N}^{N} \frac{\hat{x}_k}{\sqrt{2\pi}} e^{ikt} = \frac{1}{2\pi} \sum_{k=-N}^{N} \left(\int_{-\pi}^{\pi} x(\tau) e^{-ik\tau} \, d\tau\right) e^{ikt}$$
+
+**Step 4: Express the optimal $a_k$ and $b_k$.**
+
+Defining the (unnormalized) Fourier coefficients:
+
+$$c_k = \frac{1}{2\pi} \int_{-\pi}^{\pi} x(t) e^{-ikt} \, dt$$
+
+The optimal approximation is $\tilde{x}(t) = \sum_{k=-N}^{N} c_k e^{ikt}$.
+
+Now, matching with $\tilde{x}(t) = \sum_{k=-N}^{N} a_k \cos(kt) + b_k \sin(kt)$, and using:
+
+$$c_k e^{ikt} + c_{-k} e^{-ikt} = (c_k + c_{-k})\cos(kt) + i(c_k - c_{-k})\sin(kt)$$
+
+We identify:
+
+$$a_k = c_k + c_{-k}, \qquad b_k = i(c_k - c_{-k})$$
+
+where:
+
+$$c_k = \frac{1}{2\pi}\int_{-\pi}^{\pi} x(t) e^{-ikt} \, dt, \qquad c_{-k} = \frac{1}{2\pi}\int_{-\pi}^{\pi} x(t) e^{ikt} \, dt$$
+
+Therefore:
+
+$$\boxed{a_k = \frac{1}{2\pi}\int_{-\pi}^{\pi} x(t)(e^{-ikt} + e^{ikt}) \, dt = \frac{1}{\pi}\int_{-\pi}^{\pi} x(t)\cos(kt) \, dt}$$
+
+$$\boxed{b_k = \frac{i}{2\pi}\int_{-\pi}^{\pi} x(t)(e^{-ikt} - e^{ikt}) \, dt = \frac{1}{\pi}\int_{-\pi}^{\pi} x(t)\sin(kt) \, dt}$$
+
+*Note: Since $x$ is complex-valued, the coefficients $a_k$ and $b_k$ are in general complex numbers.*
+
+*Equivalently, in terms of the CDFT with period $P = 2\pi$: the optimal coefficients are the Fourier series coefficients of $x$ truncated to frequencies $|k| \leq N$.*
+</Solution>
+
+## Problem 5
+
+<Problem id="5" title="CCFT of a Gaussian Signal">
+
+**[15 Points]**
+
+Show that the CCFT of the Gaussian signal:
+
+$$\phi(t) = e^{-3t^2/2}$$
+
+is equal to
+
+$$\hat{\phi}(f) = K e^{-2\pi^2 f^2 / 3},$$
+
+for some $K$ and conclude that $\hat{\phi}$ is also a Schwartz signal.
+
+</Problem>
+
+<Solution>
+**Step 1: Write the CCFT definition.**
+
+$$\hat{\phi}(f) = \mathcal{F}_{CC}(\phi)(f) = \int_{-\infty}^{\infty} e^{-3t^2/2} e^{-i2\pi ft} \, dt$$
+
+**Step 2: Complete the square in the exponent.**
+
+The exponent is:
+
+$$-\frac{3t^2}{2} - i2\pi ft = -\frac{3}{2}\left(t^2 + \frac{i4\pi f}{3}t\right)$$
+
+Complete the square inside the parentheses:
+
+$$t^2 + \frac{i4\pi f}{3}t = \left(t + \frac{i2\pi f}{3}\right)^2 - \left(\frac{i2\pi f}{3}\right)^2 = \left(t + \frac{i2\pi f}{3}\right)^2 + \frac{4\pi^2 f^2}{9}$$
+
+So:
+
+$$-\frac{3t^2}{2} - i2\pi ft = -\frac{3}{2}\left(t + \frac{i2\pi f}{3}\right)^2 - \frac{3}{2} \cdot \frac{4\pi^2 f^2}{9} = -\frac{3}{2}\left(t + \frac{i2\pi f}{3}\right)^2 - \frac{2\pi^2 f^2}{3}$$
+
+**Step 3: Factor out the $f$-dependent term.**
+
+$$\hat{\phi}(f) = e^{-2\pi^2 f^2/3} \int_{-\infty}^{\infty} e^{-\frac{3}{2}(t + \frac{i2\pi f}{3})^2} \, dt$$
+
+**Step 4: Evaluate the Gaussian integral via contour shift.**
+
+Let $u = t + \frac{i2\pi f}{3}$. As $t$ ranges over $\mathbb{R}$, $u$ ranges over the horizontal line $\text{Im}(u) = \frac{2\pi f}{3}$ in the complex plane.
+
+By Cauchy's theorem (or the fact that the integrand $e^{-\frac{3}{2}u^2}$ is an entire function that decays in the appropriate directions), the integral along this shifted contour equals the integral along the real line:
+
+$$\int_{-\infty}^{\infty} e^{-\frac{3}{2}(t + \frac{i2\pi f}{3})^2} \, dt = \int_{-\infty}^{\infty} e^{-\frac{3}{2}u^2} \, du$$
+
+**Step 5: Compute the standard Gaussian integral.**
+
+Using the formula $\int_{-\infty}^{\infty} e^{-\alpha u^2} \, du = \sqrt{\frac{\pi}{\alpha}}$ for $\alpha > 0$:
+
+$$\int_{-\infty}^{\infty} e^{-\frac{3}{2}u^2} \, du = \sqrt{\frac{\pi}{3/2}} = \sqrt{\frac{2\pi}{3}}$$
+
+**Step 6: Combine.**
+
+$$\hat{\phi}(f) = \sqrt{\frac{2\pi}{3}} \cdot e^{-2\pi^2 f^2/3}$$
+
+$$\boxed{\hat{\phi}(f) = K e^{-2\pi^2 f^2/3}, \quad \text{where } K = \sqrt{\frac{2\pi}{3}}}$$
+
+---
+
+**Step 7: Conclude that $\hat{\phi}$ is a Schwartz signal.**
+
+A function $g$ is in the Schwartz space $\mathcal{S}$ if for every $m, k \in \mathbb{Z}_+$:
+
+$$\sup_{f \in \mathbb{R}} |f^m| \left|\frac{d^k}{df^k} g(f)\right| < \infty$$
+
+We need to verify this for $\hat{\phi}(f) = K e^{-2\pi^2 f^2/3}$. Note that:
+
+1. $e^{-2\pi^2 f^2/3}$ is a Gaussian, which is itself in $\mathcal{S}$: it is infinitely differentiable, and each derivative is a polynomial times $e^{-2\pi^2 f^2/3}$.
+
+2. The $k$-th derivative of $e^{-cf^2}$ (where $c = 2\pi^2/3 > 0$) has the form $p_k(f) \cdot e^{-cf^2}$ where $p_k$ is a polynomial of degree $k$.
+
+3. Therefore $|f^m \frac{d^k}{df^k}\hat{\phi}(f)| = K|f^m p_k(f)| e^{-cf^2}$, which is a polynomial times a Gaussian. Since $e^{-cf^2}$ decays faster than any polynomial grows, this supremum is finite for all $m, k$.
+
+$$\boxed{\hat{\phi} \in \mathcal{S} \text{ (the Schwartz space)}}$$
+
+*This confirms that the Fourier transform of a Gaussian is again a Gaussian (up to scaling), which is a fundamental property. The Gaussian is the unique eigenfunction of the Fourier transform (up to scaling).*
+</Solution>

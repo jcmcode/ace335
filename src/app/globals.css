@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafbfc;
+  --foreground: #111827;
+  --sidebar: #0f172a;
 }
 
 @theme inline {
@@ -12,15 +13,169 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── KaTeX tuning ── */
+.katex-display {
+  margin: 1.5rem 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+.katex-display > .katex {
+  white-space: normal;
+}
+
+.katex {
+  font-size: 1.05em !important;
+}
+
+/* ── Prose content ── */
+.prose-content {
+  --heading: #111827;
+  --body: #374151;
+  --muted: #6b7280;
+  --rule: #e5e7eb;
+  --link: #4f46e5;
+}
+
+.prose-content h2 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin: 2.75rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--heading);
+  letter-spacing: -0.01em;
+}
+
+.prose-content h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 2rem 0 0.75rem;
+  color: var(--heading);
+}
+
+.prose-content h4 {
+  font-size: 1.025rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+  color: #1f2937;
+}
+
+.prose-content p {
+  margin: 0.875rem 0;
+  line-height: 1.8;
+  color: var(--body);
+}
+
+.prose-content ul, .prose-content ol {
+  margin: 0.875rem 0;
+  padding-left: 1.5rem;
+}
+
+.prose-content li {
+  margin: 0.4rem 0;
+  line-height: 1.75;
+  color: var(--body);
+}
+
+.prose-content li::marker {
+  color: #9ca3af;
+}
+
+.prose-content strong {
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.prose-content hr {
+  margin: 2.5rem 0;
+  border: none;
+  border-top: 1px solid var(--rule);
+}
+
+.prose-content a {
+  color: var(--link);
+  text-decoration-line: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.15s;
+}
+
+.prose-content a:hover {
+  color: #4338ca;
+}
+
+.prose-content blockquote {
+  border-left: 2px solid #d1d5db;
+  padding-left: 1rem;
+  color: var(--muted);
+  font-style: italic;
+  margin: 1.25rem 0;
+}
+
+.prose-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.prose-content th {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--rule);
+  color: var(--heading);
+}
+
+.prose-content td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: var(--body);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ── Fade-in for collapsibles ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeIn 0.15s ease-out;
 }

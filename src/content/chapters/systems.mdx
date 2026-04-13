@@ -1,0 +1,646 @@
+---
+title: "Systems"
+chapter: 4
+---
+
+An input-output system is defined by an input signal set $\mathcal{U}$, an output set $\mathcal{Y}$ and a subset $\mathcal{R} \subset \mathcal{U} \times \mathcal{Y}$, called the rule (relation) of the system. Hence, $\mathcal{R}$ consists of the input-output pairs in the system. Associated with such an input-output relation $\mathcal{R}$ is a transformation or map $\mathcal{T}$ such that $y = \mathcal{T}(u)$, and thus
+
+$$\mathcal{T} : \mathcal{U} \ni u \mapsto \mathcal{T}(u) = y \in \mathcal{Y},$$
+
+and thus
+
+$$\mathcal{R} = \{(u, \mathcal{T}(u)),\quad u \in \mathcal{U}\}.$$
+
+Let $T_1, T_2$ be time-index sets; and $U, Y$ be signal range spaces such that $\mathcal{U} = U^{T_1}, \mathcal{Y} = Y^{T_2}$, that is:
+
+$$\mathcal{U} = \{f : T_1 \to U\},$$
+
+$$\mathcal{Y} = \{f : T_2 \to Y\}.$$
+
+If $\mathcal{U}$ and $\mathcal{Y}$ consist of signals with discrete-time indices, then the system is said to be a **discrete-time (DT) system**. If the indices are both continuous, then the system is a **continuous-time (CT) system**. If one of them is discrete and the other continuous, the system is said to be **hybrid**. Often, we have $T = T_1 = T_2$, which will be assumed in the following.
+
+---
+
+## 4.1 System Properties
+
+<Definition id="4.1" title="Memorylessness">
+Let $U$ be an input signal range, $Y$ an output signal range, and $T$ a time index. A system is **memoryless** if any input-output pair $(u, \mathcal{T}(u))$ can be written component-wise as
+
+$$y(t) = \Psi(t, u(t)), \quad t \in T$$
+
+for some fixed map $\Psi : T \times U \to Y$.
+</Definition>
+
+<Remark>
+**Intuition:** A memoryless system is one whose output at any time $t$ depends only on the input at that same instant $t$ -- it has no "memory" of past or future inputs. A simple resistor ($V = IR$) is memoryless, while a capacitor (whose voltage depends on accumulated charge) is not.
+</Remark>
+
+<Definition id="4.2" title="Causality (Non-anticipativeness)">
+A system is **causal** (non-anticipative) if the output at any time $t$ is not dependent on the input signal values at time $s > t$. That is, let $u^1 = \{u^1(t), t \in T\}$ and $u^2 = \{u^2(t), t \in T\}$. Let $(u^1, y^1) \in \mathcal{R}$ and $(u^2, y^2) \in \mathcal{R}$. For any $t \in T$, if it is that $u^1(s) = u^2(s)$ for $s \leq t$, then for a causal system it must be that $y^1(t) = y^2(t)$.
+</Definition>
+
+<Remark>
+**Intuition:** Causality means the system cannot "look into the future." The output at time $t$ can depend on the present and past inputs, but never on inputs that have not yet occurred. All physically realizable systems are causal -- you cannot respond to a stimulus before it happens.
+</Remark>
+
+<Example id="4.1" title="Causal and Memoryless Systems">
+Let a relation be given by $y_n = ax_{n+1} + x_n + bx_{n-1}$ where $n \in \mathbb{Z}$. Such a system is causal if $a = 0$; it is memoryless if $a = 0, b = 0$.
+</Example>
+
+<Definition id="4.3" title="Time-Invariance">
+A system is **time-invariant** if for every input-output pair $((u, y) \in \mathcal{R})$, a time-shift in the input leads to the same time-shift in the output; that is,
+
+$$(\sigma^\theta u, \sigma^\theta y) \in \mathcal{R},$$
+
+where we define a time-shift as follows: With $T = \mathbb{Z}$ or $\mathbb{R}$, let $\theta \in T$. We define $\sigma^\theta : \mathcal{U} \to \mathcal{U}$ with
+
+$$\left(\sigma^\theta(u)\right)_t = u_{t+\theta}, \quad \forall t \in T.$$
+</Definition>
+
+<Remark>
+**Intuition:** Time-invariance means the system's behaviour does not change over time. If you delay the input by $\theta$, the output is simply delayed by the same amount. The laws governing the system are the same today as they will be tomorrow. Note that $\sigma^\theta$ pushes a signal to the left by $\theta$.
+</Remark>
+
+---
+
+## 4.2 Linear Systems
+
+Linear systems have important engineering practice. Many physical systems are locally linear, as we have seen earlier.
+
+An input-output system is linear if $\mathcal{U}$, $\mathcal{Y}$, $\mathcal{R}$ are all linear vector spaces. However, in the context of our course, we will have a more restrictive definition for linearity.
+
+<Definition id="4.4" title="Linear System (DT)">
+A discrete-time (DT) system is **linear** if the input-output relation can be written as:
+
+$$y(n) = \sum_{m=-\infty}^{\infty} h(n, m) u(m). \qquad \text{(4.1)}$$
+
+The function $h(n, m)$ is called the **kernel** of the system. The value $h(n, m)$ reveals the effect of an input at time $m$ to the output at time $n$.
+</Definition>
+
+<Remark>
+**Intuition:** A linear system is one where the output is a weighted sum (superposition) of all the input values, with the weights given by the kernel $h(n,m)$. This kernel tells you how much influence the input at time $m$ has on the output at time $n$. The key feature is that doubling the input doubles the output, and the response to a sum of inputs is the sum of responses.
+</Remark>
+
+We note here that a precise characterization for linearity (for a system as in (4.1)) would require the interpretation of a system as a (bounded) linear operator from one space to another space. One can obtain a Riesz representation theorem type characterization leading to (4.1), provided that $\mathcal{U}$ and $\mathcal{Y}$ satisfy certain properties, and the system is continuous and linear. The following discussion makes this explicit.
+
+Let $\mathcal{T}$ be a linear system mapping $l_1(\mathbb{Z}; \mathbb{R})$ to $l_1(\mathbb{Z}; \mathbb{R})$. Let this system be linear and continuous; then the system can be written so that $y = \mathcal{T}(u)$ where:
+
+$$y(n) = \sum_{m \in \mathbb{Z}} h(n, m) u(m), \quad n \in \mathbb{Z}$$
+
+for some $h : \mathbb{Z} \times \mathbb{Z} \to \mathbb{R}$.
+
+<Proof>
+To see this, observe the following: Since $u \in l_1(\mathbb{Z}; \mathbb{R})$, we can write $u = \lim_{N \to \infty} u_N$ (that is, $\|u - u_N\|_1 \to 0$ as $N \to \infty$), where $u_N = \sum_{m=-N}^{N} u_m \delta_m$ with
+
+$$\delta_m(n) = 1_{\{n = m\}}, \qquad n \in \mathbb{Z}.$$
+
+Since $\mathcal{T}$ is continuous and linear,
+
+$$\mathcal{T}(u) = \mathcal{T}\!\left(\lim_{N \to \infty} u_N\right) = \lim_{N \to \infty} \mathcal{T}(u_N) = \lim_{N \to \infty} \sum_{m=-N}^{N} u_m \mathcal{T}(\delta_m).$$
+
+Thus,
+
+$$y(n) = \lim_{N \to \infty} \sum_{m=-N}^{N} u_m \Big(\mathcal{T}(\delta_m)\Big)(n).$$
+
+With $h(n, m) := \Big(\mathcal{T}(\delta_m)\Big)(n)$, the representation result above follows. Observe that $h(n, m) = \Big(\mathcal{T}(\delta_m)\Big)(n)$ is the output of the system at time $n$ when the input to the system is a unit pulse applied at time $m$.
+</Proof>
+
+Building on this discussion, one takes the representation above as a definition of a linear system: In our course and in standard terminology in engineering and applied science, we generally say that a discrete-time (DT) system is linear if the input-output relation can be written as (4.1).
+
+<Remark>
+Observe that in the representation argument above, one can generalize the result for any $l_p(\mathbb{Z}; \mathbb{R})$ as the input space with $1 \leq p < \infty$; and the output space can be any $l_q(\mathbb{Z}; \mathbb{R})$ space with $1 \leq q \leq \infty$.
+</Remark>
+
+<Definition id="4.5" title="Linear System (CT)">
+Likewise, we define a continuous-time (CT) system to be **linear** if the input-output relation can be expressed as
+
+$$y(t) = \int_{\tau=-\infty}^{\infty} h(t, \tau) u(\tau)\,d\tau. \qquad \text{(4.2)}$$
+</Definition>
+
+<Remark>
+**Intuition:** The continuous-time analogue replaces summation with integration. Instead of discrete weights $h(n,m)$, we have a kernel function $h(t,\tau)$ that describes how the input at continuous time $\tau$ influences the output at time $t$.
+</Remark>
+
+---
+
+## 4.3 Linear and Time-Invariant (Convolution) Systems
+
+<ConvolutionDemo />
+
+If, in addition to linearity, we wish to have time-invariance, then one can show that
+
+$$y(n) = \sum_{k=-\infty}^{\infty} k(n, m) u(m),$$
+
+will have to be such that $k(n, m)$ should be dependent only on $n - m$. This follows from the fact that a shift in the input would have to lead to the same shift in the output, implying that $k(n, m) = k(n + \theta, m + \theta)$ for any $\theta \in \mathbb{Z}$.
+
+Let us discuss this further. Suppose a linear system described by
+
+$$y(n) = \sum_m k(n, m) u(m), \qquad \text{(4.3)}$$
+
+is time-invariant. Let, for some $\theta \in \mathbb{Z}$,
+
+$$v = \sigma^{-\theta}(u)$$
+
+so that $v(m) = u(m - \theta)$. Let the signal $g$ be the output of the system when the input is the discrete-time signal $v$. It follows that
+
+$$g(n) = \sum_{m \in \mathbb{Z}} k(n, m) v(m) = \sum_{m \in \mathbb{Z}} k(n, m) u(m - \theta) = \sum_{m' \in \mathbb{Z}} k(n, m' + \theta) u(m').$$
+
+By time-invariance, it must be that $g = \sigma^{-\theta}(y)$. That is, $g(n) = y(n - \theta)$ or $g(n + \theta) = y(n)$. Thus,
+
+$$g(n + \theta) = \sum_{m' \in \mathbb{Z}} k(n + \theta, m' + \theta) u(m') = y(n). \qquad \text{(4.4)}$$
+
+Since the equivalence in (4.3)-(4.4) above has to hold for every input signal, it must be that $k(n + \theta, m + \theta) = k(n, m)$ for all $n, m$ values, and for all $\theta$ values. Therefore $k(n, m)$ should only be a function of the difference $n - m$. Hence, a linear system is time-invariant if and only if the input-output relation can be written as:
+
+$$y(n) = \sum_{m=-\infty}^{\infty} h(n - m) u(m)$$
+
+for some function $h : \mathbb{Z} \to \mathbb{R}$.
+
+<Definition id="4.6" title="Impulse Response (DT)">
+The function $h$ is called the **impulse response** of the system since, if $u = \delta_0$, then
+
+$$y(n) = \sum_{m=-\infty}^{\infty} h(n - m) \delta_0(m) = h(n).$$
+
+Due to this representation, linear time-invariant systems are also called **convolution systems**.
+</Definition>
+
+<Remark>
+**Intuition:** The impulse response $h$ completely characterizes an LTI system. It is the output you get when you "kick" the system with a single unit pulse at time zero. Because of linearity and time-invariance, knowing this single response lets you predict the output for any input via convolution: every input is just a weighted, shifted sum of impulses.
+</Remark>
+
+One can show that a convolution system is non-anticipative (causal) if $h(n) = 0$ for $n < 0$.
+
+Similar discussions apply to continuous-time systems by replacing the summation with integrals:
+
+$$y(t) = \int_{\tau=-\infty}^{\infty} h(t - \tau) u(\tau)\,d\tau.$$
+
+Let $\delta_0$ be the generalized Dirac delta (impulse) function which we view as the limit of an approximate identity sequence (thus defining the Dirac delta distribution). Notably, if $h$ is continuous, it follows that
+
+$$\lim_{n \to \infty} \int h(t - \tau) \psi_n(\tau)\,d\tau = h(t).$$
+
+Thus, we have that when $u = \delta_0$,
+
+$$y(t) = \int_{\tau=-\infty}^{\infty} h(t - \tau)\delta_0(\tau)\,d\tau = h(t).$$
+
+<Definition id="4.7" title="Impulse Response (CT)">
+The function $h$ is the output of the system when the input is the generalized Dirac delta function. This is why $h$ is called the **impulse response** of a convolution system.
+</Definition>
+
+<Remark>
+**Intuition:** Just as in the discrete-time case, the continuous-time impulse response tells you the system's output when hit with an idealized instantaneous "kick" ($\delta_0$). Through convolution, the output to any input $u(t)$ is the integral of all these shifted, scaled impulse responses.
+</Remark>
+
+### Exercise 4.3.1
+
+*Let $x(t) \in \mathbb{R}^N$ and $t \geq 0$ and real-valued. Recall that the solution to the following differential equation:*
+
+$$x'(t) = Ax(t) + Bu(t),$$
+
+$$y(t) = Cx(t),$$
+
+*with the initial condition $x(t_0) = x_0$ is given by*
+
+$$x(t) = e^{A(t-t_0)}x_{t_0} + \int_{\tau=t_0}^{t} e^{A(t-\tau)}Bu(\tau)\,d\tau, \quad t \geq 0.$$
+
+**(a)** *Suppose that $x(t_0) = 0$ and all eigenvalues of $A$ have their real parts as negative and $\|u\|_\infty < \infty$. Let $t_0 \to -\infty$. Show that if one is to represent $x(t) = (h * u)(t)$, we have*
+
+$$h(t) = Ce^{At}B\,1_{\{t \geq 0\}}.$$
+
+**(b)** *Alternatively, we could skip the condition that the eigenvalues of $A$ have their real parts as negative, but require that $x(0) = 0$ and $u(t) = 0$ for $t < 0$. Express the solution as a convolution $y(t) = (h * u)(t)$, and find $h(t)$.*
+
+**(c)** *Let $y(t) = Cx(t) + Du(t)$. Repeat the above.*
+
+### Exercise 4.3.2
+
+*Let $x(n) \in \mathbb{R}^N$ and $n \in \mathbb{Z}$. Consider a linear system given by*
+
+$$x(n+1) = Ax(n) + Bu(n)$$
+
+$$y(n) = Cx(n), \quad n \geq 0$$
+
+*with the initial condition $x(n_0) = 0$ for some $n_0$.*
+
+**(a)** *Suppose all the eigenvalues of $A$ are strictly inside the unit disk in the complex plane and $\|u\|_\infty < \infty$. Let $n_0 \to -\infty$. Express the solution $y(n)$ as a convolution $y(n) = (h * u)(n)$, and find that*
+
+$$h(n) = CA^{n-1}B\,1_{\{n \geq 1\}}.$$
+
+**(b)** *Alternatively, we could skip the condition that the eigenvalues of $A$ are strictly inside the unit disk in the complex plane, but require that $n_0 = 0$ so that $x(0) = 0$ and also $u(n) = 0$ for $n < 0$. Express the solution as a convolution $y(n) = (h * u)(n)$, and find $h(n)$.*
+
+**(c)** *Let $y(n) = Cx(n) + Du(n)$. Repeat the above.*
+
+---
+
+## 4.4 Bounded-Input-Bounded-Output (BIBO) Stability of Convolution Systems
+
+<Definition id="4.8" title="BIBO Stability (DT)">
+A DT system is **BIBO stable** if $\|u\|_\infty := \sup_{m \in \mathbb{Z}} |u(m)| < \infty$ implies that $\|y\|_\infty := \sup_{m \in \mathbb{Z}} |y(m)| < \infty$.
+</Definition>
+
+<Remark>
+**Intuition:** BIBO stability asks a simple question: if the input is bounded (never blows up), is the output guaranteed to be bounded too? A system that amplifies bounded inputs into unbounded outputs is unstable and dangerous in practice -- an amplifier that produces infinite voltage from a finite input signal is clearly undesirable.
+</Remark>
+
+<Definition id="4.9" title="BIBO Stability (CT)">
+A CT system is **BIBO stable** if $\|u\|_\infty := \sup_{t \in \mathbb{R}} |u(t)| < \infty$ implies that $\|y\|_\infty := \sup_{t \in \mathbb{R}} |y(t)| < \infty$.
+</Definition>
+
+<Remark>
+**Intuition:** The continuous-time version of BIBO stability is identical in spirit to the discrete-time version: bounded inputs must produce bounded outputs for the system to be considered stable.
+</Remark>
+
+<Theorem id="4.4.1" title="BIBO Stability of Convolution Systems">
+A convolution system is BIBO stable if and only if
+
+$$\|h\|_1 < \infty.$$
+
+In particular, as a linear map, the convolution system $\mathcal{T} : l_\infty(\mathbb{Z}; \mathbb{R}) \to l_\infty(\mathbb{Z}; \mathbb{R})$ satisfies
+
+$$\|\mathcal{T}\| = \sup_{u \in l_\infty(\mathbb{Z}; \mathbb{R})} \frac{\|\mathcal{T}(u)\|_\infty}{\|u\|_\infty} = \|h\|_1.$$
+</Theorem>
+
+<Remark>
+**Intuition:** This is a beautifully clean result: an LTI system is BIBO stable if and only if its impulse response is absolutely summable (or integrable in CT). The $l_1$ norm of $h$ is exactly the worst-case amplification factor -- the operator norm of the system. If the impulse response decays fast enough that its total absolute area is finite, the system is stable; if not, there exists some bounded input that will drive the output to infinity.
+</Remark>
+
+<Proof>
+**Sufficiency ($\|h\|_1 < \infty \Rightarrow$ BIBO stable):** Suppose $\|u\|_\infty < \infty$. Then
+
+$$|y(n)| = \left|\sum_{m} h(n-m)u(m)\right| \leq \sum_{m} |h(n-m)||u(m)| \leq \|u\|_\infty \sum_{m} |h(n-m)| = \|u\|_\infty \|h\|_1 < \infty.$$
+
+Hence $\|y\|_\infty \leq \|u\|_\infty \|h\|_1 < \infty$.
+
+**Necessity (BIBO stable $\Rightarrow \|h\|_1 < \infty$):** Suppose $\|h\|_1 = \infty$. Define the input
+
+$$u(m) = \operatorname{sgn}(h(-m)).$$
+
+Then $\|u\|_\infty = 1$ (bounded), but
+
+$$y(0) = \sum_m h(-m)u(m) = \sum_m |h(-m)| = \|h\|_1 = \infty.$$
+
+Hence the system is not BIBO stable, contradicting our assumption.
+
+**Operator norm:** The sufficiency argument shows $\|\mathcal{T}\| \leq \|h\|_1$. The necessity construction shows that the bound $\|h\|_1$ is achieved, giving $\|\mathcal{T}\| = \|h\|_1$.
+</Proof>
+
+---
+
+<ImpulseStepResponse />
+
+## 4.5 The Frequency Response (or Transfer) Function of Linear Time-Invariant Systems
+
+A very important property of convolution systems is that, if the input is a harmonic function, so is the output. Let
+
+$$u(t) = e^{i2\pi ft},$$
+
+be the input to a system with impulse response $h \in L_1(\mathbb{R}; \mathbb{R})$. Then,
+
+$$y(t) = \int_{\tau=-\infty}^{\infty} h(t - \tau) u(\tau)\,d\tau = \int_{\tau=-\infty}^{\infty} h(\tau) u(t - \tau)\,d\tau = \int_{\tau=-\infty}^{\infty} h(\tau) e^{i2\pi f(t-\tau)}\,d\tau,$$
+
+which leads to
+
+$$y(t) = e^{i2\pi ft} \left(\int_{-\infty}^{\infty} h(s) e^{-i2\pi fs}\,ds\right).$$
+
+<Definition id="4.10" title="Frequency Response (CT)">
+We define
+
+$$\hat{h}(f) := \int_{-\infty}^{\infty} h(s) e^{-i2\pi fs}\,ds,$$
+
+and call this value the **frequency response** of the system for frequency $f$, whenever it exists. This expression is the Fourier Transform of $h$.
+</Definition>
+
+<Remark>
+**Intuition:** The frequency response tells you what the system does to each pure frequency: it scales the amplitude by $|\hat{h}(f)|$ and shifts the phase by $\angle \hat{h}(f)$. Complex exponentials are eigenfunctions of LTI systems -- they pass through unchanged in shape, only modified in amplitude and phase. This is precisely why Fourier analysis is so powerful for studying LTI systems.
+</Remark>
+
+Later on we will consider $u(t) = e^{st}$, $s \in \mathbb{C}$, and we will generalize the frequency response above (defined for $s = i2\pi f$, $f \in \mathbb{R}$) to the notion of **transfer function** of a system.
+
+A similar discussion applies for a discrete-time system. Let $h \in l_1(\mathbb{Z}; \mathbb{R})$. If $u(n) = e^{i2\pi fn}$, then
+
+$$y(n) = \left(\sum_{m=-\infty}^{\infty} h(m) e^{-i2\pi fm}\right) e^{i2\pi fn}$$
+
+<Definition id="4.11" title="Frequency Response (DT)">
+The **frequency response function** for a discrete-time LTI system is
+
+$$\hat{h}(f) := \sum_{m=-\infty}^{\infty} h(m) e^{-i2\pi fm}.$$
+</Definition>
+
+<Remark>
+**Intuition:** The discrete-time frequency response is the DTFT of the impulse response. Just like in continuous time, it tells you the gain and phase shift the system applies to each frequency component. Convolution systems are used as filters through the characteristics of the frequency response.
+</Remark>
+
+---
+
+## 4.6 Steady-State vs. Transient Solutions
+
+Let $x(t) \in \mathbb{R}^N$. Consider a system defined with the relation:
+
+$$x'(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t) + Du(t), \qquad t \geq t_0,$$
+
+for some fixed $t_0$. Consider an input $u(t) = e^{st}$, $t \geq t_0$ for some $s \in \mathbb{C}$ (for the time being, assume that $s = i2\pi f$ for some $f \in \mathbb{R}$). Suppose that $s$ is not an eigenvalue of $A$. Using the relation
+
+$$x(t) = e^{A(t-t_0)}x(t_0) + e^{At}\int_{t_0}^{t} e^{-A\tau}Be^{s\tau}\,d\tau = e^{A(t-t_0)}x(t_0) + e^{At}\int_{t_0}^{t} e^{s\tau}e^{-A\tau}B\,d\tau$$
+
+we obtain
+
+$$x(t) = \left(e^{A(t-t_0)}x(t_0) - e^{A(t-t_0)}e^{At_0}(sI - A)^{-1}e^{-At_0}e^{st_0}B\right) + \left(e^{At}(sI - A)^{-1}e^{-At}e^{st}B\right).$$
+
+Using the property that for any $t$
+
+$$e^{At}(sI - A)^{-1}e^{-At} = (sI - A)^{-1},$$
+
+we obtain
+
+$$y(t) = Ce^{A(t-t_0)}\left(x(t_0) - (sI - A)^{-1}e^{st_0}B\right) + \left(C(sI - A)^{-1}B + D\right)e^{st}, \qquad t \in \mathbb{R}_+.$$
+
+The first term is called the **transient response** of the system and the second term is called the **steady-state response**.
+
+If $A$ is a stable matrix, with all its eigenvalues inside the unit circle, the first term decays to zero as $t$ increases (or with fixed $t$, as $t_0 \to -\infty$). Alternatively, if we set $t_0 = 0$ and write
+
+$$x(0) = (sI - A)^{-1}B,$$
+
+the output becomes
+
+$$y(t) = \left(C(sI - A)^{-1}B + D\right)e^{st}, \qquad t \geq t_0.$$
+
+<Definition id="4.12" title="Transfer Function">
+The map
+
+$$H(s) = C(sI - A)^{-1}B + D$$
+
+is called the **transfer function** of the system. When $s = i2\pi f$, this is the frequency response.
+</Definition>
+
+<Remark>
+**Intuition:** The transfer function $H(s)$ generalizes the frequency response from the imaginary axis ($s = i\omega$) to the entire complex plane. It encodes how the system responds not just to pure sinusoids, but to exponentially growing or decaying complex exponentials. The case $s = i2\pi f$ recovers the frequency response; evaluating at other complex values gives insight into transient behaviour and stability.
+</Remark>
+
+The case with $s = i2\pi ft$ is crucial for stable systems. Later on we will investigate the more general case with $s \in \mathbb{C}$.
+
+---
+
+## 4.7 Bode Plots for Studying System Response to Harmonic Inputs
+
+If we apply $u(t) = e^{i2\pi ft}$ or $e^{i\omega t}$, we observed in the above that the output would be $\hat{h}(f)e^{i2\pi ft}$.
+
+Bode plots allow us to efficiently visualize $\hat{h}(f)$ by depicting the magnitude and phase, with a logarithmic scale; in the pre-digital era of mid-20th century in the absence of advanced computers, such plots were effective means to represent transfer functions with the logarithmic scale.
+
+Observe that since $\hat{h}(f) = \overline{\hat{h}(-f)}$, it suffices to consider only $f \geq 0$. Let $\omega = 2\pi f$. Let $i = 1, 2, \cdots, 5$ and $s_i = r_i e^{i\theta_i}$, where $r_i = |s_i|$ and $\theta_i$ is the phase of $s_i$.
+
+$$h(i\omega) = \frac{s_1 s_2}{s_3 s_4 s_5} = \left(\frac{r_1 r_2}{r_3 r_4 r_5}\right)e^{i(\theta_1 + \theta_2 - \theta_3 - \theta_4 - \theta_5)}.$$
+
+Thus,
+
+$$|h(i\omega)| = \frac{r_1 r_2}{r_3 r_4 r_5}$$
+
+and
+
+$$\log(|h(i\omega)|) = \log(r_1) + \log(r_2) - \log(r_3) - \log(r_4) - \log(r_5).$$
+
+Note also that
+
+$$\log(e^{i(\theta_1 + \theta_2 - \theta_3 - \theta_4 - \theta_5)}) = i(\theta_1 + \theta_2 - \theta_3 - \theta_4 - \theta_5)$$
+
+so that
+
+$$\angle h(i\omega) = \theta_1 + \theta_2 - \theta_3 - \theta_4 - \theta_5.$$
+
+Thus, the logarithms allow us to consider the contributions of each complex number in an additive fashion both for the magnitude and the phase.
+
+### Building Blocks for Bode Plots
+
+Now, consider
+
+$$h(i\omega) = K(i\omega)^n \frac{1 + i\frac{\omega}{\omega_0}}{\left(i\frac{\omega}{\omega_n}\right)^2 + 2\zeta i\frac{\omega}{\omega_n} + 1}.$$
+
+We can thus consider the contributions of $K(i\omega)^n$, $1 + i\frac{\omega}{\omega_0}$, and $\left(i\frac{\omega}{\omega_n}\right)^2 + 2\zeta i\frac{\omega}{\omega_n} + 1$ separately.
+
+**For $K(i\omega)^n$**, we note that
+
+$$\log|K(i\omega)^n| = \log(|K|) + n\log(\omega)$$
+
+and
+
+$$\angle K(i\omega)^n = \angle K + n\frac{\pi}{2}.$$
+
+**For $1 + i\frac{\omega}{\omega_0}$**, we use the following approximations:
+
+- For $\omega \approx 0$: $1 + i\frac{\omega}{\omega_0} \approx 1$.
+- For $\omega = \omega_0$: $1 + i\frac{\omega}{\omega_0} = 1 + i$.
+- For $\omega \gg \omega_0$: $|1 + i\frac{\omega}{\omega_0}| \approx \frac{|\omega|}{\omega_0}$.
+
+Likewise, for the angle:
+
+- For $\omega \approx 0$: $\angle\left(1 + i\frac{\omega}{\omega_0}\right) \approx 0$.
+- For $\omega \gg \omega_0$: $\angle\left(1 + i\frac{\omega}{\omega_0}\right) \approx \frac{\pi}{2}$.
+- At $\omega = \omega_0$: $\angle\left(1 + i\frac{\omega}{\omega_0}\right) = \frac{\pi}{4}$.
+
+**For $\left(\left(i\frac{\omega}{\omega_n}\right)^2 + 2i\zeta\frac{\omega}{\omega_n} + 1\right)^{-1}$:**
+
+- For $\omega \approx 0$, the magnitude is approximately 1, with its logarithm approximately 0.
+- For $\omega = \omega_n$, the magnitude is $\frac{1}{2\zeta}$.
+- For $\omega \gg \omega_n$, the magnitude decays as $-2\log(|\omega|)$.
+
+For the phase:
+
+- For $\omega \approx 0$, the phase is approximately 0.
+- For $\omega = \omega_n$, the phase is $-\frac{\pi}{2}$.
+- For $\omega \gg \omega_n$, the phase is close to $\pi$.
+
+Bode plots approximate these expressions in a log-log plot (for the magnitude).
+
+---
+
+## 4.8 Interconnections of Systems and Feedback Control Systems
+
+<FeedbackDiagram title="Feedback Control System" />
+
+We will discuss serial connections, parallel connections, output and error feedback connections.
+
+**Control systems** are those whose input-output behaviour is shaped by control laws (typically through using system outputs to generate the control inputs -- termed, output feedback --) so that desired system properties such as stability, robustness to incorrect models, robustness (to system or measurement noise) -- also called, disturbance rejection --, tracking a given reference signal, and ultimately, optimal performance are attained. These will be made precise as control theoretic applications are investigated further.
+
+---
+
+## 4.9 State-Space Description of Linear Systems
+
+We will study state-space realizations of linear time-invariant systems in further detail in Chapter 9. We provide a brief discussion in the following.
+
+### 4.9.1 Principle of Superposition
+
+For a linear time-invariant system, if $(u, y)$ is an input-output pair, then $\sigma_\theta u, \sigma_\theta y$ is also an input-output pair and thus, $a_1 u + b_1 \sigma_\theta u$, $a_1 y + b_1 \sigma_\theta y$ is also such a pair.
+
+### 4.9.2 State-Space Description of Input-Output Systems
+
+<Definition id="4.13" title="State of a System">
+**The notion of a state.** Suppose that we wish to compute the output of a system at $t \geq t_0$ for some $t_0$. In a general (causal) system, we need to use all the past applied input terms $u(s), s \leq t_0$ and all the past output values $y(s), s < t_0$ to compute the output at $t_0$. The **state** of a system summarizes all the past relevant data that is sufficient to compute the future paths. Some systems admit a finite-dimensional state representation, some do not.
+</Definition>
+
+<Remark>
+**Intuition:** The state is a "sufficient summary" of the system's entire history. If you know the state at time $t_0$, you can predict all future outputs given future inputs, without needing any information about what happened before $t_0$. This is what makes state-space methods so powerful: they compress potentially infinite history into a finite-dimensional vector.
+</Remark>
+
+### Continuous-Time State-Space Form
+
+Consider a continuous-time system given by:
+
+$$\sum_{k=0}^{N} a_k \frac{d^k}{dt^k} y(t) = \sum_{m=0}^{N-1} b_m \frac{d^m}{dt^m} u(t),$$
+
+with $a_N = 1$. Such a system can be written in the form:
+
+$$\frac{d}{dt}x(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t)$$
+
+$$A = \begin{bmatrix} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ \vdots & \vdots & & \cdots & 0 \\ -a_0 & -a_1 & -a_2 & \cdots & -a_{N-1} \end{bmatrix}$$
+
+$$B = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}$$
+
+$$C = \begin{bmatrix} b_N & b_{N-1} & \cdots & b_1 \end{bmatrix}$$
+
+### Discrete-Time State-Space Form
+
+Likewise, consider a discrete-time system of the form:
+
+$$\sum_{k=0}^{N} a_k y(n - k) = \sum_{m=1}^{N} b_m u(n - m)$$
+
+with $a_0 = 1$, can be written in the form
+
+$$x(n+1) = Ax(n) + Bu(n), \qquad y(n) = Cx(n)$$
+
+where
+
+$$x_N(n) = y(n),\; x_{N-1}(n) = y(n-1),\; \cdots,\; x_1(n) = y(n - (N-1))$$
+
+$$A = \begin{bmatrix} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ \vdots & \vdots & & \cdots & 1 \\ -a_N & -a_{N-1} & -a_{N-2} & \cdots & -a_1 \end{bmatrix}$$
+
+$$B = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}$$
+
+$$C = \begin{bmatrix} b_N & b_{N-1} & \cdots & b_1 \end{bmatrix}$$
+
+### 4.9.3 Stability of Linear Systems Described by State Equations
+
+<Theorem id="4.9.1" title="BIBO Stability via Eigenvalues (CT)">
+Consider a system defined by the linear differential equation
+
+$$x'(t) = Ax(t) + u(t), \quad t \in \mathbb{R}.$$
+
+This system is BIBO stable if and only if
+
+$$\max_{\lambda_i}\{\operatorname{Re}\{\lambda_i\}\} < 0,$$
+
+where $\operatorname{Re}\{\cdot\}$ denotes the real part of a complex number, and $\lambda_i$ denotes the eigenvalues of $A$.
+</Theorem>
+
+<Remark>
+**Intuition:** For a continuous-time system, BIBO stability requires all eigenvalues of $A$ to have strictly negative real parts -- they must lie in the open left half of the complex plane. This ensures that all natural modes of the system decay exponentially, so no bounded input can cause the output to blow up. This is the continuous-time analogue of the "all poles inside the unit circle" condition.
+</Remark>
+
+<Theorem id="4.9.2" title="BIBO Stability via Eigenvalues (DT)">
+Consider a system defined by the linear difference equation
+
+$$x(n+1) = Ax(n) + u(n), \quad n \in \mathbb{Z}.$$
+
+This system is BIBO stable if and only if
+
+$$\max_{\lambda_i}\{|\lambda_i|\} < 1,$$
+
+where $\lambda_i$ denotes the eigenvalues of $A$.
+</Theorem>
+
+<Remark>
+**Intuition:** For a discrete-time system, BIBO stability requires all eigenvalues of $A$ to lie strictly inside the unit disk in the complex plane. This is the discrete-time counterpart to the left-half-plane condition: geometric decay in discrete time corresponds to exponential decay in continuous time.
+</Remark>
+
+---
+
+## 4.10 Exercises
+
+### Exercise 4.10.1
+
+*Consider a linear system described by the relation:*
+
+$$y(n) = \sum_{m \in \mathbb{Z}} h(n, m)u(m), \quad n \in \mathbb{Z}$$
+
+*for some $h : \mathbb{Z} \times \mathbb{Z} \to \mathbb{C}$.*
+
+**(a)** *When is such a system causal?*
+
+**(b)** *Show that such a system is time-invariant if and only if it is a convolution system.*
+
+### Exercise 4.10.2
+
+*Let $x(t) \in \mathbb{R}^N$ and $t \geq 0$ and real-valued. Recall that the solution to the following differential equation:*
+
+$$x'(t) = Ax(t) + Bu(t)$$
+
+*with the initial condition $x(0) = x_0$ is given by*
+
+$$x(t) = e^{A(t)}x_0 + \int_{\tau=0}^{t} e^{A(t-\tau)}Bu(\tau)\,d\tau, \quad t \geq t_0.$$
+
+*Suppose $x(0) = 0$ and $u(t) = 0$ for $t < 0$. Express the solution as a convolution $x(t) = (h * u)(t)$, and find $h(t)$.*
+
+*Note: With the assumption that the system is stable, we can avoid the condition that $u(t) = 0$ for $t < 0$. In this case, we are able to write*
+
+$$x(t) = e^{At - t_0}x(t_0) + \int_{\tau=t_0}^{t} e^{A(t-\tau)}Bu(\tau)\,d\tau,$$
+
+*and take the limit as $t_0 \to -\infty$, leading to $h(t) = e^{At}B\,1_{\{t \geq 0\}}$.*
+
+### Exercise 4.10.3
+
+*Let $x(n) \in \mathbb{R}^N$ and $n \in \mathbb{Z}$. Consider a linear system given by*
+
+$$x(n+1) = Ax(n) + Bu(n), \quad n \geq 0$$
+
+*with the initial condition $x(0) = 0$. Suppose $x(0) = 0$ and $u(n) = 0$ for $n < 0$. Express the solution $x(n)$ as a convolution $x(n) = (h * u)(n)$, and find $h(n)$.*
+
+*Note: With the assumption that the system is stable, we can avoid the condition that $u(n) = 0$ for $n < 0$. In this case, we can write*
+
+$$x(n) = A^{n-n_0}x(n_0) + \sum_{m=n_0}^{n-1} A^{n-m-1}Bu(m),$$
+
+*and take the limit as $n_0 \to -\infty$ leading to $h(n) = A^{n-1}B\,1_{\{n \geq 1\}}$.*
+
+### Exercise 4.10.4
+
+*Consider a continuous-time system described by the equation:*
+
+$$\frac{dy(t)}{dt} = ay(t) + u(t), \quad t \in \mathbb{R},$$
+
+*where $a < 0$.*
+
+**(a)** *Find the impulse response of the system. Is the system bounded-input-bounded-output (BIBO) stable?*
+
+**(b)** *Suppose that the input to this system is given by $\cos(2\pi f_0 t)$. Let $y_{f_0}$ be the output of the system. Find $y_{f_0}(t)$.*
+
+**(c)** *If exists, find*
+
+$$\lim_{f_0 \to \infty} y_{f_0}(t),$$
+
+*for all $t \in \mathbb{R}_+$.*
+
+### Exercise 4.10.5
+
+*Consider a discrete-time system described by the equation:*
+
+$$y(n+1) = a_1 y(n) + a_2 y(n-1) + u(n), \quad n \in \mathbb{Z}.$$
+
+**(a)** *Is this system linear? Time-invariant?*
+
+**(b)** *For what values of $a_1, a_2$ is the system BIBO (bounded-input-bounded-output) stable?*
+
+### Exercise 4.10.6 (Stability of Linear Time-Varying Systems)
+
+*Let $T$ be a linear system mapping with the representation;*
+
+$$y(n) = \sum_{m \in \mathbb{Z}} h(n, m)u(m), \quad n \in \mathbb{Z}$$
+
+*for some $h : \mathbb{Z} \times \mathbb{Z} \to \mathbb{R}$. Show that this system is BIBO stable if*
+
+$$\sup_n \sum_m |h(n, m)| < \infty.$$
+
+*Let us define a system to be regularly BIBO stable if for $\epsilon > 0$, $\exists \delta > 0$ such that $\|u\|_\infty \leq \delta$ implies $\|y\|_\infty \leq \epsilon$. Show that the system above is regularly BIBO stable if and only if*
+
+$$\sup_n \sum_m |h(n, m)| < \infty.$$
+
+### Exercise 4.10.7
+
+*Let $T$ be a linear system mapping $l_1(\mathbb{Z}; \mathbb{R})$ to $l_1(\mathbb{Z}; \mathbb{R})$. Show that this system is linear and continuous only if the system can be written so that with $y = T(u)$;*
+
+$$y(n) = \sum_{m \in \mathbb{Z}} h(n, m)u(m), \quad n \in \mathbb{Z}$$
+
+*for some $h : \mathbb{Z} \times \mathbb{Z} \to \mathbb{R}$.*

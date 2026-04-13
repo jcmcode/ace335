@@ -1,0 +1,352 @@
+---
+title: "Review Homework Solutions"
+homework: 0
+---
+
+## Problem 1: First-Order ODE System
+
+<Problem id="1" title="First-Order ODE System">
+Express the following differential equation as a system of first-order differential equations in matrix form, by defining $x_1 = y$, $x_2 = y^{(1)}$ and $x_3 = y^{(2)}$:
+
+$$y^{(3)} + 5y^{(2)} + 5y^{(1)} - 4y = 0.$$
+</Problem>
+
+<Solution>
+Define $x = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}$. It follows that
+
+$$\begin{bmatrix} x_1' \\ x_2' \\ x_3' \end{bmatrix} = \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 4 & -5 & -5 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}$$
+</Solution>
+
+## Problem 2: Jordan Form
+
+<Problem id="2" title="Jordan Form">
+Find the Jordan form for the following matrices:
+
+a)
+$$A_1 = \begin{bmatrix} 5 & -6 \\ 4 & -5 \end{bmatrix}$$
+
+b)
+$$A_2 = \begin{bmatrix} -1 & 0 & 1 \\ 0 & 2 & -3 \\ 0 & 0 & -1 \end{bmatrix}$$
+
+Hint: You will have to find a generalized eigenvector for part b.
+</Problem>
+
+<Solution>
+**Part a)** For part a, the solutions to $\det(A - \lambda I) = 0$ leads to $\lambda^2 - 1 = 0$ and hence the eigenvalues are 1 and -1. As such, both eigenvalues have algebraic multiplicity equal to 1. The geometric multiplicity is also equal to one for both multiplicities. Eigenvectors can be computed as $[3 \quad 2]^T$ and $[1 \quad 1]^T$.
+
+One then obtains:
+
+$$J_1 = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}.$$
+
+**Part b)** For part b, we obtain two eigenvalues $\lambda_1 = 2$ and $\lambda_2 = -1$. The second eigenvalue $-1$ is an eigenvalue with algebraic multiplicity 2. We obtain the eigenvector for $\lambda_1$ as
+
+$$v_1 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix},$$
+
+and an eigenvector for $\lambda_2$ as
+
+$$v_2 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$$
+
+There is no other eigenvector for $\lambda_2$ (hence, the geometric multiplicity for $-1$ is one, and the null-space for $(A - \lambda_2 I)$ is one-dimensional). Hence, one needs to find a generalized eigenvector for being able to find a matrix $P$ to apply a similarity transformation. We could find this eigenvector by writing:
+
+$$(A - \lambda_2)v_3 = v_2,$$
+
+which leads to
+
+$$v_3 = \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix}.$$
+
+Hence, by applying a similarity transformation with matrix $P = [v_1 \quad v_2 \quad v_3]$, we obtain the Jordan form
+
+$$J_2 = \begin{bmatrix} 2 & 0 & 0 \\ 0 & -1 & 1 \\ 0 & 0 & -1 \end{bmatrix},$$
+</Solution>
+
+## Problem 3: Matrix Exponential Commutativity
+
+<Problem id="3" title="Matrix Exponential Commutativity">
+Show that for square matrices $A$ and $B$, which commute, that is
+
+$$AB = BA,$$
+
+it follows that
+
+$$e^{(A+B)} = e^A e^B.$$
+
+Hint: Recall that $e^A = \lim_{T\to\infty} \sum_{k=0}^{T} \frac{A^k}{k!} = \sum_{k=0}^{\infty} \frac{A^k}{k!}$. Complete the following:
+
+$$e^A e^B = \sum_{k=0}^{\infty} \sum_{l=0}^{\infty} \frac{A^k}{k!} \frac{B^l}{l!}$$
+
+Also, show and use the fact that $(A + B)^k = \sum_{m=0}^{k} \binom{k}{m} A^m B^{k-m}$, when $AB = BA$.
+</Problem>
+
+<Solution>
+Recall that
+
+$$e^A = \lim_{T\to\infty} \sum_{k=0}^{T} \frac{A^k}{k!} = \sum_{k=0}^{\infty} \frac{A^k}{k!},$$
+
+with the definition that $A^0 = I$. It follows that
+
+$$e^A e^B = \left(\lim_{T\to\infty} \sum_{k=0}^{T} \frac{A^k}{k!}\right)\left(\lim_{T\to\infty} \sum_{l=0}^{T} \frac{B^l}{l!}\right) = \sum_{k=0}^{\infty} \sum_{l=0}^{\infty} \frac{A^k}{k!} \frac{B^l}{l!}$$
+
+$$= \sum_{k=0}^{\infty} \sum_{u=k}^{\infty} \frac{1}{k!(u-k)!} A^k B^{u-k}$$
+
+$$= \sum_{u=0}^{\infty} \sum_{k=0}^{u} \frac{1}{k!(u-k)!} A^k B^{u-k}$$
+
+$$= \sum_{u=0}^{\infty} \frac{1}{u!} \sum_{k=0}^{u} \frac{u!}{k!(u-k)!} A^k B^{u-k}$$
+
+$$= \sum_{u=0}^{\infty} \frac{1}{u!} \sum_{k=0}^{u} \binom{u}{k} A^k B^{u-k}$$
+
+$$= \sum_{u=0}^{\infty} \frac{1}{u!} (A + B)^u$$
+
+$$= e^{(A+B)}$$
+
+In the above, (2) follows by defining $u = k + l$, and (3) follows from re-expressing the summation. Step (4) follows from $AB = BA$ and the following:
+
+$$(A + B)^k = \sum_{m=0}^{k} \binom{k}{m} A^m B^{k-m}.$$
+
+We now prove this last statement. Clearly for $k = 1$,
+
+$$(A + B)^1 = \binom{1}{0} B + \binom{1}{1} A$$
+
+Let us proceed by induction. Suppose this is true for $k$. Let us show that it is true for $k + 1$.
+
+$$(A + B)^k(A + B) = \sum_{m=0}^{k} \binom{k}{m} A^{m+1} B^{k-m} + \sum_{m=0}^{k} \binom{k}{m} A^m B^{k+1-m}.$$
+
+Let us separate out the terms involving $A^p B^{k+1-p}$ for $0 \le p \le k + 1$. It turns out that we obtain:
+
+$$\sum_{p=0}^{k+1} A^p B^{k+1-p} \left(\binom{k}{p} + \binom{k}{p-1}\right)$$
+
+Now,
+
+$$\binom{k}{p} + \binom{k}{p-1} = \frac{k!}{p!(k-p)!} + \frac{k!}{(p-1)!(k+1-p)!}$$
+
+$$= \frac{k!}{(p-1)!(k-p)!}\left(\frac{1}{p} + \frac{1}{(k+1-p)}\right)$$
+
+$$= \frac{k!}{(p-1)!(k-p)!}\left(\frac{k+1}{p(k+1-p)}\right)$$
+
+$$= \frac{(k+1)!}{(p)!(k+1-p)!} = \binom{k+1}{p}$$
+
+This completes the proof.
+</Solution>
+
+## Problem 4: Derivative of Matrix Exponential
+
+<Problem id="4" title="Derivative of Matrix Exponential">
+Let $A$ be a square matrix. Show that $\frac{d}{dt}e^{At} = Ae^{At}$.
+</Problem>
+
+<Solution>
+Let $t, h$ be scalars. Since $At$ and $Ah$ commute so that $(At)(Ah) = (Ah)(At)$ we have that $e^{A(t+h)} = e^{At}e^{Ah}$. Then,
+
+$$\frac{d}{dt}e^{At} = \lim_{h\to 0} \frac{e^{A(t+h)} - e^{At}}{h}$$
+
+$$= e^{At} \lim_{h\to 0} \frac{e^{Ah} - I}{h}$$
+
+$$= e^{At} \lim_{h\to 0} \left(\sum_{k=1}^{\infty} \frac{A^k h^k}{h(k!)}\right)$$
+
+$$= e^{At} \lim_{h\to 0} \left(A + h\sum_{k=2}^{\infty} \frac{A^k h^{k-2}}{k!}\right)$$
+
+$$= Ae^{At}$$
+
+The final line follows from the fact that the sum converges to zero as $h \to 0$: let $\bar{A}(i,j) = |A(i,j)|$ be the matrix consisting of the absolute value of the entries of $A$, then for each entry $(i,j)$ of the matrix
+
+$$\left|\left(h\sum_{k=2}^{\infty} \frac{A^k h^{k-2}}{k!}\right)(i,j)\right| \le |h|\left(\sum_{k=2}^{\infty} \frac{\bar{A}^k |h|^{k-2}}{k!}\right)(i,j) \le |h|\left(\bar{A}^2 \sum_{k=2}^{\infty} \frac{\bar{A}^{k-2}|h|^{k-2}}{(k-2)!}\right)(i,j)$$
+
+We have that for an arbitrary $\epsilon > 0$, the following analysis applies:
+
+$$\lim_{h\to 0} |h|\left(\bar{A}^2 \sum_{k=2}^{\infty} \frac{\bar{A}^{k-2}|h|^{k-2}}{(k-2)!}\right)(i,j) \le \lim_{h\to 0} |h|\left(\bar{A}^2 \sum_{k=2}^{\infty} \frac{\bar{A}^{k-2}|\epsilon|^{k-2}}{k!}\right)(i,j)$$
+
+$$= \lim_{h\to 0} |h|\left(\bar{A}^2 \sum_{k=0}^{\infty} \frac{\bar{A}^k |\epsilon|^k}{k!}\right)(i,j) = \lim_{h\to 0} |h|\bar{A}^2 e^{\bar{A}\epsilon}(i,j) = 0$$
+
+The result follows.
+</Solution>
+
+## Problem 5: Computing Matrix Exponential
+
+<Problem id="5" title="Computing Matrix Exponential">
+Compute $e^{A_1 t}$, where $A_1$ is defined as in Problem 2.
+
+Hint: The eigenvalues are 1 and -1. The corresponding eigenvectors are $[3 \quad 2]^T$ and $[1 \quad 1]^T$.
+</Problem>
+
+<Solution>
+From above, with
+
+$$J_1 = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}.$$
+
+we can write $J_1 = P^{-1}A_1 P$ where $P$ contains the eigenvectors of $A_1$ in its columns:
+
+$$P = \begin{bmatrix} 3 & 1 \\ 2 & 1 \end{bmatrix}$$
+
+Since we have,
+
+$$e^{A_1 t} = P e^{\left(\begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}\right)t} P^{-1},$$
+
+it follows that
+
+$$e^{A_1 t} = \begin{bmatrix} 3 & 1 \\ 2 & 1 \end{bmatrix} \begin{bmatrix} e^t & 0 \\ 0 & e^{-t} \end{bmatrix} \begin{bmatrix} 1 & -1 \\ -2 & 3 \end{bmatrix},$$
+
+Hence, we conclude that
+
+$$e^{A_1 t} = \begin{bmatrix} 3e^t - 2e^{-t} & -3e^t + 3e^{-t} \\ 2e^t - 2e^{-t} & -2e^t + 3e^{-t} \end{bmatrix}$$
+</Solution>
+
+## Problem 6: Solving a Differential Equation
+
+<Problem id="6" title="Solving a Differential Equation">
+Let
+
+$$A = \begin{bmatrix} \frac{1}{5} & \frac{2}{5} \\ \frac{2}{5} & \frac{4}{5} \end{bmatrix}.$$
+
+It can be shown that $A$ has its eigenvalues as 1 and 0 and the eigenvectors are $[1 \quad 2]^T$ and $[-2 \quad 1]^T$.
+
+Now, with $A$ as given, solve the following differential equation:
+
+$$x' = Ax + \begin{bmatrix} e^t \\ 0 \end{bmatrix},$$
+
+with the initial condition $x(0) = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$.
+</Problem>
+
+<Solution>
+First, we compute $e^{At}$:
+
+$$e^{At} = P e^{\left(\begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}\right)t} P^{-1}$$
+
+with
+
+$$P = \begin{bmatrix} 1 & -2 \\ 2 & 1 \end{bmatrix}$$
+
+leading to
+
+$$e^{At} = \begin{bmatrix} (e^t + 4)/5 & (2e^t - 2)/5 \\ (2e^t - 2)/5 & (4e^t + 1)/5 \end{bmatrix}$$
+
+Following the variation of parameters result we derived in class:
+
+$$x(t) = e^{At}x_0 + \int_{\tau=0}^{t} e^{A(t-\tau)} \begin{bmatrix} e^\tau \\ 0 \end{bmatrix} d\tau,$$
+
+it follows that
+
+$$x(t) = \begin{bmatrix} (e^t + 4)/5 & (2e^t - 2)/5 \\ (2e^t - 2)/5 & (4e^t + 1)/5 \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} + \int_{\tau=0}^{t} \begin{bmatrix} (e^\tau e^{t-\tau} + 4)/5 \\ e^\tau(2e^{t-\tau} - 2)/5 \end{bmatrix} d\tau$$
+
+and
+
+$$x(t) = e^t \begin{bmatrix} (1 + \frac{t}{5}) \\ \frac{2t}{5} \end{bmatrix}$$
+</Solution>
+
+## Problem 7: Matrix Exponential and Direction Fields
+
+<Problem id="7" title="Matrix Exponential and Direction Fields">
+Let
+
+$$A = \begin{bmatrix} a & b \\ -b & a \end{bmatrix}.$$
+
+Compute $e^{At}$.
+
+Consider now an equation of the form $x' = Ax$ (with an arbitrary initial condition). Draw the direction field qualitatively for each of the following cases: $a > 0$, $a < 0$ and $a = 0$.
+</Problem>
+
+<Solution>
+Let
+
+$$E = \begin{bmatrix} a & 0 \\ 0 & a \end{bmatrix}, \qquad F = \begin{bmatrix} 0 & b \\ -b & 0 \end{bmatrix}$$
+
+By writing $A = E + F$ and noting that the matrices on the right hand side commute, that is $EF = FE$, it follows that $e^{At} = e^{Et}e^{Ft}$. We have
+
+$$e^{Ft} = \begin{bmatrix} \cos(bt) & \sin(bt) \\ -\sin(bt) & \cos(bt) \end{bmatrix},$$
+
+and since $e^{Et}$ is diagonal, we have that
+
+$$e^{At} = e^{at} \begin{bmatrix} \cos(bt) & \sin(bt) \\ -\sin(bt) & \cos(bt) \end{bmatrix}$$
+
+Consider an initial condition $x(0) \in \mathbb{R}^2$. We can write
+
+$$x(0) = r \begin{bmatrix} \cos(\theta) \\ \sin(\theta) \end{bmatrix},$$
+
+where $r = \|x(0)\|_2$ is the magnitude of the initial state and $\theta$ is the angle for such a polar representation. Now, $x(t) = e^{At}x(0)$ writes as
+
+$$x(t) = re^{at} \begin{bmatrix} \cos(bt)\cos(\theta) + \sin(bt)\sin(\theta) \\ -\sin(bt)\cos(\theta) + \cos(bt)\sin(\theta) \end{bmatrix}$$
+
+or using the identities $\cos(\alpha + \beta) = \cos(\alpha)\cos(\beta) - \sin(\alpha)\sin(\beta)$ and $\sin(\alpha - \beta) = \sin(\alpha)\cos(\beta) - \sin(\beta)\cos(\alpha)$, we obtain
+
+$$x(t) = re^{at} \begin{bmatrix} \cos(-bt + \theta) \\ \sin(-bt + \theta) \end{bmatrix}$$
+
+Hence, the solution converges (spirals) to zero if $a < 0$, and spirals to infinity if $a > 0$. If $a = 0$, we have a circular motion.
+</Solution>
+
+## Problem 8: System Stabilization through Control
+
+<Problem id="8" title="System Stabilization through Control">
+Consider
+
+$$\frac{dy}{dt} = ay(t) + u(t) + r(t)$$
+
+where $a \in \mathbb{R}$ is a scalar, $u(t)$ is the control input and $r(t)$ is some disturbance/noise acting on the system. The disturbance is external, that is, the controller has nothing to do with it.
+
+If $a > 0$, then in the absence of control, the solution to the system is given with
+
+$$y(t) = e^{at}y(0) + \int_0^t e^{a(t-s)} r(s) ds$$
+
+In particular, if $r(s) = M$ for $s \ge 0$ for some constant $M > 0$, with $y(0) = 0$, we have that $\lim_{t\to\infty} |y(t)| = \infty$.
+
+On the other hand, if we apply the control input, using the feedback from the state of the system, by the relation $u(t) = -Ky(t)$, this leads to
+
+$$\frac{dy}{dt} = (a - K)y(t) + r(t)$$
+
+For what values of $K$ can we guarantee that the output, $y(t)$, will remain bounded for every bounded signal $r(t)$? (By bounded we mean that $\|r\|_\infty = \sup_{t \in \mathbb{R}_+} |r(t)| < \infty$).
+</Problem>
+
+<Solution>
+The output, given the control input $u(t) = -Ky(t)$, writes as
+
+$$y(t) = e^{(a-K)t}y(0) + \int_0^t e^{(a-K)(t-s)} r(s) ds$$
+
+Now, if $\|r\|_\infty > \infty$, we have that, if $a - K < 0$, we have that (with $y(0) = 0$)
+
+$$|y(t)| \le \int_0^t e^{(a-K)(t-s)} \|r\|_\infty ds \le \|r\|_\infty \int_0^t e^{(a-K)(t-s)} ds = \|r\|_\infty \frac{1}{a-K}\left(e^{(a-K)t} - 1\right)$$
+
+This expression is uniformly bounded (over all $t \ge 0$).
+
+On the other hand, if $a - K > 0$, then, with applying $r(s) = M$ for every $s \ge 0$, we have that
+
+$$|y(t)| = \int_0^t e^{(a-K)(t-s)} |M| ds = \frac{1}{a-K}\left(e^{(a-K)t} - 1\right)|M| \to \infty,$$
+
+as $t \to \infty$. Finally, if $a - K = 0$, we have that
+
+$$|y(t)| = \left|\int_0^t M\,ds\right| = |M|t \to \infty$$
+
+as $t \to \infty$.
+
+Thus, the condition for the output to remain bounded for every bounded input is that $a - K < 0$.
+
+Note: If $a$ or $K$ were complex valued, we would require the real part of the difference to be negative.
+
+We thus see that control can be used to shape the input output relation in the system.
+</Solution>
+
+## Problem 9: Inverted Pendulum
+
+<Problem id="9" title="Inverted Pendulum">
+A very useful case study for understanding non-linear systems is the inverted pendulum on a cart system with masses of the pendulum and cart given with $m$ and $M$, respectively.
+
+The dynamics of the inverted pendulum can be expressed with the following:
+
+$$u = M\frac{d^2y}{dt^2} + m\frac{d^2y}{dt^2} + ml\cos(\theta)\frac{d^2\theta}{dt^2} - ml\left(\frac{d\theta}{dt}\right)^2\sin(\theta)$$
+
+$$ml^2\frac{d^2\theta}{dt^2} = mg\sin(\theta)l - m\frac{d^2y}{dt^2}\cos(\theta)l$$
+
+Around the point $(\theta = 0, \frac{d\theta}{dt} = 0)$, we apply the linear approximations $\sin(\theta) \approx \theta$ and $\cos(\theta) \approx 1$, and $\left(\frac{d\theta}{dt}\right)^2 \approx 0$ to arrive at the linearized model. Write this in state space form with $x_1 = y, x_2 = \frac{dy}{dt}, x_3 = \theta, x_4 = \frac{d\theta}{dt}$.
+</Problem>
+
+<Solution>
+After linearization:
+
+$$M\frac{d^2y}{dt^2} = u - (m\frac{d^2y}{dt^2} + ml\frac{d^2\theta}{dt^2})$$
+
+$$l\frac{d^2\theta}{dt^2} = g\theta - \frac{d^2y}{dt^2}$$
+
+Finally, writing $x_1 = y, x_2 = \frac{dy}{dt}, x_3 = \theta, x_4 = \frac{d\theta}{dt}$, and manipulating the equations, we arrive at the linear model in state space form
+
+$$\frac{dx}{dt} = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{-mg}{M} & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & \frac{(M+m)g}{Ml} & 0 \end{bmatrix} x + \begin{bmatrix} 0 \\ \frac{1}{M} \\ 0 \\ \frac{-1}{Ml} \end{bmatrix} u,$$
+
+where $x = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix}$.
+
+Using some systems theory and control theory, it can be shown that linearization will let us construct a control function/policy/law that makes the idealized linear system stable which in turn makes the original non-linear system locally stable around the (open-loop unstable) equilibrium point.
+</Solution>

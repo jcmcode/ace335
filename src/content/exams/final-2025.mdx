@@ -1,0 +1,340 @@
+---
+title: "Final Exam 2025"
+year: 2025
+---
+
+## Problem 1
+
+<Problem id="1" title="Projection in Hilbert Space (Haar Signals)">
+
+**[20 points]**
+
+Let $x$ be in the real Hilbert space $L_2([0,1]; \mathbb{R})$ with the inner product
+
+$$\langle x, y \rangle = \int_0^1 x(t) y(t) \, dt.$$
+
+We would like to express $x$ in terms of the following two signals (which belong to the Haar signal space)
+
+$$u_1(t) = 1_{\{t \in [0, 1/2)\}} - 1_{\{t \in [1/2, 1]\}}, \quad t \in [0, 1]$$
+
+$$u_2(t) = 1_{\{t \in [0, 1]\}}, \quad t \in [0, 1]$$
+
+such that
+
+$$\int_0^1 \left| x(t) - \sum_{i=1}^{2} \alpha_i u_i(t) \right|^2 dt$$
+
+is minimized, for $\{\alpha_1, \alpha_2 \in \mathbb{R}\}$.
+
+Let $x \in L_2([0,1]; \mathbb{R})$ be defined with $x(t) = t$, $t \in [0, 1]$. **Find the minimizing $\alpha_1, \alpha_2$ values.**
+
+</Problem>
+
+<Solution>
+**Step 1: Identify the orthonormal basis.**
+
+First, we check that $u_1$ and $u_2$ are orthogonal:
+
+$$\langle u_1, u_2 \rangle = \int_0^1 u_1(t) u_2(t) \, dt = \int_0^{1/2} (1)(1) \, dt + \int_{1/2}^{1} (-1)(1) \, dt = \frac{1}{2} - \frac{1}{2} = 0$$
+
+So $u_1 \perp u_2$. Now compute their norms:
+
+$$\|u_1\|^2 = \int_0^1 |u_1(t)|^2 \, dt = \int_0^{1/2} 1 \, dt + \int_{1/2}^{1} 1 \, dt = 1$$
+
+$$\|u_2\|^2 = \int_0^1 |u_2(t)|^2 \, dt = \int_0^1 1 \, dt = 1$$
+
+So $\{u_1, u_2\}$ is an orthonormal set.
+
+**Step 2: Apply the Projection Theorem.**
+
+The subspace $M = \text{span}\{u_1, u_2\}$ is a closed (finite-dimensional) subspace of $L_2([0,1]; \mathbb{R})$. By the Projection Theorem, the minimizing coefficients are given by the orthogonal projection:
+
+$$\alpha_i = \langle x, u_i \rangle, \quad i = 1, 2$$
+
+since $\{u_1, u_2\}$ is orthonormal (if they were merely orthogonal, we would divide by $\|u_i\|^2$, but here the norms are 1).
+
+**Step 3: Compute $\alpha_1 = \langle x, u_1 \rangle$.**
+
+With $x(t) = t$:
+
+$$\alpha_1 = \int_0^1 t \cdot u_1(t) \, dt = \int_0^{1/2} t \cdot 1 \, dt + \int_{1/2}^{1} t \cdot (-1) \, dt$$
+
+$$= \left[\frac{t^2}{2}\right]_0^{1/2} - \left[\frac{t^2}{2}\right]_{1/2}^{1} = \frac{1}{8} - \left(\frac{1}{2} - \frac{1}{8}\right) = \frac{1}{8} - \frac{3}{8} = -\frac{1}{4}$$
+
+**Step 4: Compute $\alpha_2 = \langle x, u_2 \rangle$.**
+
+$$\alpha_2 = \int_0^1 t \cdot u_2(t) \, dt = \int_0^1 t \, dt = \left[\frac{t^2}{2}\right]_0^1 = \frac{1}{2}$$
+
+**Step 5: State the answer.**
+
+The minimizing coefficients are:
+
+$$\boxed{\alpha_1 = -\frac{1}{4}, \qquad \alpha_2 = \frac{1}{2}}$$
+
+The best approximation of $x(t) = t$ in $\text{span}\{u_1, u_2\}$ is:
+
+$$\hat{x}(t) = -\frac{1}{4} u_1(t) + \frac{1}{2} u_2(t)$$
+
+which equals $\frac{1}{4}$ on $[0, 1/2)$ and $\frac{3}{4}$ on $[1/2, 1]$. This is the piecewise-constant Haar approximation of the linear signal $t$.
+</Solution>
+
+## Problem 2
+
+<Problem id="2" title="Moving Average System">
+
+**[25 Points]**
+
+Consider a moving average system for some $T > 0$:
+
+$$y(t) = \frac{1}{T} \int_{t-T}^{t} u(\tau) \, d\tau, \qquad t \in \mathbb{R}$$
+
+[15 Points] Find the impulse response and the transfer function of this system mapping $u$ to $y$.
+
+[10 Points] Let $u_f(t) := e^{i2\pi ft}$ with $f \in \mathbb{R}$. Find
+
+$$\lim_{f \to \infty} \frac{1}{T} \int_{t-T}^{t} u_f(\tau) \, d\tau$$
+
+</Problem>
+
+<Solution>
+**Part 1: Find the impulse response and the transfer function. [15 Points]**
+
+**Step 1: Identify the impulse response.**
+
+The system is defined by:
+
+$$y(t) = \frac{1}{T} \int_{t-T}^{t} u(\tau) \, d\tau = \int_{-\infty}^{\infty} h(t - \tau) u(\tau) \, d\tau$$
+
+We can rewrite the integral by substituting $\tau' = t - \tau$:
+
+$$y(t) = \frac{1}{T} \int_{t-T}^{t} u(\tau) \, d\tau = \int_{-\infty}^{\infty} \frac{1}{T} \cdot 1_{\{0 \leq t - \tau \leq T\}} \, u(\tau) \, d\tau$$
+
+So the impulse response is:
+
+$$\boxed{h(t) = \frac{1}{T} \cdot 1_{\{0 \leq t \leq T\}} = \frac{1}{T} \cdot 1_{[0, T]}(t)}$$
+
+**Step 2: Verify BIBO stability.**
+
+$$\|h\|_1 = \int_{-\infty}^{\infty} |h(t)| \, dt = \frac{1}{T} \int_0^T 1 \, dt = 1 < \infty$$
+
+So the system is BIBO stable.
+
+**Step 3: Compute the transfer function.**
+
+The transfer function is the Laplace transform of $h(t)$:
+
+$$H(s) = \int_0^{\infty} h(t) e^{-st} \, dt = \frac{1}{T} \int_0^{T} e^{-st} \, dt$$
+
+$$= \frac{1}{T} \left[ \frac{e^{-st}}{-s} \right]_0^T = \frac{1}{T} \cdot \frac{1 - e^{-sT}}{s}$$
+
+$$\boxed{H(s) = \frac{1 - e^{-sT}}{sT}}$$
+
+Equivalently, the frequency response (setting $s = i2\pi f$) is:
+
+$$\hat{h}(f) = H(i2\pi f) = \frac{1 - e^{-i2\pi f T}}{i2\pi f T}$$
+
+---
+
+**Part 2: Find the limit as $f \to \infty$. [10 Points]**
+
+**Step 1: Compute the output for eigenfunction input.**
+
+Since $u_f(t) = e^{i2\pi ft}$ is an eigenfunction of any LTI system, the output is:
+
+$$y_f(t) = H(i2\pi f) \cdot e^{i2\pi ft}$$
+
+We can also verify directly:
+
+$$\frac{1}{T} \int_{t-T}^{t} e^{i2\pi f \tau} \, d\tau = \frac{1}{T} \left[ \frac{e^{i2\pi f \tau}}{i2\pi f} \right]_{t-T}^{t} = \frac{e^{i2\pi ft}(1 - e^{-i2\pi fT})}{i2\pi fT}$$
+
+**Step 2: Analyze the limit.**
+
+We need:
+
+$$\lim_{f \to \infty} \frac{1 - e^{-i2\pi fT}}{i2\pi fT} \cdot e^{i2\pi ft}$$
+
+The magnitude of the coefficient is:
+
+$$\left| \frac{1 - e^{-i2\pi fT}}{i2\pi fT} \right| = \frac{|1 - e^{-i2\pi fT}|}{2\pi |f| T} \leq \frac{2}{2\pi |f| T} = \frac{1}{\pi |f| T}$$
+
+As $f \to \infty$, this magnitude goes to $0$, while $|e^{i2\pi ft}| = 1$. Therefore:
+
+$$\boxed{\lim_{f \to \infty} \frac{1}{T} \int_{t-T}^{t} u_f(\tau) \, d\tau = 0}$$
+
+**Interpretation:** The moving average system is a low-pass filter. It averages over a window of length $T$, so high-frequency oscillations cancel out over the integration window, producing zero output in the limit. This is consistent with the Riemann-Lebesgue lemma, since $h \in L_1(\mathbb{R})$.
+</Solution>
+
+## Problem 3
+
+<Problem id="3" title="Feedback Control System">
+
+**[30 Points]**
+
+Consider Figure 1. Let the transfer function of $P$ be $P(s) = \frac{1}{s^2 - 1}$. Suppose that the transfer function of the controller, $C$, is given with $C(s) = K(s + 0.5)$, with $K \in \mathbb{R}_+$.
+
+*[The exam includes a standard negative feedback block diagram with $r$ as input, $C(s)$ as controller, $P(s)$ as plant, and $y$ as output.]*
+
+[7.5 Points] Find the (closed-loop) transfer function, mapping the signal $r$ to $y$ in the frequency/Laplace domain.
+
+[7.5 Points] Express a state-space realization of the map from $r$ to $y$ in time domain.
+
+[15 Points] For what values of $K > 0$, is the closed-loop system, mapping the signal $r$ to $y$, BIBO stable? You can use any method you would like.
+
+</Problem>
+
+<Solution>
+**Part 1: Closed-loop transfer function. [7.5 Points]**
+
+**Step 1: Set up the feedback loop.**
+
+In a standard negative feedback configuration, the error signal is $e = r - y$. The controller output is $u = C(s) \cdot e$, and the plant output is $y = P(s) \cdot u$. Therefore:
+
+$$Y(s) = P(s) \cdot C(s) \cdot (R(s) - Y(s))$$
+
+$$Y(s)(1 + P(s)C(s)) = P(s)C(s)R(s)$$
+
+**Step 2: Compute the closed-loop transfer function.**
+
+$$G(s) = \frac{Y(s)}{R(s)} = \frac{P(s)C(s)}{1 + P(s)C(s)}$$
+
+Substituting $P(s) = \frac{1}{s^2 - 1}$ and $C(s) = K(s + 0.5) = K(s + \frac{1}{2})$:
+
+$$P(s)C(s) = \frac{K(s + \frac{1}{2})}{s^2 - 1}$$
+
+$$G(s) = \frac{\frac{K(s + \frac{1}{2})}{s^2 - 1}}{1 + \frac{K(s + \frac{1}{2})}{s^2 - 1}} = \frac{K(s + \frac{1}{2})}{s^2 - 1 + K(s + \frac{1}{2})}$$
+
+$$\boxed{G(s) = \frac{K(s + \frac{1}{2})}{s^2 + Ks + (\frac{K}{2} - 1)}}$$
+
+---
+
+**Part 2: State-space realization. [7.5 Points]**
+
+**Step 1: Write the closed-loop transfer function in standard form.**
+
+$$G(s) = \frac{Ks + \frac{K}{2}}{s^2 + Ks + (\frac{K}{2} - 1)}$$
+
+The denominator has degree 2, and the numerator has degree 1 (strictly proper is not the case here since the degrees differ by 1, but it is proper). Since the numerator degree (1) is less than the denominator degree (2), $G(s)$ is strictly proper and $D = 0$.
+
+**Step 2: Use the controllable canonical form.**
+
+For a transfer function $G(s) = \frac{b_1 s + b_0}{s^2 + a_1 s + a_0}$, the controllable canonical realization is:
+
+$$A = \begin{pmatrix} 0 & 1 \\ -a_0 & -a_1 \end{pmatrix}, \quad B = \begin{pmatrix} 0 \\ 1 \end{pmatrix}, \quad C = \begin{pmatrix} b_0 & b_1 \end{pmatrix}, \quad D = 0$$
+
+Here $a_0 = \frac{K}{2} - 1$, $a_1 = K$, $b_0 = \frac{K}{2}$, $b_1 = K$.
+
+$$\boxed{A = \begin{pmatrix} 0 & 1 \\ 1 - \frac{K}{2} & -K \end{pmatrix}, \quad B = \begin{pmatrix} 0 \\ 1 \end{pmatrix}, \quad C = \begin{pmatrix} \frac{K}{2} & K \end{pmatrix}, \quad D = 0}$$
+
+The state-space equations are:
+
+$$\frac{d}{dt}\begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 0 & 1 \\ 1 - \frac{K}{2} & -K \end{pmatrix}\begin{pmatrix} x_1 \\ x_2 \end{pmatrix} + \begin{pmatrix} 0 \\ 1 \end{pmatrix} r(t)$$
+
+$$y(t) = \begin{pmatrix} \frac{K}{2} & K \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix}$$
+
+One can verify: $C(sI - A)^{-1}B = G(s)$.
+
+---
+
+**Part 3: BIBO stability analysis. [15 Points]**
+
+**Step 1: Identify the characteristic polynomial.**
+
+The closed-loop system is BIBO stable if and only if all poles of $G(s)$ have strictly negative real parts (assuming no pole-zero cancellation in the right-half plane). The characteristic polynomial is:
+
+$$p(s) = s^2 + Ks + \left(\frac{K}{2} - 1\right)$$
+
+**Step 2: Apply the Routh-Hurwitz criterion.**
+
+For a second-order polynomial $s^2 + a_1 s + a_0$, all roots have negative real parts if and only if $a_1 > 0$ and $a_0 > 0$.
+
+The Routh array is:
+
+| | $s^2$ | $s^0$ |
+|---|---|---|
+| $s^2$ | $1$ | $\frac{K}{2} - 1$ |
+| $s^1$ | $K$ | $0$ |
+| $s^0$ | $\frac{K}{2} - 1$ | |
+
+For stability, we need all entries in the first column to be positive:
+
+- $1 > 0$ (always true)
+- $K > 0$ (given that $K \in \mathbb{R}_+$, this requires $K > 0$)
+- $\frac{K}{2} - 1 > 0 \implies K > 2$
+
+**Step 3: Check for pole-zero cancellation.**
+
+The transfer function is $G(s) = \frac{K(s + \frac{1}{2})}{s^2 + Ks + (\frac{K}{2} - 1)}$. We need to check whether the zero at $s = -\frac{1}{2}$ ever coincides with a pole. Setting $(-\frac{1}{2})^2 + K(-\frac{1}{2}) + \frac{K}{2} - 1 = \frac{1}{4} - \frac{K}{2} + \frac{K}{2} - 1 = -\frac{3}{4} \neq 0$. So no pole-zero cancellation occurs for any $K$.
+
+**Step 4: Conclusion.**
+
+$$\boxed{K > 2}$$
+
+The closed-loop system mapping $r$ to $y$ is BIBO stable for all $K > 2$.
+
+For $K = 2$: the characteristic polynomial is $s^2 + 2s = s(s+2)$, which has a root at $s = 0$ (marginally stable, not BIBO stable).
+
+For $0 < K < 2$: the constant term $\frac{K}{2} - 1 < 0$, so one root is in the right-half plane (unstable).
+</Solution>
+
+## Problem 4
+
+<Problem id="4" title="Bandlimited Signals and Compact Support">
+
+**[25 points]**
+
+Let $x \in L_2(\mathbb{R}; \mathbb{R})$ with $\|x\|_2 \neq 0$. Let $\hat{x} = \mathcal{F}_{CC}(x)$ and suppose that there exists $B < \infty$ such that for all $|f| > B$,
+
+$$\hat{x}(f) = 0.$$
+
+Alice claims that it is possible that there exists some $D < \infty$ such that for all $t \in \mathbb{R}$ with $|t| > D$,
+
+$$x(t) = 0.$$
+
+Bob says to Alice: "You are wrong and no such $D$ exists!".
+
+Who is correct? Explain with precise arguments to receive credit: Either prove that Bob is correct, or prove that Bob is wrong by constructing an explicit example.
+
+</Problem>
+
+<Solution>
+**Claim: Bob is correct.** A nonzero signal cannot be both bandlimited and time-limited (have compact support).
+
+**Step 1: State what we know.**
+
+We are given that $x \in L_2(\mathbb{R}; \mathbb{R})$ with $\|x\|_2 \neq 0$, and $\hat{x}(f) = 0$ for all $|f| > B$. Alice claims there exists $D < \infty$ such that $x(t) = 0$ for all $|t| > D$.
+
+**Step 2: Use the inverse Fourier transform representation.**
+
+Since $\hat{x}$ has compact support (it is zero outside $[-B, B]$), $\hat{x} \in L_1(\mathbb{R})$ (because $\hat{x} \in L_2(\mathbb{R})$ and has compact support, so by Cauchy-Schwarz, $\hat{x} \in L_1(\mathbb{R})$). Therefore, the inverse Fourier transform can be written pointwise as:
+
+$$x(t) = \int_{-B}^{B} \hat{x}(f) e^{i2\pi ft} \, df$$
+
+**Step 3: Show $x(t)$ extends to an entire (analytic) function.**
+
+The function $x(t)$ can be extended to the complex plane by defining:
+
+$$x(z) = \int_{-B}^{B} \hat{x}(f) e^{i2\pi fz} \, df, \quad z \in \mathbb{C}$$
+
+This integral converges for all $z \in \mathbb{C}$ because:
+
+$$|x(z)| = \left|\int_{-B}^{B} \hat{x}(f) e^{i2\pi fz} \, df\right| \leq \int_{-B}^{B} |\hat{x}(f)| e^{2\pi |f| |\text{Im}(z)|} \, df \leq e^{2\pi B |\text{Im}(z)|} \|\hat{x}\|_1 < \infty$$
+
+Moreover, $x(z)$ is an entire function of $z$ (analytic on all of $\mathbb{C}$), since we can differentiate under the integral sign:
+
+$$x'(z) = \int_{-B}^{B} \hat{x}(f) \cdot i2\pi f \cdot e^{i2\pi fz} \, df$$
+
+which also converges for all $z \in \mathbb{C}$.
+
+**Step 4: Apply the Identity Theorem for analytic functions.**
+
+The Identity Theorem states: if an analytic function is zero on a set that has a limit point (accumulation point), then it is zero everywhere.
+
+If $x(t) = 0$ for all $|t| > D$, then $x$ is zero on the interval $(D, \infty)$, which certainly has limit points. Since $x(z)$ is entire and equals zero on a set with a limit point, the Identity Theorem implies $x(z) = 0$ for all $z \in \mathbb{C}$. In particular, $x(t) = 0$ for all $t \in \mathbb{R}$.
+
+**Step 5: Reach the contradiction.**
+
+But this contradicts $\|x\|_2 \neq 0$, which requires $x$ to be nonzero on a set of positive measure.
+
+**Conclusion:**
+
+Bob is correct. No nonzero bandlimited signal can have compact time support. The key insight is that a bandlimited signal extends to an entire function on $\mathbb{C}$, and by the Identity Theorem (or equivalently, the Paley-Wiener theorem), if an entire function vanishes on an interval, it must vanish everywhere.
+</Solution>

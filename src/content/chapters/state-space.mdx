@@ -1,0 +1,292 @@
+---
+title: "Realizability and State Space Representation"
+chapter: 9
+---
+
+## 9.1 Realizations: Controllable, Observable and Modal Forms
+
+So far in the course, we considered the input-output approach to study control systems, which in the convolution (linear time-invariant) system setup, resulted in frequency domain methods through a transfer function analysis (such as in arriving at the root locus / Nyquist stability / Bode plot methods). These are often referred to as *classical control design* methods.
+
+In this chapter, we will introduce state-space based methods. Control design based on state-space methods is called *modern control design*.
+
+**The notion of a state.** Suppose that, given $t \in \mathbb{R}$ (or $\mathbb{Z}$), we wish to compute the output of a system at $t \geq t_0$. In a general causal system, we may need to use all the past applied input terms $u(s)$, $s \leq t$ and/or all the past output values $y(s)$, $s < t$ to compute the output at $t$. The **state** of a system summarizes all the past relevant data that is sufficient to compute the future paths in the sense that if the state at $t_0$, $x(t_0)$ is given, then to compute $y(t)$, one would only need to use $\{u(s) \; s \in [t_0,t]\}$, $\{y(s) \; s \in [t_0,t)\}$ and $x(t_0)$. In particular, the past $\{y(s), u_s; \; s < t_0\}$ would not be needed.
+
+Some systems admit a finite-dimensional state representation, some do not.
+
+Consider a linear system in state-space form:
+
+$$\frac{dx}{dt} = Ax(t) + Bu(t), \qquad y(t) = Cx(t) + Du(t)$$
+
+We will say that such a system is given by the 4-tuple: $(A, B, C, D)$.
+
+In the above $x$ serves as the **state variable** for the system.
+
+We know that the solution to this system is given with
+
+$$x(t) = e^{At}x(0) + \int_0^t e^{A(t-s)}Bu(s)ds$$
+
+and
+
+$$y(t) = Ce^{At}x(0) + C\int_0^t e^{A(t-s)}Bu(s)ds + Du(t)$$
+
+Taking the (one-sided) Laplace transform, we obtain for $s$ in the ROC:
+
+$$Y_+(s) = C(sI - A)^{-1}(x(0) + BU_+(s)) + DU_+(s)$$
+
+Assuming $x(0) = 0$, we have the following as the transfer function:
+
+$$Y_+(s) = (C(sI - A)^{-1}B + D)U(s)$$
+
+A transfer function $H(s)$ is **state-space realizable** if there exists *finite dimensional* $(A, B, C, D)$ so that we can write for $s \in \mathbb{C}$, whenever well-defined:
+
+$$H(s) = C(sI - A)^{-1}B + D$$
+
+<Theorem id="9.1.1" title="Realizability">
+A transfer function of a linear time-invariant system $H(s)$ is realizable if and only if it is a proper rational fraction (that is, $H(s) = \frac{P(s)}{Q(s)}$ where both the numerator $P$ and the denominator $Q$ are polynomials, and with degree of $P$ less than or equal to the degree of $Q$).
+</Theorem>
+
+<Remark>
+**Intuition:** This theorem draws a sharp line between systems you can build with a finite number of integrators, amplifiers, and summing junctions (realizable) and those you cannot. A proper rational transfer function means the system does not require taking pure derivatives of the input (which would amplify noise infinitely). Systems like pure time delays ($e^{-sT}$) are not rational and therefore require infinite-dimensional state spaces -- you would need to "remember" the entire input history over the delay interval.
+</Remark>
+
+<Proof>
+**(i) If realizable, then $L$ is proper and rational:** Let $L$ be realizable, that is
+
+$$L(s) = C(sI - A)^{-1}B + D$$
+
+for finite-dimensional matrices $(A, B, C, D)$. We will show that this implies that $L$ is proper and that $L$ is a rational fraction.
+
+Now, for a square matrix $E$ which is invertible, we know that $\det(E) = \sum_j E(i,j)(-1)^{i+j}M(i,j)$, where $M(i,j)$ is the determinant of the matrix obtained by deleting the $i$th row and $j$th column from $E$. Let $F$ be the co-factor matrix given by $F(i,j) = (-1)^{i+j}M(i,j)$. It then follows that
+
+$$E^{-1} = \frac{1}{\det(A)}F^T$$
+
+You can verify this by noting that the diagonals of $EE^{-1}$ would be 1, and the off-diagonals would be zero. Let us call $F^T$ the adjoint of $A$. Then,
+
+$$C(sI - A)^{-1}B = \frac{1}{\det(sI - A)}C[\text{Adj}(sI - A)]B$$
+
+Since the denominator is a polynomial of order $n$, and the adjoint matrix consists of polynomials of order at most $n-1$, it follows that the expression is a fraction, which is in fact also proper.
+
+To verify properness, we can also have the following reasoning: for $|s| > \max_i\{|\lambda_i|\}$, with $\lambda_i$ the eigenvalues of $A$, we have that
+
+$$(sI - A)^{-1} = (s(I - s^{-1}A))^{-1} = s^{-1}(I - s^{-1}A)^{-1} = s^{-1}\sum_{k=0}^{\infty}(s^{-1}A)^k$$
+
+Since $\lim_{|s|\to\infty}|s^{-1}\sum_{k=0}^{\infty}(s^{-1}A)^k| = 0$, it must be that $C(sI - A)^{-1}B$ is strictly proper.
+
+The presence of a non-zero $D$ is what may lead the transfer function to be proper, and not strictly proper.
+
+**(ii) If $L$ is proper and rational, then it is realizable:** The realizations will be constructed explicitly below under various canonical realizable forms.
+</Proof>
+
+### 9.1.1 Controllable canonical realization
+
+Consider a continuous-time system given by:
+
+$$\sum_{k=0}^{N} a_k \frac{d^k}{dt^k}y(t) = \sum_{m=0}^{N} b_m \frac{d^m}{dt^m}u(t),$$
+
+with $a_N = 1$. Taking the Laplace transform, we know that the transfer function writes as
+
+$$H(s) = \frac{\sum_{m=0}^{N} b_m s^m}{\sum_{k=0}^{N} a_k s^k}$$
+
+Suppose that the system is strictly proper. Such a system can be realized with the form:
+
+$$\frac{d}{dt}x(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t)$$
+
+with
+
+$$A_c = \begin{bmatrix} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ \vdots & \vdots & & \ddots & 1 \\ -a_0 & -a_1 & -a_2 & \cdots & -a_{N-1} \end{bmatrix}$$
+
+$$B_c = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}$$
+
+$$C_c = \begin{bmatrix} b_0 & b_1 & \cdots & b_{N-1} \end{bmatrix}$$
+
+If the system is proper, but not strictly proper, then we will also have $D_c = d$, where $d$ is the remainder term in the partial fraction expansion,
+
+$$H(s) = d + \sum_{i=1}^{K}\left(\sum_{k=1}^{m_i}\frac{A_{ik}}{(s - p_i)^k}\right)$$
+
+where $p_i$ are the roots of $s^n + \sum_{k=0}^{N-1}a_k s^k$ and $m_i$ is the multiplicity of $p_i$.
+
+This is called the **controllable canonical form**. The key insight is that the characteristic polynomial of $A_c$ is exactly $s^N + a_{N-1}s^{N-1} + \cdots + a_1 s + a_0$, matching the denominator of the transfer function. The companion structure of $A_c$ ensures that the single input $u$ can influence all state components through successive integrations.
+
+### 9.1.2 Observable canonical realization
+
+Consider the same system. This system can also be realized as
+
+$$\frac{d}{dt}x(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t)$$
+
+with
+
+$$A = \begin{bmatrix} -a_{N-1} & 1 & 0 & \cdots & 0 \\ -a_{N-2} & 0 & 1 & \cdots & 0 \\ \vdots & \vdots & & \ddots & \vdots \\ -a_1 & 0 & 0 & \cdots & 1 \\ -a_0 & 0 & 0 & \cdots & 0 \end{bmatrix}$$
+
+$$B = \begin{bmatrix} b_{N-1} \\ b_{N-2} \\ \vdots \\ b_0 \end{bmatrix}$$
+
+$$C = \begin{bmatrix} 1 & 0 & \cdots & 0 \end{bmatrix}$$
+
+If we reverse the order of the coordinates of $x$, we arrive at the **standard observable canonical form**:
+
+$$\frac{d}{dt}x(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t)$$
+
+with
+
+$$A_o = \begin{bmatrix} 0 & 0 & 0 & \cdots & -a_0 \\ 1 & 0 & 0 & \cdots & -a_1 \\ \vdots & \ddots & & & \vdots \\ 0 & 0 & 0 & \cdots & -a_{N-2} \\ 0 & 0 & 0 & \cdots & -a_{N-1} \end{bmatrix}$$
+
+$$B_o = \begin{bmatrix} b_0 \\ b_1 \\ \vdots \\ b_{N-1} \end{bmatrix}$$
+
+$$C_o = \begin{bmatrix} 0 & 0 & \cdots & 1 \end{bmatrix}$$
+
+Observe that $A_o = A_c^T$, $B_o = C_c^T$, $C_o = B_c^T$. This is the **standard observable canonical form**.
+
+The duality $A_o = A_c^T$ between controllable and observable forms is a fundamental structural property. It reflects the fact that observability and controllability are dual concepts -- a connection that will be made precise in Chapter 12.
+
+**Exercise 9.1.2.** *Show that the transfer functions under the controllable and observable realization canonical forms are equivalent directly by comparing $C_c(sI - A_c)^{-1}B_c$ and $C_o(sI - A_o)^{-1}B_o$.*
+
+### 9.1.3 Modal realization
+
+Consider a partial fraction expansion with only simple poles:
+
+$$H(s) = \frac{\sum_{m=0}^{N} b_m s^m}{\sum_{k=0}^{N} a_k s^s} = d + \sum_{i}^{N} \frac{k_i}{s - p_i}$$
+
+In this case, we can realize the system as the sum of decoupled modes:
+
+$$\frac{d}{dt}x(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t)$$
+
+with
+
+$$A = \begin{bmatrix} p_1 & 0 & 0 & \cdots & 0 \\ 0 & p_2 & 0 & \cdots & \vdots \\ \vdots & \vdots & & \ddots & \vdots \\ 0 & 0 & 0 & \cdots & p_N \end{bmatrix}$$
+
+$$B = \begin{bmatrix} k_1 \\ k_2 \\ \vdots \\ k_N \end{bmatrix}$$
+
+$$C = \begin{bmatrix} 1 & 1 & \cdots & 1 \end{bmatrix}$$
+
+If in the partial fraction expansion is more general (with repeated poles), then the corresponding structure can be realized also: this will lead to a Jordan form for the matrix $A$, since, e.g.,
+
+$$\frac{1}{(s - p_i)^2} = \frac{1}{s - p_i}\frac{1}{s - p_i}$$
+
+will define a serial connection of two modal blocks; the first one with $x_2' = p_i x_2 + u$ and the second one $x_1' = p_i x_1 + x_2$.
+
+The modal realization makes the system poles (eigenvalues of $A$) directly visible as diagonal entries. Each mode evolves independently, making it easy to see which modes are fast, slow, stable, or unstable.
+
+**Discrete-time setup.** The above also apply to the discrete-time setup. For example, a discrete-time system of the form
+
+$$\sum_{k=0}^{N} a_k y(n-k) = \sum_{m=1}^{N} b_m u(n-m)$$
+
+with $a_0 = 1$, can be written in the controllable canonical form
+
+$$x(n+1) = Ax(n) + Bu(n), \qquad y_t = Cx_t$$
+
+where $x_N(n) = y(n), x_{N-1}(n) = y(n-1), \;\cdots\;, x_1(n) = y(n-(N-1))$
+
+$$A = \begin{bmatrix} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ \vdots & \vdots & & \ddots & 1 \\ -a_N & -a_{N-1} & -a_{N-2} & \cdots & -a_1 \end{bmatrix}$$
+
+$$B = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}$$
+
+$$C = \begin{bmatrix} b_N & b_{N-1} & \cdots & b_1 \end{bmatrix}$$
+
+Observable and modal canonical forms follow similarly.
+
+---
+
+## 9.2 Zero-State Equivalence and Algebraic Equivalence
+
+We say that two systems $(A, B, C, D)$ and $(\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})$ are **zero-state equivalent** if the induced transfer functions are equal, that is
+
+$$C(sI - A)^{-1}B + D = \tilde{C}(sI - \tilde{A})^{-1}\tilde{B} + \tilde{D}$$
+
+<Theorem id="9.2.1" title="Zero-State Equivalence Condition">
+Two linear time-invariant state-space models $(A, B, C, D)$ and $(\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})$ are zero-state equivalent if and only if $D = \tilde{D}$ and $CA^mB = \tilde{C}\tilde{A}^m\tilde{B}$ for all $m \in \mathbb{Z}_+$.
+</Theorem>
+
+<Remark>
+**Intuition:** Two state-space models are zero-state equivalent when an external observer feeding inputs and measuring outputs cannot distinguish between them. The Markov parameters $CA^mB$ are exactly the impulse response coefficients -- they describe how the output responds at time step $m$ after a single impulse input. If these coefficients match, the two systems produce identical outputs for every possible input, even though their internal states may live in completely different coordinate systems or even have different dimensions.
+</Remark>
+
+<Proof>
+For $|s| > \max_i\{|\lambda_i|\}$, with $\lambda_i$ the eigenvalues of $A$, we have that $s^{-1}A$ will have all of its eigenvalues less than 1. Then,
+
+$$(sI - A)^{-1} = (s(I - s^{-1}A))^{-1} = s^{-1}(I - s^{-1}A)^{-1} = s^{-1}\sum_{k=0}^{\infty}(s^{-1}A)^k$$
+
+Then,
+
+$$C(sI - A)^{-1}B + D = \left(\sum_{k \in \mathbb{Z}_+} Cs^{-1}(s^{-1}A)^k B\right) + D = s^{-1}\left(\sum_{k \in \mathbb{Z}_+} C(s^{-1}A)^k B\right) + D$$
+
+and
+
+$$\tilde{C}(sI - \tilde{A})^{-1}\tilde{B} + \tilde{D} = \left(\sum_{k \in \mathbb{Z}_+} \tilde{C}s^{-1}(s^{-1}\tilde{A})^k \tilde{B}\right) + \tilde{D} = s^{-1}\left(\sum_{k \in \mathbb{Z}_+} \tilde{C}(s^{-1}\tilde{A})^k \tilde{B}\right) + \tilde{D}$$
+
+Since for all sufficiently large $|s|$ values, $s$ is in the region of convergence and the above are equal functions of $s$, meaning their difference is the zero function identically; this implies that all the coefficients in the expansions must be equal (by writing $\tilde{s} = s^{-1}$ and studying the behaviour of two absolutely summable polynomials $\sum_{k=0}^{\infty}\alpha_k \tilde{s}^k - \sum_{k=0}^{\infty}\beta_k \tilde{s}^k = 0$ for all $\tilde{s}$ in a sufficiently small neighborhood around the origin, and concluding that $\alpha_k = \beta_k$ must be equal). Note that $\tilde{D} = D$ also follows as a result.
+
+Note that by the Cayley-Hamilton theorem, it suffices to test the relation $CA^mB = \tilde{C}\tilde{A}^m\tilde{B}$ for $m = 0, \cdots, n-1$ where $n$ is the larger of the dimensions of $A$ or $\tilde{A}$.
+</Proof>
+
+The quantities $CA^mB$ are called the **Markov parameters** of the system. Two systems are zero-state equivalent precisely when they share the same Markov parameters and the same feedthrough term $D$.
+
+There is an alternative notion, called **algebraic equivalence**: Let $P$ be invertible and let us define a transformation through $\tilde{x} = Px$. Then, we can write the state-space model as
+
+$$\frac{d\tilde{x}}{dt} = \tilde{A}\tilde{x}(t) + \tilde{B}u(t), \qquad \tilde{y}(t) = \tilde{C}\tilde{x}(t) + \tilde{D}u(t),$$
+
+with $\tilde{A} = PAP^{-1}$, $\tilde{B} = PB$, $\tilde{C} = CP^{-1}$, $\tilde{D} = D$. In this case, we say that $(A, B, C, D)$ and $(\tilde{A}, \tilde{B}, \tilde{C}, \tilde{D})$ are **algebraically equivalent**.
+
+<Theorem id="9.2.2" title="Algebraic Implies Zero-State Equivalence">
+Algebraic equivalence implies zero-state equivalence but not vice versa.
+</Theorem>
+
+<Remark>
+**Intuition:** Algebraic equivalence means two state-space models are really the same system viewed through different "lenses" -- a change of coordinates $\tilde{x} = Px$ on the state vector. This is analogous to describing the same physical object using different coordinate systems (Cartesian vs. polar). Such a transformation always preserves the input-output behavior (zero-state equivalence), but the converse fails because a system with redundant or unobservable states can have the same transfer function as a simpler system that cannot be obtained by any coordinate change.
+</Remark>
+
+<Proof>
+Observe that for every $k \in \mathbb{Z}_+$, $\tilde{C}\tilde{A}^k\tilde{B} = CP^{-1}\left(PA^kP^{-1}\right)PB = CA^mB$. The reverse implication is not correct. In particular, one can always artificially add further state variables to arrive at a larger matrix $A$ which, through zeroes in $A$ and $C$ so that the new component has no impact on the output variable $y$.
+</Proof>
+
+Algebraic equivalence is a stronger condition: it says the two systems are really the same system viewed in different coordinates. Zero-state equivalence only says the input-output maps agree, but the internal structure may differ.
+
+---
+
+## 9.3 Discretization
+
+Consider
+
+$$\frac{d}{dt}x(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t)$$
+
+Suppose we apply piece-wise constant control actions $u$ which are varied only at the discrete time instances given with $\{t : t = kT, k \in \mathbb{Z}_+\}$ so that $u(t) = u(kT)$ for $t \in [kT, (k+1)T)$.
+
+We write
+
+$$x((k+1)T) = e^{AT}x(kT) + \left(\int_{kT}^{(k+1)T} e^{A((k+1)T - s)}Bu(s)ds\right)$$
+
+Writing $\tau = (k+1)T - s$ with $d\tau = -ds$, we arrive at
+
+$$x((k+1)T) = e^{AT}x(kT) + \left(\int_0^{T} e^{A\tau}Bd\tau\right)u(kT)$$
+
+With $x_k := x(kT)$ and $u_k := u(kT)$, we arrive at
+
+$$x_{k+1} = A_d x_k + B_d u_k$$
+
+where
+
+$$A_d = e^{AT}$$
+
+$$B_d = \int_0^{T} e^{A\tau}Bd\tau$$
+
+If $A$ is invertible, the integration of $\int e^{A\tau}d\tau$ leads to $A^{-1}(e^{AT} - I)B$.
+
+Discretization converts a continuous-time state-space model into an equivalent discrete-time model that is exact at the sampling instants. The key point is that no approximation is involved -- the discrete-time system exactly reproduces the continuous-time state at times $t = kT$, provided the input is held constant between samples (zero-order hold).
+
+---
+
+## 9.4 Exercises
+
+<Example id="9.4.1" title="Canonical Realizations">
+Algebraically express the realizations of the transfer function
+
+$$H(s) = \frac{s^2 + 2s + 1}{(s+1)(s^2 - 4)}$$
+
+in the controllable canonical realization, observable canonical realization, and modal canonical realization forms.
+</Example>
+
+<Example id="9.4.2" title="Non-Rational Transfer Function">
+Consider the following continuous-time system:
+
+$$y(t) = a(u(t-1) + y(t-1)), \quad t \in \mathbb{R}$$
+
+Find the transfer function, from $u$ to $y$, of this system and note that this transfer function is not rational. Such systems with no rational transfer function are sometimes called *distributed parameter systems*.
+</Example>

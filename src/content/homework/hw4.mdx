@@ -1,0 +1,208 @@
+---
+title: "Homework 4 Solutions"
+homework: 4
+---
+
+## Problem 1: Convergence of Distributions
+
+<Problem id="1" title="Convergence of Distributions">
+Let for $j \in \mathbb{N}$,
+
+$$f_j(t) = \begin{cases} j, & \text{if } 0 \le t \le \frac{1}{j} \\ 0 & \text{else} \end{cases}$$
+
+a) Let $\mathcal{S}$ denote the space of Schwartz functions. For $g \in \mathcal{S}$, define
+
+$$\bar{f}_j(g) := \int_0^{\infty} f_j(t)g(t)dt.$$
+
+Show that $\bar{f}_j$ is a distribution on $\mathcal{S}$, for $j \in \mathbb{N}$.
+
+b) Show that
+
+$$\lim_{j \to \infty} \int_0^{\infty} f_j(t)g(t)dt = \bar{\delta}(g) = g(0).$$
+
+Conclude that, the sequence of *regular* distributions $\bar{f}_j$, represented by a real-valued, integrable function $f_j$, converges to the Dirac delta distribution $\bar{\delta}$ on the space of test functions $\mathcal{S}$.
+</Problem>
+
+<Solution>
+**a)** Given $j \in \mathbb{N}$,
+
+$$\int_0^{\infty} f_j(t)g(t)dt = j \int_0^{\frac{1}{j}} g(t)dt$$
+
+is bounded for every $g \in \mathcal{S}$ and thus linearity follows by noting that for every scalar $\alpha_1, \alpha_2$ and $g_1, g_2 \in \mathcal{S}$
+
+$$\bar{f}_j(\alpha_1 g_1 + \alpha_2 g_2) = \int_0^{\infty} f_j(t)(\alpha_1 g_1(t) + \alpha_2 g_2(t))dt = \alpha_1 \int_0^{\infty} f_j(t)g_1(t)dt + \alpha_2 \int_0^{\infty} f_j(t)g_2(t)dt = \alpha_1 \bar{f}_j(g_1) + \alpha_2 \bar{f}_j(g_2)$$
+
+Furthermore, consider a sequence $\{g_n\}$ in $\mathcal{S}$ which converges to $g$. It follows that:
+
+$$\left| j \int_0^{\frac{1}{j}} g_n(t)dt - j \int_0^{\frac{1}{j}} g(t)dt \right| \le j \int_0^{\frac{1}{j}} |g_n(t) - g(t)|dt \le \sup_t |g_n(t) - g(t)|$$
+
+also converges to 0 (recall what it means to converge in $\mathcal{S}$). Thus, we have continuity of the map $\bar{f}_j : \mathcal{S} \to \mathbb{R}$.
+
+Since we have linearity and continuity, it follows that every element of the integral sequence defines a distribution on $\mathcal{S}$.
+
+**b)** Recall that we have provided a more general convergence result in Theorem 3.4.1 of the lecture notes (and is class). We can have a more direct argument for this particular sequence: We write
+
+$$\int_0^{\infty} f_j(t)g(t)dt = j \int_0^{\frac{1}{j}} g(t)dt = \frac{\int_0^{\frac{1}{j}} g(t)dt}{\frac{1}{j}} = g(\zeta_j)$$
+
+for some $\zeta_j \in (0, \frac{1}{j})$. The last step follows from the mean-value theorem. Since $g(\zeta_j)$ is continuous at 0, the limit is equal to $\lim_{j \to \infty} g(\zeta_j) = g(0)$.
+
+Since $\bar{\delta}(g) = g(0)$ for all continuous $g$ (and therefore for all $g \in \mathcal{S}$ as any Schwartz function is continuous), the result follows.
+</Solution>
+
+## Problem 2: Distributions
+
+<Problem id="2" title="Distributions">
+Let $\mathcal{S}$ denote the space of Schwartz signals. Is the expression
+
+$$\int_0^{\infty} f(t)\phi(t)dt$$
+
+a distribution on $\mathcal{S}$ for any given $f \in L_{\infty}(\mathbb{R}_+; \mathbb{R})$?
+</Problem>
+
+<Solution>
+We prove linearity and continuity. Note first that
+
+$$\left| \int_0^{\infty} f(t)\phi(t)dt \right| \le \sup_t |f(t)| \int_0^{\infty} \phi(t)dt < \infty,$$
+
+for any $\phi \in \mathcal{S}$. As a result, for any $\alpha_1, \alpha_2 \in \mathbb{R}$ and $\phi_1, \phi_2 \in \mathcal{S}$
+
+$$\int_0^{\infty} f(t)(\alpha\phi_1(t) + \beta\phi_2(t))dt = \alpha \int_0^{\infty} f(t)\phi_1(t)dt + \beta \int_0^{\infty} f(t)\phi_2(t)dt.$$
+
+Thus, $\int_0^{\infty} f(t)\phi(t)dt$ defines a linear function on $\mathcal{S}$.
+
+Continuity follows since for $\phi_n \to \phi \in \mathcal{S}$, we have that:
+
+$$\left| \int_0^{\infty} f(t)\phi_n(t)dt - \int_0^{\infty} f(t)\phi(t)dt \right|$$
+
+$$= \int_0^{\infty} \left| \frac{f(t)}{1+t^2} (1+t^2)(\phi_n(t) - \pi(t)) \right| dt$$
+
+$$\le \left( \int |f(t)| \frac{1}{1+t^2} dt \right) \left( \sup_{t \in \mathbb{R}} |(1+t^2)(\phi_n(t) - \phi(t))| \right) \to 0.$$
+
+where the last argument follows from the fact that $\left( \int |f(t)| \frac{1}{1+t^2} dt \right) < \infty$ and that $\phi_n \to \phi$ in $\mathcal{S}$.
+</Solution>
+
+## Problem 3: Approximate Identity Sequences
+
+<Problem id="3" title="Approximate Identity Sequences">
+(a) Study Theorem 3.4.1 and its proof in the lecture notes.
+
+(b) Study Theorem 3.4.3 and its proof in the lecture notes.
+</Problem>
+
+<Solution>
+This is a reading/study problem. See Theorems 3.4.1 and 3.4.3 in the lecture notes for the statements and proofs of these results on approximate identity sequences.
+</Solution>
+
+## Problem 4: Approximate Identity Sequences
+
+<Problem id="4" title="Approximate Identity Sequences">
+In class we observed that various approximate identity sequences exist and these can be used to define distributions that converge to $\bar{\delta}$.
+
+Recall that the sequence
+
+$$\psi_n(x) = c_n(1 + \cos(x))^n 1_{\{|x| \le \pi\}}$$
+
+can be used to show that the complex harmonics of the form $\frac{1}{\sqrt{2\pi}} e^{ikx}, k \in \mathbb{Z}$, form a complete orthonormal sequence in $L_2([-\pi, \pi], \mathbb{C})$. Here, we take the normalizing coefficient $c_n$ to make $\int \psi_n(x)dx = 1$.
+
+Show that
+
+$$\lim_{n \to \infty} \int_{|x| \ge \delta} \psi_n(x)dx = 0, \qquad \forall \delta > 0.$$
+</Problem>
+
+<Solution>
+Note that for any $A, B$ with $0 < A < B < \pi$,
+
+$$\int_A^B c_n(1 + \cos(x))^n dx \le \frac{1}{2},$$
+
+and observe that since $\cos(x)$ is decreasing in $x$ for $0 < x < \pi$,
+
+$$c_n(1 + \cos(B))^n(B - A) \le \int_A^B c_n(1 + \cos(x))^n dx \le c_n(1 + \cos(A))^n(B - A).$$
+
+Thus, combining the above,
+
+$$c_n \le \frac{1}{2} \left( \int_A^B (1 + \cos(x))^n dx \right)^{-1} \le \frac{1}{2(B-A)} \left( 1 + \cos(B) \right)^{-n},$$
+
+Observe that $\psi_n(x) = \psi_n(-x)$. Given $\delta > 0$, we can find $A, B$ so that $0 < A < B < \delta < \pi$. Then, we have that $\cos(\delta) < \cos(B)$, and thus
+
+$$\int_{|x| \ge \delta} \psi_n(x)dx = 2 \int_{x \ge \delta} \psi_n(x)dx \le 2c_n(\pi - \delta)(1 + \cos(\delta))^n$$
+
+$$\le \frac{1}{(B-A)} \left( 1 + \cos(B) \right)^{-n} (\pi - \delta)(1 + \cos(\delta))^n \to 0,$$
+
+as $n \to \infty$.
+</Solution>
+
+## Problem 5: Approximate Identity Sequences [Optional]
+
+<Problem id="5" title="Approximate Identity Sequences [Optional]">
+One useful sequence, which does not satisfy the non-negativity property that we discussed in class, but that satisfies the convergence property (to $\bar{\delta}$) is the following sequence:
+
+$$\psi_n(x) = \frac{\sin(nx)}{\pi x}$$
+
+Show that for any $\phi \in \mathcal{S}$
+
+$$\lim_{n \to \infty} \int \psi_n(x)\phi(x)dx = \phi(0)$$
+
+Hint: You can use the following results and hints:
+
+- $\lim_{R \to \infty} \int_{-R}^{R} \frac{\sin(x)}{x} dx = \pi$
+
+- Riemann-Lebesgue Lemma: For any integrable function $g$, $\lim_{|f| \to \infty, f \in \mathbb{R}} \int g(x)e^{ifx} dx = 0$.
+
+- We have $\lim_{|x| \to 0} \frac{\phi(x) - \phi(0)}{x} = h(x)$ for some smooth $h$.
+
+- Express the integration as
+
+$$\int_{|x| \ge 1} \psi_n(x)\phi(x) + \int_{|x| \le 1} \psi_n(x)\phi(x)dx$$
+
+First, show that the first term goes to zero by the Riemann-Lebesgue Lemma. For the second term, observe that
+
+$$\int_{|x| \le 1} \psi_n(x)\phi(x) = \int_{|x| \le 1} \phi(0)\psi_n(x)dx + \int_{|x| \le 1} \frac{\phi(x) - \phi(0)}{\pi x} \sin(nx)dx.$$
+
+Show that the second term goes to zero through $\lim_{|x| \to 0} \frac{\phi(x) - \phi(0)}{x} = h(x)$ and the Riemann-Lebesgue lemma. Finally, for the first term, use that
+
+$$\int_{|x| \le 1} \frac{\sin(nx)}{\pi x} dx = \int_{|u| \le n} \frac{\sin(u)}{\pi u} du,$$
+
+and conclude the result.
+</Problem>
+
+<Solution>
+This follows from the stated results by studying
+
+$$\int_{|x| \ge 1} \psi_n(x)\phi(x) + \int_{|x| \le 1} \psi_n(x)\phi(x)dx$$
+
+The first expression goes to zero, by the Riemann-Lebesgue Lemma. For the second term, we write
+
+$$\int_{|x| \le 1} \psi_n(x)\phi(x) = \int_{|x| \le 1} \phi(0)\psi_n(x)dx + \int_{|x| \le 1} \frac{\phi(x) - \phi(0)}{\pi x} \sin(nx)dx.$$
+
+The second term in this expression goes to zero, by the Riemann-Lebesgue Lemma through the relation $\lim_{|x| \to 0} \frac{\phi(x) - \phi(0)}{x} = h(x)$ for some smooth $h$ and splitting the integral to an arbitrarily small interval $(-\delta, \delta)$ and its complement $[-1,1] \setminus (-\delta, \delta)$ and studying these separately, noting the convergence of the smaller interval integration to that involving the smooth function $h$. The first term $\int_{|x| \ge 1} \phi(0)\psi_n(x)dx$ converges to $\phi(0)$: By writing $u = nx$, we obtain
+
+$$\int_{|x| \le 1} \frac{\sin(nx)}{\pi x} dx = \int_{|u| \le n} \frac{\sin(u)}{\pi u} du,$$
+
+and using the fact that $\lim_{n \to \infty} \int_{-n}^{n} \frac{\sin(x)}{\pi x} dx = 1$, the result follows.
+</Solution>
+
+## Problem 6: Distributional Derivatives [Optional]
+
+<Problem id="6" title="Distributional Derivatives [Optional]">
+The derivative of a distribution $\overline{f}$ is defined with the relation:
+
+$$\overline{Df}(\phi) = -\overline{f}(D\phi),$$
+
+where $D(.)$ denotes the derivative operator.
+
+Let $u(t)$ denote the step function: that is $u(t) = 1_{\{t \ge 0\}}$ ($1_{\{.\}}$ being the indicator function). Define for $\phi \in \mathcal{S}$,
+
+$$\bar{u}(\phi) = \int_{\mathbb{R}} u(t)\phi(t)dt = \int_0^{\infty} \phi(t)dt.$$
+
+Given the definition of a distributional derivative, show that the distributional derivative of the distribution $\overline{u}$ represented by the unit step function is the Dirac delta distribution.
+</Problem>
+
+<Solution>
+The derivative of a distribution $\overline{Df}(\phi) = -\overline{f}(D\phi)$, where $D(.)$ denotes the derivative operator. Let $u(t)$ denote the step function: that is $u(t) = 1_{\{t \ge 0\}}$ ($1_{\{.\}}$ being the indicator function). Hence,
+
+$$\overline{Du}(\phi) = -\bar{u}(D\phi) = -\int_0^{\infty} (D\phi)(t) = -\lim_{t \to \infty} \phi(t) + \phi(0) = \bar{\delta}(\phi),$$
+
+for all $\phi \in \mathcal{S}$ (In the above equation, $\phi \in \mathcal{S}$ allows us to use that $\lim_{t \to \infty} \phi(t) = 0$).
+
+This is an important relationship in engineering applications; for example, the step function often models a *turn-on* event for a switch in circuit theory and its derivative is often approximated to be the Dirac delta function (this is to be cautiously interpreted in view of our discussions in the course).
+</Solution>
