@@ -7,7 +7,7 @@ In this chapter, we study dual spaces, distribution theory, and the Dirac delta 
 
 ---
 
-## 3.1 Introduction and Motivation
+## Introduction and Motivation
 
 To gain some insight and intuition on what this chapter entails, consider the function $\sin(nt)$ where $n \in \mathbb{N}$. This function does not have a pointwise limit (in $t$) as $n \to \infty$. However, with $f$ an arbitrary continuous function, the integral $\int \sin(nt)f(t)dt$ has a well-defined limit, which is zero (see the Riemann-Lebesgue Lemma, presented as Theorem 5.3.3). In this sense, $\sin(nt)$ can be viewed to admit a limit which is equivalent to the constant function with value $0$. That is, $\sin(nt) \to \underline{0}(t)$ in the sense that when we take the integral $\int \sin(nt)f(t)dt \to \int \sin(nt)\underline{0}(t)dt$, for $f$ in a set of test functions. This motivates the notion of *weak convergence* (and weak$^*$ convergence).
 
@@ -21,7 +21,7 @@ It may not be immediately evident that the study of such a theory is needed in e
 
 ---
 
-## 3.2 Dual Space of a Normed Linear Space
+## Dual Space of a Normed Linear Space
 
 Let $f$ be a linear functional on a normed linear space $X$ (thus mapping $X$ to $\mathbb{R}$). We say $f$ is bounded (in the operator norm) if there is a constant $M$ such that $|f(x)| \leq M\|x\|$ for all $x \in X$. The smallest such $M$ is called the norm of $f$ and is denoted by $\|f\|$, also given by:
 
@@ -29,7 +29,7 @@ $$\|f\| := \sup_{x:\|x\| \neq 0} \frac{|f(x)|}{\|x\|}. \qquad \text{(3.1)}$$
 
 Let us define the **dual space** of $X$ as the set of linear and bounded functions on $X$ to $\mathbb{R}$ or $\mathbb{C}$, and let us denote this space by $X^*$. The space $X^*$ is called the (topological) dual space of $X$. This is equivalent to the space of all continuous and linear functions, as continuity and boundedness imply each other:
 
-<Theorem id="3.2.1" title="Bounded iff Continuous">
+<Theorem title="Bounded iff Continuous">
 A linear functional on a normed linear space is bounded if and only if it is continuous.
 </Theorem>
 
@@ -63,7 +63,7 @@ $$\sum_{i \in \mathbb{Z}_+} x_i y_i \leq \|x\|_p \|y\|_q,$$
 
 where $\frac{1}{p} + \frac{1}{q} = 1$.
 
-<Theorem id="3.2.2" title="Riesz Representation Theorem">
+<Theorem title="Riesz Representation Theorem">
 **(i)** Every linear bounded function $F : l_p(\mathbb{Z}_+; \mathbb{R}) \to \mathbb{R}$, $1 \leq p < \infty$, is representable uniquely in the form, with $x = \{x_i, i \in \mathbb{Z}_+\} \in l_p(\mathbb{Z}_+; \mathbb{R})$:
 
 $$F(x) = \sum_{i=0}^{\infty} \eta_i x_i,$$
@@ -129,7 +129,7 @@ Thus, if $X = L_p(\mathbb{R}_+; \mathbb{R})$ for $1 \leq p < \infty$, we can sho
 
 The following is a general result for Hilbert spaces.
 
-<Theorem id="3.2.3" title="Riesz Representation Theorem for Hilbert Spaces">
+<Theorem title="Riesz Representation Theorem for Hilbert Spaces">
 Every linear bounded function $f$ on a Hilbert space $H$ admits a representation of the form:
 
 $$f(x) = \langle x, y \rangle$$
@@ -159,13 +159,13 @@ $$\int \mu_n(dx)f(x) \to \int \mu(dx)f(x).$$
 If we had replaced $C_b(\mathbb{R}; \mathbb{R})$ with $C_0(\mathbb{R}; \mathbb{R})$ here, note that this would coincide with the weak$^*$-convergence of $\mu_n \to \mu$ (to be studied in the following). Nonetheless, in probability theory the convergence stated above is so important that this is simply called *weak convergence*.
 </Remark>
 
-### 3.2.1 Weak and Weak* Convergence
+### Weak and Weak* Convergence
 
 Earlier, we discussed that in a normed space $X$, a sequence of vectors $\{x_n\}$ converges to a vector $x$ if
 
 $$\|x_n - x\| \to 0.$$
 
-<Definition id="3.2.3" title="Strong Convergence">
+<Definition title="Strong Convergence">
 A sequence $\{x_n\}$ in a normed space $X$ **converges strongly** (or converges in norm) to $x \in X$ if
 
 $$\|x_n - x\| \to 0.$$
@@ -175,7 +175,7 @@ $$\|x_n - x\| \to 0.$$
 **Intuition:** Strong convergence is the most natural notion of convergence in a normed space -- it says that the "distance" between $x_n$ and $x$ shrinks to zero. It is called "strong" to distinguish it from the weaker convergence notions (weak and weak$^*$) that follow. Strong convergence implies weak convergence, but not vice versa.
 </Remark>
 
-<Definition id="3.2.1" title="Weak Convergence">
+<Definition title="Weak Convergence">
 A sequence $\{x_n\}$ in $X$ is said to **converge weakly** to $x$ if
 
 $$f(x_n) \to f(x)$$
@@ -201,7 +201,7 @@ We note however that, weak convergence does not imply strong convergence.
 
 A related convergence notion, one that we will adopt while studying distributions, is that of weak$^*$ convergence, defined next.
 
-<Definition id="3.2.2" title="Weak* Convergence">
+<Definition title="Weak* Convergence">
 A sequence $\{f_n\}$ in $X^*$ is said to **converge in the weak$^*$ sense** to $f$ if
 
 $$f_n(x) \to f(x)$$
@@ -217,13 +217,13 @@ We note that such a convergence notion is very useful in the study of solutions 
 
 ---
 
-## 3.3 Distribution Theory
+## Distribution Theory
 
 A distribution is a *linear* and *continuous* $\mathbb{R}$-valued function (that is, a functional) on a space of test functions. Thus, a distribution can be viewed to be an element of the dual space of a linear space of test functions (even though we will see that the linear space of test functions does not need to form a normed linear space).
 
 Studying distributions and sets of test functions present many benefits for our course. For example, the delta function has a natural representation as a distribution. Furthermore, Fourier analysis will be observed to be a bijective mapping from a space of test functions to another one, and this space of test functions is rich enough to approximate many functions that we encounter in applications sufficiently well. Furthermore, we will define the Fourier transform first on a space of test functions and extend it from this space to larger spaces, such as $L_2(\mathbb{R}; \mathbb{C})$.
 
-### 3.3.1 Space $\mathcal{D}$ and $\mathcal{S}$ of Test Functions
+### Space $\mathcal{D}$ and $\mathcal{S}$ of Test Functions
 
 Let $\mathcal{D}$ denote a set of test functions from $\mathbb{R}$ to $\mathbb{R}$, which are smooth (infinitely differentiable) and which have bounded support sets. Such functions exist, for example
 
@@ -235,7 +235,7 @@ We say a sequence of functions $\{x_i\}$ in $\mathcal{D}$ converges to the null 
 
 In applications we usually encounter functions with unbounded support. Hence, a theory based on the above test functions might not be satisfactory. Furthermore, the Fourier transform of a function in $\mathcal{D}$ is not in the same space (a topic to be discussed further). As such, we will find it convenient to slightly extend the space of test functions.
 
-<Definition id="3.3.1" title="Schwartz Function Space S">
+<Definition title="Schwartz Function Space S">
 An infinitely differentiable function $\phi : \mathbb{R} \to \mathbb{R}$ is in the **Schwartz function space**, denoted with $\mathcal{S}$, if for each $k \in \mathbb{Z}_+$ and for each $l \in \mathbb{Z}_+$
 
 $$\sup_{t \in \mathbb{R}} |t^l \phi^{(k)}(t)| < \infty,$$
@@ -267,7 +267,7 @@ The Schwartz space of functions equipped with such a metric will be a complete s
 
 As had been discussed before (slightly generalizing Theorem 2.1.3), a functional $T$ from $\mathcal{S} \to C$ is continuous if and only if for every convergent sequence in $\mathcal{S}$, $\phi_n \to \phi$, we have $T(\phi_n) \to T(\phi)$. We note that checking sequential continuity is typically easier than continuity, since in the space $\mathcal{S}$, it is not convenient to compute the distance between two vectors given the quite involved construction of the metric in (3.3).
 
-<Definition id="3.3.2" title="Distribution">
+<Definition title="Distribution">
 A **distribution** is a linear, continuous functional on the space of test functions $\mathcal{S}$.
 </Definition>
 
@@ -285,7 +285,7 @@ $$\bar{\gamma}(\phi) := \int_{\mathbb{R}} \gamma(t)\phi(t)dt \qquad \text{(3.4)}
 
 is a regular distribution on $\mathcal{S}$, **represented** by the function $\gamma(t)$.
 
-<Definition id="3.3.3" title="Tempered Function">
+<Definition title="Tempered Function">
 A **tempered function**, $x(t)$ is one which satisfies small growth, that is, for some $\beta, \gamma \in \mathbb{R}$, $N \in \mathbb{Z}_+$:
 
 $$|x(t)| \leq \beta|t|^N + \gamma, \quad \forall t \in \mathbb{R}$$
@@ -303,7 +303,7 @@ $$\bar{\delta}(\phi) = \phi(0),$$
 
 does not admit a representation in the form $\int g(t)\phi(t) = \phi(0)$. Even when there is no function which can be used to represent a singular distribution, one occasionally represents a singular distribution as if such a function exists and call the representing function a singular or a generalized function. The informal expression $\int \delta(t)\phi(t) = \phi(0)$ is a common example for this, where $\delta$ is the generalized impulse function which takes the value $\infty$ at $0$, and zero elsewhere.
 
-<Theorem id="3.3.1" title="Dirac Delta is a Distribution">
+<Theorem title="Dirac Delta is a Distribution">
 The map $\bar{\delta}(\phi) = \phi(0)$ defines a distribution on $\mathcal{S}$. This distribution is called the **Dirac delta distribution**.
 </Theorem>
 
@@ -331,7 +331,7 @@ Two distributions $\bar{\gamma}$ and $\bar{\zeta}$ are **equal** if
 
 $$\bar{\gamma}(f) = \bar{\zeta}(f), \quad \forall f \in \mathcal{S}$$
 
-<Definition id="3.3.4" title="Convergence of Distributions">
+<Definition title="Convergence of Distributions">
 A sequence of distributions $\{\bar{\gamma}_n\}$ **converges** to a distribution $\bar{\gamma}$ if
 
 $$\bar{\gamma}_n(f) \to \bar{\gamma}(f), \quad \forall f \in \mathcal{S}$$
@@ -343,7 +343,7 @@ $$\bar{\gamma}_n(f) \to \bar{\gamma}(f), \quad \forall f \in \mathcal{S}$$
 
 Observe that the above notion is identical to the weak$^*$ convergence notion discussed earlier in Definition 3.2.2.
 
-<Example id="3.3.1" title="Regular Distributions Converging to the Dirac Delta">
+<Example title="Regular Distributions Converging to the Dirac Delta">
 Let for $j \in \mathbb{Z}_+$, $j > 0$
 
 $$f_j(t) = \begin{cases} j, & \text{if } 0 \leq t \leq \frac{1}{j} \\ 0 & \text{else} \end{cases} \qquad \text{(3.5)}$$
@@ -365,11 +365,11 @@ In fact, we can find many other functions which can define regular distributions
 
 ---
 
-## 3.4 Approximate Identity Sequences
+## Approximate Identity Sequences
 
 <ApproximateIdentityDemo />
 
-<Definition id="3.4.1" title="Approximate Identity Sequence">
+<Definition title="Approximate Identity Sequence">
 Let $\psi_n : \mathbb{R} \to \mathbb{R}$ be a sequence such that
 
 - $\psi_n(t) \geq 0$, $\quad t \in \mathbb{R}, n \in \mathbb{N}$.
@@ -385,7 +385,7 @@ Such $\psi_n$ sequences are called **approximate identity sequences**.
 
 We have seen one example in (3.5). The result discussed generalizes to any approximate identity sequence:
 
-<Theorem id="3.4.1" title="Approximate Identity Sequences Converge to delta">
+<Theorem title="Approximate Identity Sequences Converge to delta">
 Distributions represented by approximate identity sequences converge to the Dirac delta distribution as $n \to \infty$.
 </Theorem>
 
@@ -421,9 +421,9 @@ where we use the properties of the approximate identity sequences above. Since $
 $$\int \psi_n(t)\phi(t)dt \to \bar{\delta}(\phi) = \phi(0). \quad \square$$
 </Proof>
 
-### 3.4.1 Examples of Approximate Identity Sequences
+### Examples of Approximate Identity Sequences
 
-<Example id="3.4.1" title="Rectangle Approximate Identity">
+<Example title="Rectangle Approximate Identity">
 Let for $n \in \mathbb{N}$,
 
 $$f_n(t) = \begin{cases} n, & \text{if } 0 \leq t \leq \frac{1}{n} \\ 0 & \text{else} \end{cases}$$
@@ -441,7 +441,7 @@ $$\lim_{n \to \infty} \int_0^{\infty} f_n(t)\phi(t)dt = \bar{\delta}(\phi) = \ph
 We thus conclude that, the sequence of **regular** distributions $\bar{f}_n$, represented by the real-valued, integrable function $f_n$, converges to the Dirac delta distribution $\bar{\delta}$.
 </Example>
 
-<Example id="3.4.2" title="Gaussian Approximate Identity">
+<Example title="Gaussian Approximate Identity">
 Another very important example for such approximate identity sequences is the following **Gaussian** sequence of functions given by
 
 $$f_n(t) = \frac{1}{\sqrt{2\pi\frac{1}{n}}}e^{-\frac{1}{2}\frac{t^2}{\frac{1}{n}}} \qquad \text{(3.7)}$$
@@ -449,7 +449,7 @@ $$f_n(t) = \frac{1}{\sqrt{2\pi\frac{1}{n}}}e^{-\frac{1}{2}\frac{t^2}{\frac{1}{n}
 Observe that each element $f_n$ of this sequence lives in $\mathcal{S}$, which will be very consequential.
 </Example>
 
-<Theorem id="3.4.2" title="Cosine Approximate Identity (Proposition 3.4.1)">
+<Theorem title="Cosine Approximate Identity (Proposition 3.4.1)">
 Consider the sequence
 
 $$\psi_n(x) = c_n(1 + \cos(x))^n 1_{\{|x| \leq \pi\}}$$
@@ -481,13 +481,13 @@ Now, given $\delta > 0$, let $0 < A < B < \delta < \pi$. Then,
 $$\int_{|x| \geq \delta} \psi_n(x)dx \leq 2c_n(\pi - \delta)(1+\cos(\delta))^n \leq \frac{1}{(B-A)}(1 + \cos(B))^{-n}(\pi - \delta)(1 + \cos(\delta))^n \to 0. \quad \square$$
 </Proof>
 
-<Example id="3.4.3" title="Sinc Approximate Identity">
+<Example title="Sinc Approximate Identity">
 One further very useful sequence, which does not satisfy the non-negativity property above, but nonetheless satisfies the convergence property (to $\bar{\delta}$) is the following sequence:
 
 $$\psi_n(x) = \frac{\sin(nx)}{\pi x}. \qquad \text{(3.8)}$$
 </Example>
 
-<Theorem id="3.4.3" title="Sinc Sequence Converges to delta">
+<Theorem title="Sinc Sequence Converges to delta">
 For any $\phi \in \mathcal{S}$, with $\psi_n$ as in (3.8)
 
 $$\lim_{n \to \infty} \int \psi_n(x)\phi(x)dx = \phi(0) \qquad \text{(3.9)}$$
@@ -523,7 +523,7 @@ $$\int_{|x| \leq 1} \frac{\sin(nx)}{\pi x} dx = \int_{|u| \leq n} \frac{\sin(u)}
 and using the fact that $\lim_{n \to \infty} \int_{-n}^{n} \frac{\sin(x)}{\pi x}dx = 1$, the result follows. $\square$
 </Proof>
 
-### 3.4.2 Convolution and its use in approximations
+### Convolution and its use in approximations
 
 The convolution of two functions (whenever this integration is well-defined) is defined as:
 
@@ -533,7 +533,7 @@ The convolution can be defined for any pair of functions which are in $L_2(\math
 
 A very useful result is the following.
 
-<Theorem id="3.4.4" title="Approximate Identity Convolution">
+<Theorem title="Approximate Identity Convolution">
 If $\psi_n$ is an approximate identity sequence, then,
 
 $$(\psi_n * f)(t) \to f(t),$$
@@ -577,7 +577,7 @@ $$\lim_{n \to \infty} \sup_{t \in K} |(\psi_n * f)(t) - f(t)| = 0. \quad \square
 
 Note that with $\psi_n$ defined as in (3.7), $(\psi_n \star \phi)$ is always infinitely differentiable, and one may conclude the following:
 
-<Corollary id="3.4.1" title="Density of Smooth Functions">
+<Corollary title="Density of Smooth Functions">
 The space of smooth functions are dense in the space of continuous functions with a compact support under the supremum norm.
 </Corollary>
 
@@ -585,7 +585,7 @@ The space of smooth functions are dense in the space of continuous functions wit
 **Intuition:** Any continuous function with compact support can be approximated arbitrarily well (in supremum norm) by a smooth function. This is achieved by convolving with a Gaussian approximate identity, which always produces an infinitely differentiable result.
 </Remark>
 
-### 3.4.3 Completeness of complex exponentials in $L_2([-\pi, \pi]; \mathbb{C})$
+### Completeness of complex exponentials in $L_2([-\pi, \pi]; \mathbb{C})$
 
 Using Theorem 3.4.4, with
 
@@ -593,7 +593,7 @@ $$\psi_n(t) = c_n(1 + \cos(t))^n,$$
 
 (which is an approximate identity sequence as shown in Proposition 3.4.1, when $c_n$ is picked so that $\int \psi_n(t)dt = 1$), we can prove the following:
 
-<Theorem id="3.4.5" title="Completeness of Complex Exponentials">
+<Theorem title="Completeness of Complex Exponentials">
 The family of complex exponentials in $L_2([-\pi, \pi]; \mathbb{C})$:
 
 $$\{e_n(t)\} = \left\{\frac{1}{\sqrt{2\pi}}e^{int}, \quad n \in \mathbb{Z}\right\}$$
@@ -641,13 +641,13 @@ This sequence is used for the Fourier expansion of functions in $L_2([0, 2\pi]; 
 
 ---
 
-## 3.5 Some Operations on Distributions [Optional]
+## Some Operations on Distributions [Optional]
 
 While studying several properties of distributions, one typically first starts with a generalized distribution and tries to extend the properties to singular distributions.
 
 One important property of distributions is that every distribution has a derivative. Furthermore, we will also be taking the Fourier transform of distributions, but the derivative, once again, will have a meaning as a distribution; that is it will only have a meaning when it is applied to a class of test functions.
 
-<Definition id="3.5.1" title="Derivative of a Distribution">
+<Definition title="Derivative of a Distribution">
 The **derivative** of a distribution $\bar{\gamma} \in \mathcal{S}^*$ is defined as:
 
 $$(D\bar{\gamma})(\phi) = -\bar{\gamma}\left(\frac{d\phi}{dt}\right), \qquad \phi \in \mathcal{S}.$$
@@ -661,7 +661,7 @@ We can check if this definition is consistent with a distribution represented by
 
 $$\int \frac{d}{dt}\gamma(t)\phi(t)dt = -\int \gamma(t)\frac{d}{dt}\phi(t) = -\bar{\gamma}\left(\frac{d\phi}{dt}\right).$$
 
-<Example id="3.5.1" title="Derivative of the Step Function Distribution">
+<Example title="Derivative of the Step Function Distribution">
 Given the definition of a distributional derivative, we show that the distributional derivative of the distribution $\bar{u}$ represented by the unit step function is the Dirac delta distribution: Let $u(t)$ denote the step function: that is $u(t) = 1_{\{t \geq 0\}}$ ($1_{\{\cdot\}}$ being the indicator function). Define for $\phi \in \mathcal{S}$,
 
 $$\bar{u}(\phi) = \int_{\mathbb{R}} u(t)\phi(t)dt = \int_0^{\infty} \phi(t)dt.$$
@@ -693,7 +693,7 @@ $$(\phi * \bar{f})(t) = \int f(\tau)\phi(t - \tau)d\tau = \bar{f}(RT_t\phi),$$
 
 where, as before, $Rg(x) = g(-x)$ is the inversing operator and $T_t(\phi)(\tau) = \phi(\tau - t)$ is the shifting operator.
 
-<Theorem id="3.5.1" title="Convolution with a Distribution">
+<Theorem title="Convolution with a Distribution">
 For any distribution $\bar{f}$ and $\phi$ in $\mathcal{S}$, $\phi * \bar{f}$ is an infinitely differentiable function and can be used to represent a regular distribution.
 </Theorem>
 
@@ -719,21 +719,21 @@ Let $\psi_n$ be the approximate identity sequence given by (3.7), so that $\psi_
 
 ---
 
-## 3.6 Fourier Transform of Schwartz Functions
+## Fourier Transform of Schwartz Functions
 
 We will continue the discussion of Schwartz functions in the context of Fourier transforms. One appealing aspect of Schwartz functions is that the Fourier transform of a Schwartz function lives in the space of Schwartz functions. In fact, the Fourier transform on the space of Schwartz functions is both onto and one to one (hence a bijection). This will be proven later. Since the space of continuous functions is dense in the space of square integrable functions, and $\mathcal{S}$ is dense in the space of continuous functions under the supremum norm by Theorem 3.4.4, we will use the bijection property of the Fourier transform on $\mathcal{S}$ to define the Fourier transform of square integrable functions.
 
 ---
 
-## 3.7 Appendix
+## Appendix
 
-### 3.7.1 Optional: Application to Optimization Problems and the Generalization of the Projection Theorem
+### Optional: Application to Optimization Problems and the Generalization of the Projection Theorem
 
 The duality results and Holder's inequality are important in applications to optimization problems. The geometric ideas we reviewed in the context of the projection theorem apply very similarly to such spaces, where the inner-product is replaced by the duality pairings. Let us make this more explicit: Let for a subspace $M$,
 
 $$M^\perp := \{x^* : \langle m, x^* \rangle = 0, \forall m \in M\}.$$
 
-<Theorem id="3.7.1" title="Distance and Dual Characterization (Projection Generalization)">
+<Theorem title="Distance and Dual Characterization (Projection Generalization)">
 **(i)** Let $x$ be an element in a real normed space $X$ and let $d$ denote its distance from a subspace $M$. Then,
 
 $$d = \inf_{m \in M} \|x - m\| = \max_{\{\|x^*\| \leq 1, x^* \in M^\perp\}} \langle x, x^* \rangle$$
@@ -779,7 +779,7 @@ $$\langle x - m_0, x_0^* \rangle = \langle x, x_0^* \rangle = d = \|x_0^*\|\|x -
 where the last equality holds since $\|x_0^*\| = 1$ and $\|x - m_0\| = d$. Thus, $x_0^*$ is aligned with $x - m_0$. $\square$
 </Proof>
 
-<Theorem id="3.7.2" title="Dual Distance Characterization">
+<Theorem title="Dual Distance Characterization">
 Let $M$ be a subspace in a real normed space $X$. Let $x^* \in X^*$ be at a distance $d$ from $M^\perp$. Then, **(i)**
 
 $$d = \min_{m^* \in M^\perp} \|x^* - m^*\| = \sup_{x \in M, \|x\| \leq 1} \langle x, x^* \rangle,$$
@@ -853,7 +853,7 @@ where the optimal $x^*$ is aligned with $Y\lambda$. In the above, (3.12) follows
 
 ---
 
-## 3.8 Exercises
+## Exercises
 
 ### Exercise 3.8.1
 

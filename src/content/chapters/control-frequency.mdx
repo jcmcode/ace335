@@ -3,7 +3,7 @@ title: "Control Analysis and Design through Frequency Domain Methods"
 chapter: 8
 ---
 
-## 8.1 Transfer Function Shaping through Control: Closed-Loop vs. Open-Loop
+## Transfer Function Shaping through Control: Closed-Loop vs. Open-Loop
 
 In Section 1.2.1, we discussed some control theoretic configurations mapping an input to an output and how the map can be shaped by control design. Two common architectures are depicted in Figure 1.2 (as a general output feedback; here the control depends on the output of the system) and in Figure 1.3 (as an error output feedback control system; here the control depends on the error between the external input and the system output). More general configurations are also possible, as discussed in Section 1.2.1. For consistency, we will focus on a particular architecture noting that the analysis to follow can be generalized to any of these models.
 
@@ -17,7 +17,7 @@ is the **closed-loop** transfer function (under negative unity feedback). Compar
 
 The goal is to shape the closed-loop transfer function via the control characterized with $C(s)$ in the frequency domain.
 
-### 8.1.1 Some motivation via a common class of controllers: PID controllers
+### Some motivation via a common class of controllers: PID controllers
 
 By Laplace transforms, we know that differentiation in time domain entails a multiplication with $s$, and integration involves multiplication with $\frac{1}{s}$. In the context of the setup of Figure 8.4, let $e(t) = y(t) - r(t)$. A popular and practical type of control structure involves:
 
@@ -31,7 +31,7 @@ Thus, the control uses both the error itself (proportional), its integration, an
 
 ---
 
-## 8.2 Bode-Plot Analysis
+## Bode-Plot Analysis
 
 <BodePlotDemo />
 
@@ -39,7 +39,7 @@ Bode plots were studied earlier in class. With Bode plots, we observed that we c
 
 ---
 
-## 8.3 The Root Locus Method
+## The Root Locus Method
 
 The set $\{s : 1 + C(s)P(s) = 0\}$ consists of the poles of the transfer function. If one associates with the controller a gain parameter $K$, the root locus method traces the set of all poles as $K$ ranges from $0$ to $\infty$ (and often from $0$ to $-\infty$ as well), so that $\{s : 1 + KC(s)P(s) = 0\}$ is traced. Thus, this method provides a design technique in identifying desirable values for the parameter $K$.
 
@@ -49,7 +49,7 @@ Additionally, it lets one select desirable pole values: for example, poles with 
 
 For the approach to be applicable, the following key mathematical result is to be noted.
 
-<Theorem id="8.3.1" title="Continuous Dependence of Roots on Parameters">
+<Theorem title="Continuous Dependence of Roots on Parameters">
 Consider the polynomial $a(s) + Kb(s) = 0$ where $a$ and $b$ are polynomials. The roots of this polynomial vary continuously as $K \in \mathbb{R}$ changes.
 </Theorem>
 
@@ -109,11 +109,11 @@ Let $\{s_1^K, \cdots, s_n^K\}$ be the roots of the polynomial $p_K(s)$ for a giv
 Finally, we now show that in fact every sequence itself must be converging: suppose not, then there exists $\epsilon$ and a subsequence $\{s_1, \cdots, s_n\}$ such that $\{s_1, \cdots, s_n\}$ is $\epsilon$ away from the roots of $p_{K^*}(s)$ under the metric considered above. But this subsequence itself must contain a converging subsequence, by the arguments above, and the limit has to be the roots of $p_{K^*}(s)$. Hence, a contradiction. $\square$
 </Proof>
 
-<Remark id="8.1">
+<Remark >
 The above also directly establishes the very useful result that when one is given a matrix, the eigenvalues of the matrix are continuous in (pointwise perturbations of) its entries.
 </Remark>
 
-<Example id="8.3.1" title="Root Locus for Double Integrator">
+<Example title="Root Locus for Double Integrator">
 Consider Figure 8.4.
 
 **a) [Proportional Control]** Let the plant and controller be given with $P(s) = \frac{1}{s^2}$ (double integrator dynamics) and $C(s) = k_p$ (such a controller is known as a proportional controller). Find the root locus as $k_p$ changes from $0$ to $\infty$. Can this system be made stable by such a proportional controller?
@@ -131,7 +131,7 @@ We have that $U(s) = \frac{1}{s}$. Then, $Y(s) = \frac{K(s+K)}{s(s^2+Ks+K)}$. No
 
 ---
 
-## 8.4 Nyquist Stability Criterion
+## Nyquist Stability Criterion
 
 With the Bode plot, we observed that we can identify the transfer function when a system is already stable. However, the Bode plot does not provide insights on how to adjust the controller so that stability is attained. The Root Locus method allows for parametrically adjusting the instability region. Complementing the Root Locus method, the Nyquist plot provides further insight on controller design and its robustness properties to parameter variations with also the phase of the transfer function appearing in the analysis (unlike the Root Locus method), to be discussed further below.
 
@@ -143,7 +143,7 @@ We will refer to this contour as a **Nyquist contour**.
 
 If there is a pole of $L(s)$ on the imaginary axis, we should carefully exclude this from our contour: to exclude these, we divert the path along a semi-circle of a very small radius $r$ around the pole in a counter clock-wise fashion (which will later be taken to be arbitrarily close to 0). The exclusion of such a pole will not make a difference in the stability analysis: we focus on the zeroes of $1 + P(s)C(s)$ in the right-half plane (as such a pole cannot make $1 + P(s)C(s) = 0$).
 
-<Theorem id="8.4.1" title="Nyquist Criterion">
+<Theorem title="Nyquist Criterion">
 Consider a closed loop system with the loop transfer function $L(s) = C(s)P(s)$. Suppose $L(s)$ has $P$ poles in the region encircled by the Nyquist contour. Let $N$ be the number of clockwise encirclements of $-1$ by $L(s)$ when $s$ encircles the Nyquist contour $\Gamma$ clock-wise (where we note that $-N$ would be the number of counter-clockwise encirclements). Then, the closed loop has $N + P$ poles in the right-half plane.
 </Theorem>
 
@@ -155,7 +155,7 @@ Note: One can alternatively trace the contours counter-clockwise and then count 
 
 The proof builds on what is known as the **principle of variation of the argument theorem**, which we state and prove next.
 
-<Theorem id="8.4.2" title="Principle of Variation of the Argument">
+<Theorem title="Principle of Variation of the Argument">
 Let $D$ be a closed region in the complex plane with $\Gamma$ its boundary. Let $f : \mathbb{C} \to \mathbb{C}$ be complex differentiable (and hence analytic) on $D$ (and on $\Gamma$) except at a finite number of poles and with a finite number of zeroes, all in the interior of $D$. Then, the change in the argument of $f$ (normalized by $2\pi$) over $\Gamma$ (known as the winding number $w_n$) is given by:
 
 $$w_n = \frac{1}{2\pi}\Delta_\Gamma \arg(f) = \frac{1}{2\pi} \int_\Gamma \frac{f'(z)}{f(z)}\, dz = Z - P,$$
@@ -245,7 +245,7 @@ The ratio between $-1$ and the point where the Nyquist plot hits the negative $x
 
 Root locus method cannot give such a strong characterization for robustness. A useful implication is the small gain theorem presented in the following subsection.
 
-### 8.4.1 System gain, passivity and the small gain theorem
+### System gain, passivity and the small gain theorem
 
 Consider a linear system with feedback, which we assume to be stable. We generalize the observation above by viewing the input as one in $L_2(\mathbb{R}; \mathbb{C})$. Consider then the **gain** of a linear system with:
 
@@ -295,7 +295,7 @@ Define a system to be **$L_2$-stable** if a bounded input, in the $L_2$-sense, l
 
 We next state a useful result on the verification of stability.
 
-<Theorem id="8.4.3" title="Small Gain Theorem">
+<Theorem title="Small Gain Theorem">
 Consider a feedback control system with closed-loop transfer function $G(s) = \frac{H_1(s)}{1 + H_1(s)H_2(s)}$, where $H_1$ and $H_2$ are stable. Suppose further that the gains of $H_1$ and $H_2$ are $\gamma_1$ and $\gamma_2$, respectively. Then, if $\gamma_1 \gamma_2 < 1$, the closed-loop system is stable.
 </Theorem>
 
@@ -309,7 +309,7 @@ The above concept does not involve phase properties, and it may be conservative 
 
 ---
 
-## 8.5 Predictive and Feedforward Control
+## Predictive and Feedforward Control
 
 In addition to stability and robustness, one may also wish to have desirable tracking and settling time properties (such as a low delay in the response). For such setups, it is often desirable to have a minimum-phase closed loop system (with no zeroes in the right half-plane). When one has a plant which is not minimum-phase, the design is often more challenging, due to the effective time delay present, as discussed in Section 7.5.
 
@@ -335,7 +335,7 @@ Some specific predictive control design methods are known as **Smith Predictor B
 
 ---
 
-## 8.5.1 The Routh-Hurwitz Stability Criterion
+## The Routh-Hurwitz Stability Criterion
 
 The root locus and Nyquist methods provide ways to analyze stability graphically. The **Routh-Hurwitz criterion** provides an algebraic test: given a polynomial (such as the characteristic polynomial of a closed-loop system), it determines whether all roots have negative real parts -- without computing the roots explicitly.
 
@@ -343,7 +343,7 @@ This is particularly useful for checking BIBO stability of a closed-loop transfe
 
 ### Necessary Condition
 
-<Theorem id="8.5.1" title="Necessary Condition for Stability">
+<Theorem title="Necessary Condition for Stability">
 For a polynomial $p(s) = a_n s^n + a_{n-1} s^{n-1} + \cdots + a_1 s + a_0$ to have all roots with negative real parts, it is necessary that all coefficients $a_i$ have the same sign and that no coefficient is zero.
 </Theorem>
 
@@ -367,7 +367,7 @@ $$b_1 = \frac{a_{n-1} \cdot a_{n-2} - a_n \cdot a_{n-3}}{a_{n-1}}, \qquad b_2 = 
 
 and similarly for subsequent rows. The table has $n + 1$ rows total.
 
-<Theorem id="8.5.2" title="Routh-Hurwitz Criterion">
+<Theorem title="Routh-Hurwitz Criterion">
 The number of roots of $p(s)$ with positive real parts equals the number of sign changes in the first column of the Routh table. In particular, the polynomial has all roots in the open left half-plane if and only if all entries in the first column are positive (assuming $a_n > 0$).
 </Theorem>
 
@@ -377,7 +377,7 @@ The number of roots of $p(s)$ with positive real parts equals the number of sign
 
 ### Worked Example
 
-<Example id="8.5.1" title="Routh-Hurwitz for a Third-Order System">
+<Example title="Routh-Hurwitz for a Third-Order System">
 Consider a closed-loop system with characteristic polynomial
 
 $$p(s) = s^3 + 6s^2 + 11s + 6.$$
@@ -404,7 +404,7 @@ The first column is: $1, 6, 10, 6$ -- all positive, so there are zero sign chang
 **Conclusion:** All roots have negative real parts. The system is stable. (Indeed, the roots are $s = -1, -2, -3$.)
 </Example>
 
-<Example id="8.5.2" title="Routh-Hurwitz with a Gain Parameter">
+<Example title="Routh-Hurwitz with a Gain Parameter">
 Consider a feedback system with loop transfer $L(s) = \frac{K}{s(s+1)(s+2)}$. The closed-loop characteristic polynomial is
 
 $$p(s) = s^3 + 3s^2 + 2s + K.$$
@@ -431,7 +431,7 @@ For stability, all first-column entries must be positive:
 
 ---
 
-## 8.6 Exercises
+## Exercises
 
 <Problem id="8.6.1" title="Inverted Pendulum Control Design">
 Consider the inverted pendulum displayed in Figure 8.3, where a torque of $u$ is applied to keep the pendulum around $\theta = 0$. The dynamics can be derived as $\frac{d^2\theta(t)}{dt^2} = \frac{g}{l}\sin(\theta(t)) + \frac{u(t)\cos(\theta(t))}{ml^2}$. Assume the coefficients $(m, l)$ are selected so that this simplifies to: $\frac{d^2\theta(t)}{dt^2} = \sin(\theta(t)) + u(t)\cos(\theta(t))$. Linearizing this system at $\theta = 0$, $\frac{d\theta}{dt} = 0$ (with approximations $\sin(\theta) \approx \theta, \cos(\theta) \approx 1$), we arrive at the linear system:

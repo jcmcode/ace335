@@ -3,7 +3,7 @@ title: "Introduction"
 chapter: 1
 ---
 
-## 1.1 Introduction
+## Introduction
 
 In a *differential equations* course, one studies quantitative and qualitative behaviours of solutions to differential equations. For such equations, under mild regularity conditions, a given initial condition (in the absence of disturbances) leads to a unique solution/output. One could generalize this to difference equations for discrete-time equations.
 
@@ -25,15 +25,15 @@ To rigorously study the Dirac Delta generalized function, which will let us defi
 
 ---
 
-## 1.2 Applications
+## Applications
 
-### 1.2.1 Applications in Control Theory
+### Applications in Control Theory
 
 In control systems, the goal is to shape the input-output behaviour by possibly utilizing feedback from system outputs under various design criteria and constraints. Commonly considered criteria are system stability (e.g. convergence to a point or a set with respect to initial state conditions, or boundedness of the output corresponding to any bounded input), reference tracking, robustness to incorrect models (unspecified system dynamics) and presence of disturbance (which may appear in the system itself or in the measurements available at the controller: that is, either as a system noise or a measurement noise), and optimal control.
 
 A common, and one of the earliest modern examples, of control systems is the thermostat-based temperature control system. In this example, $T_d$ is a desired temperature, $T_r$ is the (actual) room temperature, $h_1$ is the heat from the furnace and $h_o$ represents the heat leaked outside (or the cold air entering the house). The thermostat is the controller which decides on whether the gas valve should be turned on or off based on the desired temperature and the sensed actual room temperature; $u$ is the control input representing these turn-on or turn-off signals. The furnace is the *actuator* which maps the control input to the heat input, $h_1$, entering the system. House is the process or the system, whose output (the room temperature) is to be controlled. Often one lumps the actuator and the system (house in this case) as a single unit and calls it a *plant*. Thus, one typically considers a controller and a plant (to be controlled), in a control system together with the external inputs to the system (in this case: the desired temperature and the heat leakage).
 
-<Example id="1.1" title="Stability via Feedback Control">
+<Example title="Stability via Feedback Control">
 Consider the system
 
 $$\frac{dx}{dt} = ax(t) + u(t) + n(t)$$
@@ -65,7 +65,7 @@ The setup depicted in the thermostat example can be considered as a reference-tr
 
 Control can also be used to steer the *state* of the system from some initial condition to some final condition. If the final condition is an equilibrium point, often this task is called **stabilization**. If the goal is to steer the state to some arbitrary point in the state space, the task is called **reachability** (from an initial state) or **controllability** (with respect to a final state). A related concept is **observability**, which is a crucial concept in particular when the information available at the controller with regard to the state is perturbed by some measurement noise.
 
-### 1.2.2 Applications in Signal Processing Theory
+### Applications in Signal Processing Theory
 
 Applications in signal processing has enabled much of modern technology. Two primary applications are in filter design, which allows for estimation and denoising, and sampling theories which allow for discrete-time processing of continuous-time signals.
 
@@ -73,7 +73,7 @@ Consider a signal $x$ which is perturbed by noise $w$. A filter is a system whic
 
 Many systems in practice are continuous, but they need to be processed by computers, which inevitably have to work with discrete-time/discrete-space signals (as the ultimate language of transistors/chips are binary in terms of 0s and 1s). Therefore, one needs to first sample a continuous-time signal and work with such signals in discrete-time, before processing them, and interpolating them back to the continuous-time domain.
 
-### 1.2.3 Applications in Communications and Information Theory
+### Applications in Communications and Information Theory
 
 Modern engineering systems are typically highly interconnected with their environment which necessitates the presence of data-links between various components of a system. Typically such systems require finite representations of uncountable or large state space valued signals (in addition to discrete-time representation/approximation of continuous-time signals). These include quantization, coding and decoding of signals over communication channels (with or without feedback). Each of the individual components, such as encoders, channels and decoders, may separately be viewed as systems, though typically by the term *communication system*, we will refer to the entire ensemble mapping the source symbol and stochastic noise (in the channel), to the decoder output.
 
@@ -81,7 +81,7 @@ Many other systems, however, operate in continuous-time. An example is a classic
 
 ---
 
-## 1.3 Linearization
+## Linearization
 
 Even though the primary focus of these notes is on linear models, we will see that linearization of non-linear models, around a point of interest leads to a design method where a design based on the linear model achieves satisfactory performance for the non-linear system in a local sense to be studied later in the notes.
 
@@ -111,7 +111,7 @@ $$\frac{d\tilde{x}}{dt} = A\tilde{x} + B\tilde{u},$$
 
 as an approximate linear description of the system (1.1) at around the equilibrium point $(\bar{x}, \bar{u})$. We will observe that such a linearization is very useful in systems design.
 
-<Example id="1.2" title="Inverted Pendulum on a Cart">
+<Example title="Inverted Pendulum on a Cart">
 Consider the following example involving an inverted (non-linear) pendulum over a cart system, with masses of the pendulum and cart given with $m$ and $M$, respectively. The goal is to keep the inverted pendulum (locally) stable around $\theta = 0$ by the control acting horizontally on the cart with mass $M$.
 
 The non-linear mechanical/rotational dynamics equations can be derived as:
@@ -137,7 +137,7 @@ A remarkable implication is the following: Using some systems theoretic analysis
 
 ---
 
-## 1.4 Mathematics of Systems
+## Mathematics of Systems
 
 Given the introductory discussion presented, in the following we will first develop a rigorous study of a class of signal spaces which arise in systems theory and applications. We will then investigate signal expansions and approximations. This will also serve as an introduction to Fourier theory.
 

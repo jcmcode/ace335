@@ -9,7 +9,7 @@ This appendix presents Cauchy's integral formula and the residue theorem, which 
 
 ## B.1 Cauchy's Integral Formula
 
-<Theorem id="B.0.1" title="Cauchy's Integral Theorem">
+<Theorem title="Cauchy's Integral Theorem">
 Let $f : \mathbb{C} \to \mathbb{C}$ be analytic (complex differentiable) on and inside a simple closed contour $\Gamma$. Then,
 
 $$\oint_\Gamma f(z)\,dz = 0.$$
@@ -19,7 +19,7 @@ $$\oint_\Gamma f(z)\,dz = 0.$$
 **Intuition:** If a function is analytic everywhere inside a closed contour, then its integral around that contour vanishes. This is the fundamental result of complex analysis and is a consequence of the fact that analytic functions have no "sources" or "sinks" inside the contour.
 </Remark>
 
-<Theorem id="B.0.2" title="Cauchy's Integral Formula">
+<Theorem title="Cauchy's Integral Formula">
 Let $f$ be analytic on and inside a simple closed contour $\Gamma$ traversed in the counter-clockwise direction. Then, for any point $z_0$ inside $\Gamma$:
 
 $$f(z_0) = \frac{1}{2\pi i} \oint_\Gamma \frac{f(z)}{z - z_0}\,dz.$$
@@ -37,7 +37,7 @@ $$f^{(n)}(z_0) = \frac{n!}{2\pi i} \oint_\Gamma \frac{f(z)}{(z - z_0)^{n+1}}\,dz
 
 ## B.2 The Residue Theorem
 
-<Definition id="B.2.1" title="Residue">
+<Definition title="Residue">
 If $f$ has an isolated singularity (pole) at $z = z_0$, the **residue** of $f$ at $z_0$ is the coefficient $a_{-1}$ in the Laurent series expansion:
 
 $$f(z) = \sum_{n=-\infty}^{\infty} a_n (z - z_0)^n.$$
@@ -51,7 +51,7 @@ For a simple pole ($m = 1$):
 $$\text{Res}(f, z_0) = \lim_{z \to z_0} (z - z_0) f(z).$$
 </Definition>
 
-<Theorem id="B.2.1" title="Residue Theorem">
+<Theorem title="Residue Theorem">
 Let $f$ be analytic on and inside a simple closed contour $\Gamma$ (traversed counter-clockwise), except at a finite number of isolated singularities $z_1, z_2, \ldots, z_k$ inside $\Gamma$. Then,
 
 $$\oint_\Gamma f(z)\,dz = 2\pi i \sum_{j=1}^{k} \text{Res}(f, z_j).$$

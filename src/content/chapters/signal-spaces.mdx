@@ -7,13 +7,13 @@ In this chapter, we present a general review of signal spaces. These spaces form
 
 ---
 
-## 2.1 Normed Linear (Vector) Spaces and Metric Spaces
+## Normed Linear (Vector) Spaces and Metric Spaces
 
 <NormBalls />
 
 ### Linear Spaces
 
-<Definition id="2.1.1" title="Linear (Vector) Space">
+<Definition title="Linear (Vector) Space">
 A **linear (vector) space** $\mathbb{X}$ is a space which is closed under addition operation $+$ and a scalar multiplication operation $\cdot$, such that
 
 $$+ : \mathbb{X} \times \mathbb{X} \to \mathbb{X}$$
@@ -45,7 +45,7 @@ with the following properties (we note that we may take the scalars to be either
 
 Intuitively, a linear space is a set where you can add elements together and scale them, and these operations behave the way you would expect. This is the most basic algebraic structure we need to talk about "signals" in a mathematically precise way.
 
-<Example id="2.1" title="Examples of Linear Spaces">
+<Example title="Examples of Linear Spaces">
 **(i)** The space $\mathbb{R}^n$ with the pointwise addition and scalar multiplication is a linear space. The null vector is $\underline{0} = \begin{bmatrix} 0 & 0 & \cdots & 0 \end{bmatrix} \in \mathbb{R}^n$.
 
 **(ii)** Consider the interval $[a, b]$. The collection of real-valued continuous functions on $[a, b]$, with pointwise addition and scalar multiplication is a linear space. The null element $\underline{0}$ is the function which is identically $0$. This space is called the space of real-valued continuous functions on $[a, b]$.
@@ -61,7 +61,7 @@ forms a complex linear space. Note that the sum of polynomials is another polyno
 **(v)** The $n$-dimensional integer lattice $\mathbb{Z}^n = \{v : v = \{v_1, \cdots, v_n\} \in \mathbb{R}^n, v_k \in \mathbb{Z}, k = 1, \cdots, n\}$ with pointwise addition and scalar multiplication is **not** a linear space.
 </Example>
 
-<Definition id="2.1.2" title="Subspace">
+<Definition title="Subspace">
 A non-empty subset $M$ of a (real) linear vector space $\mathbb{X}$ is called a **subspace** of $\mathbb{X}$ if
 
 $$\alpha x + \beta y \in M, \qquad \forall x, y \in M \quad \text{and} \quad \alpha, \beta \in \mathbb{R}.$$
@@ -75,7 +75,7 @@ In particular, the null element $\underline{0}$ is an element of every subspace.
 
 ### Normed Linear Spaces
 
-<Definition id="2.1.3" title="Normed Linear Space">
+<Definition title="Normed Linear Space">
 A **normed linear space** $\mathbb{X}$ is a linear vector space on which a map from $\mathbb{X}$ to $\mathbb{R}_+$, called its **norm**, is defined such that:
 
 - $\|x\| \geq 0 \quad \forall x \in \mathbb{X}$, and $\|x\| = 0$ if and only if $x$ is the null element of $\mathbb{X}$.
@@ -91,7 +91,7 @@ The norm gives us a way to measure the "size" of a signal. Different norms measu
 
 Let for two linear spaces $\mathbb{X}$, $\mathbb{Y}$, $\Gamma(\mathbb{X}; \mathbb{Y})$ denote the set of all maps $\gamma : \mathbb{X} \to \mathbb{Y}$ such that for all $x \in \mathbb{X}$, $\gamma(x) \in \mathbb{Y}$.
 
-<Example id="2.2" title="Examples of Normed Linear Spaces">
+<Example title="Examples of Normed Linear Spaces">
 **a)** The space $C([a, b]; \mathbb{R})$ of continuous functions from $[a, b]$ to $\mathbb{R}$ with the norm $\|x\| = \max_{\{a \leq t \leq b\}} |x(t)|$ is a normed linear space.
 
 **b)** For $1 \leq p < \infty$:
@@ -113,7 +113,7 @@ This subtle difference needs to be made explicit in some applications.
 
 To show that $l_p$ defined above is a normed linear space, we need to show that $\|x + y\|_p \leq \|x\|_p + \|y\|_p$.
 
-<Theorem id="2.1.1" title="Minkowski's Inequality">
+<Theorem title="Minkowski's Inequality">
 For $x, y \in l_p(\mathbb{Z}_+; \mathbb{R})$ with $1 \leq p \leq \infty$,
 
 $$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
@@ -125,7 +125,7 @@ $$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
 
 See Exercise 2.4.2, which also studies a proof of Holder's Inequality, that is critically used in the proof of Minkowski's inequality.
 
-<Theorem id="2.1.2" title="Holder's Inequality">
+<Theorem title="Holder's Inequality">
 Let $1 \leq p, q \leq \infty$ with $1/p + 1/q = 1$. Then, for $x \in l_p(\mathbb{Z}_+; \mathbb{R})$, $y \in l_q(\mathbb{Z}_+; \mathbb{R})$,
 
 $$\sum_k x(k)y(k) \leq \|x\|_p \|y\|_q,$$
@@ -137,7 +137,7 @@ $$\sum_k x(k)y(k) \leq \|x\|_p \|y\|_q,$$
 
 ### Transformations and Continuity
 
-<Definition id="2.1.5" title="Transformation">
+<Definition title="Transformation">
 Let $X$ and $Y$ be two normed linear spaces, and let $B \subset X$ be a subset of $X$. A law (rule, relation) $T$ which relates with every element of $B$ an element in $Y$, is called a **transformation** from $X$ to $Y$ with domain $B$. The relation is often expressed as $x \mapsto y = T(x)$.
 
 If for every $y \in Y$ there is an $x$ such that $y = T(x)$, the transformation is said to be **onto** (or **surjective**). If for every element of $Y$, there is at most one $x$ such that $y = T(x)$, the transformation is said to be **one-to-one** (or **injective**). If these two properties hold simultaneously, the transformation is said to be **bijective**.
@@ -147,7 +147,7 @@ If for every $y \in Y$ there is an $x$ such that $y = T(x)$, the transformation 
 **Intuition:** A transformation is simply a rule that maps inputs to outputs -- this is the abstract notion of a "system." Surjectivity means every possible output is reachable, injectivity means distinct inputs always produce distinct outputs, and bijectivity means the mapping is perfectly reversible. These properties are essential when asking whether a system can be inverted or whether information is lost.
 </Remark>
 
-<Definition id="2.1.6" title="Linear Transformation">
+<Definition title="Linear Transformation">
 A transformation $T : X \to Y$ (or $T \in \Gamma(X; Y)$) is **linear** if for every $x_1, x_2 \in X$ and $\alpha_1, \alpha_2 \in \mathbb{R}$, we have $T(\alpha_1 x_1 + \alpha_2 x_2) = \alpha_1 T(x_1) + \alpha_2 T(x_2)$.
 </Definition>
 
@@ -155,7 +155,7 @@ A transformation $T : X \to Y$ (or $T \in \Gamma(X; Y)$) is **linear** if for ev
 **Intuition:** Linearity means the system obeys superposition: the response to a sum of inputs equals the sum of the individual responses, and scaling the input scales the output by the same factor. This is the defining property of the systems we study in this course, and it is what makes Fourier analysis so powerful -- we can decompose any input into simple components, analyze each one separately, and add the results.
 </Remark>
 
-<Definition id="2.1.7" title="Continuity">
+<Definition title="Continuity">
 A transformation $T : X \to Y$ for normed linear spaces $X, Y$ is **continuous** at $x_0 \in X$, if for every $\epsilon > 0$, $\exists \delta > 0$ such that $\|x - x_0\| \leq \delta$ implies that $\|T(x) - T(x_0)\| \leq \epsilon$ (here the norms depend on the vector spaces $X$ and $Y$). $T$ is said to be **continuous**, if it is continuous at every $x_0 \in X$.
 </Definition>
 
@@ -163,7 +163,7 @@ A transformation $T : X \to Y$ for normed linear spaces $X, Y$ is **continuous**
 **Intuition:** Continuity means that small perturbations in the input produce small perturbations in the output -- the system does not "blow up" from tiny changes. This is the mathematical formalization of robustness: a continuous system behaves predictably under small measurement errors or noise.
 </Remark>
 
-<Definition id="2.1.8" title="Sequential Continuity">
+<Definition title="Sequential Continuity">
 A transformation $T : X \to Y$ is **sequentially continuous** at $x_0 \in X$, if $x_n \to x$ implies that $T(x_n) \to T(x)$.
 </Definition>
 
@@ -171,7 +171,7 @@ A transformation $T : X \to Y$ is **sequentially continuous** at $x_0 \in X$, if
 **Intuition:** Sequential continuity says the same thing as continuity but in the language of sequences: if a sequence of inputs converges to some input, then the corresponding outputs converge to the corresponding output. This formulation is often easier to verify in practice, since you can work with concrete sequences rather than abstract $\epsilon$-$\delta$ arguments.
 </Remark>
 
-<Theorem id="2.1.3" title="Equivalence of Sequential Continuity and Continuity">
+<Theorem title="Equivalence of Sequential Continuity and Continuity">
 Sequential continuity and continuity are equivalent for normed linear spaces.
 </Theorem>
 
@@ -187,7 +187,7 @@ We need to prove two directions:
 **(ii) Continuity is implied by sequential continuity:** Equivalently, not being continuous implies not being sequentially continuous. Let $T$ not continuous at $x_0$. This implies that $\exists \epsilon > 0$ with the property that for every $\delta > 0$, $\exists z_\delta : \|z_\delta - x_0\| \leq \delta$ and $\|T(z_\delta) - T(x_0)\| \geq \epsilon$. Now take $\delta = \frac{1}{n}$, $n \in \mathbb{N}$, and $z_\delta =: x_n$. It follows then that $\exists x_n$ with $\|x_n - x_0\| \leq \frac{1}{n}$ but $\|T(x_n) - T(x_0)\| \geq \epsilon$; that is $x_n \to x_0$ but $T(x_n) \nrightarrow T(x_0)$.
 </Proof>
 
-<Theorem id="2.1.4" title="Continuity of Linear Transformations">
+<Theorem title="Continuity of Linear Transformations">
 If the transformation $T$ is a linear one, then continuity is equivalent to being continuous at the null element.
 </Theorem>
 
@@ -203,7 +203,7 @@ For some applications, sequential continuity may be more convenient to work with
 
 ### Metric Spaces
 
-<Definition id="2.1.9" title="Metric Spaces">
+<Definition title="Metric Spaces">
 A **metric** defined on a set $X$, is a function $d : X \times X \to \mathbb{R}$ such that:
 
 - $d(x, y) \geq 0, \quad \forall x, y \in X$ and $d(x, y) = 0$ if and only if $x = y$.
@@ -221,7 +221,7 @@ A normed linear space is also a metric space, with metric $d(x, y) = \|x - y\|$.
 
 ### Banach Spaces
 
-<Definition id="2.1.10" title="Cauchy Sequence">
+<Definition title="Cauchy Sequence">
 A sequence $\{x_n\}$ in a normed space $X$ is **Cauchy** if for every $\epsilon > 0$, there exists an $N$ such that $\|x_n - x_m\| \leq \epsilon$, for all $n, m \geq N$.
 </Definition>
 
@@ -231,7 +231,7 @@ A sequence $\{x_n\}$ in a normed space $X$ is **Cauchy** if for every $\epsilon 
 
 An important observation on Cauchy sequences is that every converging sequence is Cauchy, however, not all Cauchy sequences are convergent: This is because the limit might not live in the original space where the sequence elements take values from. This motivates the property of completeness.
 
-<Definition id="2.1.11" title="Banach Spaces">
+<Definition title="Banach Spaces">
 A normed linear space $X$ is **complete**, if every Cauchy sequence in $X$ has a limit in $X$. A complete normed linear space is called **Banach**.
 </Definition>
 
@@ -247,7 +247,7 @@ A subset of a Banach space $X$ is complete if and only if it is closed. If the s
 
 The real space $\mathbb{R}$ with the usual distance $d(x, y) = |x - y|$ is a complete space.
 
-<Theorem id="2.1.5" title="Completeness of Function Spaces">
+<Theorem title="Completeness of Function Spaces">
 **a)** Let $C([0, 1]; \mathbb{R})$ be the space of continuous functions in $\Gamma([0, 1]; \mathbb{R})$ with the supremum norm
 
 $$\|f\| = \sup_{t \in [0, 1]} |f(t)|.$$
@@ -307,7 +307,7 @@ As $x \notin C([0, 1]; \mathbb{R})$, the space is not complete.
 
 This theorem illustrates a crucial point: the same set of functions can be complete or incomplete depending on the norm. The supremum norm is "strong enough" to prevent discontinuous limits, while the $L_1$ norm is not.
 
-<Theorem id="2.1.6" title="Completeness of lp Spaces">
+<Theorem title="Completeness of lp Spaces">
 $l_p(\mathbb{Z}_+; \mathbb{R}) := \left\{x \in \Gamma(\mathbb{Z}_+; \mathbb{R}) : \|x\|_p = \left(\sum_{i \in \mathbb{Z}_+} |x(i)|^p\right)^{1/p} < \infty\right\}$ is a Banach space for all $1 \leq p < \infty$. The same holds for $p = \infty$.
 </Theorem>
 
@@ -361,11 +361,11 @@ Hence, $\|x_n - x_*\|_p \to 0$.
 For $p = \infty$, the analysis follows closely the steps above and is more direct.
 </Proof>
 
-<Remark id="2.3">
+<Remark >
 A brief remark on some typical notations: When the range space is $\mathbb{R}$, the notation $l_p(\Omega)$ denotes $l_p(\Omega; \mathbb{R})$ for a discrete-time index set $\Omega$ and likewise for a continuous-time index set $\Omega$, $L_p(\Omega)$ denotes $L_p(\Omega; \mathbb{R})$.
 </Remark>
 
-<Definition id="2.1.4" title="Convergence">
+<Definition title="Convergence">
 In a normed linear space $\mathbb{X}$, an infinite sequence of elements $\{x_n\}$ **converges** to an element $x$, if the sequence $\{\|x_n - x\|\}$ converges to zero.
 </Definition>
 
@@ -375,9 +375,9 @@ In a normed linear space $\mathbb{X}$, an infinite sequence of elements $\{x_n\}
 
 ---
 
-## 2.2 Hilbert Spaces
+## Hilbert Spaces
 
-<Definition id="2.2.1" title="Pre-Hilbert Space">
+<Definition title="Pre-Hilbert Space">
 A **pre-Hilbert space** $X$ is a linear vector space on which an **inner product** $\langle \cdot, \cdot \rangle : X \times X \to \mathbb{C}$ is defined, where the following are satisfied:
 
 1. $\langle x, y \rangle = \langle y, x \rangle^*$ (the superscript denotes the complex conjugate) (we will also use $\overline{\langle y, x \rangle}$ to denote the complex conjugate)
@@ -392,7 +392,7 @@ A **pre-Hilbert space** $X$ is a linear vector space on which an **inner product
 
 Thus, corresponding to each pair $(x, y) \in X \times X$ the inner product $\langle x, y \rangle$ is a scalar. The inner product gives us a notion of "angle" between signals and allows us to define orthogonality -- concepts that are essential for signal decomposition and optimal approximation.
 
-<Theorem id="2.2.1" title="Cauchy-Schwarz Inequality">
+<Theorem title="Cauchy-Schwarz Inequality">
 For $x, y \in X$,
 
 $$|\langle x, y \rangle| \leq \sqrt{\langle x, x \rangle}\sqrt{\langle y, y \rangle},$$
@@ -420,7 +420,7 @@ which can be proven by an application of the Cauchy-Schwarz inequality.
 
 In a given problem or application, the inner-product is to be defined. The inner product, in the special case of $\mathbb{R}^N$, is typically the usual inner vector product; hence $\mathbb{R}^N$ with the usual inner-product is a pre-Hilbert space.
 
-<Definition id="2.2.2" title="Hilbert Spaces">
+<Definition title="Hilbert Spaces">
 A complete pre-Hilbert space, is called a **Hilbert space**.
 </Definition>
 
@@ -434,7 +434,7 @@ The space $l_2(\mathbb{Z}_+; \mathbb{R})$ is a Hilbert space with $\langle x, y 
 
 Likewise, the space $L_2(\mathbb{R}_+; \mathbb{R})$ is a Hilbert space with $\langle x, y \rangle = \int_{t \in \mathbb{R}_+} x(t)y(t)\,dt$ for $x, y \in L_2(\mathbb{R}_+; \mathbb{R})$ and its norm is $\|x\| = \sqrt{\langle x, x \rangle}$.
 
-<Theorem id="2.2.2" title="Continuity of Inner Product">
+<Theorem title="Continuity of Inner Product">
 The inner product is continuous: if $x_n \to x$, and $y_n \to y$, then $\langle x_n, y_n \rangle \to \langle x, y \rangle$ for $x_n, y_n$ in a Hilbert space.
 </Theorem>
 
@@ -442,7 +442,7 @@ The inner product is continuous: if $x_n \to x$, and $y_n \to y$, then $\langle 
 **Intuition:** Continuity of the inner product means that if two sequences of signals converge, then their "correlation" (inner product) converges to the correlation of the limits. This is practically important because it guarantees that Fourier coefficients, projections, and energy computations are stable under approximation.
 </Remark>
 
-### 2.2.1 Why are we interested in Hilbert Spaces?
+### Why are we interested in Hilbert Spaces?
 
 Hilbert spaces have several very useful properties:
 
@@ -453,7 +453,7 @@ Hilbert spaces have several very useful properties:
 
 ### Orthogonality and the Projection Theorem
 
-<Proposition id="2.2.1" title="Orthogonality">
+<Proposition title="Orthogonality">
 In a Hilbert space $X$, two vectors $x, y \in X$ are **orthogonal** if $\langle x, y \rangle = 0$. A vector $x$ is orthogonal to a set $S \subset X$ if $\langle x, y \rangle = 0 \quad \forall y \in S$.
 </Proposition>
 
@@ -465,7 +465,7 @@ By the Pythagorean theorem, for $x, y$ orthogonal, we have that $\|x + y\|^2 = \
 
 A set $A \subset X$ is **closed** if $A$ contains the limit of any converging sequence taking values from $A$.
 
-<Theorem id="2.2.3" title="Projection Theorem">
+<Theorem title="Projection Theorem">
 Let $H$ be a Hilbert space and $B$ a subspace of $H$. Consider the problem:
 
 $$\inf_{m \in B} \|x - m\| \qquad \text{(2.5)}$$
@@ -543,7 +543,7 @@ $$\delta = \lim_{n \to \infty} \|x - m_n\| = \|x - \tilde{m}\|$$
 And therefore $\tilde{m}$ is a minimizing vector. By Part (i), this has to be the only minimizing vector in $B$.
 </Proof>
 
-<Example id="2.2.2" title="Projection Theorem Application">
+<Example title="Projection Theorem Application">
 Consider the minimization of
 
 $$\int_{-1}^{1} (t^n - m(t))^2\,dt,$$
@@ -563,13 +563,13 @@ $$m \in M := \{f : f \in L_2([-1, 1]; \mathbb{R}),\, f(t) = \alpha + \beta t + \
 
 ---
 
-## 2.3 Approximations and Signal Expansions
+## Approximations and Signal Expansions
 
 <ProjectionVisualization />
 
-### 2.3.1 Orthogonality
+### Orthogonality
 
-<Definition id="2.3.1" title="Orthogonal and Orthonormal Sets">
+<Definition title="Orthogonal and Orthonormal Sets">
 A set of vectors in a Hilbert space $S$ is **orthogonal** if all elements of this set are orthogonal to each other. The set is **orthonormal** if each vector in this set has norm equal to one.
 </Definition>
 
@@ -585,7 +585,7 @@ that is, the linear span of $\{x_k, 1 \leq k \leq n\}$ is equal to the linear sp
 
 Recall that a set of vectors $\{e_i\}$ is linearly dependent if there exists a complex-valued vector $\mathbf{c} = \{c_1, c_2, \ldots, c_N\}$ such that $\sum_i^N c_i e_i = 0$ with at least one coefficient $c_i \neq 0$.
 
-<Proposition id="2.3.1" title="Linear Independence of Orthonormal Vectors">
+<Proposition title="Linear Independence of Orthonormal Vectors">
 A sequence of orthonormal vectors is a linearly independent collection.
 </Proposition>
 
@@ -595,7 +595,7 @@ A sequence of orthonormal vectors is a linearly independent collection.
 
 We say that a sequence $\sum_{i=1}^{n} \epsilon_i e_i$ converges to $x$, if for every $\epsilon > 0$ there exists $N \in \mathbb{N}$ such that $\|x - \sum_{i=1}^{n} \epsilon_i e_i\| < \epsilon$, for all $n \geq N$.
 
-<Theorem id="2.3.1" title="Convergence of Orthonormal Expansions">
+<Theorem title="Convergence of Orthonormal Expansions">
 Let $\{e_i\}$ be a sequence of orthonormal vectors in a Hilbert space $H$. Let $\{x_n = \sum_{i=1}^{n} \epsilon_i e_i\}$ be a sequence of vectors in $H$. The sequence converges to some vector $\bar{x}$ if and only if
 
 $$\sum_{i=1}^{\infty} |\epsilon_i|^2 < \infty.$$
@@ -609,9 +609,9 @@ In this case, we have that $\langle \bar{x}, e_i \rangle = \epsilon_i$.
 
 This theorem provides the fundamental link between Hilbert space theory and signal representation: a signal can be expanded in an orthonormal basis if and only if the sum of squared coefficients is finite -- which is exactly the condition that the signal has finite energy.
 
-### 2.3.2 Separable Hilbert Spaces and Countable Expansions
+### Separable Hilbert Spaces and Countable Expansions
 
-<Definition id="2.3.2" title="Dense Subset">
+<Definition title="Dense Subset">
 Given a normed linear space $X$, a subset $D \subset X$ is **dense** in $X$, if for every $x \in X$, and each $\epsilon > 0$, there exists a member $d \in D$ such that $\|x - d\| \leq \epsilon$.
 </Definition>
 
@@ -619,7 +619,7 @@ Given a normed linear space $X$, a subset $D \subset X$ is **dense** in $X$, if 
 **Intuition:** A dense subset can approximate any element in the space to arbitrary precision. Think of how rational numbers are dense in the reals -- every real number can be approximated as closely as you like by a rational. Similarly, saying that polynomials are dense in $L_2$ means any square-integrable signal can be approximated arbitrarily well by a polynomial.
 </Remark>
 
-<Definition id="2.3.3" title="Countable Set">
+<Definition title="Countable Set">
 A set is **countable** if either it has finitely many elements or there is a one-to-one correspondence between the set and the set $\mathbb{N}$ of natural numbers (which would then be an enumeration / counting map).
 </Definition>
 
@@ -629,7 +629,7 @@ A set is **countable** if either it has finitely many elements or there is a one
 
 Examples of countable spaces are finite sets, the set $\mathbb{Z}$ of integers, and the set $\mathbb{Q}$ of rational numbers. An example of uncountable sets is the set $\mathbb{R}$ of real numbers.
 
-<Theorem id="2.3.2" title="Countability Properties">
+<Theorem title="Countability Properties">
 **(a)** A countable union of countable sets is countable.
 
 **(b)** Cartesian product of finitely many countable sets is countable.
@@ -645,7 +645,7 @@ Examples of countable spaces are finite sets, the set $\mathbb{Z}$ of integers, 
 
 Cantor's diagonal argument and the triangular enumeration are important steps in proving the theorem above.
 
-<Definition id="2.3.4" title="Separable Space">
+<Definition title="Separable Space">
 A space $X$ is **separable**, if it contains a countable dense set.
 </Definition>
 
@@ -655,7 +655,7 @@ A space $X$ is **separable**, if it contains a countable dense set.
 
 Separability states that it suffices to work with a countable set, when a set is uncountable, for computational purposes. Examples of separable sets are $\mathbb{R}$, and the set of continuous and bounded functions on a compact set metrized with the maximum distance between the functions.
 
-<Theorem id="2.3.3" title="Countability of Orthonormal Systems in Separable Spaces">
+<Theorem title="Countability of Orthonormal Systems in Separable Spaces">
 Let $H$ be a separable Hilbert space. Then, every orthonormal system of vectors in $H$ has a finite or countably infinite number of elements.
 </Theorem>
 
@@ -677,7 +677,7 @@ $$\sqrt{2} - \frac{1}{\sqrt{2}} \leq \|e_\beta - x_{k_\alpha}\|$$
 Therefore, for every $x_{\alpha_k}$ in $M$ there is one and only one $e_\alpha$ which has a distance strictly less than $\frac{1}{\sqrt{2}}$. Thus, we can associate with every element in $\{e_\alpha, \alpha \in \mathcal{A}\}$ a unique element in the countable set $M \subset D$. Thus, the set $\{e_\alpha\}$ is countable.
 </Proof>
 
-<Definition id="2.3.5" title="Complete Orthonormal Sequence">
+<Definition title="Complete Orthonormal Sequence">
 An orthonormal sequence in a Hilbert space $H$ is **complete** if the only vector in $H$ which is orthogonal to each of the vectors in the sequence is the null vector.
 </Definition>
 
@@ -685,7 +685,7 @@ An orthonormal sequence in a Hilbert space $H$ is **complete** if the only vecto
 **Intuition:** Completeness of an orthonormal sequence means there is "no signal left over" that the basis misses. If a signal is orthogonal to every basis vector, it must be zero. This is the condition that distinguishes a true basis (which can represent everything) from a partial set (which can only represent signals in a subspace).
 </Remark>
 
-<Theorem id="2.3.4" title="Separability and Complete Orthonormal Sequences">
+<Theorem title="Separability and Complete Orthonormal Sequences">
 A Hilbert space $H$ contains a complete orthonormal sequence (that is, a countable collection of such vectors) if and only if it is separable.
 </Theorem>
 
@@ -730,7 +730,7 @@ Since for every $\epsilon$ such an approximation can be made by some element in 
 
 The proof above also showed the following result:
 
-<Theorem id="2.3.5" title="Basis Expansion in Hilbert Spaces">
+<Theorem title="Basis Expansion in Hilbert Spaces">
 In a Hilbert space $H$, a complete orthonormal sequence $\{e_n, n \in \mathbb{N}\}$ defines a **basis** in the sense that for any $x \in H$, we have
 
 $$x = \lim_{N \to \infty} \sum_{k=1}^{N} \langle x, e_k \rangle e_k$$
@@ -742,7 +742,7 @@ $$x = \lim_{N \to \infty} \sum_{k=1}^{N} \langle x, e_k \rangle e_k$$
 
 This is the fundamental representation theorem for signals in Hilbert spaces. Every signal can be decomposed into a (possibly infinite) sum of orthonormal basis vectors, with coefficients given by inner products. This is the abstract framework underlying Fourier series, wavelet expansions, and many other signal representations.
 
-### 2.3.3 Separability of $l_2$ and $L_2$ spaces
+### Separability of $l_2$ and $L_2$ spaces
 
 In view of Theorem 2.3.4, the following result builds on the fact that the sequence of orthonormal vectors
 
@@ -752,7 +752,7 @@ is a countable complete orthonormal set in $l_2(\mathbb{Z}_+; \mathbb{R})$: Note
 
 $$\langle v, e_n \rangle = 0 \quad \forall n \in \mathbb{Z}_+ \implies \|v\| = 0.$$
 
-<Theorem id="2.3.6" title="Separability of l2">
+<Theorem title="Separability of l2">
 The Hilbert space $l_2(\mathbb{Z}_+; \mathbb{R})$ with inner product
 
 $$\langle h_1, h_2 \rangle = \sum_{n \in \mathbb{Z}_+} h_1(n) h_2(n),$$
@@ -766,7 +766,7 @@ is separable.
 
 Next, we will show that $L_2([a, b]; \mathbb{R})$ is separable for $a, b \in \mathbb{R}$. To establish this result, we will review some useful facts.
 
-<Theorem id="2.3.7" title="Bernstein-Weierstrass' Theorem">
+<Theorem title="Bernstein-Weierstrass' Theorem">
 Any function in $C([0, 1]; \mathbb{R})$ can be approximated arbitrarily well by a polynomial under the supremum norm.
 </Theorem>
 
@@ -790,7 +790,7 @@ $$E\left[f\left(\frac{1}{N}\sum_{k=1}^{N} X_k\right)\right] \to f(t),$$
 where this holds uniformly over $t \in [0, 1]$. This expectation operation defines a polynomial on $[0, 1]$.
 </Proof>
 
-<Theorem id="2.3.8" title="Density of Continuous Functions in L2">
+<Theorem title="Density of Continuous Functions in L2">
 The set $C([0, 1]; \mathbb{R})$, of continuous functions, is dense in $L_2([0, 1]; \mathbb{R})$.
 </Theorem>
 
@@ -806,7 +806,7 @@ $$\lim_{N \to \infty} \int_{t \in [0,1]} |f(t) - \min(N, f(t))|^2\,dt = 0.$$
 This argument follows from the fact that $|f(t) - \min(N, f(t))|^2 \leq f^2(t)$, and the dominated convergence theorem due to the fact that $f^2(t)$ is integrable. Thus, for any $\epsilon$, a bounded function can be used to approximate $f$. For such a function, the method presented above can be used to establish the denseness of continuous functions.
 </Proof>
 
-<Theorem id="2.3.9" title="Separability of L2([0,1]; R)">
+<Theorem title="Separability of L2([0,1]; R)">
 The space $L_2([0, 1]; \mathbb{R})$ is separable.
 </Theorem>
 
@@ -828,7 +828,7 @@ Thus, Bernstein polynomials are dense in $C([0, 1])$, but these are not orthogon
 For $L_2([0, 1]; \mathbb{R})$, there exist further complete orthonormal sequences, to be discussed shortly.
 </Proof>
 
-<Theorem id="2.3.10" title="Separability of L2 on the Positive Reals">
+<Theorem title="Separability of L2 on the Positive Reals">
 $L_2(\mathbb{R}_+; \mathbb{R})$ is separable.
 </Theorem>
 
@@ -842,7 +842,7 @@ Consider the set of functions: $F_K = \{g : g(x) = f(x)1_{\{|x| \leq K\}}, f \in
 
 Two further results:
 
-<Theorem id="2.3.11" title="Density of L2 in L1">
+<Theorem title="Density of L2 in L1">
 The set $L_2([1, \infty); \mathbb{R})$ is dense in $L_1([1, \infty); \mathbb{R})$.
 </Theorem>
 
@@ -854,7 +854,7 @@ The set $L_2([1, \infty); \mathbb{R})$ is dense in $L_1([1, \infty); \mathbb{R})
 Let $g \in L_1([1, \infty); \mathbb{R})$. Let $g_K(t) = g(t)1_{\{|t| \leq K\}}$, $t \in \mathbb{R}$. It follows that $g_K \in L_2([1, \infty); \mathbb{R})$ and $\|g - g_K\|_1 \leq \epsilon$.
 </Proof>
 
-<Theorem id="2.3.12" title="Density of Continuous Functions with Compact Support">
+<Theorem title="Density of Continuous Functions with Compact Support">
 Let $C_c$ denote the space of continuous functions with compact support. $C_c$ is dense in $L_1(\mathbb{R}; \mathbb{R})$.
 </Theorem>
 
@@ -868,7 +868,7 @@ Recall first that the support of a function $f$ is defined as the closure of the
 **The above is also important in that, it shows that in $L_p(\mathbb{R}_+), 1 \leq p < \infty$, the mass of a function cannot escape to infinity. We will revisit this important characteristic occasionally in particular while discussing Fourier transforms.**
 </Proof>
 
-### 2.3.4 Signal expansions in $L_2([a, b]; \mathbb{R})$ or $L_2([a, b]; \mathbb{C})$: Fourier, Haar and Polynomial Bases
+### Signal expansions in $L_2([a, b]; \mathbb{R})$ or $L_2([a, b]; \mathbb{C})$: Fourier, Haar and Polynomial Bases
 
 #### Fourier Signals as Basis Vectors and Fourier Series
 
@@ -904,7 +904,7 @@ and for $n \in \mathbb{Z}_+$, $k \in \{0, 1, 2, \ldots, 2^n - 1\}$,
 
 $$\Phi_{n,k}(x) = \begin{cases} 2^{n/2}, & \text{if } k2^{-n} \leq x < (k + 1/2)2^{-n} \\ -2^{n/2}, & \text{if } (k + 1/2)2^{-n} \leq x < (k+1)2^{-n} \\ 0 & \text{else} \end{cases} \qquad \text{(2.15)}$$
 
-<Theorem id="2.3.13" title="Completeness of the Haar System">
+<Theorem title="Completeness of the Haar System">
 The (Haar) set of vectors
 
 $$\left\{\Psi_{0,0}, \Phi_{n,k}, n \in \mathbb{Z}_+, k \in \{0, 1, 2, \ldots, 2^n - 1\}\right\}$$
@@ -918,13 +918,13 @@ is a complete orthonormal sequence in $L_2([0, 1]; \mathbb{R})$.
 
 The important observation to note here is that, different expansions might be suited for different engineering applications: for instance Haar series are occasionally used in image processing with certain *edge* behaviours, whereas Fourier expansion is extensively used in speech processing and communications theoretic applications.
 
-### 2.3.5 Approximations
+### Approximations
 
 Approximations allow us to represent data using finitely many vectors. The basis expansions studied above can be used to obtain the best approximation of a signal up to finitely many terms to be used in an approximation: This can be posed as a projection problem, and we have seen that the best approximation is one in which the approximation error is orthogonal to all the vectors used in the approximation (defining an approximation subspace).
 
 ---
 
-## 2.4 Exercises
+## Exercises
 
 ### Exercise 2.4.1
 

@@ -30,7 +30,7 @@ The extra freedom in choosing $\sigma$ or $r$ is what lets these transforms hand
 
 ---
 
-## 7.1 Introduction
+## Introduction
 
 The powerful tools of Fourier transforms do not directly generalize to signals which are not square integrable. Laplace and Z-transforms allow for the generalization of the machinery developed for *Fourier transformable* signals to a more general class of signals. For example, applications in control systems often require the design of control policies/laws which may turn an open-loop unstable system into a stable system; for studying such unstable signals it is essential to expand the class of signals which can be studied using frequency domain methods. Furthermore, one-sided Laplace and Z-transforms will be seen to be useful in studying systems which have non-zero initial conditions.
 
@@ -49,7 +49,7 @@ A signal is said to be of **at-most-exponential growth** if there exist real num
 - **For BIBO stability**: the ROC must include the **imaginary axis** $s = j\omega$ (Laplace) or the **unit circle** $|z| = 1$ (Z-transform). This is because stability requires the Fourier transform to exist, and Fourier is the special case on those curves.
 </Remark>
 
-### 7.1.1 The Two-sided Laplace Transform
+### The Two-sided Laplace Transform
 
 The two-sided Laplace transform of a continuous-time signal $x$ is defined through the pointwise relation:
 
@@ -73,7 +73,7 @@ $$X(s) = \int_{-\infty}^{\infty} x(t) \, e^{-st} \, dt, \quad s = \sigma + j\ome
 - **The Fourier transform is the special case $\sigma = 0$**, i.e., evaluating $X(s)$ along the imaginary axis $s = j\omega$
 </Remark>
 
-### 7.1.2 The Two-sided Z-Transform
+### The Two-sided Z-Transform
 
 <ROCVisualization type="z" />
 
@@ -99,7 +99,7 @@ $$X(z) = \sum_{n \in \mathbb{Z}} x(n) \, z^{-n}, \quad z = r e^{j\omega}$$
 - **The DCFT (Fourier) is the special case $|z| = 1$**, i.e., evaluating $X(z)$ on the unit circle $z = e^{j\omega}$
 </Remark>
 
-### 7.1.3 The One-sided Laplace Transform
+### The One-sided Laplace Transform
 
 The one-sided Laplace transform of a continuous-time signal is defined through the pointwise relation:
 
@@ -115,7 +115,7 @@ The set $\{s \in \mathbb{C} : \int_{t \in \mathbb{R}_+} |x(t)e^{-st}| < \infty\}
 **One-sided vs. two-sided:** The one-sided Laplace transform only integrates over $t \ge 0$. This is equivalent to applying the two-sided transform to $x(t) \cdot 1_{\{t \ge 0\}}$. The key advantage is that it naturally handles **initial conditions** -- when you apply the differentiation property, the boundary term $x(0)$ appears explicitly, which is exactly what you need for solving differential equations with given initial values.
 </Remark>
 
-### 7.1.4 The One-sided Z-Transform
+### The One-sided Z-Transform
 
 The one-sided Z-transform of a discrete-time signal is defined through the pointwise relation:
 
@@ -133,9 +133,9 @@ The set $\{z \in \mathbb{C} : \sum_{n \in \mathbb{Z}_+} |x(n) z^{-n}| < \infty\}
 
 ---
 
-## 7.2 Properties
+## Properties
 
-### 7.2.1 Linearity
+### Linearity
 
 Provided that $z$ is in the ROC for both of the signals $x$ and $y$:
 
@@ -143,7 +143,7 @@ $$(\mathcal{Z}(x + y))(z) = (\mathcal{Z}(x))(z) + (\mathcal{Z}(y))(z)$$
 
 This property applies for the other transforms as well.
 
-### 7.2.2 Convolution
+### Convolution
 
 Provided that $z$ is in the ROC for both of the signals $x$ and $y$:
 
@@ -151,7 +151,7 @@ $$(\mathcal{Z}(x * y))(z) = (\mathcal{Z}(x))(z)(\mathcal{Z}(y))(z)$$
 
 This property applies for the other transforms as well.
 
-### 7.2.3 Shift Property
+### Shift Property
 
 **Z-transform (two-sided).** Let $y(n) = x(n+m)$, then
 
@@ -173,7 +173,7 @@ $$(\mathcal{L}(y))(s) = (\mathcal{L}(x))(s) e^{-s\theta}$$
 
 $$(\mathcal{L}_+(y))(s) = (\mathcal{L}_+(x))(s) e^{-s\theta}$$
 
-### 7.2.4 Converse Shift Property
+### Converse Shift Property
 
 **Z-transform.** Let $y(n) = x(n) a^n 1_{\{n \ge 0\}}$, then
 
@@ -187,7 +187,7 @@ $$(\mathcal{L}(y))(s) = (\mathcal{L}(x))(s - a),$$
 
 provided that $s - a \in ROC$ for $x$.
 
-### 7.2.5 Differentiation Property (in time domain)
+### Differentiation Property (in time domain)
 
 Let $D(x)$ denote $\frac{dx}{dt}$ (assumed to exist), and let $x(t) = 0$ for $t \le b$ some $b \in \mathbb{R}$ and that $|x(t)| \le Me^{at}$. Then,
 
@@ -197,7 +197,7 @@ $$\mathcal{L}_+(Dx)(s) = s\mathcal{L}_+(x)(s) - x(0),$$
 
 for $\text{Re}\{s\} > a$.
 
-### 7.2.6 Converse Differentiation
+### Converse Differentiation
 
 **Z-transform.** Suppose that $\limsup_{n \to \infty} |x(n)|^{(1/n)} \le R$ for some $R \in \mathbb{R}$. This implies that $\{z : |z| > R\}$ is in the ROC. To see this one should note that for every $\delta > 0$, there exists $N_\delta$ such that for $n > N_\delta$ we have $|x(n)|^{(1/n)} < R + \delta$. Then, take $\delta$ to be less than $|z| - R$ for any given $|z| > R$.
 
@@ -273,11 +273,11 @@ Since $\sum_{k=0}^{\infty} \frac{(-ht)^k}{(k+1)!} \le \sum_{k=0}^{\infty} \frac{
 $$\frac{d}{ds}X(s) = \int_{t \ge 0} -tx(t)e^{-st}\, dt = \mathcal{L}_+\{(-tx(t))\}(s).$$
 </Proof>
 
-<Remark id="7.1">
+<Remark >
 Note that for $\mathcal{F}_{CC}$, a more subtle argument is needed for pushing the derivative inside the integration in (6.3) via applying Theorem A.2.1 to imaginary and real parts of an exponential separately. For the Z and Laplace transforms above, we are using the liberty of the region of convergence being outside the critical curves/lines (as in $|z| > R$).
 </Remark>
 
-### 7.2.7 Scaling
+### Scaling
 
 If $y(t) = x(\alpha t)$, then
 
@@ -285,7 +285,7 @@ $$\mathcal{L}(y)(s) = \frac{1}{|\alpha|} \mathcal{L}(x)\Big(\frac{s}{\alpha}\Big
 
 provided that $\frac{s}{\alpha} \in ROC$ for $x$.
 
-### 7.2.8 Initial Value Theorem
+### Initial Value Theorem
 
 **Discrete-time.** Let $x(n) \le Ma^n$ for all $n \in \mathbb{Z}$ and for some $M, a \in \mathbb{R}$. Then,
 
@@ -299,7 +299,7 @@ $$\lim_{s \to \infty, \text{Re}\{s\} > a} sX_+(s) = x(0),$$
 
 for $\text{Re}\{s\} > a$. The proof of this result follows from the differentiation property (in time domain) and an application of the dominated convergence theorem (see Theorem A.1.5) if $\text{Re}(s) \to \infty$ or the Riemann-Lebesgue Lemma (see Theorem 5.3.3) if $\text{Im}(s) \to \infty$ but the real part does not converge to infinity.
 
-### 7.2.9 Final Value Theorem
+### Final Value Theorem
 
 **Continuous-time.** If $\lim_{t \to \infty} x(t) =: M < \infty$, then
 
@@ -333,7 +333,7 @@ The proof follows from the same arguments used in the proof above for the Laplac
 
 ---
 
-## 7.8 Key Properties Reference
+## Key Properties Reference
 
 This section collects the most important transform properties side by side for quick reference. For each property, we give the Laplace and Z-transform versions, a plain-English description, and when you would typically use it.
 
@@ -410,7 +410,7 @@ This section collects the most important transform properties side by side for q
 
 ---
 
-## 7.3 Computing the Inverse Transforms
+## Computing the Inverse Transforms
 
 There are usually three methods that can be applied depending on a particular problem.
 
@@ -424,7 +424,7 @@ $$\mathcal{L}(e^{at} 1_{t \ge 0})(s) = \frac{1}{s - a}$$
 
 with $s \in \{s : \text{Re}\{s\} > a\}$, together with the properties we discussed above. One needs to pay particular attention to the regions of convergence: for example both of the signals $x_1(t) = e^{at}1_{\{t \ge 0\}}$ and $x_2(t) = -e^{at}1_{\{t < 0\}}$ have their Laplace transforms as $\frac{1}{s-a}$, but the first one is defined for $\text{Re}\{s\} > a$ and the second one for $\text{Re}\{s\} < a$.
 
-<Example id="7.2" title="Inverse Z-Transform via Partial Fractions">
+<Example title="Inverse Z-Transform via Partial Fractions">
 Compute the inverse transform of $X(z) = \frac{1}{z^2 - 1}$ where the region of convergence is defined to be $\{z : |z| > 1\}$. You may want to first write $X(z) = z^{-2} \frac{1}{1 - z^{-2}}$.
 </Example>
 
@@ -444,7 +444,7 @@ However, for applications considered in this course, the partial fraction expans
 
 ---
 
-## 7.4 Systems Analysis using the Laplace and the Z Transforms
+## Systems Analysis using the Laplace and the Z Transforms
 
 For a given convolution system, the property that if $u$ is an input, $h$ is the impulse response and $y$ the output
 
@@ -466,7 +466,7 @@ As with the complex harmonics, for a continuous-time convolution system with inp
 
 From these relationships, often one can often compute the transfer functions directly.
 
-<Example id="7.3" title="Moving Average System">
+<Example title="Moving Average System">
 Let a convolution system (which defines a moving-average system) be defined with the relation
 
 $$y(t) = \frac{1}{T_1 + T_2} \int_{t - T_1}^{t + T_2} u(\tau)\, d\tau$$
@@ -482,7 +482,7 @@ Besides being able to compute the impulse response and transfer functions for su
 
 ---
 
-## 7.5 Causality, Stability and Minimum-Phase Systems
+## Causality, Stability and Minimum-Phase Systems
 
 Recall that a convolution system is **causal** if $h(n) = 0$ for $n < 0$. This implies that if $r \in \mathbb{R}_+$ is in the region of convergence, so is $R$ for any $R > r$. Therefore, the region of convergence must contain the entire area outside some circle if it is non-empty.
 
@@ -530,13 +530,13 @@ Thus, non-minimum-phase systems have higher delay properties in their impulse re
 
 ---
 
-## 7.6 Initial Value Problems using the Laplace and Z Transforms
+## Initial Value Problems using the Laplace and Z Transforms
 
 The one-sided Laplace and Z transforms are very useful in finding solutions to differential equations or difference equations with initial conditions.
 
 ---
 
-## 7.7 Exercises
+## Exercises
 
 <Problem id="7.7.1" title="Laplace and Z-Transform Computations">
 a) Compute the (two-sided) Z-transform of

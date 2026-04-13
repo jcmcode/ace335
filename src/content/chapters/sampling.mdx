@@ -5,15 +5,15 @@ chapter: 10
 
 One important requirement for signal transmission and storage is the need for discretization of the signal, both in time-index sets and in signal-range sets. The former is called sampling; the latter is called quantization. In the following, we discuss sampling.
 
-## 10.1 The Sampling Theorem
+## The Sampling Theorem
 
 Samplers perform the discretization in the time-index. We discuss a very important theorem in the following.
 
 <SamplingDemo />
 
-### 10.1.1 Sampling of a Continuous-Time (CT) Signal
+### Sampling of a Continuous-Time (CT) Signal
 
-<Theorem id="10.1.1" title="Shannon-Nyquist Sampling Theorem">
+<Theorem title="Shannon-Nyquist Sampling Theorem">
 Let $\{x(t), \; t \in \mathbb{R}\}$ be a CT signal in $L_2(\mathbb{R};\mathbb{R})$ and let $\hat{x} = \mathcal{F}_{CC}(x)$. If this signal has a finite bandwidth $B$, that is if
 
 $$\hat{x}(f) = 0, \quad |f| > B,$$
@@ -47,7 +47,7 @@ where $\sum_{k \in \mathbb{Z}}\delta(t - kT)$ is called an **impulse train**. Ob
 
 Now let us discuss what the CCFT for the impulse train $\sum_{k \in \mathbb{Z}}\delta(t - kT)$ should be.
 
-<Remark id="10.1">
+<Remark >
 As observed earlier and above, the sequence of partial sums $\left(\sum_{k=-N}^{N} e^{-i2\pi kPt}\right)$ converges to a periodic Dirac delta function as a distribution (see also Theorem 3.4.2). This sequence is known as the Dirichlet kernel sequence.
 </Remark>
 
@@ -85,11 +85,11 @@ $$\tilde{x}(t) = \sum_{n \in \mathbb{Z}} \hat{x}_p(nT)\frac{\sin(\pi\frac{t-nT}{
 
 It also follows that if $T > \frac{1}{2B}$, the exact reconstruction will not be possible since the shifted frequency components will overlap with each other. This is known as **aliasing**. When there is aliasing, one can compute the error in the reconstruction via Parseval's theorem (see Theorem 5.3.4).
 
-<Remark id="10.2">
+<Remark >
 To see that the informational content of a finite bandwidth signal is captured by sampling, consider the following (Shannon's argument): Since $\hat{x}$ has bounded support $[-B, B]$, $x(\frac{k}{2B}) = \int \hat{x}(\hat{f})\frac{1}{\sqrt{2B}}e^{-i\frac{2\pi}{2B}f}df$ can be viewed to be the $\mathcal{F}_{CD}$ of $\hat{f}$, but now in time domain. Having access to $x(\frac{k}{2B}), k \in \mathbb{Z}$ then is sufficient to recover $\hat{x}$ which can then be used to recover the original signal. The more detailed analysis above also provides an explicit construction, and also further insight on the approximation error when there is aliasing. The same analysis applies for the discrete-time setting to be discussed next.
 </Remark>
 
-### 10.1.2 Sampling of a Discrete-Time (DT) Signal
+### Sampling of a Discrete-Time (DT) Signal
 
 A similar discussion applies to DT signals. Let $\{x(n)\}$ be a DT signal. If this signal has a finite bandwidth as $B$, that is if
 
@@ -139,9 +139,9 @@ since $x_N(k) = 0$ for $k$ not divisible by $N$.
 
 ---
 
-## 10.2 Exercises
+## Exercises
 
-<Example id="10.2.1" title="Reconstruction of a Box Signal">
+<Example title="Reconstruction of a Box Signal">
 Suppose that we have a continuous time signal $x \in L_2(\mathbb{R};\mathbb{R})$ given by:
 
 $$x(t) = m1_{\{|t| \leq \frac{1}{n}\}},$$
@@ -165,7 +165,7 @@ as a function of the $\mathcal{F}_{CC}$ of $x$.
 *Hint: For part b, you may use Parseval's Theorem. One may expect that if the energy of the signal frequencies outside $[-1/2T, 1/2T]$ band is small, the reconstruction error may also be small.*
 </Example>
 
-<Example id="10.2.2" title="DT Signal Sampling and Recovery">
+<Example title="DT Signal Sampling and Recovery">
 a) Consider a discrete-time signal $\{x(n)\}$ with a bandwidth $B$. A discrete-time sampler samples this signal with a period $N$ such that the sampled signal satisfies
 
 $$x_p(n) = \begin{cases} x(n) & \text{if } 0 \equiv n \mod N, \\ 0 & \text{else.} \end{cases}$$
@@ -185,7 +185,7 @@ Identify the steps such that $\{\tilde{x}(n)\}$ is recovered from $\{x_d(n)\}$.
 b) Typically human voice has a bandwidth of 4kHz. Suppose we wish to store a speech signal with bandwidth equal to 4kHz with a recorder. Since the recorder has finite memory, one needs to sample the signal. What is the maximum sampling period (in seconds) to be able to reconstruct this signal with no error?
 </Example>
 
-<Example id="10.2.3" title="Impulse Train is a Distribution and its CCFT">
+<Example title="Impulse Train is a Distribution and its CCFT">
 Consider an impulse train defined by:
 
 $$w_P(t) = \sum_{n \in \mathbb{Z}} \delta(t + nP)$$
@@ -225,7 +225,7 @@ Using the geometric series formula and the fact that $\frac{\sin(2\pi(N+1/2)Pt)}
 $$\hat{\overline{w_P}}(\phi) = \lim_{N \to \infty} \sum_{k=-N}^{N} \frac{1}{P}\phi(\frac{k}{P}) = \int \frac{1}{P} w_{\frac{1}{P}}(t)\phi(t) dt$$
 </Example>
 
-<Example id="10.2.4" title="DCFT of Downsampled Signal">
+<Example title="DCFT of Downsampled Signal">
 Consider a discrete-time signal $\{h(n)\}$ with DCFT as:
 
 $$\hat{h}(f) = 1_{(f \in ([0,\frac{1}{8}] \cup (\frac{7}{8},1)))} \quad f \in [0, 1).$$
@@ -233,7 +233,7 @@ $$\hat{h}(f) = 1_{(f \in ([0,\frac{1}{8}] \cup (\frac{7}{8},1)))} \quad f \in [0
 Determine the DCFT of the signal $g(n) = h(2n), n \in \mathbb{Z}$.
 </Example>
 
-<Example id="10.2.5" title="Hilbert Transform and Modulation">
+<Example title="Hilbert Transform and Modulation">
 a) Let $m(t)$ be a real-valued signal with a bandwidth $B$. One can use a transformation, known as the Hilbert transform, to further compress the signal. This transform makes use of the fact that, the Fourier transform of a real signal is conjugate symmetric.
 
 Let $\bar{x}$ denote the Hilbert transform of a signal $x$ in $L_2$, the space of square integrable functions with the usual inner product. The CCFT of the Hilbert transform of a signal is given by:
@@ -247,7 +247,7 @@ b) Briefly describe the (double-sideband) Amplitude Modulation (AM) and the Freq
 Using the result in part a), one can further suppress the bandwidth requirement for the double-sideband Amplitude Modulation (AM) technique, leading to a single-sideband AM signal.
 </Example>
 
-<Example id="10.2.6" title="Bounded Support and Bounded Bandwidth">
+<Example title="Bounded Support and Bounded Bandwidth">
 Consider a square-integrable signal with non-zero $L_2$ norm, with bounded support. That is, there exists a compact set, outside of which this signal is identically zero. Can the CCFT of such a signal, with a bounded support in time-domain, also have bounded support in frequency domain?
 
 You may use any method you wish to use to answer this question.

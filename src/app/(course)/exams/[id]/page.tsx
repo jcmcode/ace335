@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { getExamContent, getAllExamIds } from '@/lib/content'
 import MDXContent from '@/components/mdx/MDXContent'
+import PasswordGate from '@/components/PasswordGate'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -43,7 +44,9 @@ export default async function ExamPage({ params }: PageProps) {
         <p className="mt-2 text-slate-500">MTHE / MATH 335 — Mathematics of Engineering Systems</p>
       </header>
 
-      <MDXContent source={content.content} />
+      <PasswordGate>
+        <MDXContent source={content.content} />
+      </PasswordGate>
     </article>
   )
 }

@@ -21,9 +21,9 @@ If $\mathcal{U}$ and $\mathcal{Y}$ consist of signals with discrete-time indices
 
 ---
 
-## 4.1 System Properties
+## System Properties
 
-<Definition id="4.1" title="Memorylessness">
+<Definition title="Memorylessness">
 Let $U$ be an input signal range, $Y$ an output signal range, and $T$ a time index. A system is **memoryless** if any input-output pair $(u, \mathcal{T}(u))$ can be written component-wise as
 
 $$y(t) = \Psi(t, u(t)), \quad t \in T$$
@@ -35,7 +35,7 @@ for some fixed map $\Psi : T \times U \to Y$.
 **Intuition:** A memoryless system is one whose output at any time $t$ depends only on the input at that same instant $t$ -- it has no "memory" of past or future inputs. A simple resistor ($V = IR$) is memoryless, while a capacitor (whose voltage depends on accumulated charge) is not.
 </Remark>
 
-<Definition id="4.2" title="Causality (Non-anticipativeness)">
+<Definition title="Causality (Non-anticipativeness)">
 A system is **causal** (non-anticipative) if the output at any time $t$ is not dependent on the input signal values at time $s > t$. That is, let $u^1 = \{u^1(t), t \in T\}$ and $u^2 = \{u^2(t), t \in T\}$. Let $(u^1, y^1) \in \mathcal{R}$ and $(u^2, y^2) \in \mathcal{R}$. For any $t \in T$, if it is that $u^1(s) = u^2(s)$ for $s \leq t$, then for a causal system it must be that $y^1(t) = y^2(t)$.
 </Definition>
 
@@ -43,11 +43,11 @@ A system is **causal** (non-anticipative) if the output at any time $t$ is not d
 **Intuition:** Causality means the system cannot "look into the future." The output at time $t$ can depend on the present and past inputs, but never on inputs that have not yet occurred. All physically realizable systems are causal -- you cannot respond to a stimulus before it happens.
 </Remark>
 
-<Example id="4.1" title="Causal and Memoryless Systems">
+<Example title="Causal and Memoryless Systems">
 Let a relation be given by $y_n = ax_{n+1} + x_n + bx_{n-1}$ where $n \in \mathbb{Z}$. Such a system is causal if $a = 0$; it is memoryless if $a = 0, b = 0$.
 </Example>
 
-<Definition id="4.3" title="Time-Invariance">
+<Definition title="Time-Invariance">
 A system is **time-invariant** if for every input-output pair $((u, y) \in \mathcal{R})$, a time-shift in the input leads to the same time-shift in the output; that is,
 
 $$(\sigma^\theta u, \sigma^\theta y) \in \mathcal{R},$$
@@ -63,13 +63,13 @@ $$\left(\sigma^\theta(u)\right)_t = u_{t+\theta}, \quad \forall t \in T.$$
 
 ---
 
-## 4.2 Linear Systems
+## Linear Systems
 
 Linear systems have important engineering practice. Many physical systems are locally linear, as we have seen earlier.
 
 An input-output system is linear if $\mathcal{U}$, $\mathcal{Y}$, $\mathcal{R}$ are all linear vector spaces. However, in the context of our course, we will have a more restrictive definition for linearity.
 
-<Definition id="4.4" title="Linear System (DT)">
+<Definition title="Linear System (DT)">
 A discrete-time (DT) system is **linear** if the input-output relation can be written as:
 
 $$y(n) = \sum_{m=-\infty}^{\infty} h(n, m) u(m). \qquad \text{(4.1)}$$
@@ -111,7 +111,7 @@ Building on this discussion, one takes the representation above as a definition 
 Observe that in the representation argument above, one can generalize the result for any $l_p(\mathbb{Z}; \mathbb{R})$ as the input space with $1 \leq p < \infty$; and the output space can be any $l_q(\mathbb{Z}; \mathbb{R})$ space with $1 \leq q \leq \infty$.
 </Remark>
 
-<Definition id="4.5" title="Linear System (CT)">
+<Definition title="Linear System (CT)">
 Likewise, we define a continuous-time (CT) system to be **linear** if the input-output relation can be expressed as
 
 $$y(t) = \int_{\tau=-\infty}^{\infty} h(t, \tau) u(\tau)\,d\tau. \qquad \text{(4.2)}$$
@@ -123,7 +123,7 @@ $$y(t) = \int_{\tau=-\infty}^{\infty} h(t, \tau) u(\tau)\,d\tau. \qquad \text{(4
 
 ---
 
-## 4.3 Linear and Time-Invariant (Convolution) Systems
+## Linear and Time-Invariant (Convolution) Systems
 
 <ConvolutionDemo />
 
@@ -155,7 +155,7 @@ $$y(n) = \sum_{m=-\infty}^{\infty} h(n - m) u(m)$$
 
 for some function $h : \mathbb{Z} \to \mathbb{R}$.
 
-<Definition id="4.6" title="Impulse Response (DT)">
+<Definition title="Impulse Response (DT)">
 The function $h$ is called the **impulse response** of the system since, if $u = \delta_0$, then
 
 $$y(n) = \sum_{m=-\infty}^{\infty} h(n - m) \delta_0(m) = h(n).$$
@@ -181,7 +181,7 @@ Thus, we have that when $u = \delta_0$,
 
 $$y(t) = \int_{\tau=-\infty}^{\infty} h(t - \tau)\delta_0(\tau)\,d\tau = h(t).$$
 
-<Definition id="4.7" title="Impulse Response (CT)">
+<Definition title="Impulse Response (CT)">
 The function $h$ is the output of the system when the input is the generalized Dirac delta function. This is why $h$ is called the **impulse response** of a convolution system.
 </Definition>
 
@@ -229,9 +229,9 @@ $$h(n) = CA^{n-1}B\,1_{\{n \geq 1\}}.$$
 
 ---
 
-## 4.4 Bounded-Input-Bounded-Output (BIBO) Stability of Convolution Systems
+## Bounded-Input-Bounded-Output (BIBO) Stability of Convolution Systems
 
-<Definition id="4.8" title="BIBO Stability (DT)">
+<Definition title="BIBO Stability (DT)">
 A DT system is **BIBO stable** if $\|u\|_\infty := \sup_{m \in \mathbb{Z}} |u(m)| < \infty$ implies that $\|y\|_\infty := \sup_{m \in \mathbb{Z}} |y(m)| < \infty$.
 </Definition>
 
@@ -239,7 +239,7 @@ A DT system is **BIBO stable** if $\|u\|_\infty := \sup_{m \in \mathbb{Z}} |u(m)
 **Intuition:** BIBO stability asks a simple question: if the input is bounded (never blows up), is the output guaranteed to be bounded too? A system that amplifies bounded inputs into unbounded outputs is unstable and dangerous in practice -- an amplifier that produces infinite voltage from a finite input signal is clearly undesirable.
 </Remark>
 
-<Definition id="4.9" title="BIBO Stability (CT)">
+<Definition title="BIBO Stability (CT)">
 A CT system is **BIBO stable** if $\|u\|_\infty := \sup_{t \in \mathbb{R}} |u(t)| < \infty$ implies that $\|y\|_\infty := \sup_{t \in \mathbb{R}} |y(t)| < \infty$.
 </Definition>
 
@@ -247,7 +247,7 @@ A CT system is **BIBO stable** if $\|u\|_\infty := \sup_{t \in \mathbb{R}} |u(t)
 **Intuition:** The continuous-time version of BIBO stability is identical in spirit to the discrete-time version: bounded inputs must produce bounded outputs for the system to be considered stable.
 </Remark>
 
-<Theorem id="4.4.1" title="BIBO Stability of Convolution Systems">
+<Theorem title="BIBO Stability of Convolution Systems">
 A convolution system is BIBO stable if and only if
 
 $$\|h\|_1 < \infty.$$
@@ -285,7 +285,7 @@ Hence the system is not BIBO stable, contradicting our assumption.
 
 <ImpulseStepResponse />
 
-## 4.5 The Frequency Response (or Transfer) Function of Linear Time-Invariant Systems
+## The Frequency Response (or Transfer) Function of Linear Time-Invariant Systems
 
 A very important property of convolution systems is that, if the input is a harmonic function, so is the output. Let
 
@@ -299,7 +299,7 @@ which leads to
 
 $$y(t) = e^{i2\pi ft} \left(\int_{-\infty}^{\infty} h(s) e^{-i2\pi fs}\,ds\right).$$
 
-<Definition id="4.10" title="Frequency Response (CT)">
+<Definition title="Frequency Response (CT)">
 We define
 
 $$\hat{h}(f) := \int_{-\infty}^{\infty} h(s) e^{-i2\pi fs}\,ds,$$
@@ -317,7 +317,7 @@ A similar discussion applies for a discrete-time system. Let $h \in l_1(\mathbb{
 
 $$y(n) = \left(\sum_{m=-\infty}^{\infty} h(m) e^{-i2\pi fm}\right) e^{i2\pi fn}$$
 
-<Definition id="4.11" title="Frequency Response (DT)">
+<Definition title="Frequency Response (DT)">
 The **frequency response function** for a discrete-time LTI system is
 
 $$\hat{h}(f) := \sum_{m=-\infty}^{\infty} h(m) e^{-i2\pi fm}.$$
@@ -329,7 +329,7 @@ $$\hat{h}(f) := \sum_{m=-\infty}^{\infty} h(m) e^{-i2\pi fm}.$$
 
 ---
 
-## 4.6 Steady-State vs. Transient Solutions
+## Steady-State vs. Transient Solutions
 
 Let $x(t) \in \mathbb{R}^N$. Consider a system defined with the relation:
 
@@ -361,7 +361,7 @@ the output becomes
 
 $$y(t) = \left(C(sI - A)^{-1}B + D\right)e^{st}, \qquad t \geq t_0.$$
 
-<Definition id="4.12" title="Transfer Function">
+<Definition title="Transfer Function">
 The map
 
 $$H(s) = C(sI - A)^{-1}B + D$$
@@ -377,7 +377,7 @@ The case with $s = i2\pi ft$ is crucial for stable systems. Later on we will inv
 
 ---
 
-## 4.7 Bode Plots for Studying System Response to Harmonic Inputs
+## Bode Plots for Studying System Response to Harmonic Inputs
 
 If we apply $u(t) = e^{i2\pi ft}$ or $e^{i\omega t}$, we observed in the above that the output would be $\hat{h}(f)e^{i2\pi ft}$.
 
@@ -449,7 +449,7 @@ Bode plots approximate these expressions in a log-log plot (for the magnitude).
 
 ---
 
-## 4.8 Interconnections of Systems and Feedback Control Systems
+## Interconnections of Systems and Feedback Control Systems
 
 <FeedbackDiagram title="Feedback Control System" />
 
@@ -459,17 +459,17 @@ We will discuss serial connections, parallel connections, output and error feedb
 
 ---
 
-## 4.9 State-Space Description of Linear Systems
+## State-Space Description of Linear Systems
 
 We will study state-space realizations of linear time-invariant systems in further detail in Chapter 9. We provide a brief discussion in the following.
 
-### 4.9.1 Principle of Superposition
+### Principle of Superposition
 
 For a linear time-invariant system, if $(u, y)$ is an input-output pair, then $\sigma_\theta u, \sigma_\theta y$ is also an input-output pair and thus, $a_1 u + b_1 \sigma_\theta u$, $a_1 y + b_1 \sigma_\theta y$ is also such a pair.
 
-### 4.9.2 State-Space Description of Input-Output Systems
+### State-Space Description of Input-Output Systems
 
-<Definition id="4.13" title="State of a System">
+<Definition title="State of a System">
 **The notion of a state.** Suppose that we wish to compute the output of a system at $t \geq t_0$ for some $t_0$. In a general (causal) system, we need to use all the past applied input terms $u(s), s \leq t_0$ and all the past output values $y(s), s < t_0$ to compute the output at $t_0$. The **state** of a system summarizes all the past relevant data that is sufficient to compute the future paths. Some systems admit a finite-dimensional state representation, some do not.
 </Definition>
 
@@ -513,9 +513,9 @@ $$B = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}$$
 
 $$C = \begin{bmatrix} b_N & b_{N-1} & \cdots & b_1 \end{bmatrix}$$
 
-### 4.9.3 Stability of Linear Systems Described by State Equations
+### Stability of Linear Systems Described by State Equations
 
-<Theorem id="4.9.1" title="BIBO Stability via Eigenvalues (CT)">
+<Theorem title="BIBO Stability via Eigenvalues (CT)">
 Consider a system defined by the linear differential equation
 
 $$x'(t) = Ax(t) + u(t), \quad t \in \mathbb{R}.$$
@@ -531,7 +531,7 @@ where $\operatorname{Re}\{\cdot\}$ denotes the real part of a complex number, an
 **Intuition:** For a continuous-time system, BIBO stability requires all eigenvalues of $A$ to have strictly negative real parts -- they must lie in the open left half of the complex plane. This ensures that all natural modes of the system decay exponentially, so no bounded input can cause the output to blow up. This is the continuous-time analogue of the "all poles inside the unit circle" condition.
 </Remark>
 
-<Theorem id="4.9.2" title="BIBO Stability via Eigenvalues (DT)">
+<Theorem title="BIBO Stability via Eigenvalues (DT)">
 Consider a system defined by the linear difference equation
 
 $$x(n+1) = Ax(n) + u(n), \quad n \in \mathbb{Z}.$$
@@ -549,7 +549,7 @@ where $\lambda_i$ denotes the eigenvalues of $A$.
 
 ---
 
-## 4.10 Exercises
+## Exercises
 
 ### Exercise 4.10.1
 

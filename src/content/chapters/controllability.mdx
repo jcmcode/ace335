@@ -3,7 +3,7 @@ title: "Controllability and Observability"
 chapter: 12
 ---
 
-## 12.1 Controllability
+## Controllability
 
 Consider
 
@@ -11,7 +11,7 @@ $$\frac{dx}{dt} = Ax(t) + Bu(t),$$
 
 where $A$ is $n \times n$ and $B$ is $n \times p$. However, for simplicity, in the derivations below throughout the chapter, we will assume that $p = 1$.
 
-<Definition id="12.1.1" title="Controllability">
+<Definition title="Controllability">
 The pair $(A, B)$ is said to be **controllable** if for any $x(0) = x_0 \in \mathbb{R}^n$ and $x_f \in \mathbb{R}^n$, there exists $T < \infty$ and a control input $\{u_s, \; 0 \leq s \leq T\}$ so that $x_T = x_f$.
 </Definition>
 
@@ -27,7 +27,7 @@ In this case, if $b_1, b_2$ are both 0, it is evident that the system is not con
 
 Consider, now the more interesting case with $b_1 = 1 = -b_2$. In this case, if the initial condition $x(0) = \begin{bmatrix} x_1(0) \\ x_2(0) \end{bmatrix}$ takes values from the subspace determined by the line $x_1(0) + x_2(0) = 0$, then, for all $t > 0$, the state remains in this subspace. To see this, note that $\frac{d(x_1(t) + x_2(t))}{dt} = \frac{dx_1(t) + dx_2(t)}{dt} = 0$ so that the sum of the state components does not change and thus $x_1(t) + x_2(t)$ remains 0. Thus, this subspace, which is a strict subset of $\mathbb{R}^2$, is invariant no matter what control is applied: this system is not controllable.
 
-<Theorem id="12.1.1" title="Equivalent Conditions for Controllability">
+<Theorem title="Equivalent Conditions for Controllability">
 Conditions (i), (ii), (iii), and (iv) below are equivalent:
 
 **(i)** $(A, B)$ is controllable.
@@ -167,7 +167,7 @@ are equal. This set is called the **reachable** (from the origin) set. This set 
 
 ---
 
-## 12.2 Observability
+## Observability
 
 In many problems a controller has access to only the inputs applied and outputs measured. A very important question is whether the controller can recover the state of the system through this information.
 
@@ -175,7 +175,7 @@ Consider
 
 $$\frac{dx}{dt} = Ax(t) + Bu(t), \qquad y(t) = Cx(t) + Du(t)$$
 
-<Definition id="12.2.1" title="Observability">
+<Definition title="Observability">
 The pair $(A, C)$ is said to be **observable** if for any $x(0) = x_0 \in \mathbb{R}^n$, there exists $T < \infty$ such that the knowledge of $\{(y_s, u_s), \; 0 \leq s \leq T\}$ is sufficient to uniquely determine $x(0)$.
 </Definition>
 
@@ -213,7 +213,7 @@ is full-rank or not. Note that adding further rows to this matrix does not incre
 
 Furthermore, we have that $Ce^{At}$ is a linear combination of $\{CA^k, \; k = 0, 1, \cdots, n-1\}$. Therefore, if $x_0$ is orthogonal to $\{CA^k, \; k = 0, 1, \cdots, n-1\}$, then it is also orthogonal to $Ce^{At}$. In particular, if the observability matrix is not full-rank, then there exists a non-zero $x_0$ so that $Ce^{At}x_0 = 0$. Thus, we cannot distinguish between $x_0$ and the $0$ vector in $\mathbb{R}^n$ and thus the system is not observable.
 
-<Theorem id="12.2.1" title="Observability Rank Condition">
+<Theorem title="Observability Rank Condition">
 The system
 
 $$\frac{dx}{dt} = Ax(t) + Bu(t), \qquad y(t) = Cx(t) + Du(t)$$
@@ -233,7 +233,7 @@ The null-space of $\mathcal{O}$, that is, $\{v \in \mathbb{R}^n : \mathcal{O}v =
 
 The structure of the observability matrix $\mathcal{O}$ and the controllability matrix $\mathcal{C}$ leads to the following very important and useful duality result.
 
-<Theorem id="12.2.2" title="Controllability-Observability Duality">
+<Theorem title="Controllability-Observability Duality">
 $(A, C)$ is observable if and only if $(A^T, C^T)$ is controllable.
 </Theorem>
 
@@ -251,7 +251,7 @@ has full column rank (i.e., rank $n$) at every eigenvalue $\lambda$ of $A$. This
 
 In view of Theorem 12.1.1 (and in particular, now that we have related observability to a condition of the form given in Theorem 12.1.1(iii)), we have the following immediate result:
 
-<Theorem id="12.2.3" title="Observability Grammian">
+<Theorem title="Observability Grammian">
 $(A, C)$ is observable if and only if
 
 $$W_o(t) = \int_0^t e^{A^T s} C^T C e^{As} ds$$
@@ -265,13 +265,13 @@ is invertible for all $t > 0$.
 
 ---
 
-## 12.3 Feedback and Pole Placement
+## Feedback and Pole Placement
 
 Consider $u = -Kx$. Then,
 
 $$\frac{dx}{dt} = Ax(t) + Bu(t) = (A - BK)x(t)$$
 
-<Theorem id="12.3.1" title="Pole Placement via State Feedback">
+<Theorem title="Pole Placement via State Feedback">
 The eigenvalues of $A - BK$ can be placed arbitrarily if and only if $(A, B)$ is controllable.
 </Theorem>
 
@@ -307,7 +307,7 @@ $$P = \tilde{\mathcal{C}} \mathcal{C}^{-1}$$
 
 whose validity follows from the fact that $\mathcal{C}$ is invertible. This leads us to the following conclusion.
 
-<Theorem id="12.3.2" title="Transformation to Controllable Canonical Form">
+<Theorem title="Transformation to Controllable Canonical Form">
 Consider $x' = Ax + Bu$ where $u \in \mathbb{R}$. Every such system, provided that $(A, B)$ is controllable, can be transformed into a system $z' = \tilde{A}z + \tilde{B}u$ with the transformation $z = Px$ so that $(\tilde{A}, \tilde{B})$ is in the controllable canonical realization form.
 </Theorem>
 
@@ -319,7 +319,7 @@ The above then suggests a method to achieve stabilization through feedback: Firs
 
 ---
 
-## 12.4 Observers and Observer Feedback
+## Observers and Observer Feedback
 
 Consider
 
@@ -357,9 +357,9 @@ Due to the upper triangular form, we conclude that $\begin{bmatrix} x(t) \\ e(t)
 
 ---
 
-## 12.5 Canonical Forms
+## Canonical Forms
 
-<Theorem id="12.5.1" title="A-Invariance of Controllable and Unobservable Subspaces">
+<Theorem title="A-Invariance of Controllable and Unobservable Subspaces">
 **(i)** If $v \in \mathbb{R}^n$ is in the controllable subspace, then so is $Av$.
 
 **(ii)** If $v \in \mathbb{R}^n$ is in the unobservable subspace, then so is $Av$.
@@ -447,13 +447,13 @@ Define a control-free system to be **detectable** if whenever $y(t) \to 0$ then 
 
 ---
 
-## 12.6 Using Riccati Equations to Find Stabilizing Linear Controllers [Optional]
+## Using Riccati Equations to Find Stabilizing Linear Controllers [Optional]
 
 While controllability and observability properties reveal what is possible or impossible with regard to stabilization, they don't directly present an easy-to-compute or constructive method for arriving at design.
 
 One effective method is through Riccati equations. We will present the discussion for discrete-time, but the approach is essentially identical for continuous-time (with the stability conditions of linear systems, as noted earlier, being different).
 
-### 12.6.1 Controller design via Riccati equations
+### Controller design via Riccati equations
 
 Consider the following linear system
 
@@ -467,7 +467,7 @@ $$\sum_{t=0}^{\infty} x_t^T Q x_t + u_t^T R u_t$$
 
 with $R > 0$, $Q \geq 0$.
 
-<Theorem id="12.6.1" title="Riccati Equation for Optimal Control">
+<Theorem title="Riccati Equation for Optimal Control">
 Consider the system $x_{t+1} = Ax_t + Bu_t$.
 
 **(i)** If $(A, B)$ is controllable there exists a solution to the Riccati equation
@@ -497,7 +497,7 @@ $$K = (B^T P B + R)^{-1} B^T P A$$
 
 This controller will be stabilizing.
 
-### 12.6.2 Observer design via Riccati equations
+### Observer design via Riccati equations
 
 A similar phenomenon as applies for observer design. In fact, with the above discussion, using the duality analysis presented earlier, we can directly design an observer so that the matrix $A - LC$ is stable. By writing the condition as the stability of $A^T - C^T L^T$, the question becomes that of finding $L^T$ for which $A^T - C^T L^T$ is a stable matrix.
 
@@ -515,7 +515,7 @@ $$L^T = (CSC^T + R)^{-1}CSA^T$$
 
 will lead to the conclusion that $A - LC$ is stable.
 
-### 12.6.3 Putting controller and observer design together
+### Putting controller and observer design together
 
 Accordingly, all we need for the system:
 
@@ -535,7 +535,7 @@ is stable.
 
 In the above, the conditions on $(A, B)$ being controllable and $(A, C)$ being observable can be relaxed: controllability can be replaced with stabilizability and observability can be relaxed to detectability. While stability will be maintained, the only difference would be that $P$ or $S$ would not be guaranteed to be positive-definite.
 
-### 12.6.4 Continuous-time case
+### Continuous-time case
 
 A similar discussion as above applies for the continuous-time setup. We only discuss the control design, as the observer design follows from duality, as shown above.
 
@@ -559,7 +559,7 @@ is so that $A - BK$ is stable.
 
 ---
 
-## 12.7 Applications and Exercises
+## Applications and Exercises
 
 **Exercise 12.7.1.** *Recall that we had studied the controlled pendulum on a cart (see Figure 12.1). The non-linear mechanical/rotational dynamics equations were found to be*
 

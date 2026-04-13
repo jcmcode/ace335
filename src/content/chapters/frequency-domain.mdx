@@ -3,7 +3,7 @@ title: "Frequency Domain Analysis of Linear Time-Invariant (LTI) Systems"
 chapter: 6
 ---
 
-## 6.1 Input-Output Relations for Linear Time-Invariant Systems via Fourier Analysis
+## Input-Output Relations for Linear Time-Invariant Systems via Fourier Analysis
 
 As we discussed in Section 4.5, a very important property of convolution systems is that if the input is a harmonic function, so is the output.
 
@@ -33,7 +33,7 @@ $$
 
 is $\mathcal{F}_{CC}(h)$ evaluated at $f$. We call this value, the **frequency response** of the system at frequency $f$, whenever it exists.
 
-<Remark id="6.1">
+<Remark >
 The frequency response $\hat{h}(f)$ tells us how the system scales and phase-shifts a pure sinusoid at frequency $f$. The magnitude $|\hat{h}(f)|$ gives the gain and $\angle \hat{h}(f)$ gives the phase shift. This is the fundamental connection between the time-domain description (impulse response $h$) and the frequency-domain description (frequency response $\hat{h}$) of an LTI system.
 </Remark>
 
@@ -105,7 +105,7 @@ $$
 Observe that we use Fubini's theorem in the third step. $\square$
 </Proof>
 
-<Remark id="6.2">
+<Remark >
 This is the most important property for LTI system analysis: convolution in time becomes multiplication in frequency. If $y = h * u$, then $\hat{y}(f) = \hat{h}(f)\hat{u}(f)$. This means the output spectrum is simply the input spectrum scaled by the frequency response at each frequency -- a tremendous simplification compared to evaluating the convolution integral directly.
 </Remark>
 
@@ -162,7 +162,7 @@ $$
 
 The properties above are crucial, and typically sufficient, for studying a large class of linear time invariant systems described by differential and difference equations (convolution systems).
 
-## 6.2 Transfer Functions and their Computation for Convolution Systems via Fourier Transforms
+## Transfer Functions and their Computation for Convolution Systems via Fourier Transforms
 
 In applications for control, communications, and signal processing, one may design systems or filters using the properties of the frequency response functions.
 
@@ -186,11 +186,11 @@ $$
 \hat{h}(f) = \frac{\sum_{m=0}^{M} b_m (i2\pi f)^m}{\sum_{k=0}^{N} a_k (i2\pi f)^k}
 $$
 
-<Remark id="6.3">
+<Remark >
 The transfer function $\hat{h}(f)$ is a rational function of frequency. The numerator polynomial comes from the input side of the differential equation, and the denominator from the output side. This algebraic relationship is far easier to work with than the original differential equation -- system analysis reduces to algebraic manipulation of polynomials.
 </Remark>
 
-<Example id="6.1" title="First-Order Continuous-Time System">
+<Example title="First-Order Continuous-Time System">
 As an example, let us consider
 
 $$
@@ -224,7 +224,7 @@ $$
 \hat{h}(f) = \frac{\hat{y}(f)}{\hat{u}(f)} = \frac{\sum_{m=0}^{M} b_m e^{-i2\pi m f}}{\sum_{k=0}^{N} a_k e^{-i2\pi k f}}
 $$
 
-<Example id="6.2" title="First-Order Discrete-Time System">
+<Example title="First-Order Discrete-Time System">
 As an example, consider
 
 $$
@@ -270,7 +270,7 @@ where $\lambda_i$ are the roots of $Q$ and $m_i$ is the multiplicity of $\lambda
 
 This is important because we can use the expansion and the properties of $\mathcal{F}_{CC}$ and $\mathcal{F}_{DC}$ presented earlier in the chapter to compute the inverse transforms. Such approaches will be studied in further detail in the following chapter. In the following, we present two examples.
 
-<Example id="6.3" title="Continuous-Time System with Exponential Input">
+<Example title="Continuous-Time System with Exponential Input">
 Consider a linear time invariant (LTI) system characterized by:
 
 $$
@@ -334,7 +334,7 @@ y(t) = t e^{-at} 1_{\{t \geq 0\}}
 $$
 </Example>
 
-<Example id="6.4" title="Second-Order Discrete-Time System">
+<Example title="Second-Order Discrete-Time System">
 Let a non-anticipative LTI system be given by:
 
 $$
@@ -416,7 +416,7 @@ y(n) = \left(\left(\frac{1}{4}\right)^n - 2\left(\frac{1}{2}\right)^n\right) 1_{
 $$
 </Example>
 
-## 6.3 Exercises
+## Exercises
 
 <Problem id="6.2.1" title="RC Circuit Analysis">
 Consider the R-C circuit with the equations:
