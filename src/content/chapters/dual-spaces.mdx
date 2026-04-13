@@ -9,7 +9,7 @@ In this chapter, we study dual spaces, distribution theory, and the Dirac delta 
 
 ## Introduction and Motivation
 
-To gain some insight and intuition on what this chapter entails, consider the function $\sin(nt)$ where $n \in \mathbb{N}$. This function does not have a pointwise limit (in $t$) as $n \to \infty$. However, with $f$ an arbitrary continuous function, the integral $\int \sin(nt)f(t)dt$ has a well-defined limit, which is zero (see the Riemann-Lebesgue Lemma, presented as Theorem 5.3.3). In this sense, $\sin(nt)$ can be viewed to admit a limit which is equivalent to the constant function with value $0$. That is, $\sin(nt) \to \underline{0}(t)$ in the sense that when we take the integral $\int \sin(nt)f(t)dt \to \int \sin(nt)\underline{0}(t)dt$, for $f$ in a set of test functions. This motivates the notion of *weak convergence* (and weak$^*$ convergence).
+To gain some insight and intuition on what this chapter entails, consider the function $\sin(nt)$ where $n \in \mathbb{N}$. This function does not have a pointwise limit (in $t$) as $n \to \infty$. However, with $f$ an arbitrary continuous function, the integral $\int \sin(nt)f(t)dt$ has a well-defined limit, which is zero (see the Riemann-Lebesgue Lemma, presented as Theorem). In this sense, $\sin(nt)$ can be viewed to admit a limit which is equivalent to the constant function with value $0$. That is, $\sin(nt) \to \underline{0}(t)$ in the sense that when we take the integral $\int \sin(nt)f(t)dt \to \int \sin(nt)\underline{0}(t)dt$, for $f$ in a set of test functions. This motivates the notion of *weak convergence* (and weak$^*$ convergence).
 
 In our course, one important application which arises while studying linear systems as well as Laplace and Fourier transforms is with regard to the use of the impulse (or Dirac delta) function. Such functions do not live in the set of $\mathbb{R}$-valued functions, and hence many operations such as integration become ill-stated. However, the Dirac delta function is such an important and crucial object that one has to know how to work with it even in the most elementary applications in signal processing, circuit analysis, control, and communications, in addition to many other areas of engineering and applied mathematics. We will see that the appropriate way to study the impulse function is to always work *under an integral with test functions*, not unlike what we discussed above.
 
@@ -25,7 +25,7 @@ It may not be immediately evident that the study of such a theory is needed in e
 
 Let $f$ be a linear functional on a normed linear space $X$ (thus mapping $X$ to $\mathbb{R}$). We say $f$ is bounded (in the operator norm) if there is a constant $M$ such that $|f(x)| \leq M\|x\|$ for all $x \in X$. The smallest such $M$ is called the norm of $f$ and is denoted by $\|f\|$, also given by:
 
-$$\|f\| := \sup_{x:\|x\| \neq 0} \frac{|f(x)|}{\|x\|}. \qquad \text{(3.1)}$$
+$$\|f\| := \sup_{x:\|x\| \neq 0} \frac{|f(x)|}{\|x\|}. \qquad \text{}$$
 
 Let us define the **dual space** of $X$ as the set of linear and bounded functions on $X$ to $\mathbb{R}$ or $\mathbb{C}$, and let us denote this space by $X^*$. The space $X^*$ is called the (topological) dual space of $X$. This is equivalent to the space of all continuous and linear functions, as continuity and boundedness imply each other:
 
@@ -40,16 +40,16 @@ A linear functional on a normed linear space is bounded if and only if it is con
 <Proof>
 **a) Boundedness implies continuity:** For every $\epsilon > 0$, there exists a $\delta > 0$ such that $\|x - y\| \leq \delta$ implies that $|f(x) - f(y)| = |f(x-y)| \leq M\|x - y\| \leq \epsilon$, with $\delta = \epsilon / M$.
 
-**b) Continuity implies boundedness:** We will prove the contrapositive: if the linear function is not bounded then it cannot be continuous. Recall by Theorem 2.1.4 that a linear function on a normed linear space is continuous at any point if and only if it is continuous at the null element. Suppose the function is not bounded. This means that for any sequence $M_n \to \infty$, for every $M_n < \infty$ there exists $x_n$ so that $\frac{|f(x_n)|}{\|x_n\|} \geq M_n$. We can take $\frac{M_n}{n} \to \infty$. We can construct the sequence of vectors $x_n^* = \frac{1}{n\|x_n\|}x_n$ such that $x_n^* \to 0$. By linearity,
+**b) Continuity implies boundedness:** We will prove the contrapositive: if the linear function is not bounded then it cannot be continuous. Recall by Theorem that a linear function on a normed linear space is continuous at any point if and only if it is continuous at the null element. Suppose the function is not bounded. This means that for any sequence $M_n \to \infty$, for every $M_n < \infty$ there exists $x_n$ so that $\frac{|f(x_n)|}{\|x_n\|} \geq M_n$. We can take $\frac{M_n}{n} \to \infty$. We can construct the sequence of vectors $x_n^* = \frac{1}{n\|x_n\|}x_n$ such that $x_n^* \to 0$. By linearity,
 
 $$f(x_n^*) = \frac{1}{n\|x_n\|}f(x_n) \geq \frac{1}{n}M_n \to \infty.$$
 
 Thus, the sequence $f(x_n^*)$ does not converge to $0$, hence the system cannot be continuous. $\square$
 </Proof>
 
-The space $X^*$ is a linear space, under pointwise addition and scalar multiplication of functions in it. Furthermore, $X^*$ is itself a normed space with the norm given above in (3.1).
+The space $X^*$ is a linear space, under pointwise addition and scalar multiplication of functions in it. Furthermore, $X^*$ is itself a normed space with the norm given above in .
 
-### Exercise 3.2.1
+### Exercise
 
 *Show that $(X^*, \|\cdot\|)$ is a Banach space.*
 
@@ -57,7 +57,7 @@ The space $X^*$ is a linear space, under pointwise addition and scalar multiplic
 The dual space $(X^*, \|\cdot\|)$ is a Banach space, even if $X$ itself is not Banach.
 </Remark>
 
-A key result for identifying the dual spaces for $l_p(\mathbb{Z}_+; \mathbb{R})$ or $L_p(\mathbb{R}_+; \mathbb{R})$ spaces is Holder's inequality (see Theorem 2.1.2): Let $1 \leq p, q < \infty$ or possibly $\infty$. Then,
+A key result for identifying the dual spaces for $l_p(\mathbb{Z}_+; \mathbb{R})$ or $L_p(\mathbb{R}_+; \mathbb{R})$ spaces is Holder's inequality (see Theorem): Let $1 \leq p, q < \infty$ or possibly $\infty$. Then,
 
 $$\sum_{i \in \mathbb{Z}_+} x_i y_i \leq \|x\|_p \|y\|_q,$$
 
@@ -72,7 +72,7 @@ where $\eta = \{\eta_i\}$ is in $l_q(\mathbb{Z}_+; \mathbb{R})$ with $\frac{1}{p
 
 **(ii)** Furthermore, every vector $\eta$ in $l_q(\mathbb{Z}_+; \mathbb{R})$ defines such a vector $F$ (as above) in $l_p(\mathbb{Z}_+; \mathbb{R})^*$ with
 
-$$\|F\| = \|\eta\|_q. \qquad \text{(3.2)}$$
+$$\|F\| = \|\eta\|_q. \qquad \text{}$$
 
 **(iii)** This also applies to $L_p(\mathbb{R}_+; \mathbb{R})$ spaces.
 </Theorem>
@@ -106,7 +106,7 @@ $$\frac{f(x_N)}{\|x_N\|_p} = \frac{\sum_{m=0}^{N} |\eta_m|^q}{(\sum_{i=0}^{N} |\
 
 Now, take the limit as $N \to \infty$ to conclude that $\eta \in l_q(\mathbb{Z}_+; \mathbb{R})$.
 
-**(ii)** This follows from Holder's inequality (see Theorem 2.1.2). The special case with $p = q = 2$ follows from the Cauchy-Schwarz inequality.
+**(ii)** This follows from Holder's inequality (see Theorem). The special case with $p = q = 2$ follows from the Cauchy-Schwarz inequality.
 
 **(iii)** We will not discuss the $L_p$ case, though the arguments are parallel. $\square$
 </Proof>
@@ -159,7 +159,7 @@ $$\int \mu_n(dx)f(x) \to \int \mu(dx)f(x).$$
 If we had replaced $C_b(\mathbb{R}; \mathbb{R})$ with $C_0(\mathbb{R}; \mathbb{R})$ here, note that this would coincide with the weak$^*$-convergence of $\mu_n \to \mu$ (to be studied in the following). Nonetheless, in probability theory the convergence stated above is so important that this is simply called *weak convergence*.
 </Remark>
 
-### Weak and Weak* Convergence
+### Strong, Weak, and Weak* Convergence
 
 Earlier, we discussed that in a normed space $X$, a sequence of vectors $\{x_n\}$ converges to a vector $x$ if
 
@@ -187,7 +187,7 @@ for all $f \in X^*$.
 **Intuition:** Weak convergence says that even though the sequence $x_n$ might not get close to $x$ in norm, every continuous linear measurement you can make on $x_n$ eventually agrees with the measurement on $x$. It is a much less demanding notion of convergence -- two signals can be "weakly close" even if they look quite different pointwise.
 </Remark>
 
-### Exercise 3.2.2
+### Exercise
 
 *Let $x \in l_2(\mathbb{N}; \mathbb{R})$. Show that if*
 
@@ -259,13 +259,13 @@ $$\lim_{n \to \infty} p_{\alpha,\beta}(\phi_n - \phi) = 0, \quad (\alpha, \beta)
 
 With the above, we could define a metric by working with the above seminorms: for $x, y \in \mathcal{S}$, let us define a metric between the two vectors as:
 
-$$d(x,y) = \sum_n \frac{1}{2^n} \frac{p_n(x)}{1 + p_n(x)}, \qquad \text{(3.3)}$$
+$$d(x,y) = \sum_n \frac{1}{2^n} \frac{p_n(x)}{1 + p_n(x)}, \qquad \text{}$$
 
 where $n$ is a countable enumeration of the pairs $(\alpha, \beta) \in \mathbb{Z}_+ \times \mathbb{Z}_+$.
 
 The Schwartz space of functions equipped with such a metric will be a complete space. Furthermore, differentiation operator becomes a continuous operation in $\mathcal{S}$, under this metric; a topic which we will discuss further.
 
-As had been discussed before (slightly generalizing Theorem 2.1.3), a functional $T$ from $\mathcal{S} \to C$ is continuous if and only if for every convergent sequence in $\mathcal{S}$, $\phi_n \to \phi$, we have $T(\phi_n) \to T(\phi)$. We note that checking sequential continuity is typically easier than continuity, since in the space $\mathcal{S}$, it is not convenient to compute the distance between two vectors given the quite involved construction of the metric in (3.3).
+As had been discussed before (slightly generalizing Theorem), a functional $T$ from $\mathcal{S} \to C$ is continuous if and only if for every convergent sequence in $\mathcal{S}$, $\phi_n \to \phi$, we have $T(\phi_n) \to T(\phi)$. We note that checking sequential continuity is typically easier than continuity, since in the space $\mathcal{S}$, it is not convenient to compute the distance between two vectors given the quite involved construction of the metric in .
 
 <Definition title="Distribution">
 A **distribution** is a linear, continuous functional on the space of test functions $\mathcal{S}$.
@@ -281,7 +281,7 @@ Thus, a distribution is an element of the **dual space** of $\mathcal{S}$ (that 
 
 Distributions can be regular and singular. **Regular distributions** can be expressed as an integral of a test function and a locally integrable function (that is a function which has a finite absolute integral on any compact domain on which it is defined). For example if $\gamma$ is a real-valued integrable function on $\mathbb{R}$, and $\phi \in \mathcal{S}$ the distribution given by
 
-$$\bar{\gamma}(\phi) := \int_{\mathbb{R}} \gamma(t)\phi(t)dt \qquad \text{(3.4)}$$
+$$\bar{\gamma}(\phi) := \int_{\mathbb{R}} \gamma(t)\phi(t)dt \qquad \text{}$$
 
 is a regular distribution on $\mathcal{S}$, **represented** by the function $\gamma(t)$.
 
@@ -317,7 +317,7 @@ We need to show that $\bar{\delta}(\phi)$ is linear and continuous. Linearity is
 $$\bar{\delta}(\phi_n) = \phi_n(0) \to \phi(0) = \bar{\delta}(\phi). \quad \square$$
 </Proof>
 
-### Exercise 3.3.1
+### Exercise
 
 *Show that the relation*
 
@@ -341,12 +341,12 @@ $$\bar{\gamma}_n(f) \to \bar{\gamma}(f), \quad \forall f \in \mathcal{S}$$
 **Intuition:** Convergence of distributions is exactly weak$^*$ convergence in the dual space $\mathcal{S}^*$. A sequence of distributions converges if and only if it converges pointwise on every test function. This is a very permissive notion of convergence, which is exactly why objects like the Dirac delta can be obtained as limits of ordinary functions.
 </Remark>
 
-Observe that the above notion is identical to the weak$^*$ convergence notion discussed earlier in Definition 3.2.2.
+Observe that the above notion is identical to the weak$^*$ convergence notion discussed earlier in Definition.
 
 <Example title="Regular Distributions Converging to the Dirac Delta">
 Let for $j \in \mathbb{Z}_+$, $j > 0$
 
-$$f_j(t) = \begin{cases} j, & \text{if } 0 \leq t \leq \frac{1}{j} \\ 0 & \text{else} \end{cases} \qquad \text{(3.5)}$$
+$$f_j(t) = \begin{cases} j, & \text{if } 0 \leq t \leq \frac{1}{j} \\ 0 & \text{else} \end{cases} \qquad \text{}$$
 
 **a)** For any real-valued function $g \in \mathcal{S}$, define
 
@@ -383,7 +383,7 @@ Such $\psi_n$ sequences are called **approximate identity sequences**.
 **Intuition:** An approximate identity sequence is a family of functions that become more and more concentrated around the origin while maintaining unit area. As $n \to \infty$, they "squeeze" all their mass into an infinitesimally small region near $t = 0$. In the limit, they behave like the Dirac delta: integrating them against any test function $\phi$ yields $\phi(0)$. They provide a concrete, constructive way to approach the delta distribution through ordinary functions.
 </Remark>
 
-We have seen one example in (3.5). The result discussed generalizes to any approximate identity sequence:
+We have seen one example in . The result discussed generalizes to any approximate identity sequence:
 
 <Theorem title="Approximate Identity Sequences Converge to delta">
 Distributions represented by approximate identity sequences converge to the Dirac delta distribution as $n \to \infty$.
@@ -414,7 +414,7 @@ $$\leq \limsup_{n \to \infty} \int_{t:|t|>\delta_\epsilon} \psi_n(t)|(\phi(t) - 
 
 $$\leq \left(2\sup_{t \in \mathbb{R}} |\phi(t)|\right) \limsup_{n \to \infty} \int_{t:|t|>\delta_\epsilon} \psi_n(t)dt + \limsup_{n \to \infty} \epsilon \int_{t:|t|\leq\delta_\epsilon} \psi_n(t)dt$$
 
-$$\leq \epsilon, \qquad \text{(3.6)}$$
+$$\leq \epsilon, \qquad \text{}$$
 
 where we use the properties of the approximate identity sequences above. Since $\epsilon > 0$ is arbitrary, the result follows so that the limit above exists and is zero. Thus, we conclude that
 
@@ -444,7 +444,7 @@ We thus conclude that, the sequence of **regular** distributions $\bar{f}_n$, re
 <Example title="Gaussian Approximate Identity">
 Another very important example for such approximate identity sequences is the following **Gaussian** sequence of functions given by
 
-$$f_n(t) = \frac{1}{\sqrt{2\pi\frac{1}{n}}}e^{-\frac{1}{2}\frac{t^2}{\frac{1}{n}}} \qquad \text{(3.7)}$$
+$$f_n(t) = \frac{1}{\sqrt{2\pi\frac{1}{n}}}e^{-\frac{1}{2}\frac{t^2}{\frac{1}{n}}} \qquad \text{}$$
 
 Observe that each element $f_n$ of this sequence lives in $\mathcal{S}$, which will be very consequential.
 </Example>
@@ -484,13 +484,13 @@ $$\int_{|x| \geq \delta} \psi_n(x)dx \leq 2c_n(\pi - \delta)(1+\cos(\delta))^n \
 <Example title="Sinc Approximate Identity">
 One further very useful sequence, which does not satisfy the non-negativity property above, but nonetheless satisfies the convergence property (to $\bar{\delta}$) is the following sequence:
 
-$$\psi_n(x) = \frac{\sin(nx)}{\pi x}. \qquad \text{(3.8)}$$
+$$\psi_n(x) = \frac{\sin(nx)}{\pi x}. \qquad \text{}$$
 </Example>
 
 <Theorem title="Sinc Sequence Converges to delta">
-For any $\phi \in \mathcal{S}$, with $\psi_n$ as in (3.8)
+For any $\phi \in \mathcal{S}$, with $\psi_n$ as in 
 
-$$\lim_{n \to \infty} \int \psi_n(x)\phi(x)dx = \phi(0) \qquad \text{(3.9)}$$
+$$\lim_{n \to \infty} \int \psi_n(x)\phi(x)dx = \phi(0) \qquad \text{}$$
 </Theorem>
 
 <Remark>
@@ -504,7 +504,7 @@ We use the following supporting results:
 
 $$\lim_{R \to \infty} \int_{-R}^{R} \frac{\sin(x)}{x} dx = \pi$$
 
-**(ii)** Riemann-Lebesgue Lemma (see Theorem 5.3.3): For any integrable function $g$, $\lim_{|f| \to \infty, f \in \mathbb{R}} \int g(x)e^{ifx}dx = 0$.
+**(ii)** Riemann-Lebesgue Lemma (see Theorem): For any integrable function $g$, $\lim_{|f| \to \infty, f \in \mathbb{R}} \int g(x)e^{ifx}dx = 0$.
 
 **(iii)** We have $\lim_{|x| \to 0} \frac{\phi(x) - \phi(0)}{x} = h(x)$ for some smooth $h$.
 
@@ -568,14 +568,14 @@ $$\leq \limsup_{n \to \infty} \int_{\tau:|\tau|>\delta_\epsilon} \psi_n(\tau)|f(
 
 $$\leq \left(2\sup_{t \in \mathbb{R}} |f(t)|\right) \limsup_{n \to \infty} \int_{\tau:|\tau|>\delta_\epsilon} \psi_n(\tau)d\tau + \limsup_{n \to \infty} \int_{\tau:|\tau|\leq\delta_\epsilon} \psi_n(\tau)\epsilon\, d\tau$$
 
-$$\leq \epsilon \qquad \text{(3.10)}$$
+$$\leq \epsilon \qquad \text{}$$
 
 Since $\epsilon > 0$ is arbitrary, the result follows so that the limit above exists and is zero. Note that for compact $K$, the $\delta, \epsilon$ pair can be taken to be uniform for all $t \in K$, that is, for every $\epsilon > 0$, there exists a $\delta_{\epsilon, K} > 0$ such that $|f(t) - f(t - \delta_\epsilon)| \leq \epsilon$ for all $t \in K$. Therefore, the convergence is uniform over compact sets, in the sense that
 
 $$\lim_{n \to \infty} \sup_{t \in K} |(\psi_n * f)(t) - f(t)| = 0. \quad \square$$
 </Proof>
 
-Note that with $\psi_n$ defined as in (3.7), $(\psi_n \star \phi)$ is always infinitely differentiable, and one may conclude the following:
+Note that with $\psi_n$ defined as in , $(\psi_n \star \phi)$ is always infinitely differentiable, and one may conclude the following:
 
 <Corollary title="Density of Smooth Functions">
 The space of smooth functions are dense in the space of continuous functions with a compact support under the supremum norm.
@@ -587,11 +587,11 @@ The space of smooth functions are dense in the space of continuous functions wit
 
 ### Completeness of complex exponentials in $L_2([-\pi, \pi]; \mathbb{C})$
 
-Using Theorem 3.4.4, with
+Using Theorem, with
 
 $$\psi_n(t) = c_n(1 + \cos(t))^n,$$
 
-(which is an approximate identity sequence as shown in Proposition 3.4.1, when $c_n$ is picked so that $\int \psi_n(t)dt = 1$), we can prove the following:
+(which is an approximate identity sequence as shown in Proposition, when $c_n$ is picked so that $\int \psi_n(t)dt = 1$), we can prove the following:
 
 <Theorem title="Completeness of Complex Exponentials">
 The family of complex exponentials in $L_2([-\pi, \pi]; \mathbb{C})$:
@@ -606,7 +606,7 @@ forms an orthonormal sequence which is **complete**.
 </Remark>
 
 <Proof>
-The proof follows from Theorem 3.4.4, by writing
+The proof follows from Theorem, by writing
 
 $$(\psi_n * f)(t) = \int \psi_n(t - \tau)f(\tau) = \int c_n(1 + \cos(t - \tau))^n f(\tau)d\tau$$
 
@@ -616,7 +616,7 @@ $$(1 + \cos(t - \tau))^n = \sum_{k=0}^{n} \binom{n}{k} (\cos(t-\tau))^k$$
 
 $$= \sum_{k=0}^{n} \binom{n}{k} \left(\frac{e^{i(t-\tau)} + e^{-i(t-\tau)}}{2}\right)^k$$
 
-$$= \sum_{k=-n}^{n} b_{n,k} e^{ik(t-\tau)} \qquad \text{(3.11)}$$
+$$= \sum_{k=-n}^{n} b_{n,k} e^{ik(t-\tau)} \qquad \text{}$$
 
 for some collection of coefficients $b_{n,k}$, $k = -n, -n+1, \cdots, n$, which can be obtained by expanding $\left(\frac{e^{i(t-\tau)} + e^{-i(t-\tau)}}{2}\right)^k$ for each $k$. Thus,
 
@@ -630,14 +630,14 @@ That is, we have that, as $n \to \infty$,
 
 $$\sum_{k=-n}^{n} e^{ikt} a_{n,k} \to f(t)$$
 
-uniformly over $t \in [-\pi, \pi]$. Accordingly, via the arguments as in (2.13), it follows that the only vector in $L_2([-\pi, \pi]; \mathbb{C})$ which is orthogonal to $\{e^{ikt}, t \in [-\pi, \pi]\}$ for $k \in \mathbb{Z}$ is the null vector and thus, the collection
+uniformly over $t \in [-\pi, \pi]$. Accordingly, via the arguments as in , it follows that the only vector in $L_2([-\pi, \pi]; \mathbb{C})$ which is orthogonal to $\{e^{ikt}, t \in [-\pi, \pi]\}$ for $k \in \mathbb{Z}$ is the null vector and thus, the collection
 
 $$\{e_n(t)\} = \left\{\frac{1}{\sqrt{2\pi}}e^{int}, \quad n \in \mathbb{Z}\right\},$$
 
 forms a complete orthonormal sequence in $L_2([-\pi, \pi]; \mathbb{C})$. $\square$
 </Proof>
 
-This sequence is used for the Fourier expansion of functions in $L_2([0, 2\pi]; \mathbb{C})$; see Section 2.3.4.
+This sequence is used for the Fourier expansion of functions in $L_2([0, 2\pi]; \mathbb{C})$; see the relevant section.
 
 ---
 
@@ -657,7 +657,7 @@ $$(D\bar{\gamma})(\phi) = -\bar{\gamma}\left(\frac{d\phi}{dt}\right), \qquad \ph
 **Intuition:** The derivative of a distribution is defined by "shifting" the derivative onto the test function (with a sign change), which is just integration by parts without boundary terms (since Schwartz functions vanish at infinity). This means every distribution -- even singular ones like the Dirac delta -- is differentiable, a stark contrast to ordinary calculus where most functions are not differentiable everywhere.
 </Remark>
 
-We can check if this definition is consistent with a distribution represented by a regular function. Consider (3.4) and note that through integration by parts
+We can check if this definition is consistent with a distribution represented by a regular function. Consider  and note that through integration by parts
 
 $$\int \frac{d}{dt}\gamma(t)\phi(t)dt = -\int \gamma(t)\frac{d}{dt}\phi(t) = -\bar{\gamma}\left(\frac{d\phi}{dt}\right).$$
 
@@ -715,13 +715,13 @@ $$\left(\bar{f} \star \bar{\delta}\right)(\phi) = \bar{f}(\phi), \quad \forall \
 
 that is the delta distribution is the **identity element** in distributions under the operation of convolution.
 
-Let $\psi_n$ be the approximate identity sequence given by (3.7), so that $\psi_n \in \mathcal{S}$. Then, it can be shown that for any singular $\bar{g}$, $\psi_n * \bar{g}$ is a smooth function, and can be used to represent a regular distribution such that $(\psi_n * \bar{g})(\phi) = \bar{g}(\int \psi_n(t - \tau)\phi(t)dt) \to \bar{g}(\phi)$ for any $\phi \in \mathcal{S}$ (by linearity and by continuity of $\bar{g}$). Accordingly, for any singular distribution, there exists a sequence of regular distributions which converges to the singular distribution.
+Let $\psi_n$ be the approximate identity sequence given by , so that $\psi_n \in \mathcal{S}$. Then, it can be shown that for any singular $\bar{g}$, $\psi_n * \bar{g}$ is a smooth function, and can be used to represent a regular distribution such that $(\psi_n * \bar{g})(\phi) = \bar{g}(\int \psi_n(t - \tau)\phi(t)dt) \to \bar{g}(\phi)$ for any $\phi \in \mathcal{S}$ (by linearity and by continuity of $\bar{g}$). Accordingly, for any singular distribution, there exists a sequence of regular distributions which converges to the singular distribution.
 
 ---
 
 ## Fourier Transform of Schwartz Functions
 
-We will continue the discussion of Schwartz functions in the context of Fourier transforms. One appealing aspect of Schwartz functions is that the Fourier transform of a Schwartz function lives in the space of Schwartz functions. In fact, the Fourier transform on the space of Schwartz functions is both onto and one to one (hence a bijection). This will be proven later. Since the space of continuous functions is dense in the space of square integrable functions, and $\mathcal{S}$ is dense in the space of continuous functions under the supremum norm by Theorem 3.4.4, we will use the bijection property of the Fourier transform on $\mathcal{S}$ to define the Fourier transform of square integrable functions.
+We will continue the discussion of Schwartz functions in the context of Fourier transforms. One appealing aspect of Schwartz functions is that the Fourier transform of a Schwartz function lives in the space of Schwartz functions. In fact, the Fourier transform on the space of Schwartz functions is both onto and one to one (hence a bijection). This will be proven later. Since the space of continuous functions is dense in the space of square integrable functions, and $\mathcal{S}$ is dense in the space of continuous functions under the supremum norm by Theorem, we will use the bijection property of the Fourier transform on $\mathcal{S}$ to define the Fourier transform of square integrable functions.
 
 ---
 
@@ -788,7 +788,7 @@ where the minimum on the left is achieved for $m_0^* \in M^\perp$. **(ii)** If t
 </Theorem>
 
 <Remark>
-**Intuition:** This is the "dual version" of the previous theorem: now we are measuring the distance of a dual element $x^*$ from the annihilator $M^\perp$, and this equals the supremum of $\langle x, x^* \rangle$ over unit-norm elements in $M$. Together with Theorem 3.7.1, these results establish the symmetric duality between primal and dual optimization problems.
+**Intuition:** This is the "dual version" of the previous theorem: now we are measuring the distance of a dual element $x^*$ from the annihilator $M^\perp$, and this equals the supremum of $\langle x, x^* \rangle$ over unit-norm elements in $M$. Together with Theorem, these results establish the symmetric duality between primal and dual optimization problems.
 </Remark>
 
 <Proof>
@@ -813,7 +813,7 @@ $$d = \min_{x^*: \langle y_i, x^* \rangle = c_i, 1 \leq i \leq n} \|x^*\| = \min
 
 where $M$ denotes the space spanned by $\{y_1, y_2, \cdots, y_n\}$ and $\bar{x}^*$ is some vector satisfying the constraints.
 
-From Theorem 3.7.2, we have that
+From Theorem, we have that
 
 $$d = \min_{m^* \in M^\perp} \|\bar{x}^* - m^*\| = \sup_{x \in M, \|x\| \leq 1} \langle x, \bar{x}^* \rangle,$$
 
@@ -837,7 +837,7 @@ $$\min_{x^*: \langle y_i, x^* \rangle = c_i, 1 \leq i \leq n} \|x^*\|$$
 
 $$= \min_{x^*} \max_{\lambda} \|x^*\| + \lambda^T(c - Y^T x^*)$$
 
-$$= \max_{\lambda} \min_{x^*} \|x^*\| + \langle \lambda, c \rangle - \lambda^T(Y^T x^*) \qquad \text{(3.12)}$$
+$$= \max_{\lambda} \min_{x^*} \|x^*\| + \langle \lambda, c \rangle - \lambda^T(Y^T x^*) \qquad \text{}$$
 
 $$= \max_{\lambda} \min_{x^*} \|x^*\| + \langle \lambda, c \rangle - (Y\lambda)^T(x^*)$$
 
@@ -847,15 +847,15 @@ $$= \max_{\lambda} \min_{x^*} \|x^*\|(1 - \|Y\lambda\|) + \langle \lambda, c \ra
 
 $$= \max_{\lambda: \|Y\lambda\| \leq 1} \min_{x^*} \|x^*\|(1 - \|Y\lambda\|) + \langle \lambda, c \rangle$$
 
-$$= \max_{\lambda: \|Y\lambda\| \leq 1} \langle \lambda, c \rangle \qquad \text{(3.13)}$$
+$$= \max_{\lambda: \|Y\lambda\| \leq 1} \langle \lambda, c \rangle \qquad \text{}$$
 
-where the optimal $x^*$ is aligned with $Y\lambda$. In the above, (3.12) follows from Sion's minimax theorem. In the above, $\lambda$ serves as a **Lagrangian multiplier**.
+where the optimal $x^*$ is aligned with $Y\lambda$. In the above,  follows from Sion's minimax theorem. In the above, $\lambda$ serves as a **Lagrangian multiplier**.
 
 ---
 
 ## Exercises
 
-### Exercise 3.8.1
+### Exercise
 
 *Does there exist a sequence of functions $\{f_j\}$ in $L_2(\mathbb{R}_+; \mathbb{R})$ such that a sequence of distributions $\bar{f}_j$ represented by $f_j$ on the set of Schwartz functions $\mathcal{S}$ converges to zero in a distributional sense, but $f_j$ does not converge to zero (that is, in the $L_2$ norm). That is, does there exist a sequence of functions $\{f_j\}$ in $L_2(\mathbb{R}_+; \mathbb{R})$ such that*
 
@@ -867,7 +867,7 @@ $$\lim_{j \to \infty} \left(\int_0^{\infty} f_j(t)\phi(t)dt\right) = 0, \qquad \
 
 *If there exists one, give an example. If there does not exist one, explain why.*
 
-### Exercise 3.8.2
+### Exercise
 
 **(a)** *Let $T$ be a mapping from $L_2(\mathbb{R}_+; \mathbb{R})$ to $\mathbb{R}$ (extended to possibly include $-\infty, \infty$) given by:*
 
@@ -889,7 +889,7 @@ $$\phi'(t) = \frac{d}{dt}\phi(t) \quad \forall t.$$
 
 *Is $T$ a distribution on $\mathcal{S}$? That is, is $T$ continuous and linear on $\mathcal{S}$?*
 
-### Exercise 3.8.3
+### Exercise
 
 *Let $T : \mathcal{S} \to [-\infty, \infty]$ be a mapping defined by:*
 
@@ -899,7 +899,7 @@ $$T(\phi) = \limsup_{A \to \infty} \int_{-A}^{A} \phi(t) e^{t^2}\,dt$$
 
 *Hint: The function $g(t) = e^{-at^2}$ is in $\mathcal{S}$, for any $a > 0$.*
 
-### Exercise 3.8.4
+### Exercise
 
 *Let for $j \in \mathbb{N}$,*
 
@@ -915,7 +915,7 @@ $$\lim_{j \to \infty} \int_0^{\infty} f_j(t) g(t)\,dt = \bar{\delta}(g) = g(0).$
 
 *Conclude that, the sequence of regular distributions $\bar{f}_j(\cdot)$, represented by a real-valued, integrable function $f_j(t)$, converges to the delta distribution $\bar{\delta}(\cdot)$ on the space of test functions $\mathcal{S}$.*
 
-### Exercise 3.8.5
+### Exercise
 
 *Let $\mathcal{S}$ be the space of Schwartz functions. Let $T : \mathcal{S} \to \mathbb{R}$ be a mapping given by:*
 

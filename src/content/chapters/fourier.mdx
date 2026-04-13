@@ -27,7 +27,7 @@ The result is a complex number $\hat{x}(f)$ whose **magnitude** $|\hat{x}(f)|$ t
 
 **Why four transforms?** The four Fourier transforms (DDFT, CDFT, DCFT, CCFT) all implement this same idea, but differ in whether the input signal and the output spectrum are discrete or continuous. These choices depend on the mathematical setting -- whether your signal is finite-length, periodic, or defined over all of $\mathbb{R}$.
 
-We have seen earlier in Theorem 2.3.5 that in a Hilbert space $H$, a complete orthonormal sequence $\{e_n, n \in \mathbb{N}\}$ can be used to express any $x \in H$ via the relation
+We have seen earlier in Theorem that in a Hilbert space $H$, a complete orthonormal sequence $\{e_n, n \in \mathbb{N}\}$ can be used to express any $x \in H$ via the relation
 
 $$
 x = \lim_{N \to \infty} \sum_{k=1}^{N} \langle x, e_k \rangle e_k
@@ -95,7 +95,7 @@ $$
 
 provides a complete orthogonal sequence, hence, provides a basis for $L_2([0, P]; \mathbb{C})$.
 
-The completeness of Fourier series in $L_2[0, P]$ is based on the argument that trigonometric polynomials are dense in $L_2([0, P]; \mathbb{C})$ (see Theorem 3.4.4 and the discussion in Section 3.4.3).
+The completeness of Fourier series in $L_2[0, P]$ is based on the argument that trigonometric polynomials are dense in $L_2([0, P]; \mathbb{C})$ (see Theorem and the discussion in the relevant section).
 
 The Fourier series expansion is given by:
 
@@ -112,7 +112,7 @@ $$
 <Remark >
 Observe that $\hat{x}(f) = \langle x, e_f \rangle$ with $e_f(t) = \frac{1}{\sqrt{P}} e^{i2\pi f t}$, for $t \in [0, P]$ with $f \in \{\frac{k}{P}, k \in \mathbb{Z}\}$.
 
-Thus, in the context of Section 2.3, a Fourier series expansion is the representation of a square integrable signal in terms of a collection of a complete orthonormal harmonic signal sequence.
+Thus, in the context of the relevant section, a Fourier series expansion is the representation of a square integrable signal in terms of a collection of a complete orthonormal harmonic signal sequence.
 </Remark>
 
 ### Discrete-to-Discrete (DDFT) and Continuous-to-Discrete (CDFT) Fourier Transforms
@@ -140,7 +140,7 @@ $$
 </Remark>
 
 <Remark>
-**What each part of the equation does (DDFT forward):**
+**What each part of the does (DDFT forward):**
 
 $$\hat{x}(f) = \sum_{n=0}^{N-1} \frac{1}{\sqrt{N}} x(n) \, e^{-i2\pi f n}, \quad f \in \left\{\frac{0}{N}, \frac{1}{N}, \ldots, \frac{N-1}{N}\right\}$$
 
@@ -173,7 +173,7 @@ $$
 </Remark>
 
 <Remark>
-**What each part of the equation does (CDFT forward):**
+**What each part of the does (CDFT forward):**
 
 $$\hat{x}(f) = \int_{\tau=0}^{P} \frac{1}{\sqrt{P}} x(\tau) \, e^{-i2\pi f \tau} \, d\tau, \quad f \in \left\{\frac{k}{P},\, k \in \mathbb{Z}\right\}$$
 
@@ -208,7 +208,7 @@ $$
 </Remark>
 
 <Remark>
-**What each part of the equation does (Inverse DDFT -- Synthesis):**
+**What each part of the does (Inverse DDFT -- Synthesis):**
 
 $$x(n) = \sum_{k=0}^{N-1} \frac{1}{\sqrt{N}} \hat{x}\!\left(\frac{k}{N}\right) e^{i2\pi \frac{k}{N} n}, \quad n \in \{0, 1, \ldots, N-1\}$$
 
@@ -240,7 +240,7 @@ $$
 </Remark>
 
 <Remark>
-**What each part of the equation does (Inverse CDFT -- Synthesis):**
+**What each part of the does (Inverse CDFT -- Synthesis):**
 
 $$x(t) = \sum_{k \in \mathbb{Z}} \frac{1}{\sqrt{P}} \hat{x}\!\left(\frac{k}{P}\right) e^{i2\pi \frac{k}{P} t}, \quad t \in [0, P]$$
 
@@ -346,7 +346,7 @@ $\square$
 ### Worked Exercise
 
 <Example title="Fourier Series of Indicator Functions">
-**Exercise 5.1.1.** 
+**Exercise.** 
 
 **a)** For some $N \in \mathbb{N}$, let $x \in l_2\big((-N, -(N-1), \ldots, N-1, N); \mathbb{C}\big)$ with $x(n) = 1_{\{|n| \le N_1\}}$. Find the Fourier series expansion of $x$. Study the case with $N_1 = N$, and the case with $N_1 = 0$.
 
@@ -468,7 +468,7 @@ The DCFT maps a discrete-time signal to a continuous function of frequency. The 
 </Remark>
 
 <Remark>
-**What each part of the equation does (DCFT forward):**
+**What each part of the does (DCFT forward):**
 
 $$\hat{x}(f) = \sum_{n \in \mathbb{Z}} x(n) \, e^{-i2\pi f n}, \quad f \in [0, 1)$$
 
@@ -482,7 +482,7 @@ Note that there is no explicit $1/\sqrt{P}$ normalization here because the conve
 </Remark>
 
 <Remark>
-**What each part of the equation does (DCFT inverse -- Synthesis):**
+**What each part of the does (DCFT inverse -- Synthesis):**
 
 $$x(n) = \int_0^1 \hat{x}(f) \, e^{i2\pi f n} \, df, \quad n \in \mathbb{Z}$$
 
@@ -516,7 +516,7 @@ We write $\hat{x} = \mathcal{F}_{CC}(x)$.
 </Remark>
 
 <Remark>
-**What each part of the equation does (CCFT forward):**
+**What each part of the does (CCFT forward):**
 
 $$\hat{x}(f) = \int_{\tau=-\infty}^{\infty} x(t) \, e^{-i2\pi f t} \, dt, \quad f \in \mathbb{R}$$
 
@@ -530,7 +530,7 @@ This is the "fully continuous" version: continuous time in, continuous frequency
 </Remark>
 
 <Remark>
-**What each part of the equation does (CCFT inverse -- Synthesis):**
+**What each part of the does (CCFT inverse -- Synthesis):**
 
 $$x(t) = \int_{f=-\infty}^{\infty} \hat{x}(f) \, e^{i2\pi f t} \, df, \quad t \in \mathbb{R}$$
 
@@ -602,7 +602,7 @@ For $m > 1$, the result follows by repeating the above. $\square$
 </Proof>
 
 <Remark >
-Theorem 5.3.1 is one of the most powerful properties of the Fourier transform. Part (a) says that differentiation in time corresponds to multiplication by $i2\pi f$ in frequency. Part (b) says that multiplication by $t$ in time corresponds to differentiation in frequency (up to a constant). These properties are what make the Fourier transform so useful for solving differential equations.
+Theorem is one of the most powerful properties of the Fourier transform. Part (a) says that differentiation in time corresponds to multiplication by $i2\pi f$ in frequency. Part (b) says that multiplication by $t$ in time corresponds to differentiation in frequency (up to a constant). These properties are what make the Fourier transform so useful for solving differential equations.
 </Remark>
 
 <Theorem title="CCFT maps Schwartz space to itself">
@@ -614,7 +614,7 @@ $\mathcal{F}_{CC}$ is a continuous linear map on $\mathcal{S}$ to $\mathcal{S}$.
 </Remark>
 
 <Proof>
-Let $\hat{\phi} = \mathcal{F}_{CC}(\phi)$. We first show that $\hat{\phi} \in \mathcal{S}$. We use Theorem 5.3.1 in the following. We have
+Let $\hat{\phi} = \mathcal{F}_{CC}(\phi)$. We first show that $\hat{\phi} \in \mathcal{S}$. We use Theorem in the following. We have
 
 $$
 \sup_{f \in \mathbb{R}} \left|f^m \frac{d^k}{df^k} \hat{\phi}(f)\right| = \sup_{f \in \mathbb{R}} \left|f^m \mathcal{F}_{CC}\!\left((-i2\pi t)^k \phi(t)\right)\!(f)\right|
@@ -654,7 +654,7 @@ $$
 </Remark>
 
 <Proof>
-By Theorem 2.3.12, for every $\epsilon > 0$ there exists $f_c \in C_c$ (that is $f_c$ is continuous with compact support) such that $\|f - f_c\| \leq \epsilon/2$. Furthermore, we can approximate a continuous function with a function $g_c$ which is differentiable (even with continuous derivatives, a function in $C_c^1$ -- say by polynomials) so that $\|f - g_c\| \leq \epsilon$. Now, for any $a, b \in \mathbb{R}$, using integration by parts
+By Theorem, for every $\epsilon > 0$ there exists $f_c \in C_c$ (that is $f_c$ is continuous with compact support) such that $\|f - f_c\| \leq \epsilon/2$. Furthermore, we can approximate a continuous function with a function $g_c$ which is differentiable (even with continuous derivatives, a function in $C_c^1$ -- say by polynomials) so that $\|f - g_c\| \leq \epsilon$. Now, for any $a, b \in \mathbb{R}$, using integration by parts
 
 $$
 \left|\int_a^b g_c(t) e^{-i2\pi f t}\, dt\right| \leq \left|\frac{i}{2\pi f} g_c(t) e^{-2i\pi f t} \Big|_a^b\right| + \left|\frac{1}{2\pi f} \int_a^b |g_c'(t)|\, dt\right|
@@ -676,7 +676,7 @@ $$
 </Remark>
 
 <Proof>
-Recall from Exercise 3.4.1 that Theorem 5.3.3 (Riemann-Lebesgue Lemma) was utilized to arrive at this result. The key idea is as follows.
+Recall from Exercise that Theorem (Riemann-Lebesgue Lemma) was utilized to arrive at this result. The key idea is as follows.
 
 Write $\phi(x) = \phi(0) + (\phi(x) - \phi(0))$. Then:
 
@@ -686,7 +686,7 @@ $$
 
 For the first term, by the well-known identity $\int_{-\infty}^{\infty} \frac{\sin(nx)}{\pi x}\, dx = 1$ for all $n > 0$, this equals $\phi(0)$.
 
-For the second term, define $g(x) = \frac{\phi(x) - \phi(0)}{\pi x}$. Since $\phi \in \mathcal{S}$, $g$ is smooth near $x = 0$ (with $g(0) = \frac{\phi'(0)}{\pi}$) and decays rapidly as $|x| \to \infty$. In particular, $g \in L_1(\mathbb{R})$. By the Riemann-Lebesgue lemma (Theorem 5.3.3):
+For the second term, define $g(x) = \frac{\phi(x) - \phi(0)}{\pi x}$. Since $\phi \in \mathcal{S}$, $g$ is smooth near $x = 0$ (with $g(0) = \frac{\phi'(0)}{\pi}$) and decays rapidly as $|x| \to \infty$. In particular, $g \in L_1(\mathbb{R})$. By the Riemann-Lebesgue lemma (Theorem):
 
 $$
 \lim_{n \to \infty} \int g(x) \sin(nx)\, dx = 0
@@ -723,7 +723,7 @@ $$
 = \lim_{A \to \infty} \int \phi(\tau) \left(\int_{f=-A}^{A} e^{-i2\pi f(\tau - t)}\, df\right) d\tau
 $$
 
-For every fixed $A$, we can justify the above by (Fubini's) Theorem A.3.1. By Lemma 5.3.1, the fact that
+For every fixed $A$, we can justify the above by (Fubini's) Theorem A.3.1. By Lemma, the fact that
 
 $$
 \int_{f=-A}^{A} e^{-i2\pi f(\tau - t)}\, df = \frac{1}{\pi(t - \tau)} \sin(2A\pi(t - \tau)),
@@ -777,7 +777,7 @@ When $h = g$, Plancherel's identity reduces to Parseval's theorem: $\|\hat{h}\|^
 
 The above discussion applies for $h, g \in \mathcal{S}$ (where we also allow for $\mathbb{C}$-valued functions in $\mathcal{S}$). We will show that one can extend the Fourier transform for signals in $L_2(\mathbb{R}; \mathbb{C})$. Furthermore, as not every function in $L_2(\mathbb{R})$ is also in $L_1(\mathbb{R})$ (for example: $f(t) = \frac{1}{\sqrt{1+t^2}}$ is in $L_2$ but not in $L_1$), one cannot define a Fourier transform of a general function in $L_2(\mathbb{R})$ pointwise directly by an integral.
 
-Recall from Theorem 2.3.8, and the discussions following it, that continuous functions are dense in integrable functions, and from Corollary 3.4.1 one can approximate a continuous function by its convolution with a smooth approximate identity sequence leading to a smooth approximation. These lead to the following.
+Recall from Theorem, and the discussions following it, that continuous functions are dense in integrable functions, and from Corollary one can approximate a continuous function by its convolution with a smooth approximate identity sequence leading to a smooth approximation. These lead to the following.
 
 <Theorem title="Density of Schwartz Space">
 $\mathcal{S}$ is dense in $L_2(\mathbb{R})$.
@@ -831,7 +831,7 @@ $$
 and thus $\|\bar{T}\| \leq \|T\|$. On the other hand, $\bar{T}(x) = T(x)$ for $x \in M$ and thus we must have $\|T\| \leq \|\bar{T}\|$. Thus, the norms must be equal. $\square$
 </Proof>
 
-Now, let $M = \mathcal{S}$, $X = Y = L_2(\mathbb{R}; \mathbb{C})$, $T = \mathcal{F}_{CC}$ and note by Theorem 5.3.4 that $\|\mathcal{F}_{CC}\| = 1$ (**when viewed as a mapping from a subset of $L_2(\mathbb{R}; \mathbb{C})$**). In view of this, **we define $\mathcal{F}_{CC}$ on $L_2(\mathbb{R}; \mathbb{C})$ to be the unique extension of $\mathcal{F}_{CC}$ from $\mathcal{S} \to L_2(\mathbb{R}; \mathbb{C})$**. Thus, for $h \in L_2(\mathbb{R}; \mathbb{C})$,
+Now, let $M = \mathcal{S}$, $X = Y = L_2(\mathbb{R}; \mathbb{C})$, $T = \mathcal{F}_{CC}$ and note by Theorem that $\|\mathcal{F}_{CC}\| = 1$ (**when viewed as a mapping from a subset of $L_2(\mathbb{R}; \mathbb{C})$**). In view of this, **we define $\mathcal{F}_{CC}$ on $L_2(\mathbb{R}; \mathbb{C})$ to be the unique extension of $\mathcal{F}_{CC}$ from $\mathcal{S} \to L_2(\mathbb{R}; \mathbb{C})$**. Thus, for $h \in L_2(\mathbb{R}; \mathbb{C})$,
 
 $$
 \langle h, h \rangle = \langle \hat{h}, \hat{h} \rangle, \quad \hat{h} = \mathcal{F}_{CC}(h).
@@ -962,7 +962,7 @@ $$
 = \delta_{f_0}(\phi) \left(\equiv \int \phi(t) \delta_{f_0}(t)\, dt\right)
 $$
 
-In the analysis above, we use the fact that $\hat{\phi} \in \mathcal{S}$, use Fubini's Theorem to change the order of the integrations and finally invoke Lemma 5.3.1. Thus, the CCFT of a cosine will be $1/2\,\delta_{f_0}(t) + 1/2\,\delta_{-f_0}(t)$. Here, the last equation in brackets is meant to be in an intuitive sense.
+In the analysis above, we use the fact that $\hat{\phi} \in \mathcal{S}$, use Fubini's Theorem to change the order of the integrations and finally invoke Lemma. Thus, the CCFT of a cosine will be $1/2\,\delta_{f_0}(t) + 1/2\,\delta_{-f_0}(t)$. Here, the last in brackets is meant to be in an intuitive sense.
 </Example>
 
 ## $\mathcal{F}_{CC}$ of Periodic Signals

@@ -53,7 +53,7 @@ where
 
 $$e^{At} = I + At + A^2\frac{t^2}{2} + \ldots A^n\frac{t^n}{n!} + \ldots$$
 
-is the matrix exponential (see Exercise 11.6.1). We now briefly review how to compute matrix exponentials with a focus on stability properties.
+is the matrix exponential (see Exercise). We now briefly review how to compute matrix exponentials with a focus on stability properties.
 
 **Case: $A = I$ (Identity Matrix).** In this case, $e^{At} = I + It + I^2\frac{t^2}{2!} + \cdots + I^n\frac{t^n}{n!} + \ldots$, and
 
@@ -69,7 +69,7 @@ $$e^{At} = \begin{bmatrix} e^{\lambda_1 t} & 0 & 0 \\ 0 & e^{\lambda_2 t} & 0 \\
 
 Hence, it is very easy to compute the exponential when the matrix is diagonal.
 
-**Commutativity property.** Note now that if $AB = BA$, that is, if $A$ and $B$ commute, then (see Exercise 11.6.2)
+**Commutativity property.** Note now that if $AB = BA$, that is, if $A$ and $B$ commute, then (see Exercise)
 
 $$e^{(A+B)} = e^A e^B$$
 
@@ -168,7 +168,7 @@ A function $V : \mathbb{R}^n \to \mathbb{R}$ is called a Lyapunov function if
 </Definition>
 
 <Remark>
-**Intuition:** A Lyapunov function is a generalized notion of "energy" for a system. Just as physical energy is always non-negative and equals zero only at rest, $V(x)$ is positive everywhere except at the equilibrium. The key idea is that you do not need to solve the differential equation to prove stability -- you just need to find an appropriate energy-like function and show it never increases (or strictly decreases) along the system's trajectories. For mechanical systems, the actual energy often works as a Lyapunov function, but for abstract systems you may need to be creative.
+**Intuition:** A Lyapunov function is a generalized notion of "energy" for a system. Just as physical energy is always non-negative and equals zero only at rest, $V(x)$ is positive everywhere except at the equilibrium. The key idea is that you do not need to solve the differential to prove stability -- you just need to find an appropriate energy-like function and show it never increases (or strictly decreases) along the system's trajectories. For mechanical systems, the actual energy often works as a Lyapunov function, but for abstract systems you may need to be creative.
 </Remark>
 
 A Lyapunov function serves as a generalized notion of "energy" for a system. The idea is that if we can find a positive-definite function that never increases along trajectories of the system, then the trajectories must remain bounded (stability). If the function is strictly decreasing, the system must converge to the equilibrium (asymptotic stability).
@@ -176,13 +176,13 @@ A Lyapunov function serves as a generalized notion of "energy" for a system. The
 First we present results on local asymptotic stability. As above, let $\Omega \in \mathbb{R}^n$ be an open set containing 0.
 
 <Theorem title="Lyapunov's Direct Method">
-a) For a given differential equation $x'(t) = f(x(t))$ with $f(0) = 0$, and continuous $f$, if we can find a Lyapunov function $V$ such that
+a) For a given differential $x'(t) = f(x(t))$ with $f(0) = 0$, and continuous $f$, if we can find a Lyapunov function $V$ such that
 
 $$\frac{d}{dt}V(x(t)) \leq 0,$$
 
 for all $x(t) = x \in \Omega$, then, the system is locally stable (stable in the sense of Lyapunov).
 
-b) For a given differential equation $x'(t) = f(x(t))$ with $f(0) = 0$, and continuous $f$, if we can find a Lyapunov function $V(x)$ such that
+b) For a given differential $x'(t) = f(x(t))$ with $f(0) = 0$, and continuous $f$, if we can find a Lyapunov function $V(x)$ such that
 
 $$\frac{d}{dt}V(x(t)) < 0,$$
 
@@ -196,7 +196,7 @@ for $x(t) = z \in \mathbb{R}^n \setminus \{0\}$, then the system is globally asy
 </Theorem>
 
 <Remark>
-**Intuition:** Lyapunov's direct method is like proving a ball will reach the bottom of a valley without tracking its exact path. Part (a) says: if the system's "energy" never increases, the state stays close (stability). Part (b) says: if the energy strictly decreases, the state must converge to equilibrium (asymptotic stability). Part (c) adds the global guarantee: if the energy function grows to infinity in all directions (so there are no "escape routes"), then asymptotic stability holds everywhere. The power of this method is that it avoids solving the differential equation entirely -- you only need a suitable energy function.
+**Intuition:** Lyapunov's direct method is like proving a ball will reach the bottom of a valley without tracking its exact path. Part (a) says: if the system's "energy" never increases, the state stays close (stability). Part (b) says: if the energy strictly decreases, the state must converge to equilibrium (asymptotic stability). Part (c) adds the global guarantee: if the energy function grows to infinity in all directions (so there are no "escape routes"), then asymptotic stability holds everywhere. The power of this method is that it avoids solving the differential entirely -- you only need a suitable energy function.
 </Remark>
 
 <Proof>
@@ -216,23 +216,23 @@ leading to a contradiction.
 </Proof>
 
 <Theorem title="Region of Asymptotic Stability">
-Let us, in addition to the conditions noted in Theorem 11.3.1(b), further impose that for some $l$, $\Omega_l := \{x : V(x) \leq l\}$ is a bounded set and $\Omega_l \subset \Omega$ where $\Omega$ satisfies Theorem 11.3.1(b). Then, every solution of the system with initial state $x(0) \in \Omega_l$ converges to equilibrium.
+Let us, in addition to the conditions noted in Theorem(b), further impose that for some $l$, $\Omega_l := \{x : V(x) \leq l\}$ is a bounded set and $\Omega_l \subset \Omega$ where $\Omega$ satisfies Theorem(b). Then, every solution of the system with initial state $x(0) \in \Omega_l$ converges to equilibrium.
 </Theorem>
 
 <Remark>
 **Intuition:** This theorem gives you a concrete, computable estimate of the "basin of attraction" -- the set of initial conditions from which the system is guaranteed to converge. The sublevel set $\{x : V(x) \leq l\}$ acts like a fence: since $V$ is decreasing along trajectories, once the state is inside this set, it can never leave. In practice, you pick $l$ as large as possible while keeping the sublevel set within the region where $\dot{V} < 0$, giving you the largest provable region of attraction.
 </Remark>
 
-By following (and slightly modifying) the proof of Theorem 11.3.1(b), we can conclude that $\Omega_l$ is a **region of attraction** for the equilibrium point, which is defined as a set of initial states whose corresponding solutions converge to the equilibrium point: $\{x(0) : \lim_{t\to\infty} x(t) = 0\}$.
+By following (and slightly modifying) the proof of Theorem(b), we can conclude that $\Omega_l$ is a **region of attraction** for the equilibrium point, which is defined as a set of initial states whose corresponding solutions converge to the equilibrium point: $\{x(0) : \lim_{t\to\infty} x(t) = 0\}$.
 
 <Remark >
-For local stability, by restricting the analysis to $\Omega$, we can allow the Lyapunov function $V$ to take even negative values outside $\Omega$ or not necessarily be continuous outside $\Omega$. In Theorem 11.3.1, we used such properties of $V$ only on $\Omega$.
+For local stability, by restricting the analysis to $\Omega$, we can allow the Lyapunov function $V$ to take even negative values outside $\Omega$ or not necessarily be continuous outside $\Omega$. In Theorem, we used such properties of $V$ only on $\Omega$.
 </Remark>
 
 <Example title="Cubic System Stability">
 Show that $x' = -x^3$ is locally asymptotically stable, by picking $V(x) = x^2$ as a Lyapunov function. Is this solution globally asymptotically stable as well?
 
-We compute $\frac{d}{dt}V(x(t)) = 2x \cdot x' = 2x(-x^3) = -2x^4 < 0$ for all $x \neq 0$. Since $V(x) = x^2 \to \infty$ as $|x| \to \infty$, by Theorem 11.3.1(c), the system is globally asymptotically stable.
+We compute $\frac{d}{dt}V(x(t)) = 2x \cdot x' = 2x(-x^3) = -2x^4 < 0$ for all $x \neq 0$. Since $V(x) = x^2 \to \infty$ as $|x| \to \infty$, by Theorem(c), the system is globally asymptotically stable.
 </Example>
 
 <Example title="Region of Attraction">
@@ -258,7 +258,7 @@ has a unique solution $M$, where the solution is positive definite.
 </Theorem>
 
 <Remark>
-**Intuition:** The Lyapunov equation converts the problem of checking eigenvalue locations (a nonlinear problem) into solving a system of linear equations for $M$. If you can find a positive definite $M$ satisfying $A^TM + MA = -N$, then $V(x) = x^TMx$ is a Lyapunov function that certifies stability. In MATLAB, this is a single command (`lyap`). The theorem says this always works for stable linear systems: for any "target" energy dissipation rate $N$, there is a unique energy function $M$ that achieves it. This makes stability verification for linear systems completely algorithmic.
+**Intuition:** The Lyapunov converts the problem of checking eigenvalue locations (a nonlinear problem) into solving a system of linear equations for $M$. If you can find a positive definite $M$ satisfying $A^TM + MA = -N$, then $V(x) = x^TMx$ is a Lyapunov function that certifies stability. In MATLAB, this is a single command (`lyap`). The theorem says this always works for stable linear systems: for any "target" energy dissipation rate $N$, there is a unique energy function $M$ that achieves it. This makes stability verification for linear systems completely algorithmic.
 </Remark>
 
 <Proof>
@@ -268,7 +268,7 @@ $$A^TM + MA = \int_0^{\infty} A^Te^{A^Tt}Ne^{At}dt + \int_0^{\infty} e^{A^Tt}Ne^
 
 where the last line follows from the fact that $\lim_{t\to\infty} e^{At} = 0$.
 
-$M$ is symmetric, which can be shown by verifying that $M^T = M$. Furthermore, $M$ is positive definite: for any $x \neq 0$, we have $x^TMx = \int_0^{\infty} x^Te^{A^Tt}Ne^{At}xdt = \int_0^{\infty}\|\sqrt{N}e^{At}x\|^2dt > 0$, where $\sqrt{N}$ is the invertible matrix that solves the equation $\sqrt{N}\sqrt{N} = N$: with $N = U\Lambda U^T$ where $\Lambda$ is the diagonal matrix containing the (all positive real) eigenvalues of $N$ on the diagonal, we have that $\sqrt{N} = U\sqrt{\Lambda}U^T$, where $\sqrt{\Lambda}$ is a diagonal matrix consisting of square roots of the eigenvalues of $N$ on the diagonal.
+$M$ is symmetric, which can be shown by verifying that $M^T = M$. Furthermore, $M$ is positive definite: for any $x \neq 0$, we have $x^TMx = \int_0^{\infty} x^Te^{A^Tt}Ne^{At}xdt = \int_0^{\infty}\|\sqrt{N}e^{At}x\|^2dt > 0$, where $\sqrt{N}$ is the invertible matrix that solves the $\sqrt{N}\sqrt{N} = N$: with $N = U\Lambda U^T$ where $\Lambda$ is the diagonal matrix containing the (all positive real) eigenvalues of $N$ on the diagonal, we have that $\sqrt{N} = U\sqrt{\Lambda}U^T$, where $\sqrt{\Lambda}$ is a diagonal matrix consisting of square roots of the eigenvalues of $N$ on the diagonal.
 
 **Uniqueness:** For uniqueness, consider the following: let $\bar{M}$ also solve $A^T\bar{M} + \bar{M}A = -N$. Then, since $A$ has all eigenvalues with negative real parts, it follows from the fundamental theorem of calculus that
 
@@ -286,10 +286,10 @@ $$= M$$
 
 $$\frac{d}{dt}V(x(t)) = \frac{d}{dt}(x^T(t)Mx(t)) = x^TMAx + x^TA^TMx = x^T(MA + A^TM)x = -x^TNx$$
 
-which is strictly negative for all $x \neq 0$. Then, Theorem 11.3.1(b) would imply that the system $x' = Ax$ is globally asymptotically stable and hence, by Theorem 11.2.1, the eigenvalues of $A$ have to have negative real parts.
+which is strictly negative for all $x \neq 0$. Then, Theorem(b) would imply that the system $x' = Ax$ is globally asymptotically stable and hence, by Theorem, the eigenvalues of $A$ have to have negative real parts.
 </Proof>
 
-The Lyapunov equation $A^TM + MA = -N$ is a **linear matrix equation** -- given $A$ and $N$, solving for $M$ is a system of linear equations. In MATLAB, the command `lyap(A', N)` solves this directly. This theorem converts a nonlinear eigenvalue problem (checking eigenvalue locations) into a linear algebra problem (solving a matrix equation and checking positive definiteness).
+The Lyapunov $A^TM + MA = -N$ is a **linear matrix equation** -- given $A$ and $N$, solving for $M$ is a system of linear equations. In MATLAB, the command `lyap(A', N)` solves this directly. This theorem converts a nonlinear eigenvalue problem (checking eigenvalue locations) into a linear algebra problem (solving a matrix and checking positive definiteness).
 
 ---
 
@@ -304,7 +304,7 @@ Let $f : \mathbb{R}^n \to \mathbb{R}^n$ be continuously differentiable. Consider
 </Remark>
 
 <Proof title="Direct Proof">
-Without any loss, we can assume that $x^* = 0$ (since the linearization is with respect to the perturbation regardless of the fixed (equilibrium) point). Since $A$ has all its eigenvalues strictly in the left half plane, there exists $\epsilon > 0$ so that $A + \epsilon I$ also has all the eigenvalues in the left half plane. You can show this via the continuity result in Theorem 8.3.1 (see, in particular, Remark 8.1).
+Without any loss, we can assume that $x^* = 0$ (since the linearization is with respect to the perturbation regardless of the fixed (equilibrium) point). Since $A$ has all its eigenvalues strictly in the left half plane, there exists $\epsilon > 0$ so that $A + \epsilon I$ also has all the eigenvalues in the left half plane. You can show this via the continuity result in Theorem (see, in particular, Remark).
 
 Therefore, $e^{(A+\epsilon I)t}$ will remain bounded: $\|e^{tA}e^{\epsilon t}\| \leq K$ for some constant $K$ for all $t \geq 0$. Here, for a matrix, we use the norm $\|A\| = \sup_{x \neq 0}\frac{\|Ax\|_2}{\|x\|_2}$. In the following, we drop the subscript 2.
 
@@ -312,7 +312,7 @@ Now write
 
 $$x'(t) = Ax(t) + E(x(t)),$$
 
-with $E(x(t)) := f(x(t)) - A(x(t))$. Let $r > 0$ be such that $\|z\| \leq r$ implies $\|E(z)\| \leq \beta\|z\|$, where we will take $\beta$ sufficiently small (to be determined at the end of the proof). Let $B := \{z : \|z\| \leq \frac{r}{2}\}$. The idea is to show that if $x(0) \in B$, then $x(t) \in B$ for all $t \geq 0$ and $\lim_{t\to\infty}x(t) = 0$. Recall that the solution to (11.1) is given with
+with $E(x(t)) := f(x(t)) - A(x(t))$. Let $r > 0$ be such that $\|z\| \leq r$ implies $\|E(z)\| \leq \beta\|z\|$, where we will take $\beta$ sufficiently small (to be determined at the end of the proof). Let $B := \{z : \|z\| \leq \frac{r}{2}\}$. The idea is to show that if $x(0) \in B$, then $x(t) \in B$ for all $t \geq 0$ and $\lim_{t\to\infty}x(t) = 0$. Recall that the solution to  is given with
 
 $$x(t) = e^{At}x(0) + \int_0^t e^{A(t-s)}E(x(s))ds$$
 
@@ -360,7 +360,7 @@ If we now take $K\beta = \alpha < \epsilon$, then $x(t) \to 0$ and the proof is 
 </Proof>
 
 <Proof title="Proof of Theorem 11.4.1 via Lyapunov's Method">
-Take $x^* = 0$, we have that $A := Df(0)$ is stable, where $Df(x)$ is the linearization of $f$ at $x$. Then, by part b) of the proof of Theorem 11.3.3, there exists $M > 0$ so that the Lyapunov function $V(x) := x^TMx$ satisfies $\frac{dV(x(t))}{dt} = -x^T(t)Nx(t)$, for the linearized model $x' = Ax$, where $N$ is positive-definite.
+Take $x^* = 0$, we have that $A := Df(0)$ is stable, where $Df(x)$ is the linearization of $f$ at $x$. Then, by part b) of the proof of Theorem, there exists $M > 0$ so that the Lyapunov function $V(x) := x^TMx$ satisfies $\frac{dV(x(t))}{dt} = -x^T(t)Nx(t)$, for the linearized model $x' = Ax$, where $N$ is positive-definite.
 
 By continuous-differentiability, we have that the non-linear system satisfies $Ax + E(x) = Ax + g(x)x$ with $\|g(x)\| \to 0$ as $x \to 0$. To see this, apply the definition of the derivative and use continuity of this derivative.
 
@@ -385,7 +385,7 @@ $$x' = -x^5$$
 
 $$x' = x^5$$
 
-which have the same linearization around 0. By a Lyapunov stability argument with taking $V(x) = x^2$, the first system can be shown to be locally and globally stable, whereas the second one is not (which can be verified by solving the equation directly: show that $x(t)$ blows up in finite time!).
+which have the same linearization around 0. By a Lyapunov stability argument with taking $V(x) = x^2$, the first system can be shown to be locally and globally stable, whereas the second one is not (which can be verified by solving the directly: show that $x(t)$ blows up in finite time!).
 
 ---
 
@@ -396,7 +396,7 @@ which have the same linearization around 0. By a Lyapunov stability argument wit
 The stability results presented for continuous-time linear systems have essentially identical generalizations for the discrete-time setup.
 
 <Theorem title="Discrete-Time Global Asymptotic Stability">
-For a linear difference equation $x_{k+1} = Ax_k$, the solution is locally and globally asymptotically stable if and only if
+For a linear difference $x_{k+1} = Ax_k$, the solution is locally and globally asymptotically stable if and only if
 
 $$\max_{\lambda_i}\{|\lambda_i|\} < 1,$$
 
@@ -404,7 +404,7 @@ where $\lambda_i$ denotes the $i$th eigenvalue of $A$. That is, all eigenvalues 
 </Theorem>
 
 <Theorem title="Discrete-Time Local Stability">
-For a linear difference equation $x_{k+1} = Ax_k$, the system is locally stable if and only if:
+For a linear difference $x_{k+1} = Ax_k$, the system is locally stable if and only if:
 
 (i) $\max_{\lambda_i}\{|\lambda_i|\} \leq 1$,
 
@@ -532,13 +532,13 @@ $$\frac{dx}{dt} = -x^7$$
 
 Is $x(t)$ (locally) asymptotically stable?
 
-Using $V(x) = x^2$, we get $\dot{V} = 2x(-x^7) = -2x^8 < 0$ for $x \neq 0$. By Theorem 11.3.1(b), the system is locally asymptotically stable. Since $V(x) \to \infty$ as $|x| \to \infty$, it is also globally asymptotically stable by part (c).
+Using $V(x) = x^2$, we get $\dot{V} = 2x(-x^7) = -2x^8 < 0$ for $x \neq 0$. By Theorem(b), the system is locally asymptotically stable. Since $V(x) \to \infty$ as $|x| \to \infty$, it is also globally asymptotically stable by part (c).
 </Example>
 
 <Example title="Second-Order System Stability">
 Consider $x'' + x' + x = 0$. Is this system asymptotically stable?
 
-*Hint: Convert this equation into a system of first-order differential equations, via $x_1 = x$ and $x_2 = x_1'$, $x_2' = -x_1 - x_2$. Then apply $V(x_1, x_2) = x_1^2 + x_1x_2 + x_2^2$ as a candidate Lyapunov function.*
+*Hint: Convert this into a system of first-order differential equations, via $x_1 = x$ and $x_2 = x_1'$, $x_2' = -x_1 - x_2$. Then apply $V(x_1, x_2) = x_1^2 + x_1x_2 + x_2^2$ as a candidate Lyapunov function.*
 
 **Solution.** Setting $x_1 = x$, $x_2 = x'$, the system becomes:
 
@@ -558,9 +558,9 @@ $$= 2x_1 x_2 + x_2^2 - x_1^2 - x_1 x_2 - 2x_1 x_2 - 2x_2^2$$
 
 $$= -x_1^2 - x_1 x_2 - x_2^2 = -V(x_1, x_2) < 0$$
 
-for $(x_1, x_2) \neq (0,0)$. Since $V \to \infty$ as $\|(x_1, x_2)\| \to \infty$, by Theorem 11.3.1(c), the system is globally asymptotically stable.
+for $(x_1, x_2) \neq (0,0)$. Since $V \to \infty$ as $\|(x_1, x_2)\| \to \infty$, by Theorem(c), the system is globally asymptotically stable.
 
-Alternatively, the eigenvalues of $A$ are $\lambda = \frac{-1 \pm \sqrt{1-4}}{2} = \frac{-1 \pm i\sqrt{3}}{2}$, which both have negative real part $-\frac{1}{2}$. By Theorem 11.2.1, the system is globally asymptotically stable.
+Alternatively, the eigenvalues of $A$ are $\lambda = \frac{-1 \pm \sqrt{1-4}}{2} = \frac{-1 \pm i\sqrt{3}}{2}$, which both have negative real part $-\frac{1}{2}$. By Theorem, the system is globally asymptotically stable.
 </Example>
 
 <Example title="A Further Lyapunov Stability Theorem and Barbalat's Lemma">
@@ -634,5 +634,5 @@ $$V(x, \hat{a}) = x^2 + (a - \hat{a})^2$$
 
 We compute $\dot{V} = 2x \cdot x' + 2(a - \hat{a})(-\hat{a}') = 2x(a - \hat{a} - 1)x - 2(a-\hat{a})x^2 = -2x^2 \leq 0$.
 
-Since $V$ is non-increasing, $x(t)$ and $\hat{a}(t)$ remain bounded. By Barbalat's Lemma (Theorem 11.6.1), $x(t) \to 0$.
+Since $V$ is non-increasing, $x(t)$ and $\hat{a}(t)$ remain bounded. By Barbalat's Lemma (Theorem), $x(t) \to 0$.
 </Example>

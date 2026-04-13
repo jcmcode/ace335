@@ -5,7 +5,7 @@ chapter: 8
 
 ## Transfer Function Shaping through Control: Closed-Loop vs. Open-Loop
 
-In Section 1.2.1, we discussed some control theoretic configurations mapping an input to an output and how the map can be shaped by control design. Two common architectures are depicted in Figure 1.2 (as a general output feedback; here the control depends on the output of the system) and in Figure 1.3 (as an error output feedback control system; here the control depends on the error between the external input and the system output). More general configurations are also possible, as discussed in Section 1.2.1. For consistency, we will focus on a particular architecture noting that the analysis to follow can be generalized to any of these models.
+In the relevant section, we discussed some control theoretic configurations mapping an input to an output and how the map can be shaped by control design. Two common architectures are depicted in Figure 1.2 (as a general output feedback; here the control depends on the output of the system) and in Figure 1.3 (as an error output feedback control system; here the control depends on the error between the external input and the system output). More general configurations are also possible, as discussed in the relevant section. For consistency, we will focus on a particular architecture noting that the analysis to follow can be generalized to any of these models.
 
 <FeedbackDiagram title="Standard Negative Feedback Loop" />
 
@@ -43,7 +43,7 @@ Bode plots were studied earlier in class. With Bode plots, we observed that we c
 
 The set $\{s : 1 + C(s)P(s) = 0\}$ consists of the poles of the transfer function. If one associates with the controller a gain parameter $K$, the root locus method traces the set of all poles as $K$ ranges from $0$ to $\infty$ (and often from $0$ to $-\infty$ as well), so that $\{s : 1 + KC(s)P(s) = 0\}$ is traced. Thus, this method provides a design technique in identifying desirable values for the parameter $K$.
 
-The root locus method allows one to identify the poles. As we studied in Section 7.5, the pole information clearly identifies BIBO stability properties and all of the poles are to have negative real values for the closed-loop system to be BIBO stable.
+The root locus method allows one to identify the poles. As we studied in the relevant section, the pole information clearly identifies BIBO stability properties and all of the poles are to have negative real values for the closed-loop system to be BIBO stable.
 
 Additionally, it lets one select desirable pole values: for example, poles with imaginary components lead to significant transient fluctuations and poles with real parts closer to the origin (on the left half plane) dominate the behaviour involving the response characteristics. A control engineer/designer may have reasons to choose certain poles over others.
 
@@ -82,7 +82,7 @@ by writing
 
 $$x(t) = \begin{bmatrix} y(t) & \frac{dy(t)}{dt} & \cdots & \frac{d^{n-1}y(t)}{dt^{n-1}} \end{bmatrix}^T$$
 
-Then, realize that $e^{\lambda_i t}c$ (for some constant $c$) solves the differential equation and thus obtain a solution for the eigenvalue equation:
+Then, realize that $e^{\lambda_i t}c$ (for some constant $c$) solves the differential and thus obtain a solution for the eigenvalue equation:
 
 $$A \begin{bmatrix} e^{\lambda_i t} \\ \lambda_i e^{\lambda_i t} \\ \vdots \\ \lambda_i^{n-1} e^{\lambda_i t} \end{bmatrix} = \lambda_i \begin{bmatrix} e^{\lambda_i t} \\ \lambda_i e^{\lambda_i t} \\ \vdots \\ \lambda_i^{n-1} e^{\lambda_i t} \end{bmatrix}.$$
 
@@ -194,7 +194,7 @@ since $\log(f(z)) = \log(|f(z)|) + i\arg(f(z))$. As $|f(\gamma(b))| = |f(\gamma(
 
 $$\int_\Gamma \frac{f'(z)}{f(z)}\, dz = i2\pi \arg f(\gamma(t))\bigg|_a^b = i2\pi \Delta_\Gamma \arg(f)$$
 
-The proof then follows from (8.5). $\square$
+The proof then follows from . $\square$
 </Proof>
 
 Now, to apply this theorem, consider $f(s) = 1 + P(s)C(s)$, as noted earlier observe that the poles of $1 + P(s)C(s)$ are the same as the poles of $P(s)C(s)$. We are interested in the zeroes of $1 + P(s)C(s)$, and whether they are in the right-half plane. So, all we need to compute is the number of zeroes of $1 + P(s)C(s)$ through the difference given by the number of encirclements: Note now that the number of encirclements of $1 + P(s)C(s)$ around 0 is the same as the number of encirclements of $P(s)C(s)$ around $-1$. So, the number of zeroes in the right-half plane of $1 + P(s)C(s)$ will be $P$ plus the winding number. As a final note, in the Nyquist analysis, we construct the contour clockwise and apply the argument principle accordingly (so, the number of encirclements around $-1$ should be counted *clock-wise*). So, the number of interest is $N + P$, as claimed.
@@ -251,7 +251,7 @@ Consider a linear system with feedback, which we assume to be stable. We general
 
 $$\gamma := \sup_{u \in L_2(\mathbb{R}; \mathbb{C}): \|u\|_2 \neq 0} \frac{\|y\|_2}{\|u\|_2}$$
 
-We know, by Parseval's theorem (Theorem 5.3.4), that
+We know, by Parseval's theorem (Theorem), that
 
 $$\gamma := \sup_{u \in L_2(\mathbb{R}; \mathbb{C}): \|u\|_2 \neq 0} \frac{\|\mathcal{F}_{CC}(y)\|_2}{\|\mathcal{F}_{CC}(u)\|_2}$$
 
@@ -291,7 +291,7 @@ Thus, we can get arbitrarily close to the supremum gain by first approaching the
 
 $$\gamma := \|G(i\omega)\|_\infty = \sup_{\omega \in \mathbb{R}} |G(i\omega)| = \sup_{f \in \mathbb{R}} |\hat{g}(f)|$$
 
-Define a system to be **$L_2$-stable** if a bounded input, in the $L_2$-sense, leads to a bounded output in the $L_2$-sense. BIBO stability of a linear system implies $L_2$-stability: BIBO stability implies $\|h\|_1 < \infty$, which implies that $H(i\omega)$ is uniformly bounded for $\omega \in \mathbb{R}$ so that $|H(i\omega)| \le \|h\|_1$. Then, observe that the output $\|y^m\|_2^2 = \int |Y^m(i\omega)^2| \frac{1}{2\pi}\, d\omega = \int |H^2(i\omega)|^2 |U^m(i\omega)|^2 \frac{1}{2\pi}\, d\omega \le \|h\|_1^2 \int |(U^m(i\omega))^2| \frac{1}{2\pi}\, d\omega$. Thus, following Theorem 5.3.6, we can extend the domain (input function space) to be the entire $L_2$ space: Now, approximate any $u$ with $\|u\|_2 < \infty$ with the sequence $\{u^m \in \mathcal{S}, m \in \mathbb{N}\}$, taking the limit of the output sequence of which lets us conclude that the output $\|y\|_2$ is also bounded. Thus $\|y\|_2^2 = \int |Y(i\omega)^2| \frac{1}{2\pi}\, d\omega = \int |H^2(i\omega) U^2(i\omega)| \frac{1}{2\pi}\, d\omega < \infty$.
+Define a system to be **$L_2$-stable** if a bounded input, in the $L_2$-sense, leads to a bounded output in the $L_2$-sense. BIBO stability of a linear system implies $L_2$-stability: BIBO stability implies $\|h\|_1 < \infty$, which implies that $H(i\omega)$ is uniformly bounded for $\omega \in \mathbb{R}$ so that $|H(i\omega)| \le \|h\|_1$. Then, observe that the output $\|y^m\|_2^2 = \int |Y^m(i\omega)^2| \frac{1}{2\pi}\, d\omega = \int |H^2(i\omega)|^2 |U^m(i\omega)|^2 \frac{1}{2\pi}\, d\omega \le \|h\|_1^2 \int |(U^m(i\omega))^2| \frac{1}{2\pi}\, d\omega$. Thus, following Theorem, we can extend the domain (input function space) to be the entire $L_2$ space: Now, approximate any $u$ with $\|u\|_2 < \infty$ with the sequence $\{u^m \in \mathcal{S}, m \in \mathbb{N}\}$, taking the limit of the output sequence of which lets us conclude that the output $\|y\|_2$ is also bounded. Thus $\|y\|_2^2 = \int |Y(i\omega)^2| \frac{1}{2\pi}\, d\omega = \int |H^2(i\omega) U^2(i\omega)| \frac{1}{2\pi}\, d\omega < \infty$.
 
 We next state a useful result on the verification of stability.
 
@@ -311,7 +311,7 @@ The above concept does not involve phase properties, and it may be conservative 
 
 ## Predictive and Feedforward Control
 
-In addition to stability and robustness, one may also wish to have desirable tracking and settling time properties (such as a low delay in the response). For such setups, it is often desirable to have a minimum-phase closed loop system (with no zeroes in the right half-plane). When one has a plant which is not minimum-phase, the design is often more challenging, due to the effective time delay present, as discussed in Section 7.5.
+In addition to stability and robustness, one may also wish to have desirable tracking and settling time properties (such as a low delay in the response). For such setups, it is often desirable to have a minimum-phase closed loop system (with no zeroes in the right half-plane). When one has a plant which is not minimum-phase, the design is often more challenging, due to the effective time delay present, as discussed in the relevant section.
 
 In such cases, it may be necessary to go beyond classical PID control, and consider schemes such as **predictive control** or **feedforward control** where part of the control input can be computed by some pre-processing by possibly using feedback from the output.
 
@@ -327,7 +327,7 @@ What we see is that if $P(s)$ has a zero in the right half-plane, the presence o
 
 For such settings, predictive control or feedforward control policies are often utilized in practice. **Feedforward control** is a general control paradigm where, unlike feedback control, the control is defined by an open-loop inner system in the control. The feedforward control is often used as a predictive correction term for the system. However, in many designs, the feedforward control is often added to a feedback control term leading to the overall control to the system with stronger robustness properties.
 
-To gain further insight, let $P(s) = P_m(s)P_{nm}(s)$ where $P_m$ is minimum-phase and $P_{nm}$ is not minimum-phase. Consider $Y_f(s) = Y(s)P_{nm}^{-1}(s)$. This then effectively allows the control to only work with the minimum-phase portion of the system as if the feedback $Y_f$ only involves $P_m$. A PID control can then be designed for this system, and the output may be then subjected to $P_{nm}$ at the end: Observe that via $Y_f(s) = Y(s)P_{nm}^{-1}(s)$, $y_f$ acts as a prediction of the output $y$: For example, if $P_{nm}(s) = e^{-2s}$ were a pure delay system (see the Pade approximation discussion in Section 7.5), then $Y_f(s) = Y(s)e^{2s}$ would essentially be written in time domain as $y_f(t) = y(t+2)$, serving as a prediction of the output. Thus, future is anticipated in the design.
+To gain further insight, let $P(s) = P_m(s)P_{nm}(s)$ where $P_m$ is minimum-phase and $P_{nm}$ is not minimum-phase. Consider $Y_f(s) = Y(s)P_{nm}^{-1}(s)$. This then effectively allows the control to only work with the minimum-phase portion of the system as if the feedback $Y_f$ only involves $P_m$. A PID control can then be designed for this system, and the output may be then subjected to $P_{nm}$ at the end: Observe that via $Y_f(s) = Y(s)P_{nm}^{-1}(s)$, $y_f$ acts as a prediction of the output $y$: For example, if $P_{nm}(s) = e^{-2s}$ were a pure delay system (see the Pade approximation discussion in the relevant section), then $Y_f(s) = Y(s)e^{2s}$ would essentially be written in time domain as $y_f(t) = y(t+2)$, serving as a prediction of the output. Thus, future is anticipated in the design.
 
 For example, in reference tracking applications in which a path is given and the system is to closely steer the path, using feedback and causal reference information alone may lead to a weaker performance; here, future reference information can be used to compute an additional control input via an inverse analysis mapping reference paths to control actions. One can see that if it is possible to predict/estimate the future behaviour of a system to be tracked, this may make the application of a baseline control feasible (e.g. if an obstacle is known to be soon coming ahead, one may be able to slow down in anticipation). This additional control input is a predictive control and its presence can provide significant improvement in performance.
 

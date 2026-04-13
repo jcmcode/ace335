@@ -37,18 +37,18 @@ This is a remarkable result which paves the way to communications, signal proces
 
 The frequency $\frac{1}{2T}$ is called the **Nyquist frequency** (or Nyquist rate). The theorem says: to perfectly reconstruct a band-limited signal, you must sample at more than twice its highest frequency component. The reconstruction formula is a sinc interpolation -- each sample is "smeared" by a sinc function, and the sum of all these sinc functions recovers the original signal exactly.
 
-**Sketch of proof.** We now present a sketch of the proof of the result above. Let $x \in \mathcal{S}$: We know that, by Theorem 5.3.5, any $x \in L_2(\mathbb{R};\mathbb{R})$ can be approximated arbitrarily well by a signal in $\mathcal{S}$ and therefore, in the following, we can assume that $x \in \mathcal{S}$ (with an arbitrarily small approximation error in the $\|\cdot\|_2$ norm).
+**Sketch of proof.** We now present a sketch of the proof of the result above. Let $x \in \mathcal{S}$: We know that, by Theorem, any $x \in L_2(\mathbb{R};\mathbb{R})$ can be approximated arbitrarily well by a signal in $\mathcal{S}$ and therefore, in the following, we can assume that $x \in \mathcal{S}$ (with an arbitrarily small approximation error in the $\|\cdot\|_2$ norm).
 
 Consider the sampled signal
 
 $$x_p(t) = \int x(t)\sum_{k \in \mathbb{Z}}\delta(t - kT), \; t \in \mathbb{R},$$
 
-where $\sum_{k \in \mathbb{Z}}\delta(t - kT)$ is called an **impulse train**. Observe that, the impulse train is a distribution, and recall from Section 5.4 that the CCFT of a distribution is itself a distribution. We will consider $\hat{x}_p(f)$, which denotes the CCFT of the sampled signal, which now needs to be viewed as a distribution.
+where $\sum_{k \in \mathbb{Z}}\delta(t - kT)$ is called an **impulse train**. Observe that, the impulse train is a distribution, and recall from the relevant section that the CCFT of a distribution is itself a distribution. We will consider $\hat{x}_p(f)$, which denotes the CCFT of the sampled signal, which now needs to be viewed as a distribution.
 
 Now let us discuss what the CCFT for the impulse train $\sum_{k \in \mathbb{Z}}\delta(t - kT)$ should be.
 
 <Remark >
-As observed earlier and above, the sequence of partial sums $\left(\sum_{k=-N}^{N} e^{-i2\pi kPt}\right)$ converges to a periodic Dirac delta function as a distribution (see also Theorem 3.4.2). This sequence is known as the Dirichlet kernel sequence.
+As observed earlier and above, the sequence of partial sums $\left(\sum_{k=-N}^{N} e^{-i2\pi kPt}\right)$ converges to a periodic Dirac delta function as a distribution (see also Theorem). This sequence is known as the Dirichlet kernel sequence.
 </Remark>
 
 It then follows that, the $\mathcal{F}_{CC}$ of $\sum_{k\in\mathbb{Z}}\delta(t - kT)$ is another impulse train given as:
@@ -83,7 +83,7 @@ the reconstruction can then be written as:
 
 $$\tilde{x}(t) = \sum_{n \in \mathbb{Z}} \hat{x}_p(nT)\frac{\sin(\pi\frac{t-nT}{T})}{\pi\frac{t-nT}{T}}.$$
 
-It also follows that if $T > \frac{1}{2B}$, the exact reconstruction will not be possible since the shifted frequency components will overlap with each other. This is known as **aliasing**. When there is aliasing, one can compute the error in the reconstruction via Parseval's theorem (see Theorem 5.3.4).
+It also follows that if $T > \frac{1}{2B}$, the exact reconstruction will not be possible since the shifted frequency components will overlap with each other. This is known as **aliasing**. When there is aliasing, one can compute the error in the reconstruction via Parseval's theorem (see Theorem).
 
 <Remark >
 To see that the informational content of a finite bandwidth signal is captured by sampling, consider the following (Shannon's argument): Since $\hat{x}$ has bounded support $[-B, B]$, $x(\frac{k}{2B}) = \int \hat{x}(\hat{f})\frac{1}{\sqrt{2B}}e^{-i\frac{2\pi}{2B}f}df$ can be viewed to be the $\mathcal{F}_{CD}$ of $\hat{f}$, but now in time domain. Having access to $x(\frac{k}{2B}), k \in \mathbb{Z}$ then is sufficient to recover $\hat{x}$ which can then be used to recover the original signal. The more detailed analysis above also provides an explicit construction, and also further insight on the approximation error when there is aliasing. The same analysis applies for the discrete-time setting to be discussed next.
@@ -214,13 +214,13 @@ $$\overline{w_P}(\alpha\phi_1 + \beta\phi_2) = \alpha\overline{w_P}(\phi_1) + \b
 
 Thus, $\overline{w_P}$ is a distribution.
 
-b) By Section 5.4, we have that $\hat{\overline{w_P}}(\phi) = \overline{w_P}(\hat{\phi})$. Then,
+b) By the relevant section, we have that $\hat{\overline{w_P}}(\phi) = \overline{w_P}(\hat{\phi})$. Then,
 
 $$\hat{\overline{w_P}}(\phi) = \overline{w_P}(\hat{\phi}) = \lim_{N \to \infty} \sum_{k=-N}^{N} \hat{\phi}(kP) = \lim_{N \to \infty} \sum_{k=-N}^{N} \left(\int \phi(t) e^{-i2\pi k P t} dt\right)$$
 
 $$= \lim_{N \to \infty} \int \phi(t) \left(\sum_{k=-N}^{N} e^{-i2\pi k P t}\right) dt$$
 
-Using the geometric series formula and the fact that $\frac{\sin(2\pi(N+1/2)Pt)}{\sin(\pi Pt)}$ is periodic with period $1/P$, and for $t \in [-\frac{1}{2P}, \frac{1}{2P}]$ this function converges (as a distribution) to a delta function (see Theorem 3.4.2), the result follows:
+Using the geometric series formula and the fact that $\frac{\sin(2\pi(N+1/2)Pt)}{\sin(\pi Pt)}$ is periodic with period $1/P$, and for $t \in [-\frac{1}{2P}, \frac{1}{2P}]$ this function converges (as a distribution) to a delta function (see Theorem), the result follows:
 
 $$\hat{\overline{w_P}}(\phi) = \lim_{N \to \infty} \sum_{k=-N}^{N} \frac{1}{P}\phi(\frac{k}{P}) = \int \frac{1}{P} w_{\frac{1}{P}}(t)\phi(t) dt$$
 </Example>

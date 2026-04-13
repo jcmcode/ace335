@@ -118,7 +118,7 @@ $$v^T A^k B = 0, \qquad 0 \leq k \leq n-1$$
 
 Since $e^{At}B$ can be written as a linear combination of $\{A^k B, \; 0 \leq k \leq n-1\}$ (by the Cayley-Hamilton theorem), it follows that $v^T e^{At} B = 0$ for all $t > 0$. This implies then that $W_c(t)$ is not invertible.
 
-Now, suppose that $\mathcal{C}$ is full-rank but $W_c(t)$ is not invertible. Then, there exists a non-zero $v$ so that $v^T e^{At} B = 0$ for all $t \geq 0$ (by the argument earlier leading to (12.2)). With $t = 0$, we have $v^T B = 0$, taking the derivative at $t = 0$ leads to $v^T AB = 0$, and taking up to $n-1$st derivative at $t = 0$, we have $v^T A^k B = 0$, $0 \leq k \leq n-1$. Thus, $\mathcal{C}$ cannot be full-rank.
+Now, suppose that $\mathcal{C}$ is full-rank but $W_c(t)$ is not invertible. Then, there exists a non-zero $v$ so that $v^T e^{At} B = 0$ for all $t \geq 0$ (by the argument earlier leading to ). With $t = 0$, we have $v^T B = 0$, taking the derivative at $t = 0$ leads to $v^T AB = 0$, and taking up to $n-1$st derivative at $t = 0$, we have $v^T A^k B = 0$, $0 \leq k \leq n-1$. Thus, $\mathcal{C}$ cannot be full-rank.
 
 An implication of this relationship will be presented further below.
 
@@ -136,7 +136,7 @@ $$v^T \begin{bmatrix} B & AB & \cdots & A^{n-1}B \end{bmatrix} = \begin{bmatrix}
 
 and $\mathcal{C}$ does not have full-rank.
 
-Conversely, suppose that $\mathcal{C}$ does not have full-rank. For this statement, we present a direct argument, but borrowing a result to be presented later in the chapter. We will see in Section 12.5 that if the system is not controllable, then there exists a transformation so that
+Conversely, suppose that $\mathcal{C}$ does not have full-rank. For this statement, we present a direct argument, but borrowing a result to be presented later in the chapter. We will see in the relevant section that if the system is not controllable, then there exists a transformation so that
 
 $$A_c = PAP^{-1}, \qquad B_c = PB,$$
 
@@ -161,7 +161,7 @@ $$\bigcup_{t \geq 0} \left\{ \int_0^t e^{A(t-s)} Bu(s) ds, \quad u \in \mathcal{
 
 are equal. This set is called the **reachable** (from the origin) set. This set is also called the **controllable subspace**.
 
-**Exercise 12.1.1.** *The controllability property is invariant under an algebraically equivalent transformation of the coordinates: $\tilde{x} = Px$ for some invertible $P$.*
+**Exercise.** *The controllability property is invariant under an algebraically equivalent transformation of the coordinates: $\tilde{x} = Px$ for some invertible $P$.*
 
 *Hint: Use the rank condition and show that with $\frac{d\tilde{x}}{dt} = \tilde{A}\tilde{x}(t) + \tilde{B}u(t)$ and $\tilde{A} = PAP^{-1}$, $\tilde{B} = PB$, and with $\mathcal{C} = \begin{bmatrix} B & AB & \cdots & A^{n-1}B \end{bmatrix}$, we have that the transformed controllability matrix writes as $\tilde{\mathcal{C}} = \begin{bmatrix} \tilde{B} & \tilde{A}\tilde{B} & \cdots & \tilde{A}^{n-1}\tilde{B} \end{bmatrix} = P\mathcal{C}$.*
 
@@ -242,14 +242,14 @@ $(A, C)$ is observable if and only if $(A^T, C^T)$ is controllable.
 </Remark>
 
 <Remark>
-By the duality theorem and the PBH test (Theorem 12.1.1(iv)), $(A, C)$ is observable if and only if the matrix
+By the duality theorem and the PBH test (Theorem(iv)), $(A, C)$ is observable if and only if the matrix
 
 $$\begin{bmatrix} A - \lambda I \\ C \end{bmatrix}$$
 
 has full column rank (i.e., rank $n$) at every eigenvalue $\lambda$ of $A$. This is the **PBH test for observability**: no eigenmode of $A$ can be invisible to the output $C$.
 </Remark>
 
-In view of Theorem 12.1.1 (and in particular, now that we have related observability to a condition of the form given in Theorem 12.1.1(iii)), we have the following immediate result:
+In view of Theorem (and in particular, now that we have related observability to a condition of the form given in Theorem(iii)), we have the following immediate result:
 
 <Theorem title="Observability Grammian">
 $(A, C)$ is observable if and only if
@@ -279,7 +279,7 @@ The eigenvalues of $A - BK$ can be placed arbitrarily if and only if $(A, B)$ is
 **Intuition:** If we have full control authority (controllability), we can shape the system's dynamics however we like by choosing the right feedback gain $K$. This is the core promise of state feedback design: controllability guarantees that every mode of the system can be moved to any desired location in the complex plane, enabling arbitrary stability and performance specifications.
 </Remark>
 
-To see this result, first consider a system in the controllable canonical realization form (see Section 9.1.1) with
+To see this result, first consider a system in the controllable canonical realization form (see the relevant section) with
 
 $$\frac{d}{dt}x(t) = Ax(t) + Bu(t), \qquad y(t) = Cx(t)$$
 
@@ -287,13 +287,13 @@ $$A_c = \begin{bmatrix} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ \vdo
 
 $$B_c = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}$$
 
-Note that, the eigenvalues of $A$ solve the characteristic polynomial whose coefficients are located in the bottom row of $A_c$ (see the proof of Theorem 8.3.1).
+Note that, the eigenvalues of $A$ solve the characteristic polynomial whose coefficients are located in the bottom row of $A_c$ (see the proof of Theorem).
 
 Now, apply $u = -Kx$ so that $u = \sum_{i=1}^{N} -k_i x_i$, leading to
 
 $$A - BK = \begin{bmatrix} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 & \cdots & 0 \\ \vdots & \vdots & & \cdots & 0 \\ -(a_0 + k_1) & -(a_1 + k_2) & -(a_2 + k_3) & \cdots & -(a_{N-1} + k_N) \end{bmatrix}$$
 
-Once again, since the eigenvalues of this matrix solve the characteristic polynomial whose coefficients are located in the bottom row (by the proof of Theorem 8.3.1), and these coefficients can be placed by selecting the scalars $k_i$, we can arbitrarily place the eigenvalues of the closed-loop matrix by feedback.
+Once again, since the eigenvalues of this matrix solve the characteristic polynomial whose coefficients are located in the bottom row (by the proof of Theorem), and these coefficients can be placed by selecting the scalars $k_i$, we can arbitrarily place the eigenvalues of the closed-loop matrix by feedback.
 
 Through a coordinate transformation $\tilde{x} = Px$, every controllable system $x' = Ax + Bu$ can be transformed to an algebraically equivalent linear system in the controllable canonical realization form $(A_c, B_c)$ above. As we saw, for a system in this form, a control can be found so that all the eigenvalues of the closed loop system are on the left-half plane. Finally, the system can be moved back to the original coordinates.
 
@@ -333,7 +333,7 @@ We then obtain with $e = x - \hat{x}$, and subtracting the above two equations f
 
 $$\frac{de}{dt} = Ae - LCe = (A - LC)e$$
 
-Then, the question whether $e(t) \to 0$ is determined by whether the eigenvalues of $A - LC$ can be pushed to the left-half plane with some appropriate $L$. If the system is observable, then this is possible, with the same arguments applicable to the pole placement analysis presented in the previous section (note that controllability and observability are related to each other with a simple duality property that was presented in Theorem 12.2.2: that is $L^T$ can be selected so that $A^T - C^T L^T$ has all eigenvalue in the left-half plane, which will also imply that $A - LC$ will have the same property).
+Then, the question whether $e(t) \to 0$ is determined by whether the eigenvalues of $A - LC$ can be pushed to the left-half plane with some appropriate $L$. If the system is observable, then this is possible, with the same arguments applicable to the pole placement analysis presented in the previous section (note that controllability and observability are related to each other with a simple duality property that was presented in Theorem: that is $L^T$ can be selected so that $A^T - C^T L^T$ has all eigenvalue in the left-half plane, which will also imply that $A - LC$ will have the same property).
 
 Now that under observability we have that the controller can track the state with asymptotically vanishing error, suppose that we consider
 
@@ -478,7 +478,7 @@ $$P = Q + A^T P A - A^T P B (B^T P B + R)^{-1} B^T P A.$$
 
 $$P_t = Q + A^T P_{t+1} A - A^T P_{t+1} B (B^T P_{t+1} B + R)^{-1} B^T P_{t+1} A,$$
 
-converges to some limit $P$ that satisfies the algebraic Riccati equation above. That is, convergence takes place for any initial condition $\bar{P}$. Furthermore, such a $P$ is unique, and is positive definite. Finally, under the control policy
+converges to some limit $P$ that satisfies the algebraic Riccati above. That is, convergence takes place for any initial condition $\bar{P}$. Furthermore, such a $P$ is unique, and is positive definite. Finally, under the control policy
 
 $$u_t = -(B^T P B + R)^{-1} B^T P A x_t,$$
 
@@ -488,7 +488,7 @@ $\{x_t\}$ is stable.
 </Theorem>
 
 <Remark>
-**Intuition:** The Riccati equation provides a constructive, computational recipe for optimal control design. Instead of just knowing that pole placement is *possible* (from controllability), the Riccati approach tells you exactly *which* feedback gain to use -- one that minimizes a quadratic cost balancing state regulation ($Q$) against control effort ($R$). The iterative Riccati recursion converges from any starting point, making it numerically robust. This is the foundation of **LQR** (Linear Quadratic Regulator) design.
+**Intuition:** The Riccati provides a constructive, computational recipe for optimal control design. Instead of just knowing that pole placement is *possible* (from controllability), the Riccati approach tells you exactly *which* feedback gain to use -- one that minimizes a quadratic cost balancing state regulation ($Q$) against control effort ($R$). The iterative Riccati recursion converges from any starting point, making it numerically robust. This is the foundation of **LQR** (Linear Quadratic Regulator) design.
 </Remark>
 
 In the above, we established a method to find $K$ so that $A - BK$ is stable: Run the recursions, for any arbitrary initial condition, find the limit $P$ and select $u_t = -Kx_t$ with
@@ -501,7 +501,7 @@ This controller will be stabilizing.
 
 A similar phenomenon as applies for observer design. In fact, with the above discussion, using the duality analysis presented earlier, we can directly design an observer so that the matrix $A - LC$ is stable. By writing the condition as the stability of $A^T - C^T L^T$, the question becomes that of finding $L^T$ for which $A^T - C^T L^T$ is a stable matrix.
 
-Let $(A, C)$ be observable. In Theorem 12.6.1, if we replace $A$ with $A^T$, $B$ with $C^T$, and defining $W = BB^T$ for any $B$ with $(A, B)$ controllable, we obtain:
+Let $(A, C)$ be observable. In Theorem, if we replace $A$ with $A^T$, $B$ with $C^T$, and defining $W = BB^T$ for any $B$ with $(A, B)$ controllable, we obtain:
 
 $$S = W + ASA^T - ASC^T(CSC^T + R)^{-1}CSA^T.$$
 
@@ -561,7 +561,7 @@ is so that $A - BK$ is stable.
 
 ## Applications and Exercises
 
-**Exercise 12.7.1.** *Recall that we had studied the controlled pendulum on a cart (see Figure 12.1). The non-linear mechanical/rotational dynamics equations were found to be*
+**Exercise.** *Recall that we had studied the controlled pendulum on a cart (see Figure 12.1). The non-linear mechanical/rotational dynamics equations were found to be*
 
 $$M\frac{d^2 y}{dt^2} = u - m\frac{d^2}{dt^2}(y + l\sin(\theta)) = u - m\frac{d^2 y}{dt^2} + ml\frac{d^2\theta}{dt^2} - ml\left(\frac{d\theta}{dt}\right)^2 \sin(\theta)$$
 
@@ -583,7 +583,7 @@ $$\frac{dx}{dt} = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{-mg}{M} & 0 \\ 
 
 *b) Does there exist a control policy with $u = -Kx$ that makes the closed loop linearized system stable? Select specific values for $M, m, l$ so that controllability holds, and accordingly find an explicit $K$.*
 
-*c) With the controller in part b), can you conclude that through the arguments presented in the previous chapter (e.g. Theorem 11.4.1), that your (original non-linear) system is locally asymptotically stable?*
+*c) With the controller in part b), can you conclude that through the arguments presented in the previous chapter (e.g. Theorem), that your (original non-linear) system is locally asymptotically stable?*
 
 *Hint: a) With*
 
@@ -597,16 +597,16 @@ $$\begin{bmatrix} B & AB & A^2B & A^3B \end{bmatrix} = \begin{bmatrix} 0 & \frac
 
 *b) By controllability, we can place the eigenvalues of the matrix arbitrarily. Find an explicit $K$. You can use the method presented earlier in the chapter, or try to explicitly arrive at a stabilizing control matrix.*
 
-*c) Then, by Theorem 11.4.1, the system is locally stable around the equilibrium point. Precisely explain why this is the case.*
+*c) Then, by Theorem, the system is locally stable around the equilibrium point. Precisely explain why this is the case.*
 
-**Exercise 12.7.2.** *Consider the linear system*
+**Exercise.** *Consider the linear system*
 
 $$\frac{dx}{dt} = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 1 & 0 \\ 2 & 1 & 1 \end{bmatrix} x + \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} u$$
 
 *Is this system controllable? Does there exist a matrix $K$ so that with $u = Kx$, the eigenvalues of the closed-loop matrix:*
 $\left(\begin{bmatrix} 0 & 0 & 0 \\ 0 & 1 & 0 \\ 2 & 1 & 1 \end{bmatrix} + \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} K\right)$ *can be arbitrarily assigned?*
 
-**Exercise 12.7.3.** *Consider*
+**Exercise.** *Consider*
 
 $$\frac{dx}{dt} = Ax + Bu, \qquad y = Cx$$
 
@@ -618,13 +618,13 @@ $$y = \begin{bmatrix} 1 & 0 \end{bmatrix} x$$
 
 *a) Is this system observable? b) Is this system controllable? c) Provide a stabilizing feedback control policy by running an observer.*
 
-*Hint: a) and b) Yes. c) The system is both controllable and observable. If the system state were available, we could have $u = -Kx$ and select $K$ so that $A - BK$ is stable. Find such a $K$. Now, we can run an observer as explained in Section 12.4:*
+*Hint: a) and b) Yes. c) The system is both controllable and observable. If the system state were available, we could have $u = -Kx$ and select $K$ so that $A - BK$ is stable. Find such a $K$. Now, we can run an observer as explained in the relevant section:*
 
 $$\frac{d\hat{x}}{dt} = A\hat{x} + Bu + L(y - C\hat{x})$$
 
 *with the property that $A - LC$ is stable. Find such an $L$. Then, the control to be applied would be: $u_t = -K\hat{x}_t$. Find explicit values.*
 
-**Exercise 12.7.4.** *a) Show that controllability is invariant under an algebraically equivalent transformation of the coordinates: $\tilde{x} = Px$ for some invertible $P$.*
+**Exercise.** *a) Show that controllability is invariant under an algebraically equivalent transformation of the coordinates: $\tilde{x} = Px$ for some invertible $P$.*
 
 *Hint: With $\frac{d\tilde{x}}{dt} = \tilde{A}\tilde{x}(t) + \tilde{B}u(t)$ and $\tilde{A} = PAP^{-1}$, $\tilde{B} = PB$, and with $\mathcal{C} = \begin{bmatrix} B & AB & \cdots & A^{n-1}B \end{bmatrix}$, we have that the transformed controllability matrix writes as $\tilde{\mathcal{C}} = \begin{bmatrix} \tilde{B} & \tilde{A}\tilde{B} & \cdots & \tilde{A}^{n-1}\tilde{B} \end{bmatrix} = P\mathcal{C}$. Since $P$ is invertible, $\text{rank}(\tilde{\mathcal{C}}) = \text{rank}(\mathcal{C})$.*
 
@@ -636,7 +636,7 @@ $$\frac{dx}{dt} = \begin{bmatrix} a & b \\ -b & a \end{bmatrix} x + \begin{bmatr
 
 *Hint: The characteristic polynomial of $A = \begin{bmatrix} a & b \\ -b & a \end{bmatrix}$ is $s^2 - 2as + (a^2 + b^2)$. The controllability matrix is $\mathcal{C} = \begin{bmatrix} 1 & a \\ 0 & -b \end{bmatrix}$, which has full rank when $b \neq 0$. The controllable canonical form has $A_c = \begin{bmatrix} 0 & 1 \\ -(a^2+b^2) & 2a \end{bmatrix}$ and $B_c = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$. The transformation $P = \tilde{\mathcal{C}}\mathcal{C}^{-1}$ where $\tilde{\mathcal{C}} = \begin{bmatrix} 0 & 1 \\ 1 & 2a \end{bmatrix}$.*
 
-**Exercise 12.7.5.** *Consider*
+**Exercise.** *Consider*
 
 $$\frac{dx}{dt} = Ax + Bu, \qquad y = Cx$$
 
@@ -648,7 +648,7 @@ $$y = \begin{bmatrix} 1 & 0 \end{bmatrix} x$$
 
 *a) Is this system observable? b) Is this system controllable? c) Provide a stabilizing feedback control policy by running an observer.*
 
-*Note. The model here and the model for $P$ given in Exercise 8.6.3 are related.*
+*Note. The model here and the model for $P$ given in Exercise are related.*
 
 *Solution. The system is both controllable and observable. If the system state were available, we could have $u = -Kx$ and select $K$ so that $A - BK$ is stable. Find such a $K$.*
 

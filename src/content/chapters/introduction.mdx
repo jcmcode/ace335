@@ -91,7 +91,7 @@ $$J^x(g)(i,j) = \frac{\partial g^i}{\partial x^j}(x), \qquad i = 1, 2, \cdots, m
 
 Now, let $x \in \mathbb{R}^m$ and $u \in \mathbb{R}^p$ and
 
-$$\frac{dx}{dt} = f(x, u) \qquad \text{(1.1)}$$
+$$\frac{dx}{dt} = f(x, u) \qquad \text{}$$
 
 be such that $f(\bar{x}, \bar{u}) = 0$ for some $(\bar{x}, \bar{u}) \in \mathbb{R}^m \times \mathbb{R}^p$. In this case, we say that $x$ is at equilibrium at $\bar{x}$ under input $\bar{u}$. Suppose that we slightly perturb $x$ and $u$ around the equilibrium $(\bar{x}, \bar{u})$. Let us write $x(t) = \bar{x} + \tilde{x}(t)$ and $u = \bar{u} + \tilde{u}(t)$, where $\tilde{x}$ and $\tilde{u}$ are small. Then,
 
@@ -109,14 +109,14 @@ we obtain
 
 $$\frac{d\tilde{x}}{dt} = A\tilde{x} + B\tilde{u},$$
 
-as an approximate linear description of the system (1.1) at around the equilibrium point $(\bar{x}, \bar{u})$. We will observe that such a linearization is very useful in systems design.
+as an approximate linear description of the system  at around the equilibrium point $(\bar{x}, \bar{u})$. We will observe that such a linearization is very useful in systems design.
 
 <Example title="Inverted Pendulum on a Cart">
 Consider the following example involving an inverted (non-linear) pendulum over a cart system, with masses of the pendulum and cart given with $m$ and $M$, respectively. The goal is to keep the inverted pendulum (locally) stable around $\theta = 0$ by the control acting horizontally on the cart with mass $M$.
 
 The non-linear mechanical/rotational dynamics equations can be derived as:
 
-$$u = M\frac{d^2y}{dt^2} + m\frac{d^2}{dt^2}(y + l\sin(\theta)) = M\frac{d^2y}{dt^2} + m\frac{d^2y}{dt^2} + ml\cos(\theta)\frac{d^2\theta}{dt^2} - ml\left(\frac{d\theta}{dt}\right)^2\sin(\theta) \qquad \text{(1.2)}$$
+$$u = M\frac{d^2y}{dt^2} + m\frac{d^2}{dt^2}(y + l\sin(\theta)) = M\frac{d^2y}{dt^2} + m\frac{d^2y}{dt^2} + ml\cos(\theta)\frac{d^2\theta}{dt^2} - ml\left(\frac{d\theta}{dt}\right)^2\sin(\theta) \qquad \text{}$$
 
 $$ml^2\frac{d^2\theta}{dt^2} = mg\sin(\theta)l - m\frac{d^2y}{dt^2}\cos(\theta)l$$
 
@@ -124,7 +124,7 @@ Around $\theta = 0$, $\frac{d\theta}{dt} = 0$, we apply the linear approximation
 
 $$M\frac{d^2y}{dt^2} = u - \left(m\frac{d^2y}{dt^2} + ml\frac{d^2\theta}{dt^2}\right)$$
 
-$$l\frac{d^2\theta}{dt^2} = g\theta - \frac{d^2y}{dt^2} \qquad \text{(1.3)}$$
+$$l\frac{d^2\theta}{dt^2} = g\theta - \frac{d^2y}{dt^2} \qquad \text{}$$
 
 Finally, writing $x_1 = y$, $x_2 = \frac{dy}{dt}$, $x_3 = \theta$, $x_4 = \frac{d\theta}{dt}$, and manipulating the equations, we arrive at the linear model in state space form
 
@@ -132,7 +132,7 @@ $$\frac{dx}{dt} = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & \frac{-mg}{M} & 0 \\ 
 
 where $x = \begin{bmatrix} x_1 & x_2 & x_3 & x_4 \end{bmatrix}^T$.
 
-A remarkable implication is the following: Using some systems theoretic analysis, it can be shown that linearization will let us construct a control function/policy/law that makes the idealized linear system stable, which in turn makes the original non-linear system (1.2) locally stable around the (open-loop unstable) equilibrium point.
+A remarkable implication is the following: Using some systems theoretic analysis, it can be shown that linearization will let us construct a control function/policy/law that makes the idealized linear system stable, which in turn makes the original non-linear system  locally stable around the (open-loop unstable) equilibrium point.
 </Example>
 
 ---

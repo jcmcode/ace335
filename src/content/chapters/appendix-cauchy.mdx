@@ -3,7 +3,7 @@ title: "Appendix B: Cauchy's Integral Formula"
 chapter: 14
 ---
 
-This appendix presents Cauchy's integral formula and the residue theorem, which are the complex analysis results underpinning the Nyquist stability criterion (Section 8.4) and the computation of inverse Laplace and Z-transforms via contour integration (Section 7.3).
+This appendix presents Cauchy's integral formula and the residue theorem, which are the complex analysis results underpinning the Nyquist stability criterion (the relevant section) and the computation of inverse Laplace and Z-transforms via contour integration (the relevant section).
 
 ---
 
@@ -58,14 +58,14 @@ $$\oint_\Gamma f(z)\,dz = 2\pi i \sum_{j=1}^{k} \text{Res}(f, z_j).$$
 </Theorem>
 
 <Remark>
-**Intuition:** The residue theorem generalizes Cauchy's integral theorem to functions with poles: the integral around a closed contour equals $2\pi i$ times the sum of the residues at the poles enclosed by the contour. This is the key tool for computing inverse Laplace transforms and is the mathematical engine behind the Nyquist criterion -- the winding number in the principle of variation of the argument (Theorem 8.4.2) is computed via residues.
+**Intuition:** The residue theorem generalizes Cauchy's integral theorem to functions with poles: the integral around a closed contour equals $2\pi i$ times the sum of the residues at the poles enclosed by the contour. This is the key tool for computing inverse Laplace transforms and is the mathematical engine behind the Nyquist criterion -- the winding number in the principle of variation of the argument (Theorem) is computed via residues.
 </Remark>
 
 ---
 
 ## B.3 Application to the Nyquist Criterion
 
-The principle of variation of the argument (Theorem 8.4.2), which is the foundation of the Nyquist stability criterion, is a direct consequence of the residue theorem. For a function $f$ with $Z$ zeros and $P$ poles inside a contour $\Gamma$:
+The principle of variation of the argument (Theorem), which is the foundation of the Nyquist stability criterion, is a direct consequence of the residue theorem. For a function $f$ with $Z$ zeros and $P$ poles inside a contour $\Gamma$:
 
 $$\frac{1}{2\pi i} \oint_\Gamma \frac{f'(z)}{f(z)}\,dz = Z - P.$$
 

@@ -123,7 +123,7 @@ $$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
 **Intuition:** Minkowski's inequality is the triangle inequality for $l_p$ spaces. It says the "length" of the sum of two sequences is at most the sum of their "lengths." This is the key property that confirms $l_p$ norms are genuine norms, and it generalizes the familiar fact that the shortest path between two points is a straight line.
 </Remark>
 
-See Exercise 2.4.2, which also studies a proof of Holder's Inequality, that is critically used in the proof of Minkowski's inequality.
+See Exercise, which also studies a proof of Holder's Inequality, that is critically used in the proof of Minkowski's inequality.
 
 <Theorem title="Holder's Inequality">
 Let $1 \leq p, q \leq \infty$ with $1/p + 1/q = 1$. Then, for $x \in l_p(\mathbb{Z}_+; \mathbb{R})$, $y \in l_q(\mathbb{Z}_+; \mathbb{R})$,
@@ -196,7 +196,7 @@ If the transformation $T$ is a linear one, then continuity is equivalent to bein
 </Remark>
 
 <Proof>
-Let $T$ be continuous at the null element. By Theorem 2.1.3, this implies that for any sequence $h_n$, with $\|h_n\| \to 0$, we have that $T(h_n) \to T(\underline{0}) = 0$. Now, let $x_0 \in \mathbb{X}$. Suppose $x_n \to x_0$. With $h_n := x_n - x_0$, we then have that $T(h_n) \to 0$. However, by linearity, $T(h_n) = T(x_n - x_0) = T(x_n) - T(x_0)$. This implies that whenever $x_n \to x_0$, $T(x_n) \to T(x_0)$. Thus, being continuous at the null element implies being continuous everywhere.
+Let $T$ be continuous at the null element. By Theorem, this implies that for any sequence $h_n$, with $\|h_n\| \to 0$, we have that $T(h_n) \to T(\underline{0}) = 0$. Now, let $x_0 \in \mathbb{X}$. Suppose $x_n \to x_0$. With $h_n := x_n - x_0$, we then have that $T(h_n) \to 0$. However, by linearity, $T(h_n) = T(x_n - x_0) = T(x_n) - T(x_0)$. This implies that whenever $x_n \to x_0$, $T(x_n) \to T(x_0)$. Thus, being continuous at the null element implies being continuous everywhere.
 </Proof>
 
 For some applications, sequential continuity may be more convenient to work with as one may not need to quantify $(\epsilon, \delta)$ pairs to verify continuity.
@@ -241,7 +241,7 @@ A normed linear space $X$ is **complete**, if every Cauchy sequence in $X$ has a
 
 Banach spaces are important for many applications in engineering and applied mathematics: In many mathematical applications (such as existence of and numerical methods for solutions to differential equations), machine learning problems (such as iterative updates of data driven dynamics), stochastic analysis or optimization problems (for which a sequence of approximating solutions may be obtained for example via dynamic programming methods), sometimes we would like to know whether a given sequence converges, without necessarily knowing what the limit of the sequence may be. Banach spaces allow us to use Cauchy sequence arguments to ensure the existence of limits and some of their properties.
 
-An example is the following: consider the solutions to the equation $Ax = b$ for $A$ a square matrix and $b$ a vector. One can identify conditions on an iteration of the form $x_{k+1} = (I - A)x_k + b$ to form a Cauchy sequence and converge to a solution through the *contraction principle*. As noted above, existence of solutions to ordinary differential equations also follow from Cauchy sequence arguments.
+An example is the following: consider the solutions to the $Ax = b$ for $A$ a square matrix and $b$ a vector. One can identify conditions on an iteration of the form $x_{k+1} = (I - A)x_k + b$ to form a Cauchy sequence and converge to a solution through the *contraction principle*. As noted above, existence of solutions to ordinary differential equations also follow from Cauchy sequence arguments.
 
 A subset of a Banach space $X$ is complete if and only if it is closed. If the set is closed, every Cauchy sequence in this set has a limit in $X$ and this limit should be a member of this set, hence the set is complete. If it is not closed, one can provide a counterexample sequence which does not converge to a point in the subset.
 
@@ -274,7 +274,7 @@ $$\lim_{m \to \infty} |x_n(t) - x_m(t)| \leq \epsilon$$
 
 and hence
 
-$$|x_n(t) - x(t)| \leq \epsilon, \qquad \text{(2.1)}$$
+$$|x_n(t) - x(t)| \leq \epsilon, \qquad \text{}$$
 
 for all $n \geq N$. Accordingly,
 
@@ -286,13 +286,13 @@ We now show now that $x$ is continuous to conclude that $x \in C([0, 1]; \mathbb
 
 $$|x(t + h) - x(t)|$$
 $$= |x(t + h) - x_n(t + h) + x_n(t + h) - x_n(t) + x_n(t) - x(t)|$$
-$$\leq |x(t + h) - x_n(t + h)| + |x_n(t + h) - x_n(t)| + |x_n(t) - x(t)| \to 0 \qquad \text{(2.2)}$$
+$$\leq |x(t + h) - x_n(t + h)| + |x_n(t + h) - x_n(t)| + |x_n(t) - x(t)| \to 0 \qquad \text{}$$
 
-as $h \to 0$, since $x_n \to x$ and $x_n$ is continuous. We now make this more explicit: For every $\epsilon > 0$ pick $n \in \mathbb{N}$ such that $|x(t + h) - x_n(t + h)| \leq \epsilon/3$ and $|x_n(t) - x(t)| \leq \epsilon/3$ for all $t + h \in [0, 1]$ (note that this convergence is uniform by (2.1)), and for the fixed $n$, pick $\delta > 0$ sufficiently small so that for all $|h| \leq \delta$, $|x_n(t + h) - x_n(t)| \leq \epsilon/3$ (since $x_n$ is continuous). As a result, for every $\epsilon > 0$ there exists $\delta$ such that $|h| \leq \delta$ implies $|x(t + h) - x(t)| < \epsilon$.
+as $h \to 0$, since $x_n \to x$ and $x_n$ is continuous. We now make this more explicit: For every $\epsilon > 0$ pick $n \in \mathbb{N}$ such that $|x(t + h) - x_n(t + h)| \leq \epsilon/3$ and $|x_n(t) - x(t)| \leq \epsilon/3$ for all $t + h \in [0, 1]$ (note that this convergence is uniform by ), and for the fixed $n$, pick $\delta > 0$ sufficiently small so that for all $|h| \leq \delta$, $|x_n(t + h) - x_n(t)| \leq \epsilon/3$ (since $x_n$ is continuous). As a result, for every $\epsilon > 0$ there exists $\delta$ such that $|h| \leq \delta$ implies $|x(t + h) - x(t)| < \epsilon$.
 
 **b)** We will show that under the norm $\|f\| = \int_0^1 |f(t)|\,dt$, the space of continuous functions $C([0, 1]; \mathbb{R})$ is not complete. Consider the sequence
 
-$$x_n(t) = \begin{cases} 1, & \text{if } 0 \leq t \leq 1/2 \\ -2^n(t - 1/2) + 1 & \text{if } 1/2 < t < (1/2) + (1/2)^n \\ 0, & \text{if } (1/2) + (1/2)^n \leq t \leq 1 \end{cases} \qquad \text{(2.3)}$$
+$$x_n(t) = \begin{cases} 1, & \text{if } 0 \leq t \leq 1/2 \\ -2^n(t - 1/2) + 1 & \text{if } 1/2 < t < (1/2) + (1/2)^n \\ 0, & \text{if } (1/2) + (1/2)^n \leq t \leq 1 \end{cases} \qquad \text{}$$
 
 We first show the Cauchy property. Let $n \leq m$. We have that:
 
@@ -300,7 +300,7 @@ $$\|x_n - x_m\| = \int_0^1 |x_n(t) - x_m(t)|\,dt = \frac{1}{2}\left(\frac{1}{2^n
 
 as $n, m \to \infty$. Hence, the sequence is indeed Cauchy (or, for every $\epsilon > 0$, there is an $N = -\log_2(\epsilon) + 1$, such that, for $n, m > N$, $\|x_n - x_m\| < \epsilon$). The sequence converges to (the discontinuous function) $x$:
 
-$$x = \begin{cases} 1, & \text{if } 0 \leq t \leq 1/2 \\ 0, & \text{if } (1/2) < t \leq 1 \end{cases} \qquad \text{(2.4)}$$
+$$x = \begin{cases} 1, & \text{if } 0 \leq t \leq 1/2 \\ 0, & \text{if } (1/2) < t \leq 1 \end{cases} \qquad \text{}$$
 
 As $x \notin C([0, 1]; \mathbb{R})$, the space is not complete.
 </Proof>
@@ -468,11 +468,11 @@ A set $A \subset X$ is **closed** if $A$ contains the limit of any converging se
 <Theorem title="Projection Theorem">
 Let $H$ be a Hilbert space and $B$ a subspace of $H$. Consider the problem:
 
-$$\inf_{m \in B} \|x - m\| \qquad \text{(2.5)}$$
+$$\inf_{m \in B} \|x - m\| \qquad \text{}$$
 
 **(i)** A necessary and sufficient condition for $m^* \in B$ to be the minimizing element in $B$ so that
 
-$$\inf_{m \in B} \|x - m\| = \|x - m^*\|, \qquad \text{(2.6)}$$
+$$\inf_{m \in B} \|x - m\| = \|x - m^*\|, \qquad \text{}$$
 
 or equivalently
 
@@ -482,7 +482,7 @@ is that, $x - m^*$ is orthogonal to $B$.
 
 If exists, such an $m^*$ is unique.
 
-**(ii)** Let $H$ be a Hilbert space and $B$ be a closed subspace of $H$. For any vector $x \in H$, there is a unique vector $m^* \in B$ satisfying (2.6).
+**(ii)** Let $H$ be a Hilbert space and $B$ be a closed subspace of $H$. For any vector $x \in H$, there is a unique vector $m^* \in B$ satisfying .
 </Theorem>
 
 <Remark>
@@ -492,7 +492,7 @@ If exists, such an $m^*$ is unique.
 The Projection Theorem is one of the most powerful results in Hilbert space theory. It says that the best approximation to a signal from a subspace is obtained by "projecting" orthogonally onto that subspace -- the error is perpendicular to the subspace. This has direct applications in optimal filtering, least squares estimation, and signal compression.
 
 <Proof>
-**Part (i):** We first show that if $x - m_0$ is not orthogonal to $B$, then $m_0$ cannot be optimal. Suppose that $m_0 \in B$ is such that $\exists m \in B$ with $\langle x - m_0, m \rangle > 0$. Without any loss, take $\|m\| = 1$ and $\langle x - m_0, m \rangle = \delta$. We can show that with $m_1 = m_0 + \delta m$, we will have $\|x - m_1\|^2 = \|x - m_0\|^2 - \delta^2 < \|x - m_0\|^2$, and thus $m_0$ cannot be a minimizer of (2.5).
+**Part (i):** We first show that if $x - m_0$ is not orthogonal to $B$, then $m_0$ cannot be optimal. Suppose that $m_0 \in B$ is such that $\exists m \in B$ with $\langle x - m_0, m \rangle > 0$. Without any loss, take $\|m\| = 1$ and $\langle x - m_0, m \rangle = \delta$. We can show that with $m_1 = m_0 + \delta m$, we will have $\|x - m_1\|^2 = \|x - m_0\|^2 - \delta^2 < \|x - m_0\|^2$, and thus $m_0$ cannot be a minimizer of .
 
 We now show that if $x - m^*$ is orthogonal to $B$, then it is optimal. If $\langle x - m^*, M \rangle = 0$, we have that for any $m \in B$, $\|x - m\|^2 = \|x - m^* + (m^* - m)\|^2 = \|x - m^*\|^2 + \|m - m^*\|^2 \geq \|x - m^*\|^2$, and thus $m^*$ is indeed the minimizer over all $m \in B$.
 
@@ -504,19 +504,19 @@ a contradiction.
 
 **Part (ii):** Let
 
-$$\delta = \inf_{m \in M} \|x - m\| \qquad \text{(2.7)}$$
+$$\delta = \inf_{m \in M} \|x - m\| \qquad \text{}$$
 
 Let $\{m_k, k \in \mathbb{N}\}$ be so that $\{\|x - m_k\|\} \to \delta$. Observe that
 
 $$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle + \langle x - m_k - (x - m_n), x - m_k - (x - m_n) \rangle$$
-$$= 2\langle x - m_k, x - m_k \rangle + 2\langle x - m_n, x - m_n \rangle \qquad \text{(2.8)}$$
+$$= 2\langle x - m_k, x - m_k \rangle + 2\langle x - m_n, x - m_n \rangle \qquad \text{}$$
 
 Write
 
 $$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle = \langle 2(x - \frac{m_k + m_n}{2}), 2(x - \frac{m_k + m_n}{2}) \rangle$$
-$$= 4\langle x - \frac{m_k + m_n}{2}, x - \frac{m_k + m_n}{2} \rangle \qquad \text{(2.9)}$$
+$$= 4\langle x - \frac{m_k + m_n}{2}, x - \frac{m_k + m_n}{2} \rangle \qquad \text{}$$
 
-Since $\frac{m_k + m_n}{2} \in B$, by (2.7),
+Since $\frac{m_k + m_n}{2} \in B$, by ,
 
 $$\langle x - m_k + x - m_n, x - m_k + x - m_n \rangle \geq \delta,$$
 
@@ -528,15 +528,15 @@ As a result, as $|x - m_n\|^2 \to \delta^2$, we have that $m_k$ is Cauchy. Since
 
 $$\langle x - m_n, x - m_n \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle$$
 
-We claim that the difference goes to zero; this follows from the continuity of inner product (Theorem 2.2.2). Indeed,
+We claim that the difference goes to zero; this follows from the continuity of inner product (Theorem). Indeed,
 
 $$|\langle x - m_n, x - m_n \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle|$$
 $$= |\langle x - m_n, x - m_n \rangle - \langle x - m_n, x - \tilde{m} \rangle + \langle x - m_n, x - \tilde{m} \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle|$$
 $$\leq |\langle x - m_n, x - m_n \rangle - \langle x - m_n, x - \tilde{m} \rangle| + |\langle x - m_n, x - \tilde{m} \rangle - \langle x - \tilde{m}, x - \tilde{m} \rangle|$$
 $$= |\langle x - m_n, m_n - \tilde{m} \rangle| + |\langle m_n - \tilde{m}, x - \tilde{m} \rangle|$$
-$$\leq \|x - m_n\|\|m_n - \tilde{m}\| + \|m_n - \tilde{m}\|\|x - \tilde{m}\| \qquad \text{(2.10)}$$
+$$\leq \|x - m_n\|\|m_n - \tilde{m}\| + \|m_n - \tilde{m}\|\|x - \tilde{m}\| \qquad \text{}$$
 
-where the final inequality is due to Cauchy-Schwarz. Now, since $\|x - m_n\| \to \delta$, we have that $\|x - m_n\|$ is bounded. Finally, as $\|m_n - \tilde{m}\| \to 0$, both terms in the final line (2.10) go to zero and we conclude that
+where the final inequality is due to Cauchy-Schwarz. Now, since $\|x - m_n\| \to \delta$, we have that $\|x - m_n\|$ is bounded. Finally, as $\|m_n - \tilde{m}\| \to 0$, both terms in the final line  go to zero and we conclude that
 
 $$\delta = \lim_{n \to \infty} \|x - m_n\| = \|x - \tilde{m}\|$$
 
@@ -706,14 +706,14 @@ $$D = \bigcup_{n \in \mathbb{N}} \left\{x \in H : x = \sum_{k=1}^{n} \alpha_i e_
 
 is a countable dense subset in $H$, and this $H$ is separable. That $D$ is countable follows from the fact that for every $n$, the set $\{x \in H : x = \sum_{k=1}^{n} \alpha_i e_i, \alpha_i \in \mathbb{Q}\}$ is countable as a Cartesian product of finitely many countable sets, and thus the countable union over $n$ leads to a countable set. We now show that this set is dense in $H$.
 
-Consider the sequence of vectors $x_n := \sum_{i=1}^{n} \langle x, e_i \rangle e_i$. Observe that $x_n$ converges to a limit by Theorem 2.3.1. To see that the sequence $\sum_{i=1}^{\infty} |\langle x, e_i \rangle|^2$ is summable, use orthonormality and apply the Pythagorean theorem to conclude that $\sum_{i=1}^{\infty} |\langle x, e_i \rangle|^2 \leq \|x\|^2$. Therefore, the limit $\sum_{i=1}^{\infty} \langle x, e_i \rangle e_i$ is well-defined.
+Consider the sequence of vectors $x_n := \sum_{i=1}^{n} \langle x, e_i \rangle e_i$. Observe that $x_n$ converges to a limit by Theorem. To see that the sequence $\sum_{i=1}^{\infty} |\langle x, e_i \rangle|^2$ is summable, use orthonormality and apply the Pythagorean theorem to conclude that $\sum_{i=1}^{\infty} |\langle x, e_i \rangle|^2 \leq \|x\|^2$. Therefore, the limit $\sum_{i=1}^{\infty} \langle x, e_i \rangle e_i$ is well-defined.
 
 Now, let $h = x - \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i$. We claim that $\|h\| = 0$. For any $m \in \mathbb{N}$,
 
 $$\langle h, e_m \rangle = \langle x - \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i, e_m \rangle$$
 $$= \langle x, e_m \rangle - \langle \lim_{n \to \infty} \sum_{i=1}^{n} \langle x, e_i \rangle e_i, e_m \rangle$$
 $$= \langle x, e_m \rangle - \lim_{n \to \infty} \langle \sum_{i=1}^{n} \langle x, e_i \rangle e_i, e_m \rangle$$
-$$= \langle x, e_m \rangle - \langle x, e_m \rangle = 0. \qquad \text{(2.11)}$$
+$$= \langle x, e_m \rangle - \langle x, e_m \rangle = 0. \qquad \text{}$$
 
 But since $\{e_1, e_2, \cdots\}$ is a complete orthonormal sequence, it must be that $\|h\| = 0$. Hence, $x = \sum_{i=1}^{\infty} \langle x, e_i \rangle e_i$. Now approximate this vector, by first truncating the sum so that for any $\epsilon > 0$,
 
@@ -723,7 +723,7 @@ and then approximating the coefficients by rational numbers so that $\left\|\sum
 
 $$\left\|x - \sum_{i=1}^{N} \alpha_i e_i\right\|$$
 $$\leq \left\|x - \sum_{i=1}^{N} \langle x, e_i \rangle e_i\right\| + \left\|\sum_{i=1}^{N} \langle x, e_i \rangle e_i - \sum_{i=1}^{N} \alpha_i e_i\right\|$$
-$$\leq \epsilon \qquad \text{(2.12)}$$
+$$\leq \epsilon \qquad \text{}$$
 
 Since for every $\epsilon$ such an approximation can be made by some element in $D$, this completes the proof.
 </Proof>
@@ -744,7 +744,7 @@ This is the fundamental representation theorem for signals in Hilbert spaces. Ev
 
 ### Separability of $l_2$ and $L_2$ spaces
 
-In view of Theorem 2.3.4, the following result builds on the fact that the sequence of orthonormal vectors
+In view of Theorem, the following result builds on the fact that the sequence of orthonormal vectors
 
 $$\left\{e_n, n \in \mathbb{N} : \quad e_n : \mathbb{Z}_+ \to \mathbb{R}, \quad e_n(m) = 1_{\{m = n\}}, \quad m \in \mathbb{Z}_+\right\}$$
 
@@ -783,7 +783,7 @@ It can be proven that
 
 $$\lim_{n \to \infty} \sup_{t \in [0,1]} |f(t) - B_{n,f}(t)| = 0.$$
 
-See Exercise 2.4.14 for a probability theoretic proof, by noting that if $X_k$ is a collection of $\{0, 1\}$ valued independent and identically distributed random variables with $P(X_k = 1) = t$, we have that
+See Exercise for a probability theoretic proof, by noting that if $X_k$ is a collection of $\{0, 1\}$ valued independent and identically distributed random variables with $P(X_k = 1) = t$, we have that
 
 $$E\left[f\left(\frac{1}{N}\sum_{k=1}^{N} X_k\right)\right] \to f(t),$$
 
@@ -815,15 +815,15 @@ The space $L_2([0, 1]; \mathbb{R})$ is separable.
 </Remark>
 
 <Proof>
-Given Theorem 2.3.8, we can show that polynomials $\{t^k, k \in \mathbb{Z}_+\}$ defined on $[0, 1]$ can be used to construct a complete orthogonal sequence. In view of Theorem 2.3.4, this will imply separability.
+Given Theorem, we can show that polynomials $\{t^k, k \in \mathbb{Z}_+\}$ defined on $[0, 1]$ can be used to construct a complete orthogonal sequence. In view of Theorem, this will imply separability.
 
 To see this, let $\langle h, t^k \rangle = 0$ for all $k \in \mathbb{Z}_+$ but $\|h\| \neq 0$. Then for any finite $n$ and $\alpha_1, \alpha_2, \cdots, \alpha_n \in \mathbb{R}$:
 
-$$\langle h, h \rangle = \langle h - \sum_{i=1}^{n} \alpha_i t^k, h \rangle \leq \|h - \sum_{i=1}^{n} \alpha_i t^k\| \|h\| \qquad \text{(2.13)}$$
+$$\langle h, h \rangle = \langle h - \sum_{i=1}^{n} \alpha_i t^k, h \rangle \leq \|h - \sum_{i=1}^{n} \alpha_i t^k\| \|h\| \qquad \text{}$$
 
-The expression $\|h - \sum_{i=1}^{n} \alpha_i t^k\|$ can be made arbitrarily small by first approximating $h$ with a continuous function with a given approximation error (by Theorem 2.3.8) and then approximating that fixed continuous function with a polynomial of some finite degree with another arbitrarily small approximation error (by Theorem 2.3.7). Thus $\|h\|$ must be less than any positive real number. Therefore, there exists a complete sequence. This sequence can be made orthonormal by the Gram-Schmidt procedure.
+The expression $\|h - \sum_{i=1}^{n} \alpha_i t^k\|$ can be made arbitrarily small by first approximating $h$ with a continuous function with a given approximation error (by Theorem) and then approximating that fixed continuous function with a polynomial of some finite degree with another arbitrarily small approximation error (by Theorem). Thus $\|h\|$ must be less than any positive real number. Therefore, there exists a complete sequence. This sequence can be made orthonormal by the Gram-Schmidt procedure.
 
-Thus, Bernstein polynomials are dense in $C([0, 1])$, but these are not orthogonal in $L_2([0, 1]; \mathbb{R})$; and if we apply the Gram-Schmidt procedure to $\{1, t, t^2, \cdots\}$, we can obtain an orthonormal collection of polynomials that is a complete sequence in $L_2([0, 1]; \mathbb{R})$ as we saw in the proof of Theorem 2.3.9. These orthonormal polynomials are called **Legendre polynomials**.
+Thus, Bernstein polynomials are dense in $C([0, 1])$, but these are not orthogonal in $L_2([0, 1]; \mathbb{R})$; and if we apply the Gram-Schmidt procedure to $\{1, t, t^2, \cdots\}$, we can obtain an orthonormal collection of polynomials that is a complete sequence in $L_2([0, 1]; \mathbb{R})$ as we saw in the proof of Theorem. These orthonormal polynomials are called **Legendre polynomials**.
 
 For $L_2([0, 1]; \mathbb{R})$, there exist further complete orthonormal sequences, to be discussed shortly.
 </Proof>
@@ -898,11 +898,11 @@ We have seen, in the context of Theorems 2.3.7 and 2.3.8 (see the proof of 2.3.9
 
 One further practically very important basis is the class of Haar functions (known as wavelets). Define
 
-$$\Psi_{0,0}(x) = \begin{cases} 1, & \text{if } 0 \leq x \leq 1 \\ 0 & \text{else} \end{cases} \qquad \text{(2.14)}$$
+$$\Psi_{0,0}(x) = \begin{cases} 1, & \text{if } 0 \leq x \leq 1 \\ 0 & \text{else} \end{cases} \qquad \text{}$$
 
 and for $n \in \mathbb{Z}_+$, $k \in \{0, 1, 2, \ldots, 2^n - 1\}$,
 
-$$\Phi_{n,k}(x) = \begin{cases} 2^{n/2}, & \text{if } k2^{-n} \leq x < (k + 1/2)2^{-n} \\ -2^{n/2}, & \text{if } (k + 1/2)2^{-n} \leq x < (k+1)2^{-n} \\ 0 & \text{else} \end{cases} \qquad \text{(2.15)}$$
+$$\Phi_{n,k}(x) = \begin{cases} 2^{n/2}, & \text{if } k2^{-n} \leq x < (k + 1/2)2^{-n} \\ -2^{n/2}, & \text{if } (k + 1/2)2^{-n} \leq x < (k+1)2^{-n} \\ 0 & \text{else} \end{cases} \qquad \text{}$$
 
 <Theorem title="Completeness of the Haar System">
 The (Haar) set of vectors
@@ -926,7 +926,7 @@ Approximations allow us to represent data using finitely many vectors. The basis
 
 ## Exercises
 
-### Exercise 2.4.1
+### Exercise
 
 **(a)** *The set $C^\infty(\mathbb{R})$, which is the set of all functions from $\mathbb{R}$ to $\mathbb{R}$ that are infinitely differentiable, together with the operations of addition and scalar multiplication defined as follows, is a vector space: For any $f_1, f_2 \in C^\infty(\mathbb{R})$*
 
@@ -960,7 +960,7 @@ $$\alpha \cdot (x, y) = (x^\alpha, y^\alpha)$$
 
 *Show that, with these operations, $\mathbb{W}$ is a vector space. Hint: Consider a bijection between $\mathbb{W}$ and the space $\mathbb{R}^2$ with $\mathbb{W} \ni (x, y) \mapsto (\log(x), \log(y)) \in \mathbb{R}^2$.*
 
-### Exercise 2.4.2 (Holder's and Minkowski's Inequalities)
+### Exercise (Holder's and Minkowski's Inequalities)
 
 *Let $1 \leq p, q \leq \infty$ with $1/p + 1/q = 1$. Let $x \in l_p(\mathbb{Z}_+)$ and $y \in l_q(\mathbb{Z}_+)$. Then,*
 
@@ -990,7 +990,7 @@ $$\sum_{i=1}^{n} |x_i + y_i|^p \leq \sum_{i=1}^{n} |x_i + y_i|^{p-1}|x_i + y_i| 
 
 $$= \left(\sum_{i=1}^{n} |x_i + y_i|^{(p-1)q}\right)^{1/q}\left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |x_i + y_i|^{(p-1)q}\right)^{1/q}\left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p}$$
 
-$$= \left(\sum_{i=1}^{n} |x_i + y_i|^p\right)^{1/q}\left(\left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p}\right) \qquad \text{(2.16)}$$
+$$= \left(\sum_{i=1}^{n} |x_i + y_i|^p\right)^{1/q}\left(\left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p}\right) \qquad \text{}$$
 
 *Thus, using that $1 - 1/q = 1/p$,*
 
@@ -1002,7 +1002,7 @@ $$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
 
 *which is the desired inequality.*
 
-### Exercise 2.4.3
+### Exercise
 
 *Given a normed linear space $(X, \|\cdot\|)$, introduce a map $n : X \times X \to \mathbb{R}$:*
 
@@ -1014,7 +1014,7 @@ $$n(x, y) \leq n(x, z) + n(z, y), \qquad \forall x, y, z \in X,$$
 
 *and that $n(x, y) = 0$ iff $x = y$, and finally $n(x, y) = n(y, x)$.*
 
-### Exercise 2.4.4
+### Exercise
 
 *Let $\{e_n, n \in \mathbb{N}\}$ be a complete orthonormal sequence in a real Hilbert space $H$. Let $\mathcal{M}$ be a subspace of $H$, spanned by $\{e_k, k \in S\}$, for some finite set $S \subset \mathbb{N}$. That is,*
 
@@ -1028,7 +1028,7 @@ $$\min_{x_0 \in \mathcal{M}} \|x - x_0\|,$$
 
 *Hint: Any vector in $H$ can be written as $x = \sum_{n \in \mathbb{N}} \langle x, e_n \rangle e_n$.*
 
-### Exercise 2.4.5
+### Exercise
 
 *Let $T : L_2(\mathbb{R}_+; \mathbb{R}) \to \mathbb{R}$ be a mapping given by:*
 
@@ -1036,7 +1036,7 @@ $$T(f) = \int_1^{\infty} f(t) \frac{1 + t^2}{t^4}\,dt$$
 
 *Is $T$ continuous at any given $f_0 \in L_2(\mathbb{R}_+; \mathbb{R})$?*
 
-### Exercise 2.4.6
+### Exercise
 
 *Consider an inner-product defined by:*
 
@@ -1044,7 +1044,7 @@ $$\langle x, y \rangle = \lim_{T \to \infty} \frac{1}{T} \int_{t=0}^{T} x(t) y(t
 
 *Is the resulting inner-product (pre-Hilbert) space separable?*
 
-### Exercise 2.4.7
+### Exercise
 
 *Let $x, y \in f(\mathbb{Z}; \mathbb{R})$; that is, $x, y$ map $\mathbb{Z}$ to $\mathbb{R}$, such that $x = \{\ldots, x_{-2}, x_{-1}, x_0, x_1, x_2, \ldots\}$ and $y = \{\ldots, y_{-2}, y_{-1}, y_0, y_1, y_2, \ldots\}$ and $x_k, y_k \in \mathbb{R}$, for all $k \in \mathbb{Z}$.*
 
@@ -1056,7 +1056,7 @@ $$\langle x, y \rangle = \lim_{T \to \infty} \frac{1}{T} \int_{t=0}^{T} x(t) y(t
 
 **(c)** $\{x : \|x\|_2^2 < \infty\}$ *contains a complete orthonormal sequence, where $\|x\|_2 = \sqrt{\sum_{i \in \mathbb{Z}} |x(i)|^2}$.*
 
-### Exercise 2.4.8
+### Exercise
 
 *Let $\mathbb{X}$ be a Hilbert space and $x, y \in \mathbb{X}$. Prove the following:*
 
@@ -1072,7 +1072,7 @@ $$|\langle x, y \rangle| \leq (\|x\|)(\|y\|).$$
 
 $$2|\langle x, y \rangle| \leq \|x\|^2 + \|y\|^2.$$
 
-### Exercise 2.4.9
+### Exercise
 
 *Let $H$ be a finite dimensional Hilbert space and $\{v_1, v_2\}$ be two linearly independent vectors in $H$.*
 
@@ -1092,7 +1092,7 @@ $$\langle v_1, v_1 \rangle \alpha_1 + \langle v_2, v_1 \rangle \alpha_2 = b_1,$$
 
 $$\langle v_1, v_2 \rangle \alpha_1 + \langle v_2, v_2 \rangle \alpha_2 = b_2.$$
 
-### Exercise 2.4.10
+### Exercise
 
 *Let $H$ be a Hilbert space and $C \subset H$ be a dense subset of $H$. Suppose that any element $h_C$ in $C$ is such that for every $\epsilon > 0$, there exist $n \in \mathbb{N}$ and $\beta_i \in \mathbb{R}, i \in \mathbb{N}$ so that*
 
@@ -1102,7 +1102,7 @@ $$\left\|\sum_{i=0}^{n} \beta_i e_i - h_C\right\| \leq \epsilon$$
 
 *Is it the case that $H$ is separable?*
 
-### Exercise 2.4.11
+### Exercise
 
 *Let $x$ be in the real Hilbert space $L_2([0, 1]; \mathbb{R})$ with the inner product*
 
@@ -1126,13 +1126,13 @@ $$\int_0^1 \left|x(t) - \sum_{i=1}^{2} \alpha_i u_i(t)\right|^2 dt$$
 
 **(c)** *Let $x(t) = 1_{\{t \in [1/2, 1]\}}$. Find the minimizing $\alpha_1, \alpha_2$ values.*
 
-### Exercise 2.4.12
+### Exercise
 
 *Let $C([0, 1]; \mathbb{R})$ denote the normed linear space of continuous functions from $[-1, 1]$ to $\mathbb{R}$ under the supremum norm. We observed earlier that polynomials can be used to approximate any function in this space with arbitrary precision, under the supremum norm (Weierstrass Theorem).*
 
 *Given this, repeating the arguments we made in class, argue that the family of polynomials $\{1, t, t^2, \cdots\}$ can be used to form a complete orthonormal sequence in $L_2([0, 1]; \mathbb{R})$. This also establishes that $L_2([0, 1]; \mathbb{R})$ is separable.*
 
-### Exercise 2.4.13
+### Exercise
 
 *Alice and Bob are approached by a generous company and asked to solve the following problem: The company wishes to store any signal $f$ in $L_2(\mathbb{R}_+; \mathbb{R})$ in a computer with a given error of $\epsilon > 0$, that is for every $f \in L_2(\mathbb{R}_+)$, there exists some signal $h \in H$ such that $\|f - h\|_2 \leq \epsilon$ (thus the error is uniform over all possible signals), where $H$ is the stored family of signals (in the computer's memory).*
 
@@ -1148,9 +1148,9 @@ $$\int_0^1 \left|x(t) - \sum_{i=1}^{2} \alpha_i u_i(t)\right|^2 dt$$
 
 **(b)** *If you think Bob is right, can you suggest a method? Why is he right?*
 
-### Exercise 2.4.14
+### Exercise
 
-*Prove Theorem 2.3.7 using a probability theoretic method. Proceed as follows: The number*
+*Prove Theorem using a probability theoretic method. Proceed as follows: The number*
 
 $$B_{n,f}(t) = \sum_{k=0}^{n} f\left(\frac{k}{n}\right) \binom{n}{k} t^k (1-t)^{n-k}.$$
 
@@ -1166,7 +1166,7 @@ $$|E_t[f(\frac{S_n}{n})] - f(t)|$$
 
 $$= \int_{\omega: |\frac{S_n}{n} - t| \leq \delta} |f(\frac{S_n}{n}) - f(t)| P(d\omega) + \int_{\omega: |\frac{S_n}{n} - t| > \delta} |f(\frac{S_n}{n}) - f(t)| P(d\omega)$$
 
-$$\leq \epsilon + 2 \sup_{y \in [0,1]} |f(y)| P_t(|\frac{S_n}{n} - t| > \delta) \qquad \text{(2.17)}$$
+$$\leq \epsilon + 2 \sup_{y \in [0,1]} |f(y)| P_t(|\frac{S_n}{n} - t| > \delta) \qquad \text{}$$
 
 *The last term converges to $\epsilon$ as $n \to \infty$ by the law of large numbers. The above holds for every $\epsilon > 0$.*
 
@@ -1176,12 +1176,12 @@ $$P_t(|\frac{S_n}{n} - t| > \delta) = P_t(|\frac{S_n}{n} - t|^2 > \delta^2) \leq
 
 *establishing uniform convergence (over $t \in [0, 1]$), and thus complete the proof.*
 
-### Exercise 2.4.15 (A useful result on countability properties)
+### Exercise (A useful result on countability properties)
 
 *Let $F : \mathbb{R} \to \mathbb{R}$ be a monotonically increasing function (that is, $x_1 \leq x_2$ implies that $F(x_1) \leq F(x_2)$). Show that $F$ can have at most countably many points of discontinuity.*
 
 *Hint: If a point is such that $F$ is discontinuous, then there exists $n \in \mathbb{N}$ with $F(x^+) := \lim\inf_{x_n \downarrow x} F(x)$, $F(x^-) := \lim\sup_{x_n \uparrow x} F(x)$, $F(x^+) - F(x^-) > \frac{1}{n}$. Express $\mathbb{R} = \cup_{m \in \mathbb{Z}} (m, m+1]$. Let $B_n^m := \{x \in (m, m+1] : F(x^+) - F(x^-) > \frac{1}{n}\}$. It must be that $B_n^m$ is finite for otherwise the jump would be unbounded in the interval $(m, m+1]$. Then, the countable union $\cup_n B_n^m$ will be countable. Finally $\cup_m B_n^m$ is also countable.*
 
-### Exercise 2.4.16
+### Exercise
 
-*Prove Theorem 2.3.13 (that the Haar system is a complete orthonormal sequence in $L_2([0,1]; \mathbb{R})$).*
+*Prove Theorem (that the Haar system is a complete orthonormal sequence in $L_2([0,1]; \mathbb{R})$).*

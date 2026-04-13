@@ -72,7 +72,7 @@ An input-output system is linear if $\mathcal{U}$, $\mathcal{Y}$, $\mathcal{R}$ 
 <Definition title="Linear System (DT)">
 A discrete-time (DT) system is **linear** if the input-output relation can be written as:
 
-$$y(n) = \sum_{m=-\infty}^{\infty} h(n, m) u(m). \qquad \text{(4.1)}$$
+$$y(n) = \sum_{m=-\infty}^{\infty} h(n, m) u(m). \qquad \text{}$$
 
 The function $h(n, m)$ is called the **kernel** of the system. The value $h(n, m)$ reveals the effect of an input at time $m$ to the output at time $n$.
 </Definition>
@@ -81,7 +81,7 @@ The function $h(n, m)$ is called the **kernel** of the system. The value $h(n, m
 **Intuition:** A linear system is one where the output is a weighted sum (superposition) of all the input values, with the weights given by the kernel $h(n,m)$. This kernel tells you how much influence the input at time $m$ has on the output at time $n$. The key feature is that doubling the input doubles the output, and the response to a sum of inputs is the sum of responses.
 </Remark>
 
-We note here that a precise characterization for linearity (for a system as in (4.1)) would require the interpretation of a system as a (bounded) linear operator from one space to another space. One can obtain a Riesz representation theorem type characterization leading to (4.1), provided that $\mathcal{U}$ and $\mathcal{Y}$ satisfy certain properties, and the system is continuous and linear. The following discussion makes this explicit.
+We note here that a precise characterization for linearity (for a system as in ) would require the interpretation of a system as a (bounded) linear operator from one space to another space. One can obtain a Riesz representation theorem type characterization leading to , provided that $\mathcal{U}$ and $\mathcal{Y}$ satisfy certain properties, and the system is continuous and linear. The following discussion makes this explicit.
 
 Let $\mathcal{T}$ be a linear system mapping $l_1(\mathbb{Z}; \mathbb{R})$ to $l_1(\mathbb{Z}; \mathbb{R})$. Let this system be linear and continuous; then the system can be written so that $y = \mathcal{T}(u)$ where:
 
@@ -105,7 +105,7 @@ $$y(n) = \lim_{N \to \infty} \sum_{m=-N}^{N} u_m \Big(\mathcal{T}(\delta_m)\Big)
 With $h(n, m) := \Big(\mathcal{T}(\delta_m)\Big)(n)$, the representation result above follows. Observe that $h(n, m) = \Big(\mathcal{T}(\delta_m)\Big)(n)$ is the output of the system at time $n$ when the input to the system is a unit pulse applied at time $m$.
 </Proof>
 
-Building on this discussion, one takes the representation above as a definition of a linear system: In our course and in standard terminology in engineering and applied science, we generally say that a discrete-time (DT) system is linear if the input-output relation can be written as (4.1).
+Building on this discussion, one takes the representation above as a definition of a linear system: In our course and in standard terminology in engineering and applied science, we generally say that a discrete-time (DT) system is linear if the input-output relation can be written as .
 
 <Remark>
 Observe that in the representation argument above, one can generalize the result for any $l_p(\mathbb{Z}; \mathbb{R})$ as the input space with $1 \leq p < \infty$; and the output space can be any $l_q(\mathbb{Z}; \mathbb{R})$ space with $1 \leq q \leq \infty$.
@@ -114,7 +114,7 @@ Observe that in the representation argument above, one can generalize the result
 <Definition title="Linear System (CT)">
 Likewise, we define a continuous-time (CT) system to be **linear** if the input-output relation can be expressed as
 
-$$y(t) = \int_{\tau=-\infty}^{\infty} h(t, \tau) u(\tau)\,d\tau. \qquad \text{(4.2)}$$
+$$y(t) = \int_{\tau=-\infty}^{\infty} h(t, \tau) u(\tau)\,d\tau. \qquad \text{}$$
 </Definition>
 
 <Remark>
@@ -135,7 +135,7 @@ will have to be such that $k(n, m)$ should be dependent only on $n - m$. This fo
 
 Let us discuss this further. Suppose a linear system described by
 
-$$y(n) = \sum_m k(n, m) u(m), \qquad \text{(4.3)}$$
+$$y(n) = \sum_m k(n, m) u(m), \qquad \text{}$$
 
 is time-invariant. Let, for some $\theta \in \mathbb{Z}$,
 
@@ -147,9 +147,9 @@ $$g(n) = \sum_{m \in \mathbb{Z}} k(n, m) v(m) = \sum_{m \in \mathbb{Z}} k(n, m) 
 
 By time-invariance, it must be that $g = \sigma^{-\theta}(y)$. That is, $g(n) = y(n - \theta)$ or $g(n + \theta) = y(n)$. Thus,
 
-$$g(n + \theta) = \sum_{m' \in \mathbb{Z}} k(n + \theta, m' + \theta) u(m') = y(n). \qquad \text{(4.4)}$$
+$$g(n + \theta) = \sum_{m' \in \mathbb{Z}} k(n + \theta, m' + \theta) u(m') = y(n). \qquad \text{}$$
 
-Since the equivalence in (4.3)-(4.4) above has to hold for every input signal, it must be that $k(n + \theta, m + \theta) = k(n, m)$ for all $n, m$ values, and for all $\theta$ values. Therefore $k(n, m)$ should only be a function of the difference $n - m$. Hence, a linear system is time-invariant if and only if the input-output relation can be written as:
+Since the equivalence in - above has to hold for every input signal, it must be that $k(n + \theta, m + \theta) = k(n, m)$ for all $n, m$ values, and for all $\theta$ values. Therefore $k(n, m)$ should only be a function of the difference $n - m$. Hence, a linear system is time-invariant if and only if the input-output relation can be written as:
 
 $$y(n) = \sum_{m=-\infty}^{\infty} h(n - m) u(m)$$
 
@@ -189,7 +189,7 @@ The function $h$ is the output of the system when the input is the generalized D
 **Intuition:** Just as in the discrete-time case, the continuous-time impulse response tells you the system's output when hit with an idealized instantaneous "kick" ($\delta_0$). Through convolution, the output to any input $u(t)$ is the integral of all these shifted, scaled impulse responses.
 </Remark>
 
-### Exercise 4.3.1
+### Exercise
 
 *Let $x(t) \in \mathbb{R}^N$ and $t \geq 0$ and real-valued. Recall that the solution to the following differential equation:*
 
@@ -209,7 +209,7 @@ $$h(t) = Ce^{At}B\,1_{\{t \geq 0\}}.$$
 
 **(c)** *Let $y(t) = Cx(t) + Du(t)$. Repeat the above.*
 
-### Exercise 4.3.2
+### Exercise
 
 *Let $x(n) \in \mathbb{R}^N$ and $n \in \mathbb{Z}$. Consider a linear system given by*
 
@@ -551,7 +551,7 @@ where $\lambda_i$ denotes the eigenvalues of $A$.
 
 ## Exercises
 
-### Exercise 4.10.1
+### Exercise
 
 *Consider a linear system described by the relation:*
 
@@ -563,7 +563,7 @@ $$y(n) = \sum_{m \in \mathbb{Z}} h(n, m)u(m), \quad n \in \mathbb{Z}$$
 
 **(b)** *Show that such a system is time-invariant if and only if it is a convolution system.*
 
-### Exercise 4.10.2
+### Exercise
 
 *Let $x(t) \in \mathbb{R}^N$ and $t \geq 0$ and real-valued. Recall that the solution to the following differential equation:*
 
@@ -581,7 +581,7 @@ $$x(t) = e^{At - t_0}x(t_0) + \int_{\tau=t_0}^{t} e^{A(t-\tau)}Bu(\tau)\,d\tau,$
 
 *and take the limit as $t_0 \to -\infty$, leading to $h(t) = e^{At}B\,1_{\{t \geq 0\}}$.*
 
-### Exercise 4.10.3
+### Exercise
 
 *Let $x(n) \in \mathbb{R}^N$ and $n \in \mathbb{Z}$. Consider a linear system given by*
 
@@ -595,7 +595,7 @@ $$x(n) = A^{n-n_0}x(n_0) + \sum_{m=n_0}^{n-1} A^{n-m-1}Bu(m),$$
 
 *and take the limit as $n_0 \to -\infty$ leading to $h(n) = A^{n-1}B\,1_{\{n \geq 1\}}$.*
 
-### Exercise 4.10.4
+### Exercise
 
 *Consider a continuous-time system described by the equation:*
 
@@ -613,7 +613,7 @@ $$\lim_{f_0 \to \infty} y_{f_0}(t),$$
 
 *for all $t \in \mathbb{R}_+$.*
 
-### Exercise 4.10.5
+### Exercise
 
 *Consider a discrete-time system described by the equation:*
 
@@ -623,7 +623,7 @@ $$y(n+1) = a_1 y(n) + a_2 y(n-1) + u(n), \quad n \in \mathbb{Z}.$$
 
 **(b)** *For what values of $a_1, a_2$ is the system BIBO (bounded-input-bounded-output) stable?*
 
-### Exercise 4.10.6 (Stability of Linear Time-Varying Systems)
+### Exercise (Stability of Linear Time-Varying Systems)
 
 *Let $T$ be a linear system mapping with the representation;*
 
@@ -637,7 +637,7 @@ $$\sup_n \sum_m |h(n, m)| < \infty.$$
 
 $$\sup_n \sum_m |h(n, m)| < \infty.$$
 
-### Exercise 4.10.7
+### Exercise
 
 *Let $T$ be a linear system mapping $l_1(\mathbb{Z}; \mathbb{R})$ to $l_1(\mathbb{Z}; \mathbb{R})$. Show that this system is linear and continuous only if the system can be written so that with $y = T(u)$;*
 
