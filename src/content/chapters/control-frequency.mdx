@@ -353,24 +353,19 @@ For a polynomial $p(s) = a_n s^n + a_{n-1} s^{n-1} + \cdots + a_1 s + a_0$ to ha
 
 ### Constructing the Routh Table
 
-<Definition id="8.5.1" title="Routh Table">
 Given a polynomial $p(s) = a_n s^n + a_{n-1} s^{n-1} + \cdots + a_1 s + a_0$, the **Routh table** is constructed as follows. The first two rows are filled directly from the polynomial coefficients:
 
-$$\begin{array}{c|cccc}
-s^n & a_n & a_{n-2} & a_{n-4} & \cdots \\
-s^{n-1} & a_{n-1} & a_{n-3} & a_{n-5} & \cdots \\
-s^{n-2} & b_1 & b_2 & b_3 & \cdots \\
-s^{n-3} & c_1 & c_2 & c_3 & \cdots \\
-\vdots & \vdots & & & \\
-s^0 & \cdot & & &
-\end{array}$$
+- **Row** $s^n$: $a_n, \; a_{n-2}, \; a_{n-4}, \; \ldots$
+- **Row** $s^{n-1}$: $a_{n-1}, \; a_{n-3}, \; a_{n-5}, \; \ldots$
+- **Row** $s^{n-2}$: $b_1, \; b_2, \; b_3, \; \ldots$
+- **Row** $s^{n-3}$: $c_1, \; c_2, \; c_3, \; \ldots$
+- Continue until row $s^0$.
 
-where each subsequent entry is computed by a $2 \times 2$ determinant divided by the leading element of the row above:
+Each subsequent entry is computed by a $2 \times 2$ determinant divided by the leading element of the row above:
 
-$$b_1 = \frac{a_{n-1} \cdot a_{n-2} - a_n \cdot a_{n-3}}{a_{n-1}}, \qquad b_2 = \frac{a_{n-1} \cdot a_{n-4} - a_n \cdot a_{n-5}}{a_{n-1}},$$
+$$b_1 = \frac{a_{n-1} \cdot a_{n-2} - a_n \cdot a_{n-3}}{a_{n-1}}, \qquad b_2 = \frac{a_{n-1} \cdot a_{n-4} - a_n \cdot a_{n-5}}{a_{n-1}}$$
 
 and similarly for subsequent rows. The table has $n + 1$ rows total.
-</Definition>
 
 <Theorem id="8.5.2" title="Routh-Hurwitz Criterion">
 The number of roots of $p(s)$ with positive real parts equals the number of sign changes in the first column of the Routh table. In particular, the polynomial has all roots in the open left half-plane if and only if all entries in the first column are positive (assuming $a_n > 0$).
@@ -391,12 +386,10 @@ $$p(s) = s^3 + 6s^2 + 11s + 6.$$
 
 **Step 2: Construct the Routh table.**
 
-$$\begin{array}{c|cc}
-s^3 & 1 & 11 \\
-s^2 & 6 & 6 \\
-s^1 & b_1 & 0 \\
-s^0 & c_1 &
-\end{array}$$
+- **s^3** 1 11
+- **s^2** 6 6
+- **s^1** b_1 0
+- **s^0** c_1
 
 Computing $b_1$:
 
@@ -418,12 +411,10 @@ $$p(s) = s^3 + 3s^2 + 2s + K.$$
 
 The Routh table:
 
-$$\begin{array}{c|cc}
-s^3 & 1 & 2 \\
-s^2 & 3 & K \\
-s^1 & \frac{6 - K}{3} & 0 \\
-s^0 & K &
-\end{array}$$
+- **s^3** 1 2
+- **s^2** 3 K
+- **s^1** \frac{6 - K}{3} 0
+- **s^0** K
 
 For stability, all first-column entries must be positive:
 - $1 > 0$ (always satisfied)

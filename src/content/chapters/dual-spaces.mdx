@@ -17,6 +17,8 @@ A complete understanding of Fourier transforms is possible through an investigat
 
 The above will motivate us to introduce dual spaces, weak convergence concepts, and distribution theory. There will be some additional useful properties: Every distribution is differentiable, and the differentiation is continuous. Most importantly, a function whose Fourier transform is not defined as a function might have a transform in a distributional sense.
 
+It may not be immediately evident that the study of such a theory is needed in engineering practice. However, the patient student will realize the importance of this topic, and versatility in introduces, both in the context of Fourier transformation theory, as well as while studying optimization, control, ordinary and partial differential equations and their applications in continuum mechanics, and probability and beyond.
+
 ---
 
 ## 3.2 Dual Space of a Normed Linear Space
@@ -46,6 +48,10 @@ Thus, the sequence $f(x_n^*)$ does not converge to $0$, hence the system cannot 
 </Proof>
 
 The space $X^*$ is a linear space, under pointwise addition and scalar multiplication of functions in it. Furthermore, $X^*$ is itself a normed space with the norm given above in (3.1).
+
+### Exercise 3.2.1
+
+*Show that $(X^*, \|\cdot\|)$ is a Banach space.*
 
 <Remark>
 The dual space $(X^*, \|\cdot\|)$ is a Banach space, even if $X$ itself is not Banach.
@@ -159,7 +165,15 @@ Earlier, we discussed that in a normed space $X$, a sequence of vectors $\{x_n\}
 
 $$\|x_n - x\| \to 0.$$
 
-The above is also called **strong convergence**.
+<Definition id="3.2.3" title="Strong Convergence">
+A sequence $\{x_n\}$ in a normed space $X$ **converges strongly** (or converges in norm) to $x \in X$ if
+
+$$\|x_n - x\| \to 0.$$
+</Definition>
+
+<Remark>
+**Intuition:** Strong convergence is the most natural notion of convergence in a normed space -- it says that the "distance" between $x_n$ and $x$ shrinks to zero. It is called "strong" to distinguish it from the weaker convergence notions (weak and weak$^*$) that follow. Strong convergence implies weak convergence, but not vice versa.
+</Remark>
 
 <Definition id="3.2.1" title="Weak Convergence">
 A sequence $\{x_n\}$ in $X$ is said to **converge weakly** to $x$ if
@@ -172,6 +186,16 @@ for all $f \in X^*$.
 <Remark>
 **Intuition:** Weak convergence says that even though the sequence $x_n$ might not get close to $x$ in norm, every continuous linear measurement you can make on $x_n$ eventually agrees with the measurement on $x$. It is a much less demanding notion of convergence -- two signals can be "weakly close" even if they look quite different pointwise.
 </Remark>
+
+### Exercise 3.2.2
+
+*Let $x \in l_2(\mathbb{N}; \mathbb{R})$. Show that if*
+
+$$x \to x^*,$$
+
+*then*
+
+$$\langle x, f \rangle \to \langle x^*, f \rangle \qquad \forall f \in l_2(\mathbb{N}; \mathbb{R})$$
 
 We note however that, weak convergence does not imply strong convergence.
 
@@ -292,6 +316,14 @@ We need to show that $\bar{\delta}(\phi)$ is linear and continuous. Linearity is
 
 $$\bar{\delta}(\phi_n) = \phi_n(0) \to \phi(0) = \bar{\delta}(\phi). \quad \square$$
 </Proof>
+
+### Exercise 3.3.1
+
+*Show that the relation*
+
+$$\bar{f}(\phi) = \int_0^{\infty} t^2 \phi(t)\,dt, \qquad \phi \in \mathcal{S}$$
+
+*defines a distribution $\bar{f} \in \mathcal{S}^*$.*
 
 ### Equivalence and Convergence of Distributions
 
@@ -818,3 +850,79 @@ $$= \max_{\lambda: \|Y\lambda\| \leq 1} \min_{x^*} \|x^*\|(1 - \|Y\lambda\|) + \
 $$= \max_{\lambda: \|Y\lambda\| \leq 1} \langle \lambda, c \rangle \qquad \text{(3.13)}$$
 
 where the optimal $x^*$ is aligned with $Y\lambda$. In the above, (3.12) follows from Sion's minimax theorem. In the above, $\lambda$ serves as a **Lagrangian multiplier**.
+
+---
+
+## 3.8 Exercises
+
+### Exercise 3.8.1
+
+*Does there exist a sequence of functions $\{f_j\}$ in $L_2(\mathbb{R}_+; \mathbb{R})$ such that a sequence of distributions $\bar{f}_j$ represented by $f_j$ on the set of Schwartz functions $\mathcal{S}$ converges to zero in a distributional sense, but $f_j$ does not converge to zero (that is, in the $L_2$ norm). That is, does there exist a sequence of functions $\{f_j\}$ in $L_2(\mathbb{R}_+; \mathbb{R})$ such that*
+
+$$\lim_{j \to \infty} \left(\int_0^{\infty} |f_j(t)|^2 dt\right)$$
+
+*is not zero, but*
+
+$$\lim_{j \to \infty} \left(\int_0^{\infty} f_j(t)\phi(t)dt\right) = 0, \qquad \forall \phi \in \mathcal{S}.$$
+
+*If there exists one, give an example. If there does not exist one, explain why.*
+
+### Exercise 3.8.2
+
+**(a)** *Let $T$ be a mapping from $L_2(\mathbb{R}_+; \mathbb{R})$ to $\mathbb{R}$ (extended to possibly include $-\infty, \infty$) given by:*
+
+$$T(f) = \int_{\mathbb{R}_+} f(t) \frac{t}{1 + t^2}\,dt$$
+
+*Let $f_0 \in L_2(\mathbb{R}_+; \mathbb{R})$ be given by:*
+
+$$f_0(t) = \frac{1}{t^2 + 1}, \qquad \forall t \in \mathbb{R}_+.$$
+
+*Is $T$ continuous on $L_2(\mathbb{R}_+; \mathbb{R})$ at $f_0$?*
+
+**(b)** *Let $\mathcal{S}$ be the space of Schwartz functions. Let $T : \mathcal{S} \to \mathbb{R}$ be a mapping given by:*
+
+$$T(\phi) = \phi'(0), \qquad \phi \in \mathcal{S},$$
+
+*where*
+
+$$\phi'(t) = \frac{d}{dt}\phi(t) \quad \forall t.$$
+
+*Is $T$ a distribution on $\mathcal{S}$? That is, is $T$ continuous and linear on $\mathcal{S}$?*
+
+### Exercise 3.8.3
+
+*Let $T : \mathcal{S} \to [-\infty, \infty]$ be a mapping defined by:*
+
+$$T(\phi) = \limsup_{A \to \infty} \int_{-A}^{A} \phi(t) e^{t^2}\,dt$$
+
+*Is $T$ continuous on $\mathcal{S}$? Prove your argument.*
+
+*Hint: The function $g(t) = e^{-at^2}$ is in $\mathcal{S}$, for any $a > 0$.*
+
+### Exercise 3.8.4
+
+*Let for $j \in \mathbb{N}$,*
+
+$$f_j(t) = \begin{cases} j, & \text{if } 0 \leq t \leq \frac{1}{j} \\ 0 & \text{else} \end{cases}$$
+
+*For $g \in \mathcal{S}$, define*
+
+$$\bar{f}_j(g) := \int_0^{\infty} f_j(t) g(t)\,dt.$$
+
+*Show that $\bar{f}_j(\cdot)$ is a distribution on $\mathcal{S}$. Show that*
+
+$$\lim_{j \to \infty} \int_0^{\infty} f_j(t) g(t)\,dt = \bar{\delta}(g) = g(0).$$
+
+*Conclude that, the sequence of regular distributions $\bar{f}_j(\cdot)$, represented by a real-valued, integrable function $f_j(t)$, converges to the delta distribution $\bar{\delta}(\cdot)$ on the space of test functions $\mathcal{S}$.*
+
+### Exercise 3.8.5
+
+*Let $\mathcal{S}$ be the space of Schwartz functions. Let $T : \mathcal{S} \to \mathbb{R}$ be a mapping given by:*
+
+$$T(\phi) = \phi'(0), \qquad \phi \in \mathcal{S},$$
+
+*where*
+
+$$\phi'(t) = \frac{d}{dt}\phi(t) \quad \forall t.$$
+
+*Is $T$ a distribution on $\mathcal{S}$? That is, is $T$ continuous and linear on $\mathcal{S}$?*

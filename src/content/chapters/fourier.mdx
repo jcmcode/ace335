@@ -1130,3 +1130,103 @@ The discrete/continuous distinction follows a duality:
 - **Discrete in one domain $\Leftrightarrow$ periodic in the other.** A finite-length (or periodic) time signal has a discrete frequency spectrum. An infinite-length, non-periodic time signal has a continuous frequency spectrum.
 - **Continuous in one domain $\Leftrightarrow$ non-periodic in the other.** This duality is why there are exactly four combinations.
 
+## 5.7 Exercises
+
+<Problem id="5.4.2" title="CCFT of the Unit Step Function">
+Compute the $\mathcal{F}_{CC}$ of the unit step function, viewed as a distribution.
+</Problem>
+
+<Problem id="5.7.1" title="Fourier Series Convergence">
+a) Let $x \in L_2([0, 2]; \mathbb{C})$ be given by:
+
+$$
+x(t) = 1_{\{t \le 1\}} t + 1_{\{1 \le t \le 2\}} (1 - t)
+$$
+
+Let $\hat{x}(\frac{k}{2})$ denote the Fourier series coefficient corresponding to $\{\frac{1}{\sqrt{2}} e^{i2\pi \frac{k}{2} t}, t \in [0, 2]\}$.
+
+With Matlab, generate the plot of the signal
+
+$$
+x_N(t) = \sum_{k=-N}^{N} \hat{x}\!\left(\frac{k}{2}\right) \frac{1}{\sqrt{2}} e^{i2\pi \frac{k}{2} t}, \quad t \in [0, 2]
+$$
+
+for $N = 5, 10$ and $15$. Here $\hat{x}(\frac{k}{P})$ are the Fourier Series expansion coefficients. Observe that, the signal looks more and more like the original signal as $N$ gets larger.
+
+b) Prove that $\lim_{N \to \infty} \int (x(t) - x_N(t))^2\, dt = 0$.
+
+*Hint: Use the properties of Hilbert spaces and the fact that $\{\frac{1}{\sqrt{P}} e^{i2\pi \frac{k}{P} t}\}$ forms a complete orthonormal sequence. You could invoke this result directly in your argument.*
+
+c) Does for a general $x \in L_2([0, 2]; \mathbb{C})$,
+
+$$
+\sup_{t \in [0,2]} |x(t) - x_N(t)| \to 0,
+$$
+
+as $N \to \infty$? Explain your argument.
+</Problem>
+
+<Problem id="5.7.2" title="CCFT of a Gaussian Signal">
+CCFT is a map from $\mathcal{S}$ to $\mathcal{S}$. One typical example is the Gaussian signal $e^{-at^2/2}$ for some $a > 0$:
+
+Show that for $a > 0$, the CCFT of $\phi(t) = e^{-at^2/2}$ is equal to
+
+$$
+\hat{\phi}(f) = K e^{-2\pi^2 f^2 / a},
+$$
+
+for some $K$ and conclude that $\hat{\phi}$ is also a Schwartz signal. Show that $K$ is independent of $f$. Find $K$.
+</Problem>
+
+<Problem id="5.7.3" title="Unitarity of the CCFT">
+Show that CCFT is a unitary transformation from $L_2(\mathbb{R}; \mathbb{C})$ to itself. That is, show that Plancherel's Identity holds for functions in $L_2(\mathbb{R}; \mathbb{C})$.
+</Problem>
+
+<Problem id="5.7.4" title="CCFT on Distributions">
+a) Show that CCFT is a continuous map from $\mathcal{S}^*$ to $\mathcal{S}^*$. That is, CCFT maps distributions to distributions and this is continuous map on $\mathcal{S}^*$.
+
+b) Show that the CCFT of the $\delta$-distribution is another distribution represented by a function which is equal to 1 for all $f$: That is,
+
+$$
+\mathcal{F}_{CC}(\tilde{\delta}) = H,
+$$
+
+with
+
+$$
+H(\phi) = \int \phi(t)\, dt
+$$
+
+Observe that this is in agreement with the general understanding that $\hat{\delta}(f) = 1$ for all $f$.
+</Problem>
+
+<Problem id="5.7.5" title="Fourier Transform of an Impulse Train">
+Consider an impulse train defined by:
+
+$$
+w_P(t) = \sum_{n \in \mathbb{Z}} \delta(t + nP)
+$$
+
+so that the distribution that we can associate with this impulse train would be defined by:
+
+$$
+\overline{w_P}(\phi) = \sum_{n \in \mathbb{Z}} \phi(nP),
+$$
+
+for $\phi \in \mathcal{S}$.
+
+a) Show that $\overline{w_P}$ is a distribution.
+
+b) Show that
+
+$$
+\overline{\widehat{w_P}}(\phi) = \int \frac{1}{P} w_{\frac{1}{P}}(t) \phi(t)\, dt,
+$$
+
+that is, the $\mathcal{F}_{CC}$ of this train is another impulse train.
+</Problem>
+
+<Problem id="5.7.6" title="Band-limited vs Time-limited">
+Consider a square-integrable signal with non-zero $L_2$ norm, with bounded support. That is, there exists a compact set, outside of which this signal is identically zero. Can the CCFT of such a signal, with a bounded support in time-domain, also have bounded support in frequency domain?
+</Problem>
+

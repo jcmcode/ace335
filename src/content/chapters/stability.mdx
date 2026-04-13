@@ -393,7 +393,29 @@ which have the same linearization around 0. By a Lyapunov stability argument wit
 
 <StabilityRegions mode="discrete" />
 
-The stability results presented for continuous-time linear systems have essentially identical generalizations for the discrete-time setup. In this case, we require the eigenvalues to be strictly inside the unit disk for asymptotic stability (local and global); and for local stability we additionally have the relaxation that the Jordan form corresponding to an eigenvalue on the unit circle is to be strictly diagonal: Any Jordan form block $J$ of size $N \times N$, with eigenvalue $\lambda_i$, can be written as
+The stability results presented for continuous-time linear systems have essentially identical generalizations for the discrete-time setup.
+
+<Theorem id="11.5.0a" title="Discrete-Time Global Asymptotic Stability">
+For a linear difference equation $x_{k+1} = Ax_k$, the solution is locally and globally asymptotically stable if and only if
+
+$$\max_{\lambda_i}\{|\lambda_i|\} < 1,$$
+
+where $\lambda_i$ denotes the $i$th eigenvalue of $A$. That is, all eigenvalues must be strictly inside the unit disk.
+</Theorem>
+
+<Theorem id="11.5.0b" title="Discrete-Time Local Stability">
+For a linear difference equation $x_{k+1} = Ax_k$, the system is locally stable if and only if:
+
+(i) $\max_{\lambda_i}\{|\lambda_i|\} \leq 1$,
+
+(ii) if $|\lambda_i| = 1$ for some $\lambda_i$, the algebraic multiplicity of this eigenvalue should be the same as the geometric multiplicity (i.e., the Jordan form corresponding to an eigenvalue on the unit circle is strictly diagonal).
+</Theorem>
+
+<Remark>
+**Intuition:** In discrete time, the unit circle plays the role that the imaginary axis plays in continuous time. Eigenvalues inside the unit disk correspond to decaying modes ($|\lambda|^k \to 0$), eigenvalues outside to growing modes, and eigenvalues on the unit circle to sustained oscillations. The Jordan block condition for local stability prevents polynomial growth: $\binom{n}{k}\lambda^{n-k}$ grows polynomially in $n$ when $|\lambda| = 1$ and $k \geq 1$.
+</Remark>
+
+In this case, we require the eigenvalues to be strictly inside the unit disk for asymptotic stability (local and global); and for local stability we additionally have the relaxation that the Jordan form corresponding to an eigenvalue on the unit circle is to be strictly diagonal: Any Jordan form block $J$ of size $N \times N$, with eigenvalue $\lambda_i$, can be written as
 
 $$\lambda_i I + E$$
 
@@ -517,6 +539,28 @@ Using $V(x) = x^2$, we get $\dot{V} = 2x(-x^7) = -2x^8 < 0$ for $x \neq 0$. By T
 Consider $x'' + x' + x = 0$. Is this system asymptotically stable?
 
 *Hint: Convert this equation into a system of first-order differential equations, via $x_1 = x$ and $x_2 = x_1'$, $x_2' = -x_1 - x_2$. Then apply $V(x_1, x_2) = x_1^2 + x_1x_2 + x_2^2$ as a candidate Lyapunov function.*
+
+**Solution.** Setting $x_1 = x$, $x_2 = x'$, the system becomes:
+
+$$x_1' = x_2, \qquad x_2' = -x_1 - x_2$$
+
+This is $\frac{dx}{dt} = Ax$ with $A = \begin{bmatrix} 0 & 1 \\ -1 & -1 \end{bmatrix}$.
+
+Consider $V(x_1, x_2) = x_1^2 + x_1 x_2 + x_2^2$. First, note that $V$ is positive definite: writing $V = \frac{1}{2}x_1^2 + \frac{1}{2}(x_1 + x_2)^2 + \frac{1}{2}x_2^2 > 0$ for $(x_1, x_2) \neq (0,0)$.
+
+Computing $\dot{V}$:
+
+$$\dot{V} = 2x_1 x_1' + x_1' x_2 + x_1 x_2' + 2x_2 x_2'$$
+
+$$= 2x_1 x_2 + x_2^2 + x_1(-x_1 - x_2) + 2x_2(-x_1 - x_2)$$
+
+$$= 2x_1 x_2 + x_2^2 - x_1^2 - x_1 x_2 - 2x_1 x_2 - 2x_2^2$$
+
+$$= -x_1^2 - x_1 x_2 - x_2^2 = -V(x_1, x_2) < 0$$
+
+for $(x_1, x_2) \neq (0,0)$. Since $V \to \infty$ as $\|(x_1, x_2)\| \to \infty$, by Theorem 11.3.1(c), the system is globally asymptotically stable.
+
+Alternatively, the eigenvalues of $A$ are $\lambda = \frac{-1 \pm \sqrt{1-4}}{2} = \frac{-1 \pm i\sqrt{3}}{2}$, which both have negative real part $-\frac{1}{2}$. By Theorem 11.2.1, the system is globally asymptotically stable.
 </Example>
 
 <Example id="11.6.5" title="A Further Lyapunov Stability Theorem and Barbalat's Lemma">

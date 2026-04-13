@@ -1,0 +1,100 @@
+---
+title: "Appendix B: Cauchy's Integral Formula"
+chapter: 14
+---
+
+This appendix presents Cauchy's integral formula and the residue theorem, which are the complex analysis results underpinning the Nyquist stability criterion (Section 8.4) and the computation of inverse Laplace and Z-transforms via contour integration (Section 7.3).
+
+---
+
+## B.1 Cauchy's Integral Formula
+
+<Theorem id="B.0.1" title="Cauchy's Integral Theorem">
+Let $f : \mathbb{C} \to \mathbb{C}$ be analytic (complex differentiable) on and inside a simple closed contour $\Gamma$. Then,
+
+$$\oint_\Gamma f(z)\,dz = 0.$$
+</Theorem>
+
+<Remark>
+**Intuition:** If a function is analytic everywhere inside a closed contour, then its integral around that contour vanishes. This is the fundamental result of complex analysis and is a consequence of the fact that analytic functions have no "sources" or "sinks" inside the contour.
+</Remark>
+
+<Theorem id="B.0.2" title="Cauchy's Integral Formula">
+Let $f$ be analytic on and inside a simple closed contour $\Gamma$ traversed in the counter-clockwise direction. Then, for any point $z_0$ inside $\Gamma$:
+
+$$f(z_0) = \frac{1}{2\pi i} \oint_\Gamma \frac{f(z)}{z - z_0}\,dz.$$
+
+More generally, the $n$-th derivative of $f$ at $z_0$ is given by:
+
+$$f^{(n)}(z_0) = \frac{n!}{2\pi i} \oint_\Gamma \frac{f(z)}{(z - z_0)^{n+1}}\,dz.$$
+</Theorem>
+
+<Remark>
+**Intuition:** Cauchy's integral formula says that the value of an analytic function at any interior point is completely determined by its values on the boundary. This is a remarkable property unique to analytic functions: knowing $f$ on a closed curve tells you everything about $f$ inside. In our course, this formula is used to compute inverse Laplace and Z-transforms via contour integration.
+</Remark>
+
+---
+
+## B.2 The Residue Theorem
+
+<Definition id="B.2.1" title="Residue">
+If $f$ has an isolated singularity (pole) at $z = z_0$, the **residue** of $f$ at $z_0$ is the coefficient $a_{-1}$ in the Laurent series expansion:
+
+$$f(z) = \sum_{n=-\infty}^{\infty} a_n (z - z_0)^n.$$
+
+For a pole of order $m$, the residue can be computed as:
+
+$$\text{Res}(f, z_0) = \frac{1}{(m-1)!} \lim_{z \to z_0} \frac{d^{m-1}}{dz^{m-1}} \left[(z - z_0)^m f(z)\right].$$
+
+For a simple pole ($m = 1$):
+
+$$\text{Res}(f, z_0) = \lim_{z \to z_0} (z - z_0) f(z).$$
+</Definition>
+
+<Theorem id="B.2.1" title="Residue Theorem">
+Let $f$ be analytic on and inside a simple closed contour $\Gamma$ (traversed counter-clockwise), except at a finite number of isolated singularities $z_1, z_2, \ldots, z_k$ inside $\Gamma$. Then,
+
+$$\oint_\Gamma f(z)\,dz = 2\pi i \sum_{j=1}^{k} \text{Res}(f, z_j).$$
+</Theorem>
+
+<Remark>
+**Intuition:** The residue theorem generalizes Cauchy's integral theorem to functions with poles: the integral around a closed contour equals $2\pi i$ times the sum of the residues at the poles enclosed by the contour. This is the key tool for computing inverse Laplace transforms and is the mathematical engine behind the Nyquist criterion -- the winding number in the principle of variation of the argument (Theorem 8.4.2) is computed via residues.
+</Remark>
+
+---
+
+## B.3 Application to the Nyquist Criterion
+
+The principle of variation of the argument (Theorem 8.4.2), which is the foundation of the Nyquist stability criterion, is a direct consequence of the residue theorem. For a function $f$ with $Z$ zeros and $P$ poles inside a contour $\Gamma$:
+
+$$\frac{1}{2\pi i} \oint_\Gamma \frac{f'(z)}{f(z)}\,dz = Z - P.$$
+
+This follows because:
+
+- At a zero $z_0$ of order $m$, we can write $f(z) = (z - z_0)^m g(z)$ with $g(z_0) \neq 0$, so $\frac{f'(z)}{f(z)} = \frac{m}{z - z_0} + \frac{g'(z)}{g(z)}$, contributing a residue of $+m$.
+
+- At a pole $z_0$ of order $m$, we can write $f(z) = (z - z_0)^{-m} g(z)$ with $g(z_0) \neq 0$, so $\frac{f'(z)}{f(z)} = \frac{-m}{z - z_0} + \frac{g'(z)}{g(z)}$, contributing a residue of $-m$.
+
+Summing over all zeros and poles gives $Z - P$.
+
+<Remark>
+**Intuition:** The logarithmic derivative $f'/f$ has simple poles exactly at the zeros and poles of $f$, with residues equal to the multiplicities (positive for zeros, negative for poles). The residue theorem then directly gives the winding number formula $Z - P$, which is exactly what the Nyquist criterion uses to determine stability.
+</Remark>
+
+---
+
+## B.4 Application to Inverse Transforms
+
+For computing inverse Laplace transforms, the contour integral representation is:
+
+$$x(t) = \frac{1}{2\pi i} \int_c X(s) e^{st}\,ds,$$
+
+where the integral is taken along the line $\text{Re}\{s\} = R$ which is in the region of convergence. By closing the contour (typically with a semicircle to the left for $t > 0$), the residue theorem converts this integral into a sum of residues at the poles of $X(s)e^{st}$.
+
+Similarly, for inverse Z-transforms:
+
+$$x(n) = \frac{1}{2\pi i} \oint_c X(z) z^{n-1}\,dz$$
+
+where the contour integral is taken along a circle in the region of convergence in a counter-clockwise fashion. Cauchy's integral formula (Theorem B.0.2) may be employed to obtain solutions.
+
+However, for applications considered in this course, the partial fraction expansion is the most direct approach for computing inverse transforms.

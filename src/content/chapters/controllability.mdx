@@ -371,6 +371,12 @@ That is, the controllable and unobservable subspaces are $A$-invariant.
 **Intuition:** $A$-invariance means that the system dynamics cannot push states out of these subspaces. If a state direction is reachable by the input, applying the system dynamics $A$ keeps it reachable. If a state direction is invisible to the output, it stays invisible after the dynamics act. This structural property is what allows the block-triangular decompositions that follow.
 </Remark>
 
+<Proof>
+**(i)** The controllable subspace is $\text{Range}(\mathcal{C}) = \text{Range}(\begin{bmatrix} B & AB & \cdots & A^{n-1}B \end{bmatrix})$. If $v$ is in this subspace, then $v = \sum_{k=0}^{n-1} A^k B \alpha_k$ for some coefficients $\alpha_k$. Then $Av = \sum_{k=0}^{n-1} A^{k+1} B \alpha_k = \sum_{k=1}^{n} A^k B \alpha_{k-1}$. By the Cayley-Hamilton theorem, $A^n B$ can be written as a linear combination of $\{B, AB, \ldots, A^{n-1}B\}$. Therefore $Av \in \text{Range}(\mathcal{C})$.
+
+**(ii)** The unobservable subspace is $\text{Null}(\mathcal{O}) = \{v : CA^k v = 0, \; 0 \leq k \leq n-1\}$. If $v$ is in this subspace, then $CA^k(Av) = CA^{k+1}v = 0$ for $0 \leq k \leq n-2$. For $k = n-1$, $CA^{n-1}(Av) = CA^n v$. By Cayley-Hamilton, $A^n$ is a linear combination of $\{I, A, \ldots, A^{n-1}\}$, so $CA^n v$ is a linear combination of $\{Cv, CAv, \ldots, CA^{n-1}v\}$, all of which are zero. Therefore $Av \in \text{Null}(\mathcal{O})$.
+</Proof>
+
 ### Controllable canonical form
 
 If a model is not controllable, then we can construct a state transformation $\tilde{x} = Px$ with the form $\tilde{x} = \begin{bmatrix} \tilde{x}_c \\ \tilde{x}_{uc} \end{bmatrix}$ with

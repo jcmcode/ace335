@@ -416,3 +416,135 @@ y(n) = \left(\left(\frac{1}{4}\right)^n - 2\left(\frac{1}{2}\right)^n\right) 1_{
 $$
 </Example>
 
+## 6.3 Exercises
+
+<Problem id="6.2.1" title="RC Circuit Analysis">
+Consider the R-C circuit with the equations:
+
+$$
+\frac{dV_C(t)}{dt} = -\frac{1}{RC} V_C(t) + \frac{1}{RC} u(t)
+$$
+
+a) Viewed as a linear time-invariant system, where $u$ is the input and $V_C$ is the output, find the impulse response and the frequency response.
+
+b) Qualitatively, plot the Bode diagram.
+</Problem>
+
+<Problem id="6.2.2" title="RLC Circuit Analysis">
+Consider the R-L-C circuit with the dynamics
+
+$$
+L\frac{d^2Q}{dt^2} + R\frac{dQ}{dt} + \frac{1}{C}Q = u(t)
+$$
+
+Note $V_C = Q/C$.
+
+a) Viewed as a linear time-invariant system, where $u$ is the input and $V_C$ is the output, find the impulse response and the frequency response.
+
+b) Qualitatively, plot the Bode diagram in the setup when $R$ is very small.
+
+c) Show that when $R$ is very small, the $f$ value which maximizes the amplitude of the frequency response is around $\frac{1}{2\pi\sqrt{LC}}$. Such a model is often used as an antenna of a radio receiver with the value of the capacitance denoting a tuning parameter.
+</Problem>
+
+<Problem id="6.3.1" title="Continuous-Time System with Cosine Input">
+Consider a continuous-time system described by the equation:
+
+$$
+\frac{dy(t)}{dt} = ay(t) + u(t), \quad t \in \mathbb{R},
+$$
+
+where $a < 0$.
+
+a) Find the impulse response of this system.
+
+b) Suppose that the input to this system is given by $\cos(2\pi f_0 t)$. Let $y_{f_0}$ be the output of the system. Find $y_{f_0}(t)$.
+
+c) If exists, find
+
+$$
+\lim_{f_0 \to \infty} y_{f_0}(t),
+$$
+
+for all $t \in \mathbb{R}_+$.
+</Problem>
+
+<Problem id="6.3.2" title="Discrete-Time System with Multiple Inputs">
+Let a system be described by:
+
+$$
+y(n+1) = ay(n) + bu(n) + cu(n-1), \quad n \in \mathbb{Z}.
+$$
+
+a) For what values of $a, b, c$ is this system bounded-input-bounded-output (BIBO) stable?
+
+b) Let $a = 2, b = 1, c = 1$. Compute the impulse response of the system.
+
+c) With $a = 2, b = 1, c = 1$; find the output as a function of $n$, when the input is $u(n) = 1_{\{n \ge 0\}}$.
+</Problem>
+
+<Problem id="6.3.3" title="Continuous-Time System with Exponential Input">
+Consider a linear time invariant (LTI) system characterized by:
+
+$$
+y^{(1)}(t) = -ay(t) + u(t), \quad t \in \mathbb{R}
+$$
+
+with $a > 0$.
+
+a) Find the impulse response of this system.
+
+b) Find the frequency response of the system.
+
+c) Let $u(t) = e^{-t} 1_{\{t \ge 0\}}$. Find $y(t)$.
+</Problem>
+
+<Problem id="6.3.4" title="Ideal Low-Pass Filter">
+Consider a continuous time LTI system with a frequency response
+
+$$
+\hat{h}(f) = 1_{\{|f| < f_0\}} \quad f \in \mathbb{R}
+$$
+
+a) Find the impulse response of the system; that is the output of the system when the input is the signal representing the $\delta$ distribution.
+
+b) Find the CCFT of the output, when the input is given by
+
+$$
+u(t) = e^{-t} \cos(f_1 t) 1_{\{t \ge 0\}}
+$$
+</Problem>
+
+<Problem id="6.3.5" title="DCFT Computations">
+a) Let $x \in l_2(\mathbb{Z}; \mathbb{C})$. Compute the DCFT of
+
+$$
+x(n) = a^n 1_{\{n \ge 0\}},
+$$
+
+with $|a| < 1$.
+
+b) Compute the DCFT of $x$:
+
+$$
+x(n) = \cos(3\pi f_0 n)
+$$
+</Problem>
+
+<Problem id="6.3.6" title="Multi-Dimensional CDFT">
+Many signals take values in multi-dimensional spaces. If you were to define a CDFT for signals in $L_2([0, P_1] \times [0, P_2]; \mathbb{C})$, for given $P_1, P_2 \in \mathbb{R}_+$, how would you define it?
+</Problem>
+
+<Problem id="6.3.7" title="Second-Order Discrete-Time System">
+Let a non-anticipative LTI system be given by:
+
+$$
+y(n) = \frac{3}{4}y(n-1) - \frac{1}{8}y(n-2) + u(n)
+$$
+
+a) Compute the frequency response of this system.
+
+b) Compute the impulse response of the system.
+
+c) Find the output when the input is $u(n) = \left(\frac{1}{2}\right)^n 1_{\{n \ge 0\}}$.
+</Problem>
+

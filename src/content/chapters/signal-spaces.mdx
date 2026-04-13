@@ -921,3 +921,267 @@ The important observation to note here is that, different expansions might be su
 ### 2.3.5 Approximations
 
 Approximations allow us to represent data using finitely many vectors. The basis expansions studied above can be used to obtain the best approximation of a signal up to finitely many terms to be used in an approximation: This can be posed as a projection problem, and we have seen that the best approximation is one in which the approximation error is orthogonal to all the vectors used in the approximation (defining an approximation subspace).
+
+---
+
+## 2.4 Exercises
+
+### Exercise 2.4.1
+
+**(a)** *The set $C^\infty(\mathbb{R})$, which is the set of all functions from $\mathbb{R}$ to $\mathbb{R}$ that are infinitely differentiable, together with the operations of addition and scalar multiplication defined as follows, is a vector space: For any $f_1, f_2 \in C^\infty(\mathbb{R})$*
+
+$$(f_1 + f_2)(x) = f_1(x) + f_2(x), \qquad x \in \mathbb{R}$$
+
+*and for any $\alpha \in \mathbb{R}$ and $f \in C^\infty(\mathbb{R})$*
+
+$$(\alpha \cdot f)(x) = \alpha f(x), \qquad x \in \mathbb{R}$$
+
+**(i)** *Now, consider $\mathcal{P}(\mathbb{R})$ to be the set of all (polynomial) functions that maps $\mathbb{R}$ to $\mathbb{R}$ such that any $f \in \mathcal{P}(\mathbb{R})$ can be written as $f(x) = \sum_{i=0}^{n} a_i x^i$ for some $n \in \mathbb{N}$ with $a_0, a_1, \cdots, a_n \in \mathbb{R}$. Suppose that we define the same addition and scalar multiplication operations as defined above. Is $\mathcal{P}(\mathbb{R})$ a subspace in $C^\infty(\mathbb{R})$?*
+
+**(ii)** *Show that the space of all functions in $C^\infty(\mathbb{R})$ which map $\mathbb{R}$ to $\mathbb{R}$ which satisfy $f(10) = 0$ is a vector space with addition and multiplication defined as above.*
+
+**(b)** *Consider the set $\mathbb{R}^n$. On $\mathbb{R}^n$, define an addition operation and a scalar multiplication operation as follows:*
+
+$$(x_1, x_2, \cdots, x_n) + (y_1, y_2, \cdots, y_n) = (x_1 + y_1, x_2 + y_2, \cdots, x_n + y_n)$$
+
+$$\alpha \cdot (x_1, x_2, \cdots, x_n) = (\alpha x_1, \alpha x_2, \cdots, \alpha x_n)$$
+
+*Show that, with these operations, $\mathbb{R}^n$ is a vector space.*
+
+**(c)** *Consider the set*
+
+$$\mathbb{W} = \{(x, y) : x \in \mathbb{R}, x \in \mathbb{R}, x > 0, y > 0\}$$
+
+*On this set, define an addition operation and a scalar multiplication operation as follows:*
+
+$$(x_1, y_1) + (x_2, y_2) = (x_1 x_2, y_1 y_2)$$
+
+$$\alpha \cdot (x, y) = (x^\alpha, y^\alpha)$$
+
+*Show that, with these operations, $\mathbb{W}$ is a vector space. Hint: Consider a bijection between $\mathbb{W}$ and the space $\mathbb{R}^2$ with $\mathbb{W} \ni (x, y) \mapsto (\log(x), \log(y)) \in \mathbb{R}^2$.*
+
+### Exercise 2.4.2 (Holder's and Minkowski's Inequalities)
+
+*Let $1 \leq p, q \leq \infty$ with $1/p + 1/q = 1$. Let $x \in l_p(\mathbb{Z}_+)$ and $y \in l_q(\mathbb{Z}_+)$. Then,*
+
+$$\sum_{i=0}^{\infty} |x_i y_i| \leq \|x\|_p \|y\|_q$$
+
+*This is known as Holder's inequality. Equality holds if and only if*
+
+$$\left(\frac{x_i}{\|x\|_p}\right)^{(1/q)} = \left(\frac{y_i}{\|y\|_q}\right)^{(1/p)},$$
+
+*for each $i \in \mathbb{Z}_+$.*
+
+*To prove this, perform the following:*
+
+**(a)** *Show that for $a \geq 0, b \geq 0, c \in (0, 1)$: $a^c b^{1-c} \leq ca + (1 - c)b$ with equality if and only if $a = b$. To show this, you may consider the function $f(t) = t^c - ct + c - 1$ and see how it behaves for $t \geq 0$ and let $t = a/b$.*
+
+**(b)** *Apply the inequality $a^c b^{1-c} \leq ca + (1 - c)b$ to the numbers:*
+
+$$a = \left(\frac{|x_i|}{\|x\|_p}\right)^p, \quad b = \left(\frac{|y_i|}{\|y\|_q}\right)^q, \quad c = 1/p$$
+
+*Holder's inequality is useful to prove Minkowski's inequality which states that for $1 < p < \infty$,*
+
+$$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
+
+*This proceeds as follows:*
+
+$$\sum_{i=1}^{n} |x_i + y_i|^p \leq \sum_{i=1}^{n} |x_i + y_i|^{p-1}|x_i + y_i| \leq \sum_{i=1}^{n} |x_i + y_i|^{p-1}|x_i| + \sum_{i=1}^{n} |x_i + y_i|^{p-1}|y_i|$$
+
+$$= \left(\sum_{i=1}^{n} |x_i + y_i|^{(p-1)q}\right)^{1/q}\left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |x_i + y_i|^{(p-1)q}\right)^{1/q}\left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p}$$
+
+$$= \left(\sum_{i=1}^{n} |x_i + y_i|^p\right)^{1/q}\left(\left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p}\right) \qquad \text{(2.16)}$$
+
+*Thus, using that $1 - 1/q = 1/p$,*
+
+$$\left(\sum_{i=1}^{n} |x_i + y_i|^p\right)^{1/p} \leq \left(\sum_{i=1}^{n} |x_i|^p\right)^{1/p} + \left(\sum_{i=1}^{n} |y_i|^p\right)^{1/p},$$
+
+*Now, the above holds for every $n$. Taking the limit $n \to \infty$ (first on the right and then on the left), it follows that*
+
+$$\|x + y\|_p \leq \|x\|_p + \|y\|_p$$
+
+*which is the desired inequality.*
+
+### Exercise 2.4.3
+
+*Given a normed linear space $(X, \|\cdot\|)$, introduce a map $n : X \times X \to \mathbb{R}$:*
+
+$$n(x, y) = \frac{\|x - y\|}{1 + \|x - y\|}$$
+
+*Show that $n(x, y)$ is a metric: That is, it satisfies the triangle inequality:*
+
+$$n(x, y) \leq n(x, z) + n(z, y), \qquad \forall x, y, z \in X,$$
+
+*and that $n(x, y) = 0$ iff $x = y$, and finally $n(x, y) = n(y, x)$.*
+
+### Exercise 2.4.4
+
+*Let $\{e_n, n \in \mathbb{N}\}$ be a complete orthonormal sequence in a real Hilbert space $H$. Let $\mathcal{M}$ be a subspace of $H$, spanned by $\{e_k, k \in S\}$, for some finite set $S \subset \mathbb{N}$. That is,*
+
+$$\mathcal{M} = \{v \in H : \exists \alpha_k \in \mathbb{R}, k \in S,\quad v = \sum_{k \in S} \alpha_k e_k\}$$
+
+*Let $x \in H$ be given. Find $x^* \in \mathcal{M}$ which is the solution to the following:*
+
+$$\min_{x_0 \in \mathcal{M}} \|x - x_0\|,$$
+
+*in terms of $x$, and $\{e_n, n \in \mathbb{N}\}$.*
+
+*Hint: Any vector in $H$ can be written as $x = \sum_{n \in \mathbb{N}} \langle x, e_n \rangle e_n$.*
+
+### Exercise 2.4.5
+
+*Let $T : L_2(\mathbb{R}_+; \mathbb{R}) \to \mathbb{R}$ be a mapping given by:*
+
+$$T(f) = \int_1^{\infty} f(t) \frac{1 + t^2}{t^4}\,dt$$
+
+*Is $T$ continuous at any given $f_0 \in L_2(\mathbb{R}_+; \mathbb{R})$?*
+
+### Exercise 2.4.6
+
+*Consider an inner-product defined by:*
+
+$$\langle x, y \rangle = \lim_{T \to \infty} \frac{1}{T} \int_{t=0}^{T} x(t) y(t)$$
+
+*Is the resulting inner-product (pre-Hilbert) space separable?*
+
+### Exercise 2.4.7
+
+*Let $x, y \in f(\mathbb{Z}; \mathbb{R})$; that is, $x, y$ map $\mathbb{Z}$ to $\mathbb{R}$, such that $x = \{\ldots, x_{-2}, x_{-1}, x_0, x_1, x_2, \ldots\}$ and $y = \{\ldots, y_{-2}, y_{-1}, y_0, y_1, y_2, \ldots\}$ and $x_k, y_k \in \mathbb{R}$, for all $k \in \mathbb{Z}$.*
+
+*For (a)-(c) below, state if the following are true or false with justifications in a few sentences:*
+
+**(a)** $\langle x, y \rangle = \sum_{i \in \mathbb{Z}} i^2 x_i y_i$ *is an inner-product.*
+
+**(b)** $\langle x, y \rangle = \sum_{i \in \mathbb{Z}} x_i y_i$ *is an inner-product.*
+
+**(c)** $\{x : \|x\|_2^2 < \infty\}$ *contains a complete orthonormal sequence, where $\|x\|_2 = \sqrt{\sum_{i \in \mathbb{Z}} |x(i)|^2}$.*
+
+### Exercise 2.4.8
+
+*Let $\mathbb{X}$ be a Hilbert space and $x, y \in \mathbb{X}$. Prove the following:*
+
+**(a)** (Parallelogram Law)
+
+$$\|x + y\|^2 + \|x - y\|^2 = 2\|x\|^2 + 2\|y\|^2.$$
+
+**(b)**
+
+$$|\langle x, y \rangle| \leq (\|x\|)(\|y\|).$$
+
+**(c)**
+
+$$2|\langle x, y \rangle| \leq \|x\|^2 + \|y\|^2.$$
+
+### Exercise 2.4.9
+
+*Let $H$ be a finite dimensional Hilbert space and $\{v_1, v_2\}$ be two linearly independent vectors in $H$.*
+
+*Let $b_1, b_2 \in \mathbb{R}$. Show that, among all vectors $x \in H$, which satisfies*
+
+$$\langle x, v_1 \rangle = b_1,$$
+
+$$\langle x, v_2 \rangle = b_2,$$
+
+*the vector $x^* \in H$ has the minimum norm if $x^*$ satisfies:*
+
+$$x^* = \alpha_1 v_1 + \alpha_2 v_2,$$
+
+*with*
+
+$$\langle v_1, v_1 \rangle \alpha_1 + \langle v_2, v_1 \rangle \alpha_2 = b_1,$$
+
+$$\langle v_1, v_2 \rangle \alpha_1 + \langle v_2, v_2 \rangle \alpha_2 = b_2.$$
+
+### Exercise 2.4.10
+
+*Let $H$ be a Hilbert space and $C \subset H$ be a dense subset of $H$. Suppose that any element $h_C$ in $C$ is such that for every $\epsilon > 0$, there exist $n \in \mathbb{N}$ and $\beta_i \in \mathbb{R}, i \in \mathbb{N}$ so that*
+
+$$\left\|\sum_{i=0}^{n} \beta_i e_i - h_C\right\| \leq \epsilon$$
+
+*where $\{e_\alpha, \alpha \in \mathbb{N}\}$ is a countable sequence of orthonormal vectors in $H$.*
+
+*Is it the case that $H$ is separable?*
+
+### Exercise 2.4.11
+
+*Let $x$ be in the real Hilbert space $L_2([0, 1]; \mathbb{R})$ with the inner product*
+
+$$\langle x, y \rangle = \int_0^1 x(t) y(t)\,dt.$$
+
+*We would like to express $x$ in terms of the following two signals (which belong to the Haar signal space)*
+
+$$u_1(t) = 1_{\{t \in [0, 1/2)\}} - 1_{\{t \in [1/2, 1]\}}, \qquad t \in [0, 1]$$
+
+$$u_2(t) = 1_{\{t \in [0, 1]\}}, \qquad t \in [0, 1]$$
+
+*such that*
+
+$$\int_0^1 \left|x(t) - \sum_{i=1}^{2} \alpha_i u_i(t)\right|^2 dt$$
+
+*is minimized, for $\{\alpha_1, \alpha_2 \in \mathbb{R}\}$.*
+
+**(a)** *Using the Gram-Schmidt procedure, obtain two orthonormal vectors $\{e_1(t), e_2(t)\}$ such that these vectors linearly span the same space spanned by $\{u_1(t), u_2(t)\}$.*
+
+**(b)** *State the problem as a projection theorem problem by clearly identifying the Hilbert space and the projected subspace.*
+
+**(c)** *Let $x(t) = 1_{\{t \in [1/2, 1]\}}$. Find the minimizing $\alpha_1, \alpha_2$ values.*
+
+### Exercise 2.4.12
+
+*Let $C([0, 1]; \mathbb{R})$ denote the normed linear space of continuous functions from $[-1, 1]$ to $\mathbb{R}$ under the supremum norm. We observed earlier that polynomials can be used to approximate any function in this space with arbitrary precision, under the supremum norm (Weierstrass Theorem).*
+
+*Given this, repeating the arguments we made in class, argue that the family of polynomials $\{1, t, t^2, \cdots\}$ can be used to form a complete orthonormal sequence in $L_2([0, 1]; \mathbb{R})$. This also establishes that $L_2([0, 1]; \mathbb{R})$ is separable.*
+
+### Exercise 2.4.13
+
+*Alice and Bob are approached by a generous company and asked to solve the following problem: The company wishes to store any signal $f$ in $L_2(\mathbb{R}_+; \mathbb{R})$ in a computer with a given error of $\epsilon > 0$, that is for every $f \in L_2(\mathbb{R}_+)$, there exists some signal $h \in H$ such that $\|f - h\|_2 \leq \epsilon$ (thus the error is uniform over all possible signals), where $H$ is the stored family of signals (in the computer's memory).*
+
+*To achieve this, they encourage Alice or Bob to use a finite or a countable expansion to represent the signal and later store this signal in an arbitrarily large memory. Hence, they allow Alice or Bob to purchase as much memory as they would like for a given error value of $\epsilon$.*
+
+*Alice turns down the offer and says it is impossible to do that for any $\epsilon$ with a finite memory and argues then she needs infinite memory, which is impossible.*
+
+*Bob accepts the offer and says he may need a very large, but finite, memory for any given $\epsilon > 0$; thus, the task is possible.*
+
+*Which one is the accurate assessment?*
+
+**(a)** *If you think Alice is right, which further conditions can she impose to make this possible? Why is she right?*
+
+**(b)** *If you think Bob is right, can you suggest a method? Why is he right?*
+
+### Exercise 2.4.14
+
+*Prove Theorem 2.3.7 using a probability theoretic method. Proceed as follows: The number*
+
+$$B_{n,f}(t) = \sum_{k=0}^{n} f\left(\frac{k}{n}\right) \binom{n}{k} t^k (1-t)^{n-k}.$$
+
+*can be expressed as the expectation $E[f_t(\frac{S_n}{n})]$, where $S_n = X_1 + X_2 + \cdots + X_n$, where $X_i$ is an i.i.d. collection of Bernoulli random variables where $X_i = 1$ with probability $t$ and $X_i = 0$ with probability $1 - t$. Here, observe that the sum $S_n$ has a binomial distribution. Thus,*
+
+$$\sup_{t \in [0,1]} |f(t) - B_{n,f}(t)| = \sup_{t \in [0,1]} |E_t[f(\frac{S_n}{n})] - f(t)|,$$
+
+*where $E_t$, for each $t$, denotes the expectation with respect to the i.i.d. Bernoulli random variables $X_i$ each with $P(X_i = 1) = t$. Let $P_t$ denote the probability measure induced by these $t$-parametrized i.i.d. sequence of Bernoulli random variables.*
+
+*Since $f$ is continuous and $[0,1]$ is compact, $f$ is uniformly continuous. Thus, for every $\epsilon > 0$, there exists $\delta > 0$ such that $|x - y| < \delta$ implies that $|f(x) - f(y)| \leq \epsilon$. Thus,*
+
+$$|E_t[f(\frac{S_n}{n})] - f(t)|$$
+
+$$= \int_{\omega: |\frac{S_n}{n} - t| \leq \delta} |f(\frac{S_n}{n}) - f(t)| P(d\omega) + \int_{\omega: |\frac{S_n}{n} - t| > \delta} |f(\frac{S_n}{n}) - f(t)| P(d\omega)$$
+
+$$\leq \epsilon + 2 \sup_{y \in [0,1]} |f(y)| P_t(|\frac{S_n}{n} - t| > \delta) \qquad \text{(2.17)}$$
+
+*The last term converges to $\epsilon$ as $n \to \infty$ by the law of large numbers. The above holds for every $\epsilon > 0$.*
+
+*Now, one needs to show that this convergence is uniform in $t$: For this show that for all $t \in [0, 1]$, via Markov's inequality and the independence of $X_i$*
+
+$$P_t(|\frac{S_n}{n} - t| > \delta) = P_t(|\frac{S_n}{n} - t|^2 > \delta^2) \leq \frac{1}{4n\delta^2},$$
+
+*establishing uniform convergence (over $t \in [0, 1]$), and thus complete the proof.*
+
+### Exercise 2.4.15 (A useful result on countability properties)
+
+*Let $F : \mathbb{R} \to \mathbb{R}$ be a monotonically increasing function (that is, $x_1 \leq x_2$ implies that $F(x_1) \leq F(x_2)$). Show that $F$ can have at most countably many points of discontinuity.*
+
+*Hint: If a point is such that $F$ is discontinuous, then there exists $n \in \mathbb{N}$ with $F(x^+) := \lim\inf_{x_n \downarrow x} F(x)$, $F(x^-) := \lim\sup_{x_n \uparrow x} F(x)$, $F(x^+) - F(x^-) > \frac{1}{n}$. Express $\mathbb{R} = \cup_{m \in \mathbb{Z}} (m, m+1]$. Let $B_n^m := \{x \in (m, m+1] : F(x^+) - F(x^-) > \frac{1}{n}\}$. It must be that $B_n^m$ is finite for otherwise the jump would be unbounded in the interval $(m, m+1]$. Then, the countable union $\cup_n B_n^m$ will be countable. Finally $\cup_m B_n^m$ is also countable.*
+
+### Exercise 2.4.16
+
+*Prove Theorem 2.3.13 (that the Haar system is a complete orthonormal sequence in $L_2([0,1]; \mathbb{R})$).*
