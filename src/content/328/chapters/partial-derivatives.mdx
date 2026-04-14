@@ -3,6 +3,8 @@ title: "Multivariable Differentiation"
 chapter: 9
 ---
 
+<JacobianDiagram />
+
 Differential calculus in one variable is the study of the local linear approximation of a function. The derivative $f'(a)$ is a number only because linear maps $\mathbb{R} \to \mathbb{R}$ are determined by a single scalar; the geometrically correct object is the linear map $h \mapsto f'(a) h$. In several variables this viewpoint becomes mandatory. The derivative of a function $\vec{F}: \mathbb{R}^n \to \mathbb{R}^m$ at a point is a linear map $\mathbb{R}^n \to \mathbb{R}^m$, represented once bases are chosen by an $m \times n$ matrix of partial derivatives. This chapter develops the theory: directional and partial derivatives, the total (Frechet) derivative, the Jacobian matrix, the delicate interplay between partial and total differentiability, the chain rule, higher-order partials, Clairaut's theorem on the equality of mixed partials, the classes $C^k$, and a mean-value inequality for vector-valued maps.
 
 <Remark>**A note on philosophy (Dieudonne).** In his classic *Foundations of Analysis*, Jean Dieudonne of the French Bourbaki school writes that presenting differential calculus "aims at keeping as close as possible to the fundamental idea of Calculus, namely the local approximation of functions by linear functions. In the classical teaching of Calculus, this idea is immediately obscured by the accidental fact that, on a one-dimensional vector space, there is a one-to-one correspondence between linear forms and numbers, and therefore the derivative at a point is defined as a number instead of a linear form. This slavish subservience to the shibboleth of numerical interpretation at any cost becomes much worse when dealing with functions of several variables." The viewpoint of this chapter — derivative as a linear map — is the one Dieudonne recommends.</Remark>
@@ -180,6 +182,8 @@ so $f$ is differentiable at $\vec{a}$ with $Df(\vec{a}) \vec{h} = \nabla f(\vec{
 
 ---
 
+<GradientContour />
+
 ## The Gradient
 
 <Definition title="Gradient">
@@ -318,12 +322,23 @@ $$\frac{\partial^2 f}{\partial x_j \partial x_i}(\vec{a}) = \frac{\partial^2 f}{
 ## The Classes $C^k$
 
 <Definition title="C^k Functions">
-Let $U \subseteq \mathbb{R}^n$ be open. A function $\vec{F} : U \to \mathbb{R}^m$ is said to be **of class $C^1$ on $U$** if all first-order partial derivatives of all component functions of $\vec{F}$ exist and are continuous on $U$. More generally, for $k \geq 1$, $\vec{F}$ is **of class $C^k$ on $U$** if all partial derivatives of order $\leq k$ of all components of $\vec{F}$ exist and are continuous on $U$. The function is **of class $C^\infty$** if it is of class $C^k$ for every $k \geq 1$.
+Let $U \subseteq \mathbb{R}^n$ be open. A function $\vec{F} : U \to \mathbb{R}^m$ is said to be **of class $C^1$ on $U$** if all first-order partial derivatives of all component functions of $\vec{F}$ exist and are continuous on $U$. More generally, for $k \geq 1$, $\vec{F}$ is **of class $C^k$ on $U$** if all partial derivatives of order $\leq k$ of all components of $\vec{F}$ exist and are continuous on $U$. The function is **of class $C^\infty$** (or **smooth**) if it is of class $C^k$ for every $k \geq 1$.
 
 Locally: $\vec{F}$ is of class $C^1$ at a point $\vec{a} \in \operatorname{int}(U)$ if there is an open ball around $\vec{a}$ on which every first-order partial of every component exists, and each such partial is continuous at $\vec{a}$.
+
+By convention, $C^0(U)$ denotes the continuous functions $U \to \mathbb{R}^m$.
 </Definition>
 
 <Remark>**Intuition:** $C^k$ is a hierarchy of smoothness classes: $C^0 \supset C^1 \supset C^2 \supset \cdots \supset C^\infty$. The $C^1$ class is the natural setting for differential calculus, since continuous partials imply differentiability. The $C^2$ class is where Clairaut applies to every mixed pair simultaneously, so the Hessian matrix is symmetric.</Remark>
+
+<Definition title="Real-Analytic Functions">
+Let $U \subseteq \mathbb{R}^n$ be open. A function $f : U \to \mathbb{R}$ is **real-analytic** on $U$, written $f \in C^\omega(U)$, if for every $\vec{a} \in U$ there exists $r > 0$ such that for every $\vec{x}$ with $\|\vec{x} - \vec{a}\| < r$, the Taylor series of $f$ at $\vec{a}$ converges and equals $f(\vec{x})$:
+$$f(\vec{x}) = \sum_{k = 0}^\infty \frac{1}{k!} \sum_{i_1, \ldots, i_k = 1}^n \frac{\partial^k f}{\partial x_{i_1} \cdots \partial x_{i_k}}(\vec{a}) (x_{i_1} - a_{i_1}) \cdots (x_{i_k} - a_{i_k}).$$
+</Definition>
+
+<Remark>**Intuition:** Analytic functions are "locally polynomials of infinite degree." They form a strictly smaller class than $C^\infty$: the function $f(x) = e^{-1/x^2}$ for $x \neq 0$, $f(0) = 0$, is $C^\infty$ on $\mathbb{R}$ with all derivatives vanishing at the origin, so its Taylor series at $0$ is identically zero — yet $f \not\equiv 0$. Hence $f \in C^\infty \setminus C^\omega$. The hierarchy is
+$$C^0 \supsetneq C^1 \supsetneq C^2 \supsetneq \cdots \supsetneq C^\infty \supsetneq C^\omega.$$
+Polynomials, exponentials, sines, and cosines are all analytic; so are compositions, sums, products, and (where nonzero in the denominator) quotients of analytic functions.</Remark>
 
 <Corollary title="C^2 Implies Symmetric Mixed Partials">
 If $f : U \to \mathbb{R}$ is of class $C^2$ on an open set $U \subseteq \mathbb{R}^n$, then for all $i, j \in \{1, \ldots, n\}$ and all $\vec{x} \in U$,

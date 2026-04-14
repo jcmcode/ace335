@@ -3,6 +3,8 @@ title: "Continuity and Limits"
 chapter: 4
 ---
 
+<EpsilonDelta />
+
 Continuity is the backbone of analysis. In this chapter we develop the notion of a continuous function first in the very general setting of topological spaces, then specialize to metric spaces where it coincides with the familiar epsilon-delta condition and with sequential continuity. We then discuss uniform continuity, Lipschitz continuity, homeomorphisms, and the limit of a function at a point. Much of this material is a more abstract recasting of ideas from MATH/MTHE 281.
 
 ---
@@ -259,6 +261,40 @@ $$|d(x, y) - d(x', y)| \leq d(x, x')$$
 
 ---
 
+## Holder Continuity
+
+An intermediate notion between plain uniform continuity and Lipschitz continuity: a sub-linear power-law bound on the modulus of continuity.
+
+<Definition title="Holder Continuous Function">
+Let $\alpha \in (0, 1]$. A function $f : (X, d_X) \to (Y, d_Y)$ is **Holder continuous of exponent $\alpha$** if there exists $K \geq 0$ such that
+$$d_Y(f(x), f(x')) \leq K \, d_X(x, x')^{\alpha} \quad \text{for all } x, x' \in X.$$
+The constant $K$ is a **Holder constant** of $f$; the smallest such $K$ is the Holder seminorm. The case $\alpha = 1$ recovers Lipschitz continuity.
+</Definition>
+
+<Remark>
+**Intuition:** Holder continuity with exponent $\alpha < 1$ allows the modulus of continuity to blow up like $h^{\alpha - 1}$ near zero — steeper than Lipschitz but tamer than arbitrary uniform continuity. It is the natural setting for many fractal and regularity estimates in analysis. The canonical example is $f(x) = \sqrt{x}$ on $[0, 1]$: Holder-$1/2$ but not Lipschitz.
+</Remark>
+
+<Theorem title="Holder Implies Uniformly Continuous">
+Every Holder-continuous function is uniformly continuous.
+</Theorem>
+
+<Proof>
+Given $\varepsilon > 0$, take $\delta = (\varepsilon/K)^{1/\alpha}$ (assuming $K > 0$; if $K = 0$, $f$ is constant). Then $d_X(x, x') < \delta$ gives $d_Y(f(x), f(x')) \leq K \delta^\alpha = \varepsilon$. $\square$
+</Proof>
+
+<Example title="Square Root is Holder-1/2 but not Lipschitz">
+$f(x) = \sqrt{x}$ on $[0, 1]$ satisfies
+$$|\sqrt{x} - \sqrt{y}| \leq \sqrt{|x - y|}$$
+for all $x, y \in [0, 1]$ (squaring both sides, $|x - y| \leq |\sqrt{x} - \sqrt{y}| \cdot (\sqrt{x} + \sqrt{y})$, which is immediate). So $f$ is Holder-$1/2$ with constant $K = 1$. It is not Lipschitz because $|\sqrt{x} - 0|/|x - 0| = 1/\sqrt{x} \to \infty$ as $x \to 0^+$.
+</Example>
+
+<Remark>
+**Hierarchy:** Lipschitz $\Rightarrow$ Holder-$\alpha$ (for any $\alpha \in (0, 1]$, on bounded domains) $\Rightarrow$ uniformly continuous $\Rightarrow$ continuous. All implications are strict. Holder continuity is most often used with $\alpha \in (0, 1)$; the borderline $\alpha = 1$ is Lipschitz, while "Holder with $\alpha > 1$" on a connected domain would force $f$ to be constant (the difference quotient is bounded by $K |x - x'|^{\alpha - 1} \to 0$, so $f' \equiv 0$).
+</Remark>
+
+---
+
 ## Homeomorphisms
 
 <Definition title="Homeomorphism">
@@ -289,9 +325,18 @@ We must show $f^{-1} : Y \to X$ is continuous, equivalently, that $f$ is a close
 
 ## Limits of Functions
 
-We now define the limit of a function at a point in the metric-space setting, generalizing $\lim_{x \to a} f(x)$ from calculus.
+We now define the limit of a function at a point, first in full topological generality (neighbourhood form), then specialize to metric spaces (epsilon-delta form), and finally record the sequential characterization. In a metric space all three notions coincide.
 
-<Definition title="Limit of a Function">
+<Definition title="Limit of a Function (Topological)">
+Let $(X, \tau)$ and $(Y, \sigma)$ be topological spaces, $A \subseteq X$, $f : A \to Y$, and let $a \in X$ be an **accumulation point** of $A$ (every open neighbourhood of $a$ meets $A \setminus \{a\}$). We say that $L \in Y$ is a **limit of $f$ at $a$**, and write $\lim_{x \to a} f(x) = L$, if for every open neighbourhood $V$ of $L$ there exists an open neighbourhood $U$ of $a$ such that
+$$f(U \cap A \setminus \{a\}) \subseteq V.$$
+</Definition>
+
+<Remark>
+**Intuition:** This is the most general form: "pull back every target neighbourhood to a source neighbourhood, ignoring the point $a$ itself." The formulation makes no reference to distances — only to open sets. In Hausdorff spaces this limit, when it exists, is unique by essentially the same argument as for sequences.
+</Remark>
+
+<Definition title="Limit of a Function (Metric, Epsilon-Delta)">
 Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces, $A \subseteq X$, $f : A \to Y$, and let $a \in X$ be an accumulation point of $A$ (i.e. every punctured ball around $a$ meets $A$). We write
 $$\lim_{x \to a} f(x) = L$$
 if for every $\varepsilon > 0$ there exists $\delta > 0$ such that for all $x \in A$,
@@ -301,6 +346,22 @@ $$0 < d_X(x, a) < \delta \implies d_Y(f(x), L) < \varepsilon.$$
 <Remark>
 **Intuition:** The limit of $f$ at $a$ is the value that $f(x)$ approaches as $x$ approaches $a$, but without touching $a$ itself. The requirement that $a$ be an accumulation point ensures we can actually approach $a$ through $A$. The value of $f$ at $a$ (if defined) is irrelevant.
 </Remark>
+
+<Theorem title="Equivalence of Topological, Metric, and Sequential Limits">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces with their metric topologies, $A \subseteq X$, $f : A \to Y$, and let $a \in X$ be an accumulation point of $A$. The following are equivalent:
+
+**(i)** $\lim_{x \to a} f(x) = L$ in the topological sense (preimage of every open neighbourhood of $L$ contains a punctured open neighbourhood of $a$, intersected with $A$).
+
+**(ii)** $\lim_{x \to a} f(x) = L$ in the $\varepsilon$-$\delta$ sense.
+
+**(iii)** For every sequence $(x_n) \subseteq A \setminus \{a\}$ with $x_n \to a$, $f(x_n) \to L$.
+</Theorem>
+
+<Proof>
+**(i) $\iff$ (ii)** is the same argument that relates topological and metric continuity: balls $B_\varepsilon(L)$ form a neighbourhood base at $L$ and $B_\delta(a)$ form one at $a$, so the "for every open neighbourhood" quantifier collapses to "for every $\varepsilon > 0$" and the witness can be chosen as a ball.
+
+**(ii) $\iff$ (iii)** is proved in the next theorem (Sequential Characterization of Limits), which is just a restatement. $\square$
+</Proof>
 
 <Theorem title="Sequential Characterization of Limits">
 Under the assumptions of the definition, $\lim_{x \to a} f(x) = L$ if and only if for every sequence $(x_n) \subseteq A \setminus \{a\}$ with $x_n \to a$, we have $f(x_n) \to L$.
@@ -335,6 +396,74 @@ Let $f, g : A \to \mathbb{R}$ with $A \subseteq X$, and suppose $\lim_{x \to a} 
 <Proof>
 Use the sequential characterization: take any $x_n \in A \setminus \{a\}$ with $x_n \to a$; then $f(x_n) \to L_1$, $g(x_n) \to L_2$, and the corresponding algebraic rules for sequences in $\mathbb{R}$ give the conclusions. $\square$
 </Proof>
+
+<Theorem title="Limit of a Composition">
+Let $(X, d_X)$, $(Y, d_Y)$, $(Z, d_Z)$ be metric spaces, let $A \subseteq X$, $B \subseteq Y$, $g : A \to B$ and $f : B \to Z$. Suppose $a$ is an accumulation point of $A$, $b$ is an accumulation point of $B$, and
+$$\lim_{x \to a} g(x) = b, \qquad \lim_{y \to b} f(y) = L.$$
+If either (i) $f$ is continuous at $b$ (equivalently, $f(b) = L$) or (ii) $g(x) \neq b$ for every $x$ in some punctured neighbourhood of $a$ intersected with $A$, then
+$$\lim_{x \to a} (f \circ g)(x) = L.$$
+</Theorem>
+
+<Remark>
+**Intuition:** The naive "plug one limit into the other" is correct almost always, but fails in a subtle edge case: if $g(x)$ happens to equal $b$ for $x$ near $a$ but $b$ is not in the domain of $f$ with value $L$, the limit of $f \circ g$ can see the "punctured-out" value of $f$ at $b$. The two clauses rule out that pathology — either $f$ behaves at $b$ (it is continuous there) or $g$ never hits $b$ near $a$.
+</Remark>
+
+<Proof>
+Fix $\varepsilon > 0$. Since $\lim_{y \to b} f(y) = L$, there exists $\eta > 0$ with $0 < d_Y(y, b) < \eta \implies d_Z(f(y), L) < \varepsilon$. Since $\lim_{x \to a} g(x) = b$, there exists $\delta > 0$ with $0 < d_X(x, a) < \delta \implies d_Y(g(x), b) < \eta$.
+
+**Case (i):** If $f$ is continuous at $b$, shrink $\eta$ (if needed) so that $d_Y(y, b) < \eta$ (including $y = b$) forces $d_Z(f(y), f(b)) < \varepsilon$; then $L = f(b)$ and the conclusion is immediate.
+
+**Case (ii):** Shrink $\delta$ so that additionally $g(x) \neq b$ for $0 < d_X(x, a) < \delta$. Then $0 < d_Y(g(x), b) < \eta$, and so $d_Z(f(g(x)), L) < \varepsilon$. $\square$
+</Proof>
+
+---
+
+## One-Sided Limits, Limits at Infinity, Infinite Limits
+
+For real-valued functions of a real variable, several variants of the limit notion appear in practice. We give them here in the concrete metric setting; in each case the idea is to modify the source (approach from one side, or $x \to \pm\infty$) or the target (allow the value $\pm\infty$) while keeping the logical structure of the definition intact.
+
+<Definition title="One-Sided Limits">
+Let $f : A \to \mathbb{R}$ with $A \subseteq \mathbb{R}$, and let $a \in \mathbb{R}$ be an accumulation point of $A \cap (a, \infty)$ (respectively $A \cap (-\infty, a)$).
+
+- The **right limit** of $f$ at $a$ is
+  $$\lim_{x \to a^+} f(x) = L \iff \forall \varepsilon > 0 \, \exists \delta > 0 \text{ s.t. } a < x < a + \delta, \, x \in A \implies |f(x) - L| < \varepsilon.$$
+- The **left limit** of $f$ at $a$ is
+  $$\lim_{x \to a^-} f(x) = L \iff \forall \varepsilon > 0 \, \exists \delta > 0 \text{ s.t. } a - \delta < x < a, \, x \in A \implies |f(x) - L| < \varepsilon.$$
+</Definition>
+
+<Remark>
+**Intuition:** One-sided limits only "approach from one side" of $a$. They let us describe jump discontinuities (where $f(a^-) \neq f(a^+)$) and are the natural concept at boundary points of intervals. The two-sided limit $\lim_{x \to a} f(x)$ exists iff both one-sided limits exist and agree.
+</Remark>
+
+<Theorem title="Two-Sided Limit via One-Sided Limits">
+Let $f : A \to \mathbb{R}$ with $A \subseteq \mathbb{R}$ and $a$ an accumulation point of both $A \cap (a, \infty)$ and $A \cap (-\infty, a)$. Then $\lim_{x \to a} f(x) = L$ if and only if $\lim_{x \to a^+} f(x) = L$ and $\lim_{x \to a^-} f(x) = L$.
+</Theorem>
+
+<Proof>
+**($\Rightarrow$):** Immediate: the $\varepsilon$-$\delta$ condition $0 < |x - a| < \delta$ implies either $a < x < a + \delta$ or $a - \delta < x < a$.
+
+**($\Leftarrow$):** Given $\varepsilon > 0$, pick $\delta_+, \delta_- > 0$ witnessing the one-sided limits; take $\delta = \min(\delta_+, \delta_-)$. Then $0 < |x - a| < \delta$ falls into one of the two one-sided regimes, and $|f(x) - L| < \varepsilon$ in either case. $\square$
+</Proof>
+
+<Definition title="Limits at Infinity">
+Let $f : A \to \mathbb{R}$ with $A \subseteq \mathbb{R}$ unbounded above. Then
+$$\lim_{x \to \infty} f(x) = L \iff \forall \varepsilon > 0 \, \exists M \in \mathbb{R} \text{ s.t. } x > M, \, x \in A \implies |f(x) - L| < \varepsilon.$$
+The definition of $\lim_{x \to -\infty} f(x) = L$ is analogous (replace $x > M$ with $x < M$, and require $A$ unbounded below).
+</Definition>
+
+<Remark>
+**Intuition:** "$x$ large enough" plays the role of "$x$ close enough to $a$" — only the source has changed. Equivalently, $\lim_{x \to \infty} f(x) = L$ iff for every sequence $x_n \to \infty$ in $A$, $f(x_n) \to L$.
+</Remark>
+
+<Definition title="Infinite Limits">
+Let $f : A \to \mathbb{R}$ with $A \subseteq \mathbb{R}$ and $a$ an accumulation point of $A$. Then
+$$\lim_{x \to a} f(x) = +\infty \iff \forall M \in \mathbb{R} \, \exists \delta > 0 \text{ s.t. } 0 < |x - a| < \delta, \, x \in A \implies f(x) > M.$$
+The definition with $-\infty$ is analogous (replace $f(x) > M$ with $f(x) < M$). One can combine the variants: $\lim_{x \to \infty} f(x) = +\infty$, $\lim_{x \to a^+} f(x) = -\infty$, and so on, each by modifying the appropriate clause.
+</Definition>
+
+<Remark>
+**Intuition:** "$f(x)$ close to $L$" has been replaced by "$f(x)$ bigger than any threshold $M$" — only the target has changed. These are not limits in the strict metric sense (since $\pm\infty \notin \mathbb{R}$); they are limits in the extended real line $[-\infty, +\infty]$, which is a compact topological space whose neighbourhoods of $\pm\infty$ are the sets $(M, \infty]$ and $[-\infty, M)$.
+</Remark>
 
 ---
 

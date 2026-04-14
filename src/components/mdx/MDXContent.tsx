@@ -28,6 +28,15 @@ import ApproximateIdentityDemo from '@/components/visualizations/ApproximateIden
 import ImpulseStepResponse from '@/components/visualizations/ImpulseStepResponse'
 import LyapunovDemo from '@/components/visualizations/LyapunovDemo'
 import CourseMindmap from '@/components/visualizations/CourseMindmap'
+import InteriorClosureBoundary from '@/components/visualizations/InteriorClosureBoundary'
+import EpsilonDelta from '@/components/visualizations/EpsilonDelta'
+import UniformVsPointwise from '@/components/visualizations/UniformVsPointwise'
+import OpenCover from '@/components/visualizations/OpenCover'
+import JacobianDiagram from '@/components/visualizations/JacobianDiagram'
+import GradientContour from '@/components/visualizations/GradientContour'
+import HessianClassification from '@/components/visualizations/HessianClassification'
+import LagrangeDemo from '@/components/visualizations/LagrangeDemo'
+import DarbouxSums from '@/components/visualizations/DarbouxSums'
 
 const components = {
   Definition,
@@ -54,6 +63,15 @@ const components = {
   ImpulseStepResponse,
   LyapunovDemo,
   CourseMindmap,
+  InteriorClosureBoundary,
+  EpsilonDelta,
+  UniformVsPointwise,
+  OpenCover,
+  JacobianDiagram,
+  GradientContour,
+  HessianClassification,
+  LagrangeDemo,
+  DarbouxSums,
 }
 
 export default function MDXContent({ source }: { source: string }) {
