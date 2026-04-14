@@ -43,6 +43,12 @@ Always, $\text{int}(A) \subseteq A \subseteq \overline{A}$.
 $\text{int}(A)$ is automatically open (as a union of open sets), and $\overline{A}$ is automatically closed (as an intersection of closed sets). The boundary $\partial A = \overline{A} \setminus \text{int}(A) = \overline{A} \cap \text{int}(A)^c$ is an intersection of two closed sets, hence closed.
 </Remark>
 
+<Remark>
+**Useful complement identities.** For any subset $B \subseteq X$, the following identities hold and are used constantly:
+$$X \setminus \text{int}(B) = \overline{X \setminus B}, \qquad X \setminus \overline{B} = \text{int}(X \setminus B).$$
+In words: the complement of the interior is the closure of the complement, and the complement of the closure is the interior of the complement. Both follow directly from the definitions of interior and closure as unions/intersections of open/closed sets, together with de Morgan's laws.
+</Remark>
+
 ---
 
 ## Basic Characterizations
@@ -238,6 +244,12 @@ $$\bigcap_{\substack{F \in \mathcal{F} \\ S \subseteq F}} F \cap A = A.$$
 **Intuition:** $S$ is dense in $X$ if every point of $X$ either lies in $S$ or is a limit of points from $S$. In a metric space, equivalently: every open ball in $X$ contains a point of $S$. The prototypical example is $\mathbb{Q} \subseteq \mathbb{R}$: the rationals are dense in the reals because every real number can be approximated to arbitrary precision by rationals.
 </Remark>
 
+<Remark>
+**Why "$\bigcap_{F \supseteq S, F \in \mathcal{F}} (F \cap A) = A$" is the right relative-density condition.** When we restrict the topology on $X$ to $A$ via the subspace topology $\mathcal{T}_A$, the closed sets according to $\mathcal{T}_A$ are exactly the sets of the form $F \cap A$ with $F$ closed in $X$. Denoting by $\mathcal{F}_A$ the family of closed sets of $\mathcal{T}_A$, we have
+$$\bigcap_{\substack{F \in \mathcal{F} \\ S \subseteq F}} (F \cap A) = \bigcap_{\substack{F \in \mathcal{F} \\ S \subseteq F \cap A}} (F \cap A) = \bigcap_{\substack{G \in \mathcal{F}_A \\ S \subseteq G}} G,$$
+which is the closure of $S$ computed in the subspace topology $\mathcal{T}_A$. So "$S$ dense in $A$" is really just "$S$ is dense in $A$ with respect to its own (inherited) topology."
+</Remark>
+
 <Example title="Q is Dense in R">
 In $(\mathbb{R}, \mathcal{E})$, $\mathbb{Q}$ is dense: $\overline{\mathbb{Q}} = \mathbb{R}$. This is the content of the archimedean property of $\mathbb{R}$ (between any two reals there is a rational).
 </Example>
@@ -317,6 +329,10 @@ Let $(X, \mathcal{T})$ be a topological space and let $S \subseteq X$.
 The terminology "first category" / "second category" was introduced by René Baire in 1899. Note: "residual" has nothing to do with category theory.
 </Remark>
 
+<Remark>
+**Equivalent description of comeagre sets.** A set $S \subseteq X$ is comeagre if and only if $S$ can be written as a countable intersection of *open dense* sets. Indeed: $S$ comeagre means $X \setminus S = \bigcup_{n \ge 1} A_n$ with each $A_n$ nowhere dense, which by (ND2) means $A_n^c$ contains an open dense set $S_n$; taking complements gives $S \supseteq \bigcap_{n \ge 1} S_n$. The reverse direction is similar. This reformulation is the version of "comeagre" used in the proof of the Baire Category Theorem.
+</Remark>
+
 <Example title="Meagre and Comeagre Sets in R">
 In $(\mathbb{R}, \mathcal{E})$:
 
@@ -381,8 +397,32 @@ Let $(X, d)$ be a nonempty complete metric space, equipped with the metric topol
 
 <Remark>
 **Intuition:** In a complete metric space, "topologically small" (meagre) sets really are small: they cannot exhaust the space, and their complements are dense. The Baire Category Theorem has extraordinary reach — it gives a non-constructive proof that the irrationals are uncountable (and nonmeagre), lies at the heart of functional analysis (Open Mapping, Closed Graph, and Uniform Boundedness theorems), and connects to the deep fact that "most" continuous functions are nowhere differentiable.
+</Remark>
 
-A full proof of the Baire Category Theorem uses the completeness of the underlying metric space to construct a nested sequence of closed balls whose radii shrink to zero, yielding a point that lies in every set $S_n$ of a given countable intersection of dense open sets. We will return to the full proof later in the course.
+<Proof>
+**(i)** Let $S \subseteq X$ be comeagre. By the equivalent description above, $S \supseteq \bigcap_{n = 1}^\infty S_n$ where each $S_n$ is open and dense in $X$. To show $S$ is dense, we fix $a_0 \in X$ and $\varepsilon > 0$ and produce a point of $S$ in $B(a_0, \varepsilon)$.
+
+We recursively construct a sequence $(a_n)_{n \ge 1}$ in $X$ and radii $(r_n)_{n \ge 1}$ with $r_n > 0$, such that:
+
+- $\overline{B(a_1, 2 r_1)} \subseteq B(a_0, \varepsilon)$,
+- $\overline{B(a_{n+1}, 2 r_{n+1})} \subseteq B(a_n, r_n) \cap S_1 \cap \cdots \cap S_n$ for every $n \ge 1$,
+- $r_n \to 0$ as $n \to \infty$.
+
+To see this construction is possible: start with any $a_1 \in B(a_0, \varepsilon)$ and $r_1 > 0$ small enough that $\overline{B(a_1, 2r_1)} \subseteq B(a_0, \varepsilon)$. Inductively, suppose $a_n$ and $r_n$ are chosen. Since $S_n$ is open and dense, $B(a_n, r_n) \cap S_n$ is open and nonempty. So we can find $a_{n+1}$ in $B(a_n, r_n) \cap S_n$ and $r_{n+1} > 0$ small enough (and shrinking, so $r_{n+1} \to 0$) that $\overline{B(a_{n+1}, 2 r_{n+1})} \subseteq B(a_n, r_n) \cap S_n$. Intersecting at each step with $S_1 \cap \cdots \cap S_{n-1}$ (which are also open and dense, and whose intersection with the current ball is open dense) gives the full inclusion stated above.
+
+The closed balls nest: $\overline{B(a_0, \varepsilon)} \supseteq \overline{B(a_1, r_1)} \supseteq \overline{B(a_2, r_2)} \supseteq \cdots$ with shrinking radii. Hence $(a_n)$ is Cauchy: for $n, m \ge N$ both $a_n$ and $a_m$ lie in $\overline{B(a_N, r_N)}$, so $d(a_n, a_m) \le 2 r_N \to 0$.
+
+By completeness, $(a_n)$ converges to some $a \in X$. Since $a \in \overline{B(a_n, r_n)}$ for every $n$ (the balls are closed and contain all tail terms of the sequence) and since $\overline{B(a_n, r_n)} \subseteq B(a_n, 2r_n) \subseteq B(a_{n-1}, r_{n-1}) \cap S_1 \cap \cdots \cap S_{n-1}$, we have $a \in S_n$ for every $n \ge 1$. Therefore $a \in \bigcap_{n = 1}^\infty S_n \subseteq S$. Also $a \in \overline{B(a_1, r_1)} \subseteq B(a_0, \varepsilon)$. So $S \cap B(a_0, \varepsilon) \ne \emptyset$, and since $a_0, \varepsilon$ were arbitrary, $S$ is dense in $X$.
+
+**(ii)** Suppose for contradiction that $X$ is meagre. Then $\emptyset = X^c$ is comeagre. By part (i), every comeagre set is dense, so $\emptyset$ would be dense in $X$. But $X$ is nonempty, so $\emptyset$ is not dense — contradiction. Hence $X$ is nonmeagre.
+</Proof>
+
+<Remark>
+**Game-theoretic interpretation (Choquet's game).** A beautiful reformulation of the Baire property is in terms of a two-player game due to Gustave Choquet (1969). Let $(X, \mathcal{T})$ be a topological space. Two players, Alice and Bob, play as follows. Alice moves first, choosing a nonempty open set $U_0 \subseteq X$. Then Bob chooses a nonempty open $V_0 \subseteq U_0$; then Alice chooses nonempty open $U_1 \subseteq V_0$; and so on. The nested chain
+$$X \supseteq U_0 \supseteq V_0 \supseteq U_1 \supseteq V_1 \supseteq U_2 \supseteq \cdots$$
+is produced. Alice wins if $\bigcap_{j \ge 0} U_j = \emptyset$; Bob wins if $\bigcap_{j \ge 0} V_j \ne \emptyset$ (note $\bigcap U_j = \bigcap V_j$).
+
+In a nonempty complete metric space, Bob has a winning strategy (he can always shrink his ball by half and keep closure inside the previous ball, producing a Cauchy sequence that must converge by completeness). Conversely, if the space contains a nonempty meagre open set, Alice has a winning strategy. This game-theoretic dichotomy recovers the Baire Category Theorem as a corollary. John Oxtoby proved the further equivalence: every comeagre set is dense if and only if Alice has no winning strategy.
 </Remark>
 
 <Corollary title="Meagre vs. Comeagre in a Complete Metric Space">

@@ -378,6 +378,94 @@ $$D_f = \{x_0 \in \mathbb{R} : f \text{ is discontinuous at } x_0\} = \bigcup_{n
 is a countable union of closed sets (an $F_\sigma$ set). This is a key ingredient in showing, via the Baire Category Theorem, that there is no function $f : \mathbb{R} \to \mathbb{R}$ whose set of continuity points is exactly $\mathbb{Q}$.
 </Example>
 
+### The Continuity Set is a G-Delta Set
+
+We now prove a theorem that, combined with the fact that $\mathbb{Q}$ is **not** a $G_\delta$ set, rules out the existence of any function continuous exactly at the rationals.
+
+<Definition title="G-delta and F-sigma Sets">
+A set $S \subseteq \mathbb{R}$ (or in any topological space) is a **$G_\delta$ set** if it can be written as a countable intersection of open sets. ("G" stands for *Gebiet*, German for "area"; "$\delta$" for *Durchschnitt*, "intersection.")
+
+A set $S$ is an **$F_\sigma$ set** if it can be written as a countable union of closed sets. ("F" stands for *fermé*, French for "closed"; "$\sigma$" denotes countable unions.)
+
+**Remark:** $S$ is $G_\delta$ if and only if $S^c$ is $F_\sigma$.
+</Definition>
+
+<Example title="Examples of G-delta and F-sigma Sets">
+**(1)** Every open set is $G_\delta$; every closed set is $F_\sigma$.
+
+**(2)** Singletons are both $F_\sigma$ (they are closed) and $G_\delta$ (since $\{x\} = \bigcap_{n \geq 1}(x - 1/n, x + 1/n)$).
+
+**(3)** Every countable set is $F_\sigma$. In particular $\mathbb{Q}$ is $F_\sigma$.
+
+**(4)** $\mathbb{R} \setminus \mathbb{Q}$ is $G_\delta$, since its complement $\mathbb{Q}$ is $F_\sigma$. Equivalently, $\mathbb{R} \setminus \mathbb{Q} = \bigcap_{r \in \mathbb{Q}} (\mathbb{R} \setminus \{r\})$.
+
+**(5)** Countable intersections of $G_\delta$ sets are $G_\delta$; countable unions of $F_\sigma$ sets are $F_\sigma$.
+</Example>
+
+<Theorem title="The Set of Continuity Points is a G-delta Set">
+Let $f : \mathbb{R} \to \mathbb{R}$ and let $C_f$ be the set of points at which $f$ is continuous. Then $C_f$ is a $G_\delta$ set.
+</Theorem>
+
+<Remark>
+**Intuition:** Continuity is a "for every $\varepsilon$" condition; quantifying over countably many $\varepsilon = 1/n$ expresses $C_f$ as a countable intersection. Each individual condition cuts out an open set, so the intersection is $G_\delta$.
+</Remark>
+
+<Proof>
+Observe that $f$ is continuous at $x$ if and only if for every $n \geq 1$ there exists $\delta = \delta(n, x) > 0$ such that
+$$y, z \in (x - \delta, x + \delta) \implies |f(y) - f(z)| < \tfrac{1}{n}.$$
+(This is equivalent to the standard $\varepsilon$-$\delta$ definition: pick $y = x$ to recover $|f(z) - f(x)| < 1/n$; conversely, for any two points $y, z$ in the small ball, apply the triangle inequality.)
+
+For each $n \geq 1$, define
+$$A_n = \{x \in \mathbb{R} : \exists \, \delta > 0 \text{ with } y, z \in (x - \delta, x + \delta) \implies |f(y) - f(z)| < \tfrac{1}{n}\}.$$
+Then $C_f = \bigcap_{n \geq 1} A_n$. It remains to show each $A_n$ is open.
+
+Fix $n$ and $x \in A_n$, and pick $\delta = \delta(x) > 0$ as above. Take any $z \in (x - \delta, x + \delta)$. Define $\bar{\delta}(z) = \delta - |x - z| > 0$. For any $y_1, y_2 \in (z - \bar{\delta}, z + \bar{\delta})$, we have $y_1, y_2 \in (x - \delta, x + \delta)$, so $|f(y_1) - f(y_2)| < 1/n$. Hence $z \in A_n$, and so $(x - \delta, x + \delta) \subseteq A_n$, proving $A_n$ is open. $\square$
+</Proof>
+
+<Theorem title="Q is Not a G-delta Set">
+The set of rationals $\mathbb{Q}$ is **not** a $G_\delta$ set in $\mathbb{R}$.
+</Theorem>
+
+<Proof>
+Suppose, for contradiction, $\mathbb{Q} = \bigcap_{n \geq 1} \Omega_n$ where each $\Omega_n$ is open. Since $\mathbb{Q} \subseteq \Omega_n$ and $\mathbb{Q}$ is dense in $\mathbb{R}$, each $\Omega_n$ is open and dense.
+
+On the other hand $\mathbb{R} \setminus \mathbb{Q} = \bigcap_{r \in \mathbb{Q}} (\mathbb{R} \setminus \{r\})$ is a countable intersection of open dense sets too.
+
+Therefore $\emptyset = \mathbb{Q} \cap (\mathbb{R} \setminus \mathbb{Q})$ would be a countable intersection of open dense sets, which by the Baire Category Theorem must be dense — contradiction. $\square$
+</Proof>
+
+<Corollary title="No Function is Continuous Exactly on Q">
+There is no function $f : \mathbb{R} \to \mathbb{R}$ whose set of continuity is $\mathbb{Q}$.
+</Corollary>
+
+<Proof>
+If such $f$ existed, $C_f = \mathbb{Q}$ would be both a $G_\delta$ set (by the theorem) and not a $G_\delta$ set (by the previous theorem) — contradiction. $\square$
+</Proof>
+
+<Remark>
+The converse holds: for **every** $G_\delta$ set $S \subseteq \mathbb{R}$ there does exist a function $f : \mathbb{R} \to \mathbb{R}$ with $C_f = S$. Sketch: write $E = S^c = \bigcup_n F_n$ with each $F_n$ closed and (WLOG) nested $F_1 \subseteq F_2 \subseteq \cdots$. Set $A_n = F_n \cap \mathbb{Q}$ and $f_n = \mathbf{1}_{F_n} - \mathbf{1}_{A_n}$. The series $f = \sum_{n=1}^\infty \frac{1}{n!} f_n$ converges uniformly on $\mathbb{R}$ to a bounded function whose continuity set is exactly $S$.
+</Remark>
+
+### The Thomae (Popcorn) Function
+
+A spectacular concrete example of a function continuous on the irrationals and discontinuous on the rationals.
+
+<Example title="The Thomae / Popcorn Function">
+Define $f : \mathbb{R} \to \mathbb{R}$ by
+$$f(x) = \begin{cases} 0 & \text{if } x \in \mathbb{R} \setminus \mathbb{Q}, \\ 1/n & \text{if } x = m/n \in \mathbb{Q} \text{ in lowest terms with } n \in \mathbb{N}, \, m \in \mathbb{Z}. \end{cases}$$
+By convention, $0 = 0/1$ in lowest terms, so $f(0) = 1$. For example $f(12/13) = 1/13$, $f(-30) = 1$, $f(-1/2) = 1/2$, and $f(\sqrt{2}) = f(\pi) = f(e) = 0$.
+
+This function is also called the **popcorn function** or **stars over Babylon**.
+
+**Claim:** $f$ is continuous at every irrational and discontinuous at every rational.
+
+**Proof of discontinuity at rationals:** Let $q \in \mathbb{Q}$ with $f(q) = 1/n > 0$. Since irrationals are dense, pick irrationals $x_k \to q$; then $f(x_k) = 0 \not\to 1/n$.
+
+**Proof of continuity at irrationals:** Let $x_0 \in \mathbb{R} \setminus \mathbb{Q}$ and fix $\varepsilon > 0$. Choose $N$ with $1/N < \varepsilon$. The set
+$$\{p/q : q \leq N, \, p \in \mathbb{Z}, \, |p/q - x_0| \leq 1\}$$
+is finite (finitely many denominators, each contributing finitely many numerators in a bounded range). Hence there exists $\delta > 0$ such that no rational with denominator $\leq N$ lies in $(x_0 - \delta, x_0 + \delta)$ (other than possibly $x_0$ itself, but $x_0$ is irrational). For $|x - x_0| < \delta$: if $x$ is irrational, $|f(x) - f(x_0)| = 0 < \varepsilon$; if $x = m/n$ in lowest terms, then $n > N$, so $|f(x) - 0| = 1/n < 1/N < \varepsilon$. $\square$
+</Example>
+
 ---
 
 ## Continuity and Connectedness: The Intermediate Value Theorem

@@ -183,6 +183,10 @@ so $R_{(1,-1), 2}(h, k) = h k^{2}$, which is a cubic monomial and hence not part
 
 For an upper bound: all third-order partials of $f$ equal $0$ except $\partial^3 f/\partial x \partial y^2 = 2$. So $M = 2$, and with $n = 2$,
 $$|R_{(1, -1), 2}(h, k)| \leq \frac{2^3 \cdot 2}{6} (\max\{|h|, |k|\})^3 = \frac{8}{3}(\max\{|h|, |k|\})^3.$$
+
+**Numerical consequence.** If $|h|, |k| \leq \tfrac{1}{10}$, then without computing the remainder explicitly we know
+$$|R_{(1, -1), 2}(h, k)| \leq \frac{8}{3} \cdot \frac{1}{10^3} = 0.002\overline{6},$$
+so the true value of $f(1 + h, -1 + k)$ differs from the Taylor approximation $-1 - h + k^{2}$ by at most $0.003$. This is the practical payoff of the Lagrange bound: we can guarantee a quantitative error bound for the approximation without ever computing the error explicitly.
 </Example>
 
 ---
@@ -202,6 +206,20 @@ Let $U \subseteq \mathbb{R}^n$ open, $f : U \to \mathbb{R}$, $\vec{a} \in U$.
 **Intuition:** The first two cases extend the familiar local min/max from calculus. A saddle point sits in between: along some directions $f$ increases away from $\vec{a}$, along others it decreases. Saddles are the genuinely higher-dimensional phenomenon.
 </Remark>
 
+We first recall the single-variable version, since the multivariable result reduces to it along each coordinate direction.
+
+<Theorem title="Single-Variable Fermat Theorem">
+Let $f : (a, b) \to \mathbb{R}$ and suppose $f$ has either a relative maximum or a relative minimum at $c \in (a, b)$. If $f'(c)$ exists, then $f'(c) = 0$.
+</Theorem>
+
+<Proof>
+Suppose $f$ has a relative maximum at $c$. Then there is $\delta > 0$ with $f(x) \leq f(c)$ for all $x \in (c - \delta, c + \delta)$. For $x \in (c, c + \delta)$ we have
+$$\frac{f(x) - f(c)}{x - c} \leq 0,$$
+so letting $x \to c^{+}$ gives $f'(c) \leq 0$. For $x \in (c - \delta, c)$,
+$$\frac{f(x) - f(c)}{x - c} \geq 0,$$
+so letting $x \to c^{-}$ gives $f'(c) \geq 0$. Therefore $f'(c) = 0$. The relative minimum case is analogous. $\square$
+</Proof>
+
 <Theorem title="Vanishing Gradient at Interior Extrema">
 Let $U \subseteq \mathbb{R}^n$ open, $f : U \to \mathbb{R}$. If $f$ has a relative extremum at $\vec{a} \in U$ and $f$ is differentiable at $\vec{a}$, then $\nabla f(\vec{a}) = \vec{0}$.
 </Theorem>
@@ -211,7 +229,7 @@ Let $U \subseteq \mathbb{R}^n$ open, $f : U \to \mathbb{R}$. If $f$ has a relati
 </Remark>
 
 <Proof>
-For each $j = 1, \dots, n$, define $g_j(t) := f(\vec{a} + t \vec{e}_j)$ for $t$ small enough that $\vec{a} + t \vec{e}_j \in U$. Since $f$ has a relative extremum at $\vec{a}$, $g_j$ has a relative extremum at $0$. Since $f$ is differentiable at $\vec{a}$, $g_j$ is differentiable at $0$. By the single-variable Fermat theorem, $g_j'(0) = 0$. By the chain rule,
+For each $j = 1, \dots, n$, define $g_j(t) := f(\vec{a} + t \vec{e}_j)$ for $t$ small enough that $\vec{a} + t \vec{e}_j \in U$. Since $f$ has a relative extremum at $\vec{a}$, $g_j$ has a relative extremum at $0$. Since $f$ is differentiable at $\vec{a}$, $g_j$ is differentiable at $0$. By the single-variable Fermat theorem above, $g_j'(0) = 0$. By the chain rule,
 $$0 = g_j'(0) = \nabla f(\vec{a}) \cdot \vec{e}_j = \frac{\partial f}{\partial x_j}(\vec{a}).$$
 Since this holds for every $j$, $\nabla f(\vec{a}) = \vec{0}$. $\square$
 </Proof>
@@ -302,6 +320,15 @@ Similarly, $f(\vec{a} + t \vec{u}_k) < f(\vec{a})$ for all sufficiently small no
 
 <Remark>
 **Intuition:** When $\det H_f(\vec{a}) = 0$, the test is inconclusive: higher-order terms in the Taylor expansion are needed to decide the nature of the critical point. Examples such as $f(x, y) = x^4 + y^4$, $f(x, y) = -x^4 - y^4$, and $f(x, y) = x^4 - y^4$ at the origin show that a critical point with zero Hessian determinant may be a min, max, or saddle.
+</Remark>
+
+<Remark>
+**Computational note.** Checking whether $\det H_f(\vec{a}) \neq 0$ and computing the eigenvalues (or equivalently the signs of the leading principal minors, by Sylvester's criterion) can be done quite easily numerically provided $n$ is not too large. In two variables, with $H_f = \begin{pmatrix} A & B \\ B & C \end{pmatrix}$, the test simplifies to:
+
+- $\det H_f = AC - B^2 > 0$ and $A > 0$: local minimum.
+- $\det H_f = AC - B^2 > 0$ and $A < 0$: local maximum.
+- $\det H_f < 0$: saddle.
+- $\det H_f = 0$: inconclusive.
 </Remark>
 
 ---

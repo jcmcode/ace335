@@ -325,3 +325,111 @@ $$d(x_n, L) \leq d(x_n, x_{n_k}) + d(x_{n_k}, L) < \varepsilon/2 + \varepsilon/2
 </Proof>
 
 This last result is the key technical observation that drives the next chapter: in $\mathbb{R}^d$, a Cauchy sequence is bounded, hence has a convergent subsequence by Bolzano-Weierstrass, hence converges. That argument establishes completeness of $\mathbb{R}^d$.
+
+---
+
+## Sequences of Functions: Pointwise vs Uniform Convergence
+
+We now move from sequences of points to sequences of functions, recording the two basic notions of convergence and the central facts that uniform convergence preserves continuity and commutes with integrals.
+
+<Definition title="Pointwise and Uniform Convergence">
+Let $I \subseteq \mathbb{R}$ and $f_n, f : I \to \mathbb{R}$.
+
+- $f_n \to f$ **pointwise** if $f_n(x) \to f(x)$ for every $x \in I$.
+- $f_n \to f$ **uniformly** if $\sup_{x \in I} |f_n(x) - f(x)| \to 0$ as $n \to \infty$. Equivalently: for every $\varepsilon > 0$ there exists $N$ such that for all $n \geq N$ and all $x \in I$, $|f_n(x) - f(x)| < \varepsilon$.
+</Definition>
+
+<Remark>
+**Intuition:** Pointwise convergence asks each input separately; the speed at which $f_n(x) \to f(x)$ may depend on $x$. Uniform convergence requires a single rate that works for every $x$ simultaneously. Uniform convergence implies pointwise; the converse fails.
+</Remark>
+
+<Example title="Pointwise Convergence Does Not Preserve Continuity">
+Let $f_n : [0, 1] \to \mathbb{R}$, $f_n(x) = x^n$. Then
+$$\lim_{n \to \infty} x^n = \begin{cases} 0 & \text{if } 0 \leq x < 1, \\ 1 & \text{if } x = 1. \end{cases}$$
+Each $f_n$ is continuous, but the pointwise limit is discontinuous at $x = 1$. The convergence is not uniform: $\sup_{x \in [0,1]} |f_n(x) - f(x)| = 1$ for every $n$.
+</Example>
+
+<Theorem title="Uniform Convergence Preserves Continuity">
+Let $f_n : [a, b] \to \mathbb{R}$ be continuous for each $n$ and suppose $f_n \to f$ uniformly. Then $f$ is continuous.
+</Theorem>
+
+<Proof>
+Fix $x_0 \in [a, b]$ and $\varepsilon > 0$. Pick $N$ with $\|f_N - f\|_\infty < \varepsilon/3$. By continuity of $f_N$, choose $\delta > 0$ with $|x - x_0| < \delta \implies |f_N(x) - f_N(x_0)| < \varepsilon/3$. Then for $|x - x_0| < \delta$,
+$$|f(x) - f(x_0)| \leq |f(x) - f_N(x)| + |f_N(x) - f_N(x_0)| + |f_N(x_0) - f(x_0)| < \varepsilon/3 + \varepsilon/3 + \varepsilon/3 = \varepsilon. \qquad \square$$
+</Proof>
+
+<Theorem title="Uniform Convergence and Integration / Differentiation">
+Let $f_n : [a, b] \to \mathbb{R}$ be continuous.
+
+**(1)** If $f_n \to f$ uniformly, then $\lim_{n \to \infty} \int_a^b f_n(x)\, dx = \int_a^b f(x)\, dx$.
+
+**(2)** If $f_n \in C^1([a, b])$, $f_n \to f$ uniformly on $[a, b]$, and $f_n' \to g$ uniformly on $(a, b)$, then $f$ is differentiable and $f' = g$.
+</Theorem>
+
+<Remark>
+Uniform convergence is generally a *sufficient* condition to interchange a limit with integration or differentiation. Pointwise convergence alone is not enough — consider "moving bump" examples where pointwise convergence to $0$ is incompatible with integral convergence.
+</Remark>
+
+---
+
+## Equicontinuity and the Arzelà-Ascoli Theorem
+
+When can we extract a uniformly convergent subsequence from a sequence of continuous functions? Boundedness alone is not enough — the analogue of Bolzano-Weierstrass fails in $C([a,b])$ because the space is infinite-dimensional. The right hypothesis is **equicontinuity**.
+
+<Definition title="Equibounded and Equicontinuous">
+Let $(f_n)_{n \geq 1} \subseteq C([a, b])$.
+
+- $(f_n)$ is **equibounded** (or **uniformly bounded**) if there exists $C > 0$ such that
+  $$\sup_{x \in [a, b]} |f_n(x)| \leq C \quad \text{for all } n \geq 1.$$
+  The bound $C$ does not depend on $n$.
+
+- $(f_n)$ is **equicontinuous** if for every $\varepsilon > 0$ there exists $\delta > 0$ such that
+  $$\forall s, t \in [a, b] \text{ with } |s - t| < \delta \text{ and } \forall n \geq 1, \quad |f_n(s) - f_n(t)| < \varepsilon.$$
+  The same $\delta$ works for every function in the sequence.
+</Definition>
+
+<Remark>
+**Intuition:** Equiboundedness is uniform bound across the family. Equicontinuity is uniform continuity that is **uniform across the family** — the modulus of continuity does not depend on $n$. A typical sufficient condition for equicontinuity is a uniform Lipschitz bound: if $|f_n'(x)| \leq M$ for all $n$ and $x$, then $|f_n(s) - f_n(t)| \leq M|s - t|$ for all $n$, so we can take $\delta = \varepsilon / M$.
+</Remark>
+
+<Theorem title="Arzelà-Ascoli Theorem">
+Let $(f_n)_{n \geq 1} \subseteq C([a, b])$ be equibounded and equicontinuous. Then there exists a subsequence $(f_{n_k})$ that converges uniformly on $[a, b]$ (in particular to a continuous function).
+</Theorem>
+
+<Remark>
+**Intuition:** Arzelà-Ascoli is the infinite-dimensional analogue of Bolzano-Weierstrass for function spaces. It is the workhorse for compactness arguments in $C([a, b])$ and underlies existence proofs for solutions to ODEs (Peano's theorem) and many problems in calculus of variations.
+</Remark>
+
+<Proof>
+Let $D = [a, b] \cap \mathbb{Q} = \{d_1, d_2, d_3, \ldots\}$ — a countable dense subset of $[a, b]$.
+
+**Step 1: Diagonal extraction for pointwise convergence on $D$.** By equiboundedness, $|f_n(x)| \leq M$ for all $n$ and $x$, with some $M > 0$.
+
+Consider the sequence of real numbers $(f_n(d_1))_{n \geq 1}$, which is bounded. By Bolzano-Weierstrass extract a convergent subsequence $(f_{1,k}(d_1))_{k \geq 1}$ with $f_{1,k}(d_1) \to y_1$ for some $y_1 \in \mathbb{R}$.
+
+Now consider $(f_{1,k}(d_2))_{k \geq 1}$, again bounded. Extract a sub-subsequence $(f_{2,k})_{k \geq 1}$ of $(f_{1,k})$ with $f_{2,k}(d_2) \to y_2$.
+
+Inductively, for each $m \geq 2$ extract a subsequence $(f_{m,k})_{k \geq 1}$ of $(f_{m-1,k})$ such that $f_{m,k}(d_j) \to y_j$ for all $1 \leq j \leq m$.
+
+Define the **diagonal subsequence** $g_m = f_{m, m}$. We claim $g_m(d_j) \to y_j$ for every $j \geq 1$. Fix $j$ and let $m > j$. Then $f_{m, m}$ is one of the terms of the subsequence $(f_{j, k})_{k \geq 1}$, since $(f_{m, k})$ is a subsequence of $(f_{j, k})$. So as $m \to \infty$, $g_m(d_j) \to y_j$.
+
+Define $g : D \to \mathbb{R}$ by $g(d_j) = y_j$. Then $g_m \to g$ pointwise on $D$.
+
+**Step 2: $(g_m)$ is uniformly Cauchy on $[a, b]$.** Fix $\varepsilon > 0$. By equicontinuity, choose $\delta > 0$ with $|g_m(s) - g_m(t)| < \varepsilon/3$ whenever $|s - t| < \delta$, for every $m$.
+
+By compactness of $[a, b]$ (covered by the open intervals $(d_j - \delta, d_j + \delta)$ as $j$ ranges), there is some finite $J$ such that for every $x \in [a, b]$ there is $1 \leq j \leq J$ with $|x - d_j| < \delta$.
+
+Since $\{d_1, \ldots, d_J\}$ is finite and $g_m(d_j) \to y_j$ for each $j$, there exists $N$ such that for all $m_1, m_2 \geq N$,
+$$|g_{m_1}(d_j) - g_{m_2}(d_j)| < \varepsilon/3 \quad \text{for all } 1 \leq j \leq J.$$
+
+Now for any $m_1, m_2 \geq N$ and any $x \in [a, b]$, choose $d_j$ with $|x - d_j| < \delta$. Then
+$$|g_{m_1}(x) - g_{m_2}(x)| \leq |g_{m_1}(x) - g_{m_1}(d_j)| + |g_{m_1}(d_j) - g_{m_2}(d_j)| + |g_{m_2}(d_j) - g_{m_2}(x)| < \tfrac{\varepsilon}{3} + \tfrac{\varepsilon}{3} + \tfrac{\varepsilon}{3} = \varepsilon.$$
+
+Hence $\sup_{x \in [a, b]} |g_{m_1}(x) - g_{m_2}(x)| \leq \varepsilon$ for $m_1, m_2 \geq N$, so $(g_m)$ is uniformly Cauchy.
+
+**Step 3: Uniform convergence.** Since $C([a, b])$ with the sup norm is complete (proved in the completeness chapter), uniformly Cauchy sequences converge uniformly. Hence $g_m \to F$ uniformly on $[a, b]$ for some continuous $F : [a, b] \to \mathbb{R}$. $\square$
+</Proof>
+
+<Remark>
+**Historical note:** Cesare Arzelà (1847-1912) and Giulio Ascoli (1843-1896) were Italian mathematicians who developed this theorem in the late 19th century. Arzelà was a professor at the University of Bologna; three years after his death his students erected a monument to him that still stands in the mathematics department.
+</Remark>

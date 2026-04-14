@@ -27,6 +27,20 @@ Thus $\nabla f(\vec{a})$ is orthogonal to the tangent direction $\gamma'(0)$ to 
 $$\nabla f(\vec{a}) = \lambda \, \nabla g(\vec{a}) \qquad \text{for some } \lambda \in \mathbb{R}.$$
 The scalar $\lambda$ is called the **Lagrange multiplier**.
 
+<Example title="A Line Constrained to a Circle">
+Maximize $f(x, y) = x + y$ subject to the constraint $g(x, y) = x^2 + y^2 - 1 = 0$.
+
+Compute $\nabla f(x, y) = (1, 1)$ and $\nabla g(x, y) = (2x, 2y)$. The Lagrange condition $\nabla f = \lambda \nabla g$ at an extremum on the circle reads
+$$(1, 1) = \lambda (2x, 2y) \qquad \Longleftrightarrow \qquad x = y \;(\text{with } \lambda \neq 0).$$
+Intersecting $x = y$ with the constraint $x^2 + y^2 = 1$ gives the two candidate points $(1/\sqrt{2}, 1/\sqrt{2})$ and $(-1/\sqrt{2}, -1/\sqrt{2})$, where $f$ takes the values $\sqrt{2}$ and $-\sqrt{2}$ respectively.
+
+**Global extrema.** The constraint set $S = \{x^2 + y^2 = 1\}$ is compact (closed and bounded in $\mathbb{R}^2$) and $f$ is continuous, so by the extreme value theorem $f|_S$ attains both a global max and a global min on $S$. Any such global extremum must satisfy the Lagrange condition (since $\nabla g \neq \vec{0}$ everywhere on $S$), so the candidates above include them. Therefore the maximum is $\sqrt{2}$ at $(1/\sqrt{2}, 1/\sqrt{2})$ and the minimum is $-\sqrt{2}$ at $(-1/\sqrt{2}, -1/\sqrt{2})$.
+</Example>
+
+<Remark>
+**Global versus local extrema.** The Lagrange condition is *necessary* for a constrained extremum (given the regularity $\nabla g \neq \vec{0}$), not sufficient. To confirm a candidate is a global max or min, we typically argue via compactness: if $S$ is compact and $f$ continuous, $f|_S$ attains its extrema, and these extrema must appear among the Lagrange candidates. For non-compact constraint sets, additional reasoning (coercivity, asymptotic behaviour) is needed to decide global extrema.
+</Remark>
+
 ---
 
 ## Single-Constraint Lagrange Multiplier Theorem

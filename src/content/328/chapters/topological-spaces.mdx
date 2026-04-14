@@ -240,8 +240,105 @@ A topological space $(X, \mathcal{T})$ is called a **Hausdorff space** (or $T_2$
 <Example title="A Non-Hausdorff Topology">
 Consider $(\mathbb{R}, \mathcal{T}_{\text{lsc}})$ from earlier. This is *not* Hausdorff: let $x, y \in \mathbb{R}$ with $x < y$. Every nonempty proper open set in $\mathcal{T}_{\text{lsc}}$ is of the form $(a, \infty)$. Every neighbourhood of $x$ must contain some $(a, \infty)$ with $a < x$, and therefore contains all of $(x, \infty)$, which in turn contains $y$. So every neighbourhood of $x$ and every neighbourhood of $y$ both contain the interval $(y, \infty)$ and cannot be disjoint.
 
-Similarly, if $X$ has at least two elements, the trivial topology $(X, \{\emptyset, X\})$ is not Hausdorff, since the only neighbourhood of any point is $X$ itself.
+The key intuition behind the failure: the topology $\mathcal{T}_{\text{lsc}}$ has *many fewer open sets* than the Euclidean topology. This implies fewer neighbourhoods at our disposal when attempting to separate points; the separation attempt fails.
+
+Similarly, if $X$ has at least two elements, the trivial topology $(X, \{\emptyset, X\})$ is not Hausdorff, since the only neighbourhood of any point is $X$ itself — so two distinct points can never be placed in disjoint neighbourhoods.
 </Example>
+
+---
+
+## Accumulation Points (Cluster Points) and the Derived Set
+
+Before turning to limits and continuity, we introduce a key notion — points that are "approached" by a set, which formalizes the idea of a set piling up near a point.
+
+<Definition title="Accumulation Point, Derived Set">
+Let $(X, \mathcal{T})$ be a topological space, let $A \subseteq X$, and let $x_0 \in X$. We say $x_0$ is an **accumulation point** (or **cluster point**, or **limit point**) of $A$ if and only if
+$$(A \setminus \{x_0\}) \cap V \ne \emptyset \qquad \text{for every } V \in \mathcal{U}_{x_0}.$$
+The set of all accumulation points of $A$ is called the **derived set** of $A$ and is denoted $A'$.
+
+This notion is due to Georg Cantor (1872).
+</Definition>
+
+<Remark>
+**Intuition:** $x_0$ is an accumulation point of $A$ if every neighbourhood of $x_0$ meets $A$ in some point *other than* $x_0$ itself. So $A$ "piles up" near $x_0$. Note carefully: this differs from saying "every neighbourhood meets $A$." We forbid the meeting from being only at $x_0$ — there must be *another* point of $A$ nearby.
+</Remark>
+
+In a metric space $(X, d)$, equipped with the metric topology, the definition can be rewritten in terms of open balls:
+$$x_0 \in A' \iff (A \setminus \{x_0\}) \cap B(x_0, \rho) \ne \emptyset \quad \text{for every } \rho > 0.$$
+
+<Remark>
+**Alternative characterization in Hausdorff spaces.** Another common definition of "accumulation point" (often seen first in $\mathbb{R}^n$) is:
+$$x_0 \in A' \iff A \cap V \text{ is infinite for every } V \in \mathcal{U}_{x_0}.$$
+This equivalence holds when $(X, \mathcal{T})$ is Hausdorff (and so, in particular, in every metric space). It need not hold in general non-Hausdorff spaces.
+</Remark>
+
+---
+
+## Limits of Functions Between Topological Spaces
+
+With accumulation points in hand, we can state the topological definition of limit.
+
+<Definition title="Limit of a Function">
+Let $(X, \mathcal{T})$ and $(Y, \mathcal{S})$ be topological spaces. Let $A \subseteq X$ and $f : A \to Y$ be a function. Let $a \in A'$ (an accumulation point of $A$) and $\lambda \in Y$. We say that $\lambda$ is **a limit of $f$ as $x$ tends to $a$**, and write $\lim_{x \to a} f(x) = \lambda$, if and only if
+$$\forall V \in \mathcal{U}_\lambda, \, \exists W \in \mathcal{U}_a \text{ such that } f(x) \in V \text{ for every } x \in (A \setminus \{a\}) \cap W.$$
+To stress the dependence on the topologies $\mathcal{T}$ and $\mathcal{S}$, we may write $f(x) \xrightarrow{\mathcal{S}} \lambda$ as $x \xrightarrow{\mathcal{T}} a$.
+</Definition>
+
+<Remark>
+**Intuition:** The statement $\lim_{x \to a} f(x) = \lambda$ says: however tight a neighbourhood $V$ of $\lambda$ we pick in the target, we can find a neighbourhood $W$ of $a$ in the source so small that $f$ maps every point of $A$ different from $a$ and inside $W$ into $V$. Requiring $a \in A'$ ensures that such "points near $a$ but not equal to $a$" actually exist in $A$.
+</Remark>
+
+<Example title="Limits Need Not Be Unique">
+In a non-Hausdorff space, limits can fail to be unique. Consider $(\mathbb{R}, \mathcal{T}_{\text{lsc}})$ and suppose $f(x) \to \lambda$ in this topology. We claim that $f(x) \to \mu$ for *every* $\mu \le \lambda$.
+
+Indeed, let $V_1 \in \mathcal{U}_\mu$ in $\mathcal{T}_{\text{lsc}}$. By definition there is $\alpha \in \mathbb{R}$ with $\mu \in (\alpha, \infty) \subseteq V_1$. Since $\alpha < \mu \le \lambda$, we have $\lambda \in (\alpha, \infty) \subseteq V_1$, so $V_1$ is also a neighbourhood of $\lambda$. Hence by convergence to $\lambda$ there exists $W_1 \in \mathcal{U}_a$ with $f(x) \in V_1$ for every $x \in (A \setminus \{a\}) \cap W_1$. This is the condition for convergence to $\mu$. So the same function simultaneously converges to $\lambda$ and to every $\mu \le \lambda$.
+</Example>
+
+<Theorem title="Uniqueness of Limits in Hausdorff Target">
+Let $(X, \mathcal{T})$ and $(Y, \mathcal{S})$ be topological spaces with $(Y, \mathcal{S})$ Hausdorff. Let $A \subseteq X$, $f : A \to Y$, and $a \in A'$. If $\lim_{x \to a} f(x) = \lambda$ and $\lim_{x \to a} f(x) = \mu$, then $\lambda = \mu$.
+</Theorem>
+
+<Proof>
+By contradiction, suppose $\lambda \ne \mu$. Since $(Y, \mathcal{S})$ is Hausdorff, there exist $V_1 \in \mathcal{U}_\lambda$ and $V_2 \in \mathcal{U}_\mu$ with $V_1 \cap V_2 = \emptyset$.
+
+Since $\lim_{x \to a} f(x) = \lambda$, there exists $W_1 \in \mathcal{U}_a$ such that $f(x) \in V_1$ for every $x \in (A \setminus \{a\}) \cap W_1$.
+
+Since $\lim_{x \to a} f(x) = \mu$, there exists $W_2 \in \mathcal{U}_a$ such that $f(x) \in V_2$ for every $x \in (A \setminus \{a\}) \cap W_2$.
+
+Set $W = W_1 \cap W_2 \in \mathcal{U}_a$. Since $a \in A'$, $(A \setminus \{a\}) \cap W \ne \emptyset$; pick $x$ in this set. Then $f(x) \in V_1$ and $f(x) \in V_2$, contradicting $V_1 \cap V_2 = \emptyset$.
+</Proof>
+
+<Remark>
+**Consequence for metric spaces.** Since every metric space is Hausdorff, limits of functions taking values in a metric space (with the metric topology) are unique whenever they exist. In particular, limits of sequences in metric spaces are unique.
+</Remark>
+
+---
+
+## The Extended Real Line
+
+The topological framework is broad enough to handle limits like $\lim_{x \to +\infty} e^{-x} = 0$, $\lim_{x \to 0} 1/x^2 = +\infty$, and $\lim_{x \to 2} \log|x - 2| = -\infty$ — all within the same neighbourhood-based definition of limit. To do this, we extend $\mathbb{R}$ with two new points and define a topology that makes the familiar notion of "convergence at infinity" a special case of the topological definition.
+
+<Definition title="Extended Real Line">
+Set $\overline{\mathbb{R}} = \mathbb{R} \cup \{+\infty, -\infty\}$. For $r > 0$, define
+$$B(+\infty, r) = \left( \tfrac{1}{r}, +\infty \right) \cup \{+\infty\}, \qquad B(-\infty, r) = \left( -\infty, -\tfrac{1}{r} \right) \cup \{-\infty\}.$$
+These play the role of "balls centered at $\pm\infty$." Then define
+$$\overline{\mathcal{E}} = \{ \Omega \subseteq \overline{\mathbb{R}} : \forall x \in \Omega, \, \exists \rho > 0 \text{ with } B(x, \rho) \subseteq \Omega \},$$
+where for $x \in \mathbb{R}$ the ball $B(x, \rho)$ is the ordinary Euclidean open ball $(x - \rho, x + \rho)$. The collection $\overline{\mathcal{E}}$ is a topology (exercise); the topological space $(\overline{\mathbb{R}}, \overline{\mathcal{E}})$ is called the **extended real line**.
+</Definition>
+
+<Remark>
+**Intuition:** A neighbourhood of $+\infty$ is a set containing some tail $(M, \infty) \cup \{+\infty\}$; smaller $r$ corresponds to larger $M = 1/r$, i.e., more restrictive tails. This is exactly the "arbitrarily large" condition we use when saying $x \to +\infty$.
+</Remark>
+
+On the extended real line, $+\infty$ is an accumulation point of a set $A \subseteq \mathbb{R} \subseteq \overline{\mathbb{R}}$ if and only if $\sup A = +\infty$; similarly $-\infty \in A'$ iff $\inf A = -\infty$. For a function $f : A \to \mathbb{R}$ with $A \subseteq \mathbb{R}$ and $\sup A = +\infty$, treating domain and codomain as subsets of $\overline{\mathbb{R}}$ gives
+$$\lim_{x \to +\infty} f(x) = \lambda \in \mathbb{R} \iff \forall \varepsilon > 0 \, \exists M > 0 \text{ such that } f(x) \in (\lambda - \varepsilon, \lambda + \varepsilon) \, \forall x \in (M, \infty) \cap A.$$
+A special case with $A = \mathbb{N}$ and $f(n) = a_n$ recovers the familiar definition of the limit of a sequence. Similarly,
+$$\lim_{x \to a} f(x) = +\infty \iff \forall M > 0 \, \exists \delta > 0 \text{ such that } f(x) > M \, \forall x \in (A \setminus \{a\}) \cap (a - \delta, a + \delta),$$
+and analogous statements for all other combinations of finite or infinite $a$ and $\lambda$.
+
+<Remark>
+**Intuition:** Adding $\pm\infty$ as genuine points and choosing their neighbourhoods to be "tails" makes the ordinary topological definition of limit coincide with every flavour of limit seen in first-year calculus — limits at infinity, limits equal to infinity, and limits of sequences. Everything becomes the *same* definition.
+</Remark>
 
 ---
 

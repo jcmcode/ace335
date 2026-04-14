@@ -106,6 +106,26 @@ So $\{A \cap f^{-1}(U), A \cap f^{-1}(V)\}$ is a separation of $A$, contradictin
 **Intuition:** Continuous functions cannot tear things apart. If they could produce a disconnected image from a connected domain, pulling back the separation would split the domain, contradicting connectedness. This is the topological analogue of the fact that a continuous deformation cannot break a single piece into multiple pieces, and it underlies many existence proofs in analysis.
 </Remark>
 
+### Disconnectedness via Continuous Maps to {0,1}
+
+Connectedness can be characterized completely in terms of continuous functions to a two-point discrete space.
+
+<Theorem title="Disconnectedness via Surjections to {0,1}">
+Let $(X, \tau)$ be a topological space. Then $X$ is disconnected if and only if there exists a continuous surjective function $f : X \to \{0, 1\}$, where $\{0, 1\} \subseteq \mathbb{R}$ carries the Euclidean topology (equivalently, the discrete topology, since the two agree on a two-point set).
+</Theorem>
+
+<Remark>
+**Intuition:** A continuous surjection $f : X \to \{0, 1\}$ is exactly an "indicator function of a clopen set." Such a function exists iff $X$ has a non-trivial clopen partition, iff $X$ is disconnected. This is a clean way to detect disconnectedness via a single map.
+</Remark>
+
+<Proof>
+**($\Rightarrow$):** Let $\Omega_1, \Omega_2$ be open sets that disconnect $X$. Define $f : X \to \{0, 1\}$ by
+$$f(x) = \begin{cases} 0 & \text{if } x \in \Omega_1, \\ 1 & \text{if } x \in \Omega_2. \end{cases}$$
+(This is the indicator function $\mathbf{1}_{\Omega_2}$.) Then $f(X) = \{0, 1\}$. To verify continuity, it suffices to check that the preimage of every open subset of $\{0, 1\}$ is open in $X$. The open subsets of $\{0, 1\}$ (with the subspace topology from $\mathbb{R}$) are $\emptyset$, $\{0\}$, $\{1\}$, $\{0, 1\}$, with preimages $\emptyset$, $\Omega_1$, $\Omega_2$, $X$ respectively — all open. So $f$ is continuous and surjective.
+
+**($\Leftarrow$):** Let $f : X \to \{0, 1\}$ be continuous and surjective. The set $\{0, 1\} \subseteq \mathbb{R}$ is disconnected (separated by $\Omega_1 = (-\infty, 1/2)$ and $\Omega_2 = (1/2, \infty)$). By the contrapositive of Bolzano's theorem (continuous image of connected is connected), $X$ must be disconnected. $\square$
+</Proof>
+
 ---
 
 ## The Intermediate Value Theorem

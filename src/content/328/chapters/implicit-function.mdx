@@ -169,7 +169,30 @@ The formula $Dg(x) = -B_x^{-1} A_x$ expresses $Dg(x)$ as the matrix product of $
 
 ## The Inverse Function Theorem
 
-The inverse function theorem is a special case of the implicit function theorem in which $f(x, y) = F(y) - x$, so solving $f(x, y) = 0$ means inverting $F$.
+We first pause for some terminology, then state the one-variable warm-up, then pass to the general case.
+
+<Definition title="Homeomorphism and Diffeomorphism">
+Let $U, V \subseteq \mathbb{R}^n$ be open.
+- A map $F : U \to V$ is a **homeomorphism** if it is a continuous bijection with continuous inverse.
+- For $r \geq 1$, $F$ is a **$C^r$ diffeomorphism** if $F$ is a bijection of class $C^r$ whose inverse $F^{-1}$ is also of class $C^r$.
+- $F$ is a **local $C^r$ diffeomorphism at $a \in U$** if there exist open neighbourhoods $U_0 \subseteq U$ of $a$ and $V_0 \subseteq V$ of $F(a)$ such that $F|_{U_0} : U_0 \to V_0$ is a $C^r$ diffeomorphism.
+</Definition>
+
+<Remark>**Intuition:** A homeomorphism preserves topological structure; a diffeomorphism preserves smooth structure. Local diffeomorphisms are the natural analogues of "locally invertible with differentiable inverse" for $\mathbb{R}^n$.</Remark>
+
+### The One-Variable Inverse Function Theorem
+
+<Theorem title="1D Inverse Function Theorem">
+Let $J \subseteq \mathbb{R}$ be an open interval, $a \in J$, and $f : J \to \mathbb{R}$ be of class $C^1$. If $f'(a) \neq 0$ (equivalently, the linear map $\mathbb{R} \ni v \mapsto f'(a) v \in \mathbb{R}$ is invertible), then $f$ is locally invertible on some interval $I \subseteq J$ containing $a$. The inverse $f^{-1} : f(I) \to I$ is of class $C^1$, and
+$$(f^{-1})'(y) = \frac{1}{f'(f^{-1}(y))} \qquad \text{for every } y \in f(I).$$
+In other words, $f$ is a local $C^1$ diffeomorphism at $a$.
+</Theorem>
+
+<Remark>**Intuition:** $f'(a) \neq 0$ means $f$ is strictly monotonic near $a$, so it is injective near $a$; continuity of $f$ then hands us a continuous inverse, and the formula for $(f^{-1})'$ follows by differentiating $f(f^{-1}(y)) = y$.</Remark>
+
+### The Multivariable Version
+
+The multivariable inverse function theorem is a special case of the implicit function theorem in which $f(x, y) = F(y) - x$, so solving $f(x, y) = 0$ means inverting $F$.
 
 <Theorem title="Inverse Function Theorem">
 Let $V \subseteq \mathbb{R}^m$ be open, $F : V \to \mathbb{R}^m$ of class $C^1$, and $y_0 \in V$ with $DF(y_0)$ invertible. Set $x_0 = F(y_0)$. Then there exist an open neighbourhood $W$ of $x_0$ and an open neighbourhood $V_0 \subseteq V$ of $y_0$, and a $C^1$ function $F^{-1} : W \to V_0$ such that $F^{-1}(F(y)) = y$ for $y \in V_0$ and $F(F^{-1}(x)) = x$ for $x \in W$. Moreover,
@@ -184,6 +207,21 @@ Define $f : \mathbb{R}^m \times V \to \mathbb{R}^m$ by $f(x, y) = F(y) - x$. The
 For the derivative formula, differentiate $F(F^{-1}(x)) = x$ using the chain rule:
 $$DF(F^{-1}(x)) \circ D(F^{-1})(x) = I_{\mathbb{R}^m},$$
 so $D(F^{-1})(x) = (DF(F^{-1}(x)))^{-1}$. $\square$
+</Proof>
+
+<Remark>**An alternative construction (Lecture 27).** The reduction "inverse function = implicit function with $f(x, y) = F(y) - x$" is often presented in the opposite direction: one *starts* with the target equation $F(y) = x$, defines an auxiliary function $\Phi : U \times \mathbb{R}^m \to \mathbb{R}^m$ by $\Phi(x, y) = F(y) - x$, notes that $\Phi$ is $C^1$ with $\Phi(x_0, y_0) = 0$ and $\partial \Phi / \partial y(x_0, y_0) = DF(y_0)$ invertible, and then extracts from the implicit function theorem a $C^1$ map $h$ on a neighbourhood $W$ of $x_0$ with $\Phi(x, h(x)) = 0$, i.e. $F(h(x)) = x$. So $h$ is a right inverse of $F$. The chain rule applied to $F \circ h = \mathrm{id}_W$ gives $DF(h(x)) \circ Dh(x) = I$, so $Dh(x)$ is invertible; applying the same argument to $h$ (with derivative $DF(h(x))^{-1}$) produces a right inverse $g$ of $h$. Then $F = F \circ (h \circ g) = (F \circ h) \circ g = g$ locally, so $h$ is a two-sided inverse of $F$, i.e. $h = F^{-1}$. This mirrors exactly how one proves the one-variable version.</Remark>
+
+<Corollary title="Derivative of the Inverse via Chain Rule">
+Suppose $F : U \to \mathbb{R}^m$ is of class $C^1$ and has a $C^1$ inverse $F^{-1}$ defined on a neighbourhood of $b = F(a)$. Then
+$$D(F^{-1})(b) = \bigl(DF(a)\bigr)^{-1}.$$
+</Corollary>
+
+<Remark>**Intuition:** Once we know that $F^{-1}$ exists and is differentiable, the derivative formula comes for free from the chain rule. The hard content of the inverse function theorem is the *existence* of $F^{-1}$; the formula is an easy consequence.</Remark>
+
+<Proof>
+The relation $F^{-1} \circ F = \mathrm{id}$ on a neighbourhood of $a$, together with $D(\mathrm{id})(a) = I$, gives by the chain rule
+$$D(F^{-1})(F(a)) \circ DF(a) = I,$$
+so $D(F^{-1})(b) = DF(a)^{-1}$. $\square$
 </Proof>
 
 ---

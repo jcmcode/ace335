@@ -321,9 +321,151 @@ If $C_f = \mathbb{Q}$, then $\mathbb{R} \setminus \mathbb{Q}$ would be an $F_\si
 </Proof>
 
 <Theorem title="Nowhere Differentiable Continuous Functions are Generic (Statement)">
-Let $C = C([a,b])$ with the sup metric. The set of functions $f \in C$ that are nowhere differentiable is comeagre in $C$. Consequently, "most" continuous functions are nowhere differentiable.
+Let $C = C([a,b])$ with the sup metric. The set of functions $f \in C$ that are nowhere differentiable is comeagre in $C$. Consequently, "most" continuous functions are nowhere differentiable. The same holds for the set of functions that are not monotonic on any subinterval.
 </Theorem>
 
 <Remark>
-The full proof uses Baire's theorem: one exhibits the nowhere differentiable functions as the complement of a meagre set built from open dense approximations using the Weierstrass approximation theorem (polynomials are dense in $C$) and a sawtooth perturbation. Since $C$ is complete, the comeagre set is dense — in particular, nonempty — so such functions exist. The existence of even one nowhere differentiable continuous function was once shocking; Baire's theorem tells us the shocking objects are the norm, not the exception.
+The full proof uses Baire's theorem: one exhibits the nowhere differentiable functions as the complement of a meagre set built from open dense approximations using the Weierstrass approximation theorem (polynomials are dense in $C$) and a sawtooth perturbation. Since $C$ is complete, the comeagre set is dense — in particular, nonempty — so such functions exist. The existence of even one nowhere differentiable continuous function was once shocking; Baire's theorem tells us the shocking objects are the norm, not the exception. The first **explicit** nowhere differentiable continuous function was constructed by Karl Weierstrass in 1872.
 </Remark>
+
+---
+
+## The Weierstrass Approximation Theorem
+
+A central density result that plays a role in the proof of the previous theorem and many others.
+
+<Theorem title="Weierstrass Approximation Theorem">
+The set of polynomials is dense in $C([a, b])$ with the sup metric. Equivalently: for every $f \in C([a, b])$ and every $\varepsilon > 0$ there exists a polynomial $p$ such that
+$$\max_{a \leq x \leq b} |f(x) - p(x)| < \varepsilon.$$
+</Theorem>
+
+<Remark>
+**Intuition:** Continuous functions on a closed bounded interval, no matter how complicated, can be approximated arbitrarily well in the sup norm by polynomials. This is striking because polynomials are extremely rigid (analytic, infinitely differentiable, determined by finitely many coefficients) yet they fill out the entire space of continuous functions.
+</Remark>
+
+<Proof>
+**Bernstein's proof.** Without loss of generality assume $[a, b] = [0, 1]$ (the general case reduces to this via the affine change of variables $x \mapsto (x - a)/(b - a)$).
+
+For each $n \geq 1$, define the **Bernstein polynomial**
+$$p_n(x) = \sum_{k=0}^{n} r_k(x) \, f\!\left(\frac{k}{n}\right), \qquad r_k(x) = \binom{n}{k} x^k (1 - x)^{n - k}.$$
+Each $p_n$ is a polynomial of degree at most $n$. We claim $p_n \to f$ uniformly on $[0, 1]$.
+
+**Key identities.** By the binomial theorem,
+$$\sum_{k=0}^{n} r_k(x) = (x + (1 - x))^n = 1.$$
+Furthermore, by direct computation (an exercise),
+$$\sum_{k=0}^{n} (k - nx)^2 \, r_k(x) = nx(1 - x).$$
+
+Using $\sum_k r_k(x) = 1$, write
+$$f(x) = \sum_{k=0}^{n} f(x) \, r_k(x), \qquad p_n(x) - f(x) = \sum_{k=0}^{n} \left(f\!\left(\tfrac{k}{n}\right) - f(x)\right) r_k(x).$$
+
+**Estimation.** Fix $\varepsilon > 0$. Since $f$ is continuous on the compact set $[0, 1]$, by the Heine-Cantor theorem $f$ is uniformly continuous: there exists $\delta > 0$ with $|f(t) - f(s)| < \varepsilon/2$ whenever $|t - s| < \delta$.
+
+Split the sum into
+$$K_1 = \{k : |k/n - x| < \delta\}, \qquad K_2 = \{k : |k/n - x| \geq \delta\}.$$
+(Both sets depend on $x$.) By the triangle inequality,
+$$|p_n(x) - f(x)| \leq \sum_{k \in K_1} |f(k/n) - f(x)| \, r_k(x) + \sum_{k \in K_2} |f(k/n) - f(x)| \, r_k(x).$$
+
+**First sum:** for $k \in K_1$, $|f(k/n) - f(x)| < \varepsilon/2$, so
+$$\sum_{k \in K_1} |f(k/n) - f(x)| \, r_k(x) \leq \frac{\varepsilon}{2} \sum_{k=0}^{n} r_k(x) = \frac{\varepsilon}{2}.$$
+
+**Second sum:** let $M = \max_{0 \leq x \leq 1} |f(x)|$, so $|f(k/n) - f(x)| \leq 2M$. For $k \in K_2$, $(k - nx)^2 \geq (n\delta)^2$. Hence
+$$\sum_{k \in K_2} r_k(x) \leq \frac{1}{(n\delta)^2} \sum_{k \in K_2} (k - nx)^2 r_k(x) \leq \frac{nx(1-x)}{(n\delta)^2} \leq \frac{1}{4 n \delta^2}$$
+(using $\max_{0 \leq x \leq 1} x(1 - x) = 1/4$). Therefore
+$$\sum_{k \in K_2} |f(k/n) - f(x)| \, r_k(x) \leq 2M \cdot \frac{1}{4 n \delta^2} = \frac{M}{2 n \delta^2}.$$
+
+Combining,
+$$|p_n(x) - f(x)| \leq \frac{\varepsilon}{2} + \frac{M}{2 n \delta^2}.$$
+
+Choose $n$ large enough that $M / (2 n \delta^2) \leq \varepsilon/2$, i.e. $n \geq M/(\delta^2 \varepsilon)$. Then $|p_n(x) - f(x)| \leq \varepsilon$ for all $x \in [0, 1]$, so $p_n \to f$ uniformly. $\square$
+</Proof>
+
+<Remark>
+**Probabilistic interpretation:** The Bernstein polynomial $p_n(x)$ equals $\mathbb{E}[f(X_n / n)]$ where $X_n \sim \mathrm{Binomial}(n, x)$. The law of large numbers says $X_n / n \to x$ in probability, and continuity of $f$ then yields $p_n(x) \to f(x)$. Bernstein's proof packages this probabilistic intuition into an elementary inequality argument.
+</Remark>
+
+---
+
+## Nowhere Differentiable Functions: Detailed Construction
+
+We now sketch the full proof that nowhere differentiable, nowhere monotonic functions form a comeagre set in $C([a, b])$.
+
+For each $n \geq 1$, define
+- $R_n = \{f \in C^0 : \forall x \in [a, b - 1/n], \, \exists h > 0 \text{ such that } |(f(x + h) - f(x))/h| > n\}$,
+- $L_n = \{f \in C^0 : \forall x \in [a + 1/n, b], \, \exists h < 0 \text{ such that } |(f(x + h) - f(x))/h| > n\}$,
+- $G_n = \{f \in C^0 : \forall c \in [a, b - 1/n], \, f \text{ is not monotonic on } [c, c + 1/n]\}$.
+
+Functions in $\bigcap_{n \geq 1} (R_n \cap L_n)$ are nowhere differentiable; functions in $\bigcap_{n \geq 1} G_n$ are nowhere monotonic. The strategy is:
+
+**Claim 1: Each $R_n$, $L_n$, $G_n$ is dense in $C^0$.**
+
+It suffices to show their closures contain the polynomials, since polynomials are dense by Weierstrass. Given a polynomial $p$ and $\varepsilon > 0$, let $m = \max_{[a, b]} |p'(x)|$ and consider a sawtooth function $\sigma : [a, b] \to \mathbb{R}$ of amplitude less than $\varepsilon$ with slopes alternating between $> n + m$ and $< -(n + m)$, with period less than $1/(2n)$. The function $f = p + \sigma$ satisfies $\|f - p\| < \varepsilon$ and has rightward slopes greater than $n$ at every point of $[a, b - 1/n]$, so $f \in R_n$. A similar construction handles $L_n$ and $G_n$.
+
+**Claim 2: Each $R_n$, $L_n$, $G_n$ is open in $C^0$.**
+
+The arguments use compactness of $[a, b - 1/n]$ to cover by finitely many neighbourhoods. We sketch $R_n$: given $f \in R_n$, for each $x \in [a, b - 1/n]$ pick $h(x) > 0$ with $|(f(x + h(x)) - f(x))/h(x)| > n$. By continuity there is a neighbourhood $U(x)$ of $x$ and $\nu(x) > 0$ such that for all $y \in \overline{U(x)}$, $|(f(y + h(x)) - f(y))/h(x)| > n + \nu(x)$. By compactness, finitely many such neighbourhoods $U(x_1), \ldots, U(x_N)$ cover $[a, b - 1/n]$. With careful estimates (using the reverse triangle inequality), one shows that any $g$ with $\|f - g\|_\infty < \delta := \min_i (h(x_i) \nu(x_i)) / 4$ also belongs to $R_n$.
+
+The argument for $G_n$ instead shows $G_n^c$ is closed: if $(f_k) \subseteq G_n^c$ and $f_k \to f$ uniformly, then each $f_k$ is monotonic on some interval $I_k$ of length $1/n$. By Bolzano-Weierstrass on the endpoints, a subsequence of intervals $I_{k_\ell}$ converges to a limit interval $I$ of length $1/n$; uniform convergence then forces $f$ to be monotonic on $I$, so $f \in G_n^c$.
+
+**Putting it together.** Each $R_n$, $L_n$, $G_n$ is open and dense, hence so is each intersection $R_n \cap L_n \cap G_n$. Their countable intersection $\bigcap_n (R_n \cap L_n \cap G_n)$ is comeagre in $C^0$. Since $C^0$ is complete, this set is non-meagre by Baire (ii) — in particular nonempty and dense. Functions in this intersection are nowhere differentiable and nowhere monotonic.
+
+<Remark>
+The "shocking" examples of nowhere differentiable continuous functions are not exceptional — they are topologically generic. Any function you encounter in calculus (polynomials, $\sin$, $\cos$, $e^x$) is part of a meagre set of "highly atypical" functions from the topological viewpoint.
+</Remark>
+
+---
+
+## Diophantine and Liouville Numbers
+
+Another striking application of the Baire Category Theorem produces a comeagre set of "Diophantine" numbers and shows that the much smaller (but nonempty!) complement consists of remarkably well-approximable irrationals.
+
+<Definition title="Diophantine and Liouville Numbers">
+For $\tau, \gamma > 0$, $q \in \mathbb{Z}_{\geq 1}$, and $p \in \mathbb{Z}$, define the closed set
+$$D(\tau, \gamma, q, p) = \left\{x \in \mathbb{R} : \left| x - \frac{p}{q} \right| \geq \gamma q^{-\tau} \right\}.$$
+Then define the closed sets
+$$D(\tau, \gamma) = \bigcap_{q \geq 1, \, p \in \mathbb{Z}} D(\tau, \gamma, q, p), \qquad D(\tau) = \bigcup_{\gamma > 0} D(\tau, \gamma) = \bigcup_{n \geq 1} D(\tau, 1/n),$$
+and finally
+$$D = \bigcup_{\tau > 0} D(\tau) = \bigcup_{m \geq 1} D(m).$$
+Elements of $D$ are called **Diophantine numbers**. The set $\mathcal{L} = D^c \setminus \mathbb{Q}$ consists of the **Liouville numbers**: irrationals $x$ such that for every $m \geq 1$ there exist integers $q \geq 1$ and $p$ with
+$$0 < \left| x - \frac{p}{q} \right| < \frac{1}{q^m}.$$
+(That is, $x$ can be approximated by rationals to arbitrarily high polynomial order in the denominator.)
+</Definition>
+
+<Remark>
+**Intuition:** Diophantine numbers are "badly approximable" by rationals — there is some lower bound on how close a rational $p/q$ can be in terms of $q^\tau$. Liouville numbers are the opposite extreme: they admit super-fast rational approximations. Liouville proved in 1844 that all Liouville numbers are transcendental. A concrete example is
+$$x = \sum_{k=1}^{\infty} 10^{-k!} = 0.110001000000000000000001\ldots$$
+</Remark>
+
+<Theorem title="The Diophantine Set is Meagre; the Liouville Set is Comeagre">
+The set of Diophantine numbers $D$ is meagre in $\mathbb{R}$, while $D^c$ is comeagre. Moreover $D^c$ is uncountable, and even $\mathcal{L} = D^c \setminus \mathbb{Q}$ is comeagre.
+</Theorem>
+
+<Proof>
+**Step 1: $D^c$ is comeagre.** Compute
+$$D^c = \bigcap_{m \geq 1} \bigcap_{n \geq 1} \bigcup_{q \geq 1} \bigcup_{p \in \mathbb{Z}} \left( \frac{p}{q} - \frac{1}{n q^m}, \frac{p}{q} + \frac{1}{n q^m} \right).$$
+For each fixed $m, n$, the inner double union is an open set containing every rational $p/q$. Since rationals are dense, this open set is dense. Hence $D^c$ is a countable intersection of open dense sets — i.e. $D^c$ is $G_\delta$ and comeagre.
+
+**Step 2: $D^c$ is uncountable.** If $D^c$ were countable, it would be meagre (countable union of singletons, which are nowhere dense). But by the corollary of Baire's theorem, no set in a nonempty complete metric space can be both meagre and comeagre. Contradiction.
+
+**Step 3: $D$ is meagre.** This is the complement of a comeagre set in a complete metric space, hence meagre.
+
+**Step 4: $\mathcal{L}$ is comeagre.** Since $\mathbb{Q}$ is meagre (countable union of singletons), removing it from the comeagre set $D^c$ leaves a comeagre set: a comeagre minus a meagre is comeagre. $\square$
+</Proof>
+
+<Remark>
+**Topological vs measure-theoretic largeness disagree!** From the topological viewpoint, $D^c$ (which contains the Liouville numbers) is "large" (comeagre) and $D$ is "small" (meagre). But from the measure-theoretic viewpoint (Lebesgue measure on $\mathbb{R}$), it is the opposite: $D^c$ has measure zero and $D$ has full measure. In summary,
+$$\mathbb{R} = D \cup \mathcal{L} \cup \mathbb{Q}$$
+is a disjoint union with:
+- $D$: full measure, but meagre;
+- $\mathcal{L}$: measure zero, but comeagre;
+- $\mathbb{Q}$: measure zero and meagre.
+
+This contrast between topological smallness ("meagre") and measure-theoretic smallness ("null") will reappear in the integration chapter.
+</Remark>
+
+<Example title="Concrete Liouville Number">
+The number
+$$x = \sum_{k=1}^{\infty} 10^{-k!} = \frac{1}{10^1} + \frac{1}{10^2} + \frac{1}{10^6} + \frac{1}{10^{24}} + \frac{1}{10^{120}} + \cdots = 0.\underbrace{11000100000000000000000\overbrace{1}^{24!}\ldots}_{\text{1's at positions }k!}$$
+is a Liouville number: take $q = 10^{m!}$ and $p = q \sum_{k=1}^{m} 10^{-k!}$ (an integer); then $|x - p/q| < 2 \cdot 10^{-(m+1)!} \ll 1/q^m$ for $m$ large.
+
+By Liouville's 1844 theorem, $x$ is transcendental. Other notable Diophantine numbers include $\pi$, $e$, $\ln 2$, $\sqrt{2}$, and $\sqrt[3]{2}$.
+</Example>

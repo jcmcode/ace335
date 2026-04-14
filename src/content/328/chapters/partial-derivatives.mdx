@@ -5,6 +5,39 @@ chapter: 9
 
 Differential calculus in one variable is the study of the local linear approximation of a function. The derivative $f'(a)$ is a number only because linear maps $\mathbb{R} \to \mathbb{R}$ are determined by a single scalar; the geometrically correct object is the linear map $h \mapsto f'(a) h$. In several variables this viewpoint becomes mandatory. The derivative of a function $\vec{F}: \mathbb{R}^n \to \mathbb{R}^m$ at a point is a linear map $\mathbb{R}^n \to \mathbb{R}^m$, represented once bases are chosen by an $m \times n$ matrix of partial derivatives. This chapter develops the theory: directional and partial derivatives, the total (Frechet) derivative, the Jacobian matrix, the delicate interplay between partial and total differentiability, the chain rule, higher-order partials, Clairaut's theorem on the equality of mixed partials, the classes $C^k$, and a mean-value inequality for vector-valued maps.
 
+<Remark>**A note on philosophy (Dieudonne).** In his classic *Foundations of Analysis*, Jean Dieudonne of the French Bourbaki school writes that presenting differential calculus "aims at keeping as close as possible to the fundamental idea of Calculus, namely the local approximation of functions by linear functions. In the classical teaching of Calculus, this idea is immediately obscured by the accidental fact that, on a one-dimensional vector space, there is a one-to-one correspondence between linear forms and numbers, and therefore the derivative at a point is defined as a number instead of a linear form. This slavish subservience to the shibboleth of numerical interpretation at any cost becomes much worse when dealing with functions of several variables." The viewpoint of this chapter — derivative as a linear map — is the one Dieudonne recommends.</Remark>
+
+---
+
+## The One-Variable Derivative, Reconsidered
+
+Before generalizing, it is worth reformulating the familiar definition of the one-variable derivative in a way that transports verbatim to several variables. Let $D \subseteq \mathbb{R}$ be an interval and $a \in \operatorname{int}(D)$. The derivative $f'(a)$ exists (as a real number) iff
+$$\lim_{x \to a} \frac{f(x) - f(a)}{x - a}$$
+exists, equivalently iff
+$$\lim_{x \to a} \frac{f(x) - f(a) - f'(a)(x - a)}{x - a} = 0.$$
+The numerator $f(x) - (f(a) + f'(a)(x - a))$ is the **error** we make when approximating $f(x)$ by its tangent line at $a$; the equation says this error tends to zero *faster than* $x - a$.
+
+<Definition title="Little-oh Notation">
+Let $E, F$ be functions defined near $a$ with $F(x) \neq 0$ near $a$ (except possibly at $a$). We say $E(x) = o(F(x))$ as $x \to a$ if
+$$\lim_{x \to a} \frac{|E(x)|}{|F(x)|} = 0.$$
+</Definition>
+
+<Remark>**Intuition:** $E = o(F)$ means $E$ becomes negligible compared to $F$ in the limit. "Little-oh of $h$" is the precise way to say "vanishes faster than linearly."</Remark>
+
+With this language, $f$ is differentiable at $a$ iff there exists a real number $\alpha$ (necessarily $\alpha = f'(a)$) such that
+$$f(a + h) - f(a) - \alpha h = o(h) \quad \text{as } h \to 0.$$
+Equivalently, $f$ is differentiable at $a$ iff there exists a linear map $L : \mathbb{R} \to \mathbb{R}$ such that $f(a + h) - f(a) - L(h) = o(h)$ as $h \to 0$; this $L$ is what we call the derivative of $f$ at $a$. The one-variable case hides the linear-map nature only because linear maps $\mathbb{R} \to \mathbb{R}$ are identified with single numbers via $L(y) = \alpha y$. In several variables, no such identification is possible, and the linear-map formulation is unavoidable.
+
+<Example title="A tangent line that touches the graph infinitely often">
+Consider
+$$f(x) = \begin{cases} x^2 \sin(1/x) & x \neq 0, \\ 0 & x = 0. \end{cases}$$
+A direct computation shows $f'(0) = 0$ — so the tangent line to the graph at the origin is $y = 0$ (the $x$-axis). Yet the graph of $f$ crosses the $x$-axis infinitely often in every neighbourhood of $0$ (wherever $\sin(1/x) = 0$). The tangent line is not a line that "touches the graph once" — it is the *best linear approximation* to the increment, and nothing more.
+</Example>
+
+One-sided derivatives are sometimes useful: if $D = [\alpha, \beta]$,
+$$f'_R(\alpha) = \lim_{h \to 0^+} \frac{f(\alpha + h) - f(\alpha)}{h}, \qquad f'_L(\beta) = \lim_{h \to 0^-} \frac{f(\beta + h) - f(\beta)}{h},$$
+are the **right derivative** at the left endpoint and the **left derivative** at the right endpoint, respectively.
+
 ---
 
 ## Directional and Partial Derivatives
