@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { chapters, groupLabels } from '@/lib/chapters'
 import { FileText, GraduationCap, Menu, Search, X } from 'lucide-react'
+import SearchDialog from '@/components/SearchDialog'
 
 const groups = ['foundations', 'transforms', 'control', 'advanced', 'appendix'] as const
 
@@ -19,15 +20,19 @@ const groupDots: Record<string, string> = {
 export default function Sidebar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [search, setSearch] = useState('')
+  const [searchOpen, setSearchOpen] = useState(false)
+  const filtered = chapters
 
-  const filtered = search
-    ? chapters.filter(c =>
-        c.title.toLowerCase().includes(search.toLowerCase()) ||
-        c.shortTitle.toLowerCase().includes(search.toLowerCase()) ||
-        c.topics.some(t => t.toLowerCase().includes(search.toLowerCase()))
-      )
-    : chapters
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [])
 
   const nav = (
     <div className="flex flex-col h-full">
@@ -43,16 +48,16 @@ export default function Sidebar() {
 
       {/* Search */}
       <div className="px-3 py-3">
-        <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500 pointer-events-none" />
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-full bg-white/[0.05] text-[13px] text-slate-300 placeholder-slate-600 rounded-md pl-8 pr-3 py-[7px] border border-white/[0.06] focus:outline-none focus:border-indigo-500/50 focus:bg-white/[0.08] transition-all"
-          />
-        </div>
+        <button
+          onClick={() => { setSearchOpen(true); setMobileOpen(false) }}
+          className="w-full flex items-center gap-2 bg-white/[0.05] text-[13px] text-slate-500 rounded-md pl-2.5 pr-2 py-[7px] border border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.1] transition-all"
+        >
+          <Search className="h-3.5 w-3.5" />
+          <span className="flex-1 text-left">Search theorems...</span>
+          <kbd className="text-[10px] bg-white/[0.08] px-1.5 py-0.5 rounded text-slate-400">
+            ⌘K
+          </kbd>
+        </button>
       </div>
 
       {/* Chapters */}
@@ -124,7 +129,7 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div className="px-5 py-3 border-t border-white/[0.06] text-[11px] text-slate-600">
-        Queen&apos;s University &middot; Prof. S. Yuksel
+        Queen&apos;s University
       </div>
     </div>
   )
@@ -154,6 +159,9 @@ export default function Sidebar() {
       <aside className="hidden lg:block fixed inset-y-0 left-0 w-60 bg-[#0c1220] z-20 border-r border-white/[0.04]">
         {nav}
       </aside>
+
+      {/* Global search dialog */}
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   )
 }
