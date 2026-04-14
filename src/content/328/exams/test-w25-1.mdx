@@ -1,0 +1,135 @@
+---
+title: "Test 1 - Winter 2025"
+year: 2025
+---
+
+## Problem 1: Topology on R, Interior, Closure, Hausdorff
+
+<Problem title="Topology on R, Interior, Closure, Hausdorff">
+Let us consider the topological space $(X, \mathscr{T})$, where $X = \mathbb{R}$ and $\mathscr{T} \subset 2^X$ is defined as
+$$\mathscr{T} = \{\Omega \subseteq \mathbb{R} : 1 \notin \Omega \text{ or } \Omega = \mathbb{R}\}.$$
+
+(a) Verify that $\mathscr{T}$ is a topology on $X$.
+
+(b) Consider the subsets $A, B \subseteq X$, where $A = (0, 2)$ and $B = \{2\}$. Find the interior of $A$ and the closure of $B$, according to the topology $\mathscr{T}$.
+
+(c) Is $(X, \mathscr{T})$ a Hausdorff topological space? Justify your answer.
+</Problem>
+
+<Solution>
+**Part (a):**
+
+*Axiom 1:* $\varnothing$ does not contain $1$, so $\varnothing \in \mathscr{T}$. $\mathbb{R} \in \mathscr{T}$ explicitly.
+
+*Axiom 2 (arbitrary unions):* Let $\{\Omega_\alpha\}_\alpha \subseteq \mathscr{T}$. If some $\Omega_\alpha = \mathbb{R}$, then $\bigcup_\alpha \Omega_\alpha = \mathbb{R} \in \mathscr{T}$. Otherwise all $\Omega_\alpha$ satisfy $1 \notin \Omega_\alpha$, so $1 \notin \bigcup_\alpha \Omega_\alpha$, hence $\bigcup_\alpha \Omega_\alpha \in \mathscr{T}$.
+
+*Axiom 3 (finite intersections):* Let $\Omega_1, \Omega_2 \in \mathscr{T}$. If $\Omega_1 = \mathbb{R}$, then $\Omega_1 \cap \Omega_2 = \Omega_2 \in \mathscr{T}$ (and symmetrically for $\Omega_2 = \mathbb{R}$). Otherwise, $1 \notin \Omega_1$, so $1 \notin \Omega_1 \cap \Omega_2$, hence $\Omega_1 \cap \Omega_2 \in \mathscr{T}$.
+
+So $\mathscr{T}$ is a topology.
+
+**Part (b):**
+
+*Interior of $A = (0, 2)$:* Note that $1 \in A$. The largest open set contained in $A$ must be open (so either equal to $\mathbb{R}$ or not contain $1$). $\mathbb{R} \not\subseteq A$. So we need the largest set $\Omega \subseteq A$ with $1 \notin \Omega$. That is $A \setminus \{1\} = (0, 1) \cup (1, 2)$, which is in $\mathscr{T}$ (doesn't contain $1$). Therefore $\text{int}(A) = (0, 1) \cup (1, 2)$.
+
+*Closure of $B = \{2\}$:* Closed sets are complements of open sets: $\mathbb{R} \setminus \Omega$ where $\Omega \in \mathscr{T}$. So closed sets are $\varnothing$ (= $\mathbb{R} \setminus \mathbb{R}$) and any set $F$ with $1 \in F$ (coming from $\Omega$ with $1 \notin \Omega$, so $F = \Omega^c$ contains $1$).
+
+We need the smallest closed set containing $\{2\}$. The candidate is $\{1, 2\}$: it contains $1$, so it's closed; it contains $2$. Any smaller closed set containing $2$ would have to contain $1$ and $2$ at minimum (closed sets are $\varnothing$ or contain $1$). So $\overline{B} = \{1, 2\}$.
+
+**Part (c):** $(X, \mathscr{T})$ is **not Hausdorff**. Take any $x \neq 1$. We want to separate $x$ and $1$ by disjoint open sets. Any open set containing $1$ must be $\mathbb{R}$ (since open sets are either $\mathbb{R}$ or exclude $1$). But $\mathbb{R}$ intersects every nonempty open set. Hence we cannot separate $1$ from any other point.
+</Solution>
+
+## Problem 2: Neighbourhoods, Cluster Points, Limits
+
+<Problem title="Neighbourhoods, Cluster Points, Limits">
+Let $(X, \mathscr{T})$ and $(Y, \mathscr{S})$ be two arbitrary topological spaces, and let $f : X \to Y$ be a function.
+
+(a) Let $a \in X$ and $b \in Y$ be given.
+- Say what it means for a set $W$ to be a neighbourhood of $a$ according to the topology $\mathscr{T}$.
+- Say what it means for a set $V$ to be a neighbourhood of $b$ according to the topology $\mathscr{S}$.
+
+(b) Let $a \in X$ be given. Define what $a \in X'$ means.
+
+(c) Let $a \in X'$. Define what $\lim_{x \to a} f(x) = b$ means.
+</Problem>
+
+<Solution>
+**Part (a):**
+- $W \subseteq X$ is a *neighbourhood of $a$ according to $\mathscr{T}$* if there exists an open set $U \in \mathscr{T}$ such that $a \in U \subseteq W$.
+- $V \subseteq Y$ is a *neighbourhood of $b$ according to $\mathscr{S}$* if there exists an open set $U' \in \mathscr{S}$ such that $b \in U' \subseteq V$.
+
+**Part (b):** $a \in X'$ (i.e., $a$ is a *cluster point* of $X$ — here we interpret this as a cluster point of $X$ itself, or more commonly, of a given set; in context, $X' = X$'s set of cluster points). The definition:
+
+$a \in X'$ means every neighbourhood of $a$ contains a point of $X$ different from $a$. Since $X$ is the whole space, this says: every neighbourhood of $a$ contains a point other than $a$ — equivalently, $\{a\}$ is not open in some sense. More commonly, for a subset $A \subseteq X$: $a \in A'$ means every neighbourhood of $a$ contains a point of $A \setminus \{a\}$. So applied to $X$: every neighbourhood $W$ of $a$ satisfies $W \cap (X \setminus \{a\}) \neq \varnothing$, i.e., every neighbourhood of $a$ contains some point other than $a$.
+
+**Part (c):** $\lim_{x \to a} f(x) = b$ means: for every neighbourhood $V$ of $b$ in $(Y, \mathscr{S})$, there exists a neighbourhood $W$ of $a$ in $(X, \mathscr{T})$ such that for all $x \in W$ with $x \neq a$, $f(x) \in V$.
+
+Equivalently: for every open $V \ni b$, there exists an open $U \ni a$ with $f(U \setminus \{a\}) \subseteq V$.
+</Solution>
+
+## Problem 3: Nowhere Dense, Connectedness, Meagre
+
+<Problem title="Nowhere Dense, Connectedness, Meagre">
+In this question, $\mathbb{R}$ is assumed to be equipped with the Euclidean topology.
+
+(a) Suppose that $A \subseteq \mathbb{R}$ is a nowhere dense set. Prove that the interior of the complement of $A$ is dense in $\mathbb{R}$.
+
+(b) Let $B = \mathbb{Q} \cap [-1, 1]$. Is $B$ connected? Justify your answer.
+
+(c) Let $A$ and $B$ be as above. Show that $A \cup B$ is meagre.
+</Problem>
+
+<Solution>
+**Part (a):** $A$ is nowhere dense means $\text{int}(\overline{A}) = \varnothing$. We show $\text{int}(A^c)$ is dense in $\mathbb{R}$, i.e., $\overline{\text{int}(A^c)} = \mathbb{R}$.
+
+Recall the identity: $\text{int}(A^c) = (\overline{A})^c$. Indeed, $x \in \text{int}(A^c)$ iff there's an open $U$ with $x \in U \subseteq A^c$ iff there's an open $U \ni x$ disjoint from $A$ iff $x \notin \overline{A}$.
+
+So $\text{int}(A^c) = \mathbb{R} \setminus \overline{A}$. Its closure is $\overline{\mathbb{R} \setminus \overline{A}}$. We want to show this equals $\mathbb{R}$, i.e., $\mathbb{R} \setminus \overline{A}$ is dense.
+
+Equivalently, for every nonempty open set $U \subseteq \mathbb{R}$, $U \cap (\mathbb{R} \setminus \overline{A}) \neq \varnothing$, i.e., $U \not\subseteq \overline{A}$. If $U \subseteq \overline{A}$ for some nonempty open $U$, then $U \subseteq \text{int}(\overline{A}) = \varnothing$, contradiction. Hence $\mathbb{R} \setminus \overline{A} = \text{int}(A^c)$ is dense.
+
+**Part (b):** $B = \mathbb{Q} \cap [-1, 1]$ is **not connected**. Pick an irrational $\alpha \in (-1, 1)$, e.g., $\alpha = 1/\sqrt{2}$. Let
+$$U = (-\infty, \alpha), \quad V = (\alpha, \infty).$$
+Both are open in $\mathbb{R}$. Then
+- $B \cap U = \mathbb{Q} \cap [-1, \alpha) \neq \varnothing$ (contains $0$).
+- $B \cap V = \mathbb{Q} \cap (\alpha, 1] \neq \varnothing$ (contains $1$).
+- $(B \cap U) \cap (B \cap V) = \varnothing$.
+- $(B \cap U) \cup (B \cap V) = B$ since $\alpha \notin B$ (irrational).
+
+So $B$ is disconnected.
+
+**Part (c):** $A$ is nowhere dense (given), hence meagre.
+
+$B = \mathbb{Q} \cap [-1, 1]$ is countable: $B = \{q_1, q_2, q_3, \ldots\}$. Each $\{q_n\}$ is closed with empty interior (in $\mathbb{R}$ with Euclidean topology), so nowhere dense. Thus $B = \bigcup_n \{q_n\}$ is a countable union of nowhere dense sets, so $B$ is meagre.
+
+The countable union of meagre sets is meagre, so $A \cup B$ is meagre.
+</Solution>
+
+## Problem 4: Metric Topology and Properties
+
+<Problem title="Metric Topology and Properties">
+Let $(X, d)$ be a complete metric space.
+
+(a) Define what the metric topology $\mathscr{T}_d$ on $X$ is.
+
+(b) For each statement, say whether it is TRUE or FALSE.
+
+(b1) The topological space $(X, \mathscr{T}_d)$ is necessarily Hausdorff.
+
+(b2) In $(X, \mathscr{T}_d)$, every countable intersection of open dense sets is dense.
+
+(b3) Let $\varphi : X \to X$ be a continuous function (where both domain and codomain of $\varphi$ are equipped with the topology $\mathscr{T}_d$). If $F \subseteq X$ is closed, then $\varphi(F)$ is closed.
+</Problem>
+
+<Solution>
+**Part (a):** $\mathscr{T}_d$ is the topology on $X$ whose open sets are exactly the unions of open balls: $\Omega \in \mathscr{T}_d$ iff for every $x \in \Omega$, there exists $r > 0$ such that $B_d(x, r) = \{y \in X : d(x, y) < r\} \subseteq \Omega$.
+
+Equivalently, $\mathscr{T}_d$ is the topology generated by the basis $\{B_d(x, r) : x \in X, r > 0\}$.
+
+**Part (b1):** **TRUE.** Metric spaces are always Hausdorff: for $x \neq y$, set $r = d(x, y)/2 > 0$; then $B_d(x, r) \cap B_d(y, r) = \varnothing$.
+
+**Part (b2):** **TRUE.** This is the Baire Category Theorem for complete metric spaces.
+
+**Part (b3):** **FALSE.** Counterexample: $X = \mathbb{R}$ (complete Euclidean), $\varphi(x) = \arctan(x)$. $F = \mathbb{R}$ is closed, but $\varphi(F) = (-\pi/2, \pi/2)$ is not closed.
+
+Another: $\varphi(x) = e^x$, $F = \mathbb{R}$ closed, $\varphi(F) = (0, \infty)$ not closed in $\mathbb{R}$.
+</Solution>

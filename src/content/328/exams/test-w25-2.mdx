@@ -1,0 +1,146 @@
+---
+title: "Test 2 - Winter 2025"
+year: 2025
+---
+
+## Problem 1: Definition of Differentiability (Fill in the Blanks)
+
+<Problem title="Definition of Differentiability (Fill in the Blanks)">
+Let $U \subseteq \mathbb{R}^3$ be open, and let $\vec{p}_0 = (x_0, y_0, z_0) \in U$. Let $\vec{F} : \mathbb{R}^3 \to \mathbb{R}^2$ be a function. Let $F_1, F_2$ denote the components of $\vec{F}$. Suppose that $\vec{F}$ is differentiable at $\vec{p}_0$.
+
+Fill in the blanks by choosing from the options provided.
+
+- The derivative of $\vec{F}$ at $\vec{p}_0$ is a linear function from $\boxed{(a)}$ to $\boxed{(b)}$.
+- For every $\varepsilon > 0$ there exists $\delta > 0$ such that $\boxed{(c)} \leq \varepsilon \boxed{(d)}$ provided $\boxed{(e)}$.
+- For every $\varepsilon > 0$ there exists $\delta > 0$ such that $\boxed{(f)}$ provided $\boxed{(g)}$.
+- The derivative of $F_2$ at $\vec{p}_0$ is the linear function $T$ from $\boxed{(h)}$ to $\boxed{(i)}$ given by $T\vec{v} = \boxed{(j)}$.
+
+Options:
+1. $\mathbb{R}$  2. $\mathbb{R}^2$  3. $\mathbb{R}^3$  4. $U$  5. $\mathbb{R}^5$  6. $\partial U$
+7. $\|\vec{p} - \vec{p}_0\|$  8. $\|\vec{p} - \vec{p}_0\| < \varepsilon$  9. $\|\vec{p} - \vec{p}_0\| < \delta$
+10. $\|\vec{h}\|$  11. $\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0) - D\vec{F}(\vec{p}_0)(\vec{p} - \vec{p}_0)\|$
+12. $\|\vec{F}(\vec{p}_0 + \vec{h}) - \vec{F}(\vec{p}_0)\|$  13. $\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0)\| < \varepsilon$
+14. $\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0)\| < \delta$  15. $D\vec{F}$  16. $\nabla F_2(\vec{p}_0) \cdot \vec{v}$
+17. $(\nabla F_2(\vec{p}_0))^\top \vec{v}$  18. $\lim_{\vec{p} \to \vec{p}_0} \vec{F}(\vec{p})$ exists  19. $DF_2(\vec{v})$
+20. $\sum_{i=1}^{2} \frac{\partial F_i}{\partial y}(\vec{p}_0) v_i$, where $\vec{v} = (v_1, v_2)$
+</Problem>
+
+<Solution>
+Recall the definition of differentiability: $\vec{F}$ is differentiable at $\vec{p}_0$ if there is a linear map $D\vec{F}(\vec{p}_0) : \mathbb{R}^3 \to \mathbb{R}^2$ such that
+$$\lim_{\vec{p} \to \vec{p}_0} \frac{\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0) - D\vec{F}(\vec{p}_0)(\vec{p} - \vec{p}_0)\|}{\|\vec{p} - \vec{p}_0\|} = 0.$$
+
+This is the statement: $\forall \varepsilon > 0, \exists \delta > 0$ such that
+$$\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0) - D\vec{F}(\vec{p}_0)(\vec{p} - \vec{p}_0)\| \leq \varepsilon \|\vec{p} - \vec{p}_0\| \quad \text{whenever } \|\vec{p} - \vec{p}_0\| < \delta.$$
+
+Also, differentiability implies continuity: $\forall \varepsilon > 0, \exists \delta > 0$ such that $\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0)\| < \varepsilon$ whenever $\|\vec{p} - \vec{p}_0\| < \delta$.
+
+**Answers:**
+
+- (a) **3** ($\mathbb{R}^3$) — domain of derivative
+- (b) **2** ($\mathbb{R}^2$) — codomain of derivative
+- (c) **11** ($\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0) - D\vec{F}(\vec{p}_0)(\vec{p} - \vec{p}_0)\|$)
+- (d) **7** ($\|\vec{p} - \vec{p}_0\|$)
+- (e) **9** ($\|\vec{p} - \vec{p}_0\| < \delta$)
+- (f) **13** ($\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0)\| < \varepsilon$) — continuity
+- (g) **9** ($\|\vec{p} - \vec{p}_0\| < \delta$)
+- (h) **3** ($\mathbb{R}^3$) — $F_2$ is a scalar function on $\mathbb{R}^3$, its derivative maps $\mathbb{R}^3 \to \mathbb{R}$
+- (i) **1** ($\mathbb{R}$)
+- (j) **16** ($\nabla F_2(\vec{p}_0) \cdot \vec{v}$) — the derivative of a scalar function is the gradient dot product
+</Solution>
+
+## Problem 2: Implicit Function Theorem
+
+<Problem title="Implicit Function Theorem">
+Let $F_1, F_2 : \mathbb{R}^4 \to \mathbb{R}$ be two $C^1$ functions and consider the system
+$$(\star) \quad \begin{cases} F_1(x, y, u, v) = 0, \\ F_2(x, y, u, v) = 0. \end{cases}$$
+Suppose that $F_1(1, 0, 0, 0) = F_2(1, 0, 0, 0) = 0$ and
+$$\tfrac{\partial F_1}{\partial x}(1,0,0,0) = 2, \quad \tfrac{\partial F_1}{\partial u}(1,0,0,0) = 0, \quad \tfrac{\partial F_2}{\partial x}(1,0,0,0) = 2, \quad \tfrac{\partial F_2}{\partial u}(1,0,0,0) = -1$$
+$$\tfrac{\partial F_1}{\partial y}(1,0,0,0) = -1, \quad \tfrac{\partial F_1}{\partial v}(1,0,0,0) = -1, \quad \tfrac{\partial F_2}{\partial y}(1,0,0,0) = 0, \quad \tfrac{\partial F_2}{\partial v}(1,0,0,0) = -1.$$
+
+(a) Explain why, in a neighbourhood of the point $(1, 0, 0, 0)$, $(\star)$ defines $u$ and $v$ as functions of $x$ and $y$, say $u = g_1(x, y)$ and $v = g_2(x, y)$.
+
+(b) Find $g_1(1, 0)$ and $g_2(1, 0)$.
+
+(c) Explain why $\dfrac{\partial g_1}{\partial x}(1, 0)$ and $\dfrac{\partial g_2}{\partial x}(1, 0)$ exist and then compute them.
+</Problem>
+
+<Solution>
+**Part (a):** By the Implicit Function Theorem, if $F_1, F_2 \in C^1$, $F_1(\vec{p}) = F_2(\vec{p}) = 0$ at $\vec{p} = (1, 0, 0, 0)$, and the Jacobian of $(F_1, F_2)$ with respect to $(u, v)$ at $\vec{p}$ is invertible, then $(\star)$ locally defines $u, v$ as $C^1$ functions of $x, y$.
+
+Compute the Jacobian:
+$$J = \begin{pmatrix} \partial F_1/\partial u & \partial F_1/\partial v \\ \partial F_2/\partial u & \partial F_2/\partial v \end{pmatrix}(1,0,0,0) = \begin{pmatrix} 0 & -1 \\ -1 & -1 \end{pmatrix}.$$
+$\det J = 0 \cdot (-1) - (-1)(-1) = -1 \neq 0$. So $J$ is invertible, and IFT applies.
+
+**Part (b):** By construction, $g_1(1, 0) = u_0 = 0$ and $g_2(1, 0) = v_0 = 0$.
+
+**Part (c):** Since $g_1, g_2$ are $C^1$ (by IFT), their partial derivatives exist. To compute them, differentiate the identities $F_i(x, y, g_1(x,y), g_2(x,y)) = 0$ with respect to $x$:
+$$\frac{\partial F_i}{\partial x} + \frac{\partial F_i}{\partial u} \frac{\partial g_1}{\partial x} + \frac{\partial F_i}{\partial v} \frac{\partial g_2}{\partial x} = 0, \quad i = 1, 2.$$
+
+At $(1, 0, 0, 0)$:
+
+$i = 1$: $2 + 0 \cdot \frac{\partial g_1}{\partial x} + (-1) \cdot \frac{\partial g_2}{\partial x} = 0 \Rightarrow \frac{\partial g_2}{\partial x}(1, 0) = 2$.
+
+$i = 2$: $2 + (-1) \cdot \frac{\partial g_1}{\partial x} + (-1) \cdot \frac{\partial g_2}{\partial x} = 0 \Rightarrow 2 - \frac{\partial g_1}{\partial x} - 2 = 0 \Rightarrow \frac{\partial g_1}{\partial x}(1, 0) = 0$.
+
+So $\dfrac{\partial g_1}{\partial x}(1, 0) = 0$ and $\dfrac{\partial g_2}{\partial x}(1, 0) = 2$.
+</Solution>
+
+## Problem 3: True/False Statements on Continuity and Differentiability
+
+<Problem title="True/False Statements on Continuity and Differentiability">
+For each statement, say whether it is true or false. Justify your answers.
+
+(a) If $f : \mathbb{R} \to \mathbb{R}$ is continuous, then $f([0, 1])$ is closed.
+
+(b) $\mathbb{R} \setminus \mathbb{Q}$ is a $G_\delta$ set.
+
+(c) If $F : \mathbb{R}^n \to \mathbb{R}$ is differentiable at $\vec{a} \in \mathbb{R}^n$, then all first-order partial derivatives of $F$ at $\vec{a}$ exist.
+</Problem>
+
+<Solution>
+**Part (a):** **TRUE.** $[0, 1]$ is compact in $\mathbb{R}$. The continuous image of a compact set is compact: $f([0, 1])$ is compact in $\mathbb{R}$. Compact subsets of $\mathbb{R}$ (with Euclidean topology) are closed and bounded (Heine–Borel), hence closed.
+
+**Part (b):** **FALSE.** $\mathbb{R} \setminus \mathbb{Q}$ is a $G_\delta$ set. Enumerate $\mathbb{Q} = \{q_1, q_2, \ldots\}$. Then
+$$\mathbb{R} \setminus \mathbb{Q} = \bigcap_{n=1}^\infty (\mathbb{R} \setminus \{q_n\}),$$
+and each $\mathbb{R} \setminus \{q_n\}$ is open. So $\mathbb{R} \setminus \mathbb{Q}$ *is* a $G_\delta$ set. The statement is **TRUE**.
+
+**Part (c):** **TRUE.** If $F$ is differentiable at $\vec{a}$, then for each standard basis vector $\vec{e}_i$,
+$$\lim_{t \to 0} \frac{F(\vec{a} + t\vec{e}_i) - F(\vec{a})}{t} = DF(\vec{a})\vec{e}_i$$
+exists, which is exactly $\dfrac{\partial F}{\partial x_i}(\vec{a})$.
+
+To confirm: differentiability means $F(\vec{a} + \vec{h}) - F(\vec{a}) - DF(\vec{a})\vec{h} = o(\|\vec{h}\|)$. Taking $\vec{h} = t\vec{e}_i$:
+$$\frac{F(\vec{a} + t\vec{e}_i) - F(\vec{a})}{t} = \frac{DF(\vec{a})(t\vec{e}_i)}{t} + \frac{o(|t|)}{t} = DF(\vec{a})\vec{e}_i + o(1) \to DF(\vec{a})\vec{e}_i$$
+as $t \to 0$. So $\partial F/\partial x_i(\vec{a}) = DF(\vec{a})\vec{e}_i$ exists.
+</Solution>
+
+## Problem 4: Clairaut, Chain Rule
+
+<Problem title="Clairaut, Chain Rule">
+(a) Explain why there exists no $C^2$ function $f : \mathbb{R}^2 \to \mathbb{R}$ such that
+$$\frac{\partial f}{\partial x}(x, y) = e^y \quad \text{and} \quad \frac{\partial f}{\partial y}(x, y) = e^x.$$
+
+(b) Assume that $\varphi : \mathbb{R} \to \mathbb{R}$ is a differentiable function such that $\varphi'(0) = 10$. Let $h(s, t) = \varphi(3s - 4t)$. Explicitly write the derivative of $h$ at the point $(4, 3)$.
+</Problem>
+
+<Solution>
+**Part (a):** If such $f \in C^2$ exists, then by Clairaut's (Schwarz's) theorem, mixed partials are equal:
+$$\frac{\partial^2 f}{\partial y \partial x} = \frac{\partial^2 f}{\partial x \partial y}.$$
+
+Compute:
+$$\frac{\partial^2 f}{\partial y \partial x} = \frac{\partial}{\partial y}\left(\frac{\partial f}{\partial x}\right) = \frac{\partial}{\partial y}(e^y) = e^y.$$
+$$\frac{\partial^2 f}{\partial x \partial y} = \frac{\partial}{\partial x}\left(\frac{\partial f}{\partial y}\right) = \frac{\partial}{\partial x}(e^x) = e^x.$$
+
+But $e^y = e^x$ does not hold for all $(x, y) \in \mathbb{R}^2$ (e.g., at $(0, 1)$: $e \neq 1$). Contradiction, so no such $C^2$ function exists.
+
+**Part (b):** Let $u = 3s - 4t$. Then $h(s, t) = \varphi(u)$. By the chain rule:
+$$\frac{\partial h}{\partial s} = \varphi'(u) \cdot 3 = 3\varphi'(3s - 4t),$$
+$$\frac{\partial h}{\partial t} = \varphi'(u) \cdot (-4) = -4\varphi'(3s - 4t).$$
+
+At $(s, t) = (4, 3)$: $u = 3(4) - 4(3) = 12 - 12 = 0$, so $\varphi'(u) = \varphi'(0) = 10$.
+
+$$\frac{\partial h}{\partial s}(4, 3) = 3 \cdot 10 = 30, \quad \frac{\partial h}{\partial t}(4, 3) = -4 \cdot 10 = -40.$$
+
+The derivative of $h$ at $(4, 3)$ is the linear map $Dh(4, 3) : \mathbb{R}^2 \to \mathbb{R}$ given by the gradient:
+$$Dh(4, 3) = \nabla h(4, 3) = (30, -40),$$
+so $Dh(4, 3)(v_1, v_2) = 30 v_1 - 40 v_2$.
+</Solution>

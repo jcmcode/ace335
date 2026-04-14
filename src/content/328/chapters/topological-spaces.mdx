@@ -1,0 +1,365 @@
+---
+title: "Topological Spaces"
+chapter: 1
+---
+
+Real analysis, at its core, is the study of "closeness" — what it means for points to be near each other, for sequences to converge, and for functions to be continuous. In a first calculus course, closeness is measured by the absolute value $|x - y|$ on $\mathbb{R}$; in $\mathbb{R}^d$, by the Euclidean norm $\|\boldsymbol{x} - \boldsymbol{y}\|$. But these notions of distance are, in a sense, extra structure. The *deeper* structure underneath convergence and continuity is simply a choice of which subsets of the space count as "open."
+
+That choice is called a **topology**. A topological space is the most general setting in which limits, continuity, and neighbourhood make sense. Before diving into metric spaces (where a distance function generates a topology automatically), we take the abstract viewpoint so that we understand which results require distance and which are purely topological.
+
+---
+
+## Preliminaries: Power Sets and Set Notation
+
+<Definition title="Power Set">
+Let $X$ be a set. The **power set** of $X$, denoted $2^X$ (or sometimes $\mathcal{P}(X)$), is the set of all subsets of $X$:
+$$2^X = \{ A : A \subseteq X \}.$$
+</Definition>
+
+<Remark>
+**Intuition:** If $X$ has $n$ elements then $2^X$ has $2^n$ elements — one for each binary choice of "in/out" for each element of $X$. This is why the notation $2^X$ is standard. For an infinite set $X$, $2^X$ is strictly "larger" than $X$ (Cantor's theorem), which foreshadows the distinction between countable and uncountable sets.
+</Remark>
+
+Throughout this chapter we use $\subset$ and $\subseteq$ interchangeably to mean "is a subset of" (allowing equality). For a subset $A \subseteq X$, the **complement** of $A$ in $X$ is
+$$A^c = X \setminus A = \{ x \in X : x \notin A \}.$$
+
+Two identities we use constantly are **de Morgan's laws**: for any family $(A_\alpha)_{\alpha \in \mathcal{A}}$ of subsets of $X$,
+$$\left( \bigcup_{\alpha \in \mathcal{A}} A_\alpha \right)^c = \bigcap_{\alpha \in \mathcal{A}} A_\alpha^c, \qquad \left( \bigcap_{\alpha \in \mathcal{A}} A_\alpha \right)^c = \bigcup_{\alpha \in \mathcal{A}} A_\alpha^c.$$
+
+<Remark>
+**Aside on sigma-algebras.** A related but different structure on a set $X$ is a $\sigma$-algebra: a collection $\mathcal{F} \subseteq 2^X$ closed under complements, countable unions, and containing $\emptyset$ and $X$. Sigma-algebras are the foundation for measure theory. Topologies and $\sigma$-algebras share some flavour (closure under certain set operations) but differ in crucial ways: topologies allow arbitrary unions but only finite intersections; $\sigma$-algebras allow countable unions and countable intersections and require closure under complements. Do not conflate them.
+</Remark>
+
+---
+
+## Definition of a Topology
+
+<Definition title="Topology, Topological Space, Open Sets, Closed Sets">
+Let $X$ be a nonempty set. A collection $\mathcal{T} \subseteq 2^X$ is called a **topology on $X$** if and only if:
+
+1. $\emptyset \in \mathcal{T}$ and $X \in \mathcal{T}$.
+2. For every $\Omega_1, \Omega_2 \in \mathcal{T}$, we have $\Omega_1 \cap \Omega_2 \in \mathcal{T}$ (closure under *finite* intersections).
+3. For every family $(\Omega_\alpha)_{\alpha \in \mathcal{A}}$ with $\Omega_\alpha \in \mathcal{T}$ for all $\alpha$, we have $\bigcup_{\alpha \in \mathcal{A}} \Omega_\alpha \in \mathcal{T}$ (closure under *arbitrary* unions).
+
+The pair $(X, \mathcal{T})$ is called a **topological space**. Elements of $\mathcal{T}$ are called **open sets**. A subset $F \subseteq X$ is called a **closed set** if and only if $F^c = X \setminus F \in \mathcal{T}$.
+</Definition>
+
+<Remark>
+**Intuition:** A topology is a choice of which subsets we declare to be "open." The three axioms encode what we expect open sets to do: both the ambient space and nothing at all are open; intersecting two open sets leaves an open set; taking the union of *any* (even uncountably many) open sets keeps us open. Note the asymmetry — intersections are only guaranteed to stay open when *finitely* many sets are involved. We will see examples where an infinite intersection of open sets fails to be open.
+</Remark>
+
+<Remark>
+**Why these axioms?** The axioms are the minimal conditions needed so that the following familiar notions — limit of a sequence, continuity of a function, closure of a set — can be defined without any reference to distance. Everything in the first third of this course flows from these three bullet points.
+</Remark>
+
+### Closed Sets from the Topology
+
+Closed sets are not a separate structure; they are entirely determined by the topology. The behavior of closed sets is dual to that of open sets, as the next proposition shows.
+
+<Proposition title="Characterization of the Family of Closed Sets">
+Let $(X, \mathcal{T})$ be a topological space and let $\mathcal{F} = \{ F \subseteq X : F^c \in \mathcal{T} \}$ be the family of all closed sets. Then:
+
+1. $\emptyset \in \mathcal{F}$ and $X \in \mathcal{F}$.
+2. For every $F_1, F_2 \in \mathcal{F}$, we have $F_1 \cup F_2 \in \mathcal{F}$.
+3. For every family $(F_\alpha)_{\alpha \in \mathcal{A}}$ with $F_\alpha \in \mathcal{F}$ for all $\alpha$, we have $\bigcap_{\alpha \in \mathcal{A}} F_\alpha \in \mathcal{F}$.
+</Proposition>
+
+<Proof>
+We verify each property using the topology axioms and de Morgan's laws.
+
+**(1)** Since $\emptyset^c = X \in \mathcal{T}$, the set $\emptyset$ is closed. Since $X^c = \emptyset \in \mathcal{T}$, the set $X$ is closed.
+
+**(2)** Let $F_1, F_2 \in \mathcal{F}$, so $F_1^c, F_2^c \in \mathcal{T}$. By de Morgan's law,
+$$(F_1 \cup F_2)^c = F_1^c \cap F_2^c.$$
+By axiom 2 of the topology, $F_1^c \cap F_2^c \in \mathcal{T}$, so $(F_1 \cup F_2)^c \in \mathcal{T}$, which means $F_1 \cup F_2 \in \mathcal{F}$.
+
+**(3)** Let $(F_\alpha)_{\alpha \in \mathcal{A}}$ be a family of closed sets, so each $F_\alpha^c \in \mathcal{T}$. By de Morgan's law,
+$$\left( \bigcap_{\alpha} F_\alpha \right)^c = \bigcup_{\alpha} F_\alpha^c.$$
+By axiom 3 of the topology, $\bigcup_{\alpha} F_\alpha^c \in \mathcal{T}$, so the intersection $\bigcap_\alpha F_\alpha$ is closed.
+</Proof>
+
+<Remark>
+**Intuition:** The closed-set axioms mirror the open-set axioms with roles of union/intersection swapped. In particular, arbitrary *intersections* of closed sets are closed, but only *finite* unions of closed sets are guaranteed to be closed.
+</Remark>
+
+### Clopen Sets
+
+<Remark>
+In every topological space $(X, \mathcal{T})$, the sets $\emptyset$ and $X$ are both open (by axiom 1) and closed (by the proposition above). Sets that are simultaneously open and closed are called **clopen**. Depending on the topology, there can be many clopen sets or only the trivial ones $\emptyset$ and $X$.
+</Remark>
+
+---
+
+## Examples of Topologies
+
+The following four examples are the central ones to have in mind.
+
+<Example title="The Trivial (Indiscrete) Topology">
+For any nonempty set $X$, the collection
+$$\mathcal{T}_{\text{triv}} = \{ \emptyset, X \}$$
+is a topology on $X$. All three axioms are trivially satisfied. This is the **trivial** (or **indiscrete**) topology — the fewest possible open sets.
+
+In this topology, the only open sets are $\emptyset$ and $X$, and the only closed sets are likewise $\emptyset$ and $X$. Every pair of points is "topologically indistinguishable" in a sense we will make precise shortly (they cannot be separated by open sets).
+</Example>
+
+<Example title="The Discrete Topology">
+For any nonempty set $X$, the collection
+$$\mathcal{T}_{\text{disc}} = 2^X$$
+of *all* subsets of $X$ is a topology on $X$. The three axioms hold because every subset is declared open. This is the **discrete** topology — the most possible open sets.
+
+In the discrete topology, every subset is both open and closed (every subset is clopen). In particular, every singleton $\{x\}$ is open.
+</Example>
+
+<Example title="The Euclidean Topology on R to the n">
+Let $\mathbb{R}^n$ denote the set of $n$-tuples of real numbers, equipped with the Euclidean norm
+$$\|\boldsymbol{x}\| = \left( \sum_{j=1}^n x_j^2 \right)^{1/2}, \qquad \boldsymbol{x} = (x_1, \ldots, x_n) \in \mathbb{R}^n.$$
+For $\boldsymbol{x} \in \mathbb{R}^n$ and $r > 0$, define the **open ball** of radius $r$ centered at $\boldsymbol{x}$:
+$$B(\boldsymbol{x}, r) = \{ \boldsymbol{y} \in \mathbb{R}^n : \| \boldsymbol{y} - \boldsymbol{x} \| < r \}.$$
+Then define
+$$\mathcal{E} = \{ \Omega \subseteq \mathbb{R}^n : \forall \boldsymbol{x} \in \Omega, \, \exists \rho > 0 \text{ such that } B(\boldsymbol{x}, \rho) \subseteq \Omega \}.$$
+The collection $\mathcal{E}$ is the **Euclidean topology** on $\mathbb{R}^n$. This is exactly the usual definition of "open" from calculus: $\Omega$ is open if around every point in $\Omega$ there is some open ball entirely inside $\Omega$. When $n = 1$, we have $\|x\| = |x|$ and $B(x, r) = (x-r, x+r)$.
+</Example>
+
+<Theorem title="The Euclidean Topology is a Topology">
+The collection $\mathcal{E}$ defined above is a topology on $\mathbb{R}^n$.
+</Theorem>
+
+<Proof>
+We verify the three axioms.
+
+**(1) The empty set and the whole space are in $\mathcal{E}$.** The empty set satisfies the condition vacuously (there is no point to check). For $\mathbb{R}^n$, given any $\boldsymbol{x} \in \mathbb{R}^n$, we may take $\rho = 1$ and clearly $B(\boldsymbol{x}, 1) \subseteq \mathbb{R}^n$. So $\mathbb{R}^n \in \mathcal{E}$.
+
+**(2) Closure under finite intersections.** Let $\Omega_1, \Omega_2 \in \mathcal{E}$. We show $\Omega_1 \cap \Omega_2 \in \mathcal{E}$. If the intersection is empty we are done by (1). Otherwise, let $\boldsymbol{x} \in \Omega_1 \cap \Omega_2$. Since $\boldsymbol{x} \in \Omega_1 \in \mathcal{E}$, there exists $\rho_1 > 0$ with $B(\boldsymbol{x}, \rho_1) \subseteq \Omega_1$. Similarly there exists $\rho_2 > 0$ with $B(\boldsymbol{x}, \rho_2) \subseteq \Omega_2$. Set $\rho = \min\{\rho_1, \rho_2\} > 0$. Then
+$$B(\boldsymbol{x}, \rho) \subseteq B(\boldsymbol{x}, \rho_1) \cap B(\boldsymbol{x}, \rho_2) \subseteq \Omega_1 \cap \Omega_2.$$
+Since $\boldsymbol{x}$ was arbitrary, $\Omega_1 \cap \Omega_2 \in \mathcal{E}$.
+
+**(3) Closure under arbitrary unions.** Let $(\Omega_\alpha)_{\alpha \in \mathcal{A}}$ be a family with each $\Omega_\alpha \in \mathcal{E}$. We show $\Omega := \bigcup_\alpha \Omega_\alpha \in \mathcal{E}$. If $\Omega = \emptyset$ we are done. Otherwise, let $\boldsymbol{x} \in \Omega$. Then $\boldsymbol{x} \in \Omega_{\tilde\alpha}$ for some $\tilde\alpha \in \mathcal{A}$. Since $\Omega_{\tilde\alpha} \in \mathcal{E}$, there exists $\rho > 0$ with $B(\boldsymbol{x}, \rho) \subseteq \Omega_{\tilde\alpha} \subseteq \Omega$. Hence $\Omega \in \mathcal{E}$.
+</Proof>
+
+<Remark>
+**Intuition:** The Euclidean topology is what you were implicitly using in first-year calculus whenever you said "open interval" or "continuous function." The topological axioms above are the abstract distillation of exactly what makes proofs in calculus work.
+</Remark>
+
+<Example title="Open and Closed Sets in the Euclidean Topology on R">
+Consider $\mathbb{R}$ with the Euclidean topology $\mathcal{E}$.
+
+- For $a < b$, the interval $(a,b)$ is **open**. Given $x \in (a,b)$, set $\rho = \min\{x - a, b - x\} > 0$. Then $B(x, \rho) = (x - \rho, x + \rho) \subseteq (a,b)$.
+- For every $a \in \mathbb{R}$, the rays $(-\infty, a)$ and $(a, \infty)$ are open (similar argument).
+- For $a \le b$, the interval $[a,b]$ is **closed**. Its complement $[a,b]^c = (-\infty, a) \cup (b, \infty)$ is a union of two open sets, hence open.
+- The rays $(-\infty, a]$ and $[a, \infty)$ are closed (by similar complement arguments).
+- The half-open interval $[a,b)$ with $a < b$ is **neither open nor closed**. It is not open because $a \in [a,b)$ and for every $\rho > 0$, $B(a, \rho) = (a - \rho, a + \rho) \not\subseteq [a,b)$. It is not closed because its complement $(-\infty, a) \cup [b, \infty)$ is not open: $b \in [b, \infty)$ but $B(b, \rho) \not\subseteq (-\infty, a) \cup [b, \infty)$ for any $\rho > 0$.
+</Example>
+
+<Example title="The Cofinite Topology">
+Let $X$ be any nonempty set. Define
+$$\mathcal{T}_{\text{cofin}} = \{ \emptyset \} \cup \{ \Omega \subseteq X : X \setminus \Omega \text{ is finite} \}.$$
+One can verify that this is a topology: the empty set is in by definition; $X \setminus X = \emptyset$ is finite so $X$ is in; if $\Omega_1, \Omega_2$ have finite complements, then $(\Omega_1 \cap \Omega_2)^c = \Omega_1^c \cup \Omega_2^c$ is a union of two finite sets, hence finite; and an arbitrary union of sets with finite complements has a complement equal to the intersection of finite sets, which is finite. In the cofinite topology, the closed sets are exactly $X$ and the finite subsets of $X$.
+</Example>
+
+<Example title="A Non-Hausdorff Topology on R">
+On $\mathbb{R}$, define
+$$\mathcal{T}_{\text{lsc}} = \{ (a, \infty) : a \in \mathbb{R} \} \cup \{ \emptyset, \mathbb{R} \}.$$
+This is a topology (the subscript "lsc" hints at its connection to lower-semicontinuous functions):
+
+- $\emptyset, \mathbb{R} \in \mathcal{T}_{\text{lsc}}$ by definition.
+- Intersections: $(a_1, \infty) \cap (a_2, \infty) = (\max\{a_1, a_2\}, \infty) \in \mathcal{T}_{\text{lsc}}$, and intersections involving $\emptyset$ or $\mathbb{R}$ remain in the family.
+- Unions: a union of sets of the form $(a_\alpha, \infty)$ is either $\emptyset$, $\mathbb{R}$, or another ray $(a, \infty)$ where $a = \inf_\alpha a_\alpha$.
+
+This topology has far fewer open sets than the Euclidean topology. We will see that it is *not* Hausdorff — distinct points cannot be separated by disjoint open sets.
+</Example>
+
+---
+
+## Closure Under Intersections: Finite vs. Arbitrary
+
+The axioms of a topology allow *finite* intersections of open sets, but an infinite intersection of open sets may fail to be open. The following example in $(\mathbb{R}, \mathcal{E})$ illustrates this.
+
+<Example title="An Infinite Intersection of Open Sets Can Fail to be Open">
+For each $k \in \mathbb{Z}_{>0}$, the set $\left( -\tfrac{1}{k}, \tfrac{1}{k} \right)$ is open in $\mathbb{R}$. Their intersection is
+$$\bigcap_{k=1}^\infty \left( -\tfrac{1}{k}, \tfrac{1}{k} \right) = \{0\},$$
+which is a single point. In $(\mathbb{R}, \mathcal{E})$, the singleton $\{0\}$ is **not** open — there is no $\rho > 0$ with $B(0, \rho) = (-\rho, \rho) \subseteq \{0\}$. So the intersection of infinitely many open sets need not be open.
+
+Similarly, an infinite union of closed sets need not be closed. Each closed ball $\overline{B}_{(k-1)/k}(\boldsymbol{x}) = \{ \boldsymbol{y} : \| \boldsymbol{y} - \boldsymbol{x} \| \le (k-1)/k \}$ is closed, but
+$$\bigcup_{k=1}^\infty \overline{B}_{(k-1)/k}(\boldsymbol{x}) = B_1(\boldsymbol{x}),$$
+which is the open ball of radius 1 — not closed.
+</Example>
+
+---
+
+## Neighbourhoods
+
+<Definition title="Neighbourhood">
+Let $(X, \mathcal{T})$ be a topological space and let $x \in X$. A subset $V \subseteq X$ is called a **neighbourhood of $x$** (in the topology $\mathcal{T}$) if and only if there exists $\Omega \in \mathcal{T}$ such that
+$$x \in \Omega \subseteq V.$$
+Given $x \in X$, we denote by $\mathcal{U}_x$ the family of all neighbourhoods of $x$ in the topology $\mathcal{T}$.
+</Definition>
+
+<Remark>
+**Intuition:** A neighbourhood of $x$ is any set "fat enough around $x$" to contain an open set through $x$. Neighbourhoods need not themselves be open — for instance, in $\mathbb{R}$, the closed interval $[-1, 1]$ is a neighbourhood of 0 because it contains the open interval $(-1, 1) \ni 0$.
+</Remark>
+
+The family $\mathcal{U}_x$ has four basic properties:
+
+1. $V \in \mathcal{U}_x \implies x \in V$.
+2. If $V \in \mathcal{U}_x$ and $W \supseteq V$, then $W \in \mathcal{U}_x$.
+3. $V_1, V_2 \in \mathcal{U}_x \implies V_1 \cap V_2 \in \mathcal{U}_x$.
+4. For every $V \in \mathcal{U}_x$, there exists $W \in \mathcal{U}_x$ such that $V \in \mathcal{U}_y$ for every $y \in W$.
+
+Properties (1)–(3) are immediate from the definition. Property (4) says: every neighbourhood of $x$ is a neighbourhood of all points in some smaller neighbourhood. To see this, let $V \in \mathcal{U}_x$; by definition there exists $W \in \mathcal{T}$ with $x \in W \subseteq V$. Then $W \in \mathcal{U}_x$, and for every $y \in W$, $W$ is an open set containing $y$ with $W \subseteq V$, so $V \in \mathcal{U}_y$.
+
+<Proposition title="Openness via Neighbourhoods">
+Let $(X, \mathcal{T})$ be a topological space and let $\Omega \subseteq X$. Then
+$$\Omega \in \mathcal{T} \iff \Omega \in \mathcal{U}_x \text{ for every } x \in \Omega.$$
+In words: a set is open if and only if it is a neighbourhood of each of its points.
+</Proposition>
+
+<Proof>
+**($\Rightarrow$)** If $\Omega \in \mathcal{T}$, then for each $x \in \Omega$, the set $\Omega$ itself is an open set containing $x$ and contained in $\Omega$, so $\Omega \in \mathcal{U}_x$.
+
+**($\Leftarrow$)** Suppose $\Omega \in \mathcal{U}_x$ for every $x \in \Omega$. By definition of neighbourhood, for each $x \in \Omega$ there exists $\Lambda_x \in \mathcal{T}$ with $x \in \Lambda_x \subseteq \Omega$. Then
+$$\Omega = \bigcup_{x \in \Omega} \Lambda_x,$$
+which is a union of open sets and therefore belongs to $\mathcal{T}$ by the third topology axiom.
+</Proof>
+
+<Remark>
+**Hausdorff's viewpoint.** Specifying, for each $x \in X$, a family $\mathcal{U}_x$ of subsets satisfying properties (1)–(4), determines a unique topology $\mathcal{T}$ on $X$ such that $\mathcal{U}_x$ is the system of neighbourhoods of $x$ in the topology $\mathcal{T}$. This was the approach Felix Hausdorff (1868–1942) took to define topological spaces in 1914. Modern treatments favour the open-set axioms, but the two approaches are equivalent.
+</Remark>
+
+---
+
+## Hausdorff Spaces
+
+<Definition title="Hausdorff Space">
+A topological space $(X, \mathcal{T})$ is called a **Hausdorff space** (or $T_2$-space) if and only if for every $x, y \in X$ with $x \ne y$, there exist $V \in \mathcal{U}_x$ and $W \in \mathcal{U}_y$ such that $V \cap W = \emptyset$.
+</Definition>
+
+<Remark>
+**Intuition:** In a Hausdorff space, distinct points can be "separated" by disjoint neighbourhoods. This is the minimum amount of separation we generally want to do analysis: without it, limits of sequences might fail to be unique, and points might be topologically indistinguishable. Almost every space arising in practice (every metric space, in particular) is Hausdorff.
+</Remark>
+
+<Example title="A Non-Hausdorff Topology">
+Consider $(\mathbb{R}, \mathcal{T}_{\text{lsc}})$ from earlier. This is *not* Hausdorff: let $x, y \in \mathbb{R}$ with $x < y$. Every nonempty proper open set in $\mathcal{T}_{\text{lsc}}$ is of the form $(a, \infty)$. Every neighbourhood of $x$ must contain some $(a, \infty)$ with $a < x$, and therefore contains all of $(x, \infty)$, which in turn contains $y$. So every neighbourhood of $x$ and every neighbourhood of $y$ both contain the interval $(y, \infty)$ and cannot be disjoint.
+
+Similarly, if $X$ has at least two elements, the trivial topology $(X, \{\emptyset, X\})$ is not Hausdorff, since the only neighbourhood of any point is $X$ itself.
+</Example>
+
+---
+
+## Bases for a Topology
+
+Sometimes it is inconvenient to describe a topology by listing every open set; instead, we describe a smaller collection from which all open sets can be built by unions.
+
+<Definition title="Basis for a Topology">
+Let $X$ be a nonempty set. A collection $\mathcal{B} \subseteq 2^X$ is a **basis for a topology on $X$** if:
+
+1. For every $x \in X$, there exists $B \in \mathcal{B}$ with $x \in B$ (the basis covers $X$).
+2. For every $B_1, B_2 \in \mathcal{B}$ and every $x \in B_1 \cap B_2$, there exists $B_3 \in \mathcal{B}$ with $x \in B_3 \subseteq B_1 \cap B_2$.
+
+The **topology generated by $\mathcal{B}$** is
+$$\mathcal{T}_\mathcal{B} = \{ \Omega \subseteq X : \forall x \in \Omega, \, \exists B \in \mathcal{B} \text{ with } x \in B \subseteq \Omega \}.$$
+Equivalently, $\Omega \in \mathcal{T}_\mathcal{B}$ if and only if $\Omega$ is a union of elements of $\mathcal{B}$.
+</Definition>
+
+<Remark>
+**Intuition:** A basis is a "generating set" for a topology. The Euclidean topology on $\mathbb{R}^n$ is generated by the collection of all open balls $\{ B(\boldsymbol{x}, r) : \boldsymbol{x} \in \mathbb{R}^n, \, r > 0 \}$ — every open set is a union of open balls, and this is often an easier way to describe the topology than specifying every open set directly. The axioms on $\mathcal{B}$ guarantee that the generated $\mathcal{T}_\mathcal{B}$ is genuinely a topology.
+</Remark>
+
+<Proposition title="Open Balls Form a Basis for the Euclidean Topology">
+The collection $\mathcal{B} = \{ B(\boldsymbol{x}, r) : \boldsymbol{x} \in \mathbb{R}^n, \, r > 0 \}$ is a basis, and the topology it generates is the Euclidean topology $\mathcal{E}$.
+</Proposition>
+
+<Proof>
+We check the basis axioms. For (1), every $\boldsymbol{x} \in \mathbb{R}^n$ satisfies $\boldsymbol{x} \in B(\boldsymbol{x}, 1) \in \mathcal{B}$. For (2), let $B(\boldsymbol{x}_1, r_1)$ and $B(\boldsymbol{x}_2, r_2)$ be two basis elements and suppose $\boldsymbol{y} \in B(\boldsymbol{x}_1, r_1) \cap B(\boldsymbol{x}_2, r_2)$. Set $s = \min\{ r_1 - \|\boldsymbol{y} - \boldsymbol{x}_1\|, \, r_2 - \|\boldsymbol{y} - \boldsymbol{x}_2\|\} > 0$. Then $B(\boldsymbol{y}, s) \subseteq B(\boldsymbol{x}_1, r_1) \cap B(\boldsymbol{x}_2, r_2)$ by the triangle inequality.
+
+To see the generated topology equals $\mathcal{E}$: a set $\Omega$ belongs to $\mathcal{T}_\mathcal{B}$ iff for every $\boldsymbol{x} \in \Omega$ there is some ball $B(\boldsymbol{y}, r) \in \mathcal{B}$ with $\boldsymbol{x} \in B(\boldsymbol{y}, r) \subseteq \Omega$. Shrinking that ball around $\boldsymbol{x}$ itself (with a radius smaller than $r - \|\boldsymbol{x} - \boldsymbol{y}\|$) gives a ball centered at $\boldsymbol{x}$ contained in $\Omega$, which is exactly the Euclidean openness condition.
+</Proof>
+
+---
+
+## The Subspace (Relative) Topology
+
+Given a topological space, any subset inherits a natural topology.
+
+<Definition title="Subspace Topology">
+Let $(X, \mathcal{T})$ be a topological space and let $A \subseteq X$. The **subspace topology** (or **relative topology**, or **induced topology**) on $A$ is
+$$\mathcal{T}_A = \{ A \cap \Omega : \Omega \in \mathcal{T} \}.$$
+Sets in $\mathcal{T}_A$ are called **open relative to $A$** (or **open in $A$**).
+</Definition>
+
+<Proposition title="The Subspace Topology is a Topology">
+$\mathcal{T}_A$ is a topology on $A$.
+</Proposition>
+
+<Proof>
+**(1)** $\emptyset = A \cap \emptyset \in \mathcal{T}_A$ since $\emptyset \in \mathcal{T}$. $A = A \cap X \in \mathcal{T}_A$ since $X \in \mathcal{T}$.
+
+**(2)** If $A \cap \Omega_1, A \cap \Omega_2 \in \mathcal{T}_A$ with $\Omega_1, \Omega_2 \in \mathcal{T}$, then
+$$(A \cap \Omega_1) \cap (A \cap \Omega_2) = A \cap (\Omega_1 \cap \Omega_2) \in \mathcal{T}_A,$$
+since $\Omega_1 \cap \Omega_2 \in \mathcal{T}$.
+
+**(3)** If $(A \cap \Omega_\alpha)_{\alpha \in \mathcal{A}}$ is a family in $\mathcal{T}_A$, then
+$$\bigcup_\alpha (A \cap \Omega_\alpha) = A \cap \bigcup_\alpha \Omega_\alpha \in \mathcal{T}_A,$$
+since $\bigcup_\alpha \Omega_\alpha \in \mathcal{T}$.
+</Proof>
+
+<Remark>
+**Intuition:** The subspace topology is exactly the "restriction" of the topology on $X$ to $A$: a set is open in $A$ iff it is the intersection of $A$ with an open set from $X$. Concretely, $[0, \tfrac12)$ is open in the subspace $[0, 1]$ of $\mathbb{R}$ (it's the intersection of $[0,1]$ with the open set $(-1, \tfrac12)$), even though it's not open in $\mathbb{R}$. The closed sets in $\mathcal{T}_A$ are exactly the sets of the form $A \cap F$ where $F$ is closed in $X$.
+</Remark>
+
+---
+
+## Continuity Between Topological Spaces
+
+We close the chapter with one of the central definitions of topology — continuity — formulated purely in terms of open sets.
+
+<Definition title="Continuity at a Point">
+Let $(X, \mathcal{T})$ and $(Y, \mathcal{S})$ be topological spaces, let $A \subseteq X$, let $a \in A$, and let $f : A \to Y$ be a function. We say $f$ is **continuous at $a$** if and only if
+$$\forall V \in \mathcal{U}_{f(a)}, \, \exists W \in \mathcal{U}_a \text{ such that } f(A \cap W) \subseteq V.$$
+We say $f$ is **continuous** if it is continuous at every $a \in A$.
+</Definition>
+
+<Remark>
+**Intuition:** The definition says: given any target neighbourhood $V$ of the value $f(a)$, we can find a source neighbourhood $W$ of $a$ so small that $f$ maps $A \cap W$ entirely inside $V$. This is the topological rendering of the $\varepsilon$-$\delta$ definition — the $\varepsilon$-ball around $f(a)$ becomes "any neighbourhood $V$" and the $\delta$-ball around $a$ becomes "some neighbourhood $W$."
+</Remark>
+
+<Remark>
+**Isolated points.** If $a \in A$ is *isolated* (i.e., $\{a\}$ is open in the subspace topology $\mathcal{T}_A$), then $f$ is automatically continuous at $a$: take $W$ to be the open set witnessing that $\{a\}$ is open in $A$; then $A \cap W = \{a\}$, so $f(A \cap W) = \{f(a)\} \subseteq V$ for every $V \in \mathcal{U}_{f(a)}$. So every function is continuous at every isolated point of its domain.
+</Remark>
+
+<Theorem title="Continuity via Preimages of Open Sets">
+Let $(X, \mathcal{T})$ and $(Y, \mathcal{S})$ be topological spaces, let $A \subseteq X$, and let $f : A \to Y$. Then $f$ is continuous if and only if for every $O \in \mathcal{S}$ there exists $\Omega \in \mathcal{T}$ such that
+$$f^{-1}(O) = A \cap \Omega.$$
+In words: $f$ is continuous if and only if the preimage of every open set in $Y$ is *relatively* open in $A$.
+</Theorem>
+
+<Proof>
+**($\Rightarrow$)** Suppose $f$ is continuous. Let $O \in \mathcal{S}$. If $f^{-1}(O) = \emptyset$, take $\Omega = \emptyset$; then $f^{-1}(O) = \emptyset = A \cap \emptyset$.
+
+If $f^{-1}(O) \ne \emptyset$, let $x \in f^{-1}(O)$. Then $f(x) \in O$, and since $O$ is open, $O \in \mathcal{U}_{f(x)}$. By continuity of $f$ at $x$, there exists $W_x \in \mathcal{U}_x$ such that $f(A \cap W_x) \subseteq O$. By definition of neighbourhood, there exists $\Omega_x \in \mathcal{T}$ with $x \in \Omega_x \subseteq W_x$. Define
+$$\Omega = \bigcup_{x \in f^{-1}(O)} \Omega_x \in \mathcal{T}.$$
+We claim $f^{-1}(O) = A \cap \Omega$.
+
+*($\subseteq$)* If $x \in f^{-1}(O)$, then $x \in \Omega_x \subseteq \Omega$, and $x \in A$ (since $f^{-1}(O) \subseteq A$), so $x \in A \cap \Omega$.
+
+*($\supseteq$)* If $y \in A \cap \Omega$, then $y \in \Omega_x$ for some $x \in f^{-1}(O)$. Hence $y \in A \cap \Omega_x \subseteq A \cap W_x$, and $f(y) \in f(A \cap W_x) \subseteq O$, so $y \in f^{-1}(O)$.
+
+**($\Leftarrow$)** Suppose the preimage condition holds. Fix $a \in A$ and let $V \in \mathcal{U}_{f(a)}$. By definition there exists $O \in \mathcal{S}$ with $f(a) \in O \subseteq V$. By hypothesis, there exists $\Omega \in \mathcal{T}$ with $f^{-1}(O) = A \cap \Omega$. Since $a \in f^{-1}(O)$, we have $a \in \Omega$, so $\Omega \in \mathcal{U}_a$. Taking $W = \Omega$, we have $f(A \cap W) = f(A \cap \Omega) = f(f^{-1}(O)) \subseteq O \subseteq V$. Hence $f$ is continuous at $a$, and since $a$ was arbitrary, $f$ is continuous.
+</Proof>
+
+<Remark>
+**Intuition:** The preimage characterization is usually the most convenient definition to work with. Observe that the condition is "$f^{-1}(O)$ is relatively open in $A$," not "$f^{-1}(O)$ is open in $X$" — this is because the domain of $f$ is $A$, not all of $X$. When $A = X$, the condition simplifies to "$f^{-1}(O) \in \mathcal{T}$ for every $O \in \mathcal{S}$."
+</Remark>
+
+<Corollary title="Composition of Continuous Functions is Continuous">
+Let $(X, \mathcal{T})$, $(Y, \mathcal{S})$, $(Z, \mathcal{R})$ be topological spaces and let $f : X \to Y$ and $g : Y \to Z$ be continuous. Then $g \circ f : X \to Z$ is continuous.
+</Corollary>
+
+<Proof>
+Let $O \in \mathcal{R}$. Then $g^{-1}(O) \in \mathcal{S}$ by continuity of $g$. Then $(g \circ f)^{-1}(O) = f^{-1}(g^{-1}(O)) \in \mathcal{T}$ by continuity of $f$. Thus preimages of open sets are open, so $g \circ f$ is continuous.
+</Proof>
+
+---
+
+## Looking Ahead
+
+We have developed the abstract framework of topology. The next step is to specialize: most topological spaces encountered in analysis come equipped with a distance function (a **metric**), which automatically generates a topology through open balls. Metric spaces are the subject of the next chapter, and they form the arena for most of the rest of real analysis — sequences, completeness, compactness, and the basic theorems of calculus all live most naturally there.

@@ -1,0 +1,340 @@
+---
+title: "Connectedness"
+chapter: 8
+---
+
+## Introduction
+
+Connectedness is the topological formalization of the intuition that a space is "all in one piece." Unlike compactness, which is a finiteness property, connectedness is a *non-decomposability* property: a set is connected if it cannot be split into two disjoint open pieces in a nontrivial way. This chapter develops the theory and its two most important consequences: the classification of connected subsets of $\mathbb{R}$ as exactly the intervals, and the intermediate value theorem.
+
+We also introduce the related notion of path connectedness -- "any two points can be joined by a curve" -- which is strictly stronger than connectedness. The canonical counterexample, the topologist's sine curve, illustrates how a connected set can nevertheless fail to be path connected. We close with connected components and local connectedness, which describe how arbitrary spaces can be decomposed into maximal connected pieces.
+
+---
+
+## The Definition
+
+<Definition title="Separation and Connected Set">
+Let $X$ be a topological space and $A \subseteq X$. A **separation** of $A$ is a pair of open sets $U, V \subseteq X$ such that:
+- $A \cap U \neq \emptyset$ and $A \cap V \neq \emptyset$,
+- $A \cap U \cap V = \emptyset$,
+- $A \subseteq U \cup V$.
+
+The set $A$ is **disconnected** if a separation exists, and **connected** otherwise. Equivalently, $A$ is connected if whenever $A \subseteq U \cup V$ with $U, V$ open in $X$, $A \cap U \cap V = \emptyset$, and $A \cap U, A \cap V$ both nonempty, we have a contradiction.
+</Definition>
+
+<Remark>
+**Intuition:** Imagine $A$ is a physical shape, and open sets are regions of a room. $A$ is disconnected if you can draw two disjoint open regions each containing a piece of $A$ and together containing all of $A$. Then $A$ visibly splits into "the part in $U$" and "the part in $V$." Connectedness is the negation: no such split exists, so $A$ really is one piece. The definition is subtle because $U$ and $V$ are open in the *ambient* space $X$; we want them to intersect $A$ nontrivially but not overlap inside $A$. It is equivalent (and often more convenient) to work intrinsically inside $A$ with its subspace topology, where a separation becomes a pair of nonempty, disjoint, relatively open sets covering $A$.
+</Remark>
+
+<Definition title="Intrinsic Formulation">
+Equivalently, a topological space $A$ is connected if the only subsets of $A$ that are both open and closed (**clopen**) are $\emptyset$ and $A$ itself. Indeed, if $U \subseteq A$ is clopen with $\emptyset \neq U \neq A$, then $\{U, A \setminus U\}$ is a separation; conversely a separation $\{A \cap U, A \cap V\}$ consists of two disjoint nonempty relatively open sets that are also closed in $A$ (each being the complement of the other in $A$).
+</Definition>
+
+<Remark>
+**Intuition:** Clopen sets are the ambiguous sets -- both open and closed. In a connected space the only ambiguous sets are the two trivial ones, $\emptyset$ and the whole space. If a nontrivial clopen set $U$ existed, it and its complement would form a partition into two open pieces -- a separation. This characterization is often the cleanest one to apply: to prove a space is connected, assume a clopen set $U$ exists and show it must be all or nothing.
+</Remark>
+
+<Example>
+The set $A = [0, 1] \cup [2, 3] \subseteq \mathbb{R}$ is disconnected: take $U = (-\infty, 1.5)$ and $V = (1.5, \infty)$. Then $A \cap U = [0, 1]$, $A \cap V = [2, 3]$, both nonempty; $A \cap U \cap V = \emptyset$; $A \subseteq U \cup V$.
+</Example>
+
+<Example>
+The set $\mathbb{Q} \subseteq \mathbb{R}$ is disconnected. Take $U = (-\infty, \sqrt 2)$ and $V = (\sqrt 2, \infty)$. Both are open in $\mathbb{R}$, together cover $\mathbb{Q}$ (since $\sqrt 2 \notin \mathbb{Q}$), meet $\mathbb{Q}$ nontrivially, and $U \cap V = \emptyset$. In fact $\mathbb{Q}$ is *totally disconnected*: any subset with more than one point is disconnected by an irrational cut.
+</Example>
+
+---
+
+## Connected Subsets of $\mathbb{R}$
+
+The archetypal connected sets are intervals. Recall that an interval is a subset $I \subseteq \mathbb{R}$ such that whenever $a, b \in I$ and $a < c < b$, we have $c \in I$. Intervals include $\emptyset$, singletons, and the standard types $(a, b)$, $[a, b]$, $(a, b]$, $[a, b)$, $(-\infty, b)$, $[a, \infty)$, $(-\infty, \infty)$, and so on.
+
+<Theorem title="Intervals in ℝ Are Connected">
+Every interval $I \subseteq \mathbb{R}$ is connected.
+</Theorem>
+
+<Proof>
+If $I$ has at most one point, the result is clear: there is no way to partition a one-point set into two nonempty pieces. Assume $I$ has at least two points and suppose, for contradiction, that $I = (I \cap U) \cup (I \cap V)$ is a separation, with $U, V$ open in $\mathbb{R}$, $I \cap U \cap V = \emptyset$, and both $I \cap U$, $I \cap V$ nonempty.
+
+Pick $a \in I \cap U$ and $b \in I \cap V$. Without loss of generality $a < b$. Since $I$ is an interval, $[a, b] \subseteq I$. Define
+$$c = \sup\{x \in [a, b] : x \in U\}.$$
+This set contains $a$ and is bounded above by $b$, so $c$ exists and $c \in [a, b] \subseteq I$.
+
+Either $c \in I \cap U$ or $c \in I \cap V$ (since these cover $I$ disjointly).
+
+**Case 1: $c \in I \cap U$.** Then $c \in U$, and $U$ is open, so there is $\varepsilon > 0$ with $(c - \varepsilon, c + \varepsilon) \subseteq U$. We must have $c < b$ (since $b \in V$, not $U$, so $b \neq c$). Shrinking $\varepsilon$ we can assume $c + \varepsilon < b$. Then $c + \varepsilon/2 \in [a, b]$ and $c + \varepsilon/2 \in U$, contradicting $c = \sup\{x \in [a, b] : x \in U\}$.
+
+**Case 2: $c \in I \cap V$.** Then $c \in V$, and $V$ is open, so there is $\varepsilon > 0$ with $(c - \varepsilon, c + \varepsilon) \subseteq V$. Necessarily $c > a$ (since $a \in U$ has some $U$-neighborhood contained in $U$, so $c \ge a$ is not sharp -- in particular the sup is at least $a$ plus something). Shrinking $\varepsilon$, assume $c - \varepsilon > a$. By definition of supremum there is $x \in [a, b] \cap U$ with $c - \varepsilon < x \le c$. But then $x \in U \cap V$, contradicting $I \cap U \cap V = \emptyset$ (note $x \in [a, b] \subseteq I$).
+
+Both cases yield contradictions, so no separation exists and $I$ is connected.
+</Proof>
+
+<Remark>
+**Intuition:** The proof formalizes the idea that an interval has no gaps. If we tried to split $[a, b]$ into a piece near $a$ (in $U$) and a piece near $b$ (in $V$), the least upper bound $c$ of the $U$-piece would have to land in one of the two sets, but openness of that set forces the bound to be beatable in a contradictory way. The argument is essentially the intermediate value theorem in disguise, and it uses the least upper bound property of $\mathbb{R}$ -- the completeness of the real line is really what makes intervals connected.
+</Remark>
+
+<Theorem title="Connected Subsets of ℝ Are Intervals">
+A subset $A \subseteq \mathbb{R}$ with at least two points is connected if and only if $A$ is an interval.
+</Theorem>
+
+<Proof>
+The preceding theorem gives one direction. For the other, suppose $A$ is not an interval. Then there exist $a, b \in A$ with $a < b$ and some $c \in (a, b)$ with $c \notin A$. Take $U = (-\infty, c)$ and $V = (c, \infty)$. Both are open in $\mathbb{R}$; $a \in A \cap U$ and $b \in A \cap V$, so both intersections are nonempty; $U \cap V = \emptyset$; and $A \subseteq \mathbb{R} \setminus \{c\} = U \cup V$. This is a separation, so $A$ is disconnected.
+</Proof>
+
+<Remark>
+**Intuition:** The connected subsets of $\mathbb{R}$ are precisely the convex ones -- the intervals. Any "hole" in a set allows us to slide a separating cut through it. This makes $\mathbb{R}$ a very well-behaved space for connectedness: we have a complete classification. In $\mathbb{R}^2$ the situation is much richer: connected sets can be spirals, comb shapes, or the topologist's sine curve.
+</Remark>
+
+---
+
+## Continuous Images of Connected Sets
+
+<Theorem title="Continuous Image of a Connected Set Is Connected">
+Let $X, Y$ be topological spaces, $A \subseteq X$ connected, and $f : X \to Y$ continuous (on $A$). Then $f(A) \subseteq Y$ is connected.
+</Theorem>
+
+<Proof>
+Suppose for contradiction $f(A)$ has a separation $\{f(A) \cap U, f(A) \cap V\}$ with $U, V$ open in $Y$, $f(A) \cap U \cap V = \emptyset$, and both intersections nonempty. By continuity $f^{-1}(U)$ and $f^{-1}(V)$ are open in $X$. Consider their restrictions to $A$:
+- $A \cap f^{-1}(U) \neq \emptyset$: pick $y \in f(A) \cap U$, write $y = f(x)$ with $x \in A$; then $x \in A \cap f^{-1}(U)$.
+- Similarly $A \cap f^{-1}(V) \neq \emptyset$.
+- $A \cap f^{-1}(U) \cap f^{-1}(V) = A \cap f^{-1}(U \cap V) = \emptyset$: if $x \in A$ and $f(x) \in U \cap V$, then $f(x) \in f(A) \cap U \cap V = \emptyset$, impossible.
+- $A \subseteq f^{-1}(f(A)) \subseteq f^{-1}(U \cup V) = f^{-1}(U) \cup f^{-1}(V)$.
+
+So $\{A \cap f^{-1}(U), A \cap f^{-1}(V)\}$ is a separation of $A$, contradicting connectedness.
+</Proof>
+
+<Remark>
+**Intuition:** Continuous functions cannot tear things apart. If they could produce a disconnected image from a connected domain, pulling back the separation would split the domain, contradicting connectedness. This is the topological analogue of the fact that a continuous deformation cannot break a single piece into multiple pieces, and it underlies many existence proofs in analysis.
+</Remark>
+
+---
+
+## The Intermediate Value Theorem
+
+<Theorem title="Intermediate Value Theorem">
+Let $f : [a, b] \to \mathbb{R}$ be continuous and let $y$ lie between $f(a)$ and $f(b)$ (that is, $f(a) \le y \le f(b)$ or $f(b) \le y \le f(a)$). Then there exists $c \in [a, b]$ with $f(c) = y$.
+</Theorem>
+
+<Proof>
+The interval $[a, b]$ is connected, so by the preceding theorem $f([a, b]) \subseteq \mathbb{R}$ is connected. By the classification of connected subsets of $\mathbb{R}$, $f([a, b])$ is an interval.
+
+Now $f(a), f(b) \in f([a, b])$, and $y$ lies between them. By the defining property of an interval (containing $c$ whenever it contains two points $u < v$ with $u \le c \le v$), we have $y \in f([a, b])$. Hence $y = f(c)$ for some $c \in [a, b]$.
+</Proof>
+
+<Remark>
+**Intuition:** The IVT is perhaps the most famous consequence of connectedness. It says a continuous function cannot skip values: to go from $f(a)$ to $f(b)$, the graph must pass through every intermediate value. The proof via connectedness is elegant and conceptual: continuous image of a connected interval is a connected subset of $\mathbb{R}$, which is an interval, which contains every point between its endpoints. The usual first-year calculus proof using a bisection argument and the least upper bound property is really just the interval-connectedness proof in disguise.
+</Remark>
+
+<Corollary title="Continuous Functions on Intervals Take Interval Values">
+If $I \subseteq \mathbb{R}$ is any interval and $f : I \to \mathbb{R}$ is continuous, then $f(I)$ is an interval.
+</Corollary>
+
+<Proof>
+Intervals are connected; continuous images of connected sets are connected; connected subsets of $\mathbb{R}$ are intervals.
+</Proof>
+
+---
+
+## Unions of Connected Sets
+
+<Theorem title="Union of Connected Sets with Common Point Is Connected">
+Let $\{A_\alpha\}_{\alpha \in I}$ be a family of connected subsets of a topological space $X$ such that $\bigcap_{\alpha \in I} A_\alpha \neq \emptyset$. Then $A = \bigcup_{\alpha \in I} A_\alpha$ is connected.
+</Theorem>
+
+<Proof>
+Pick $p \in \bigcap_\alpha A_\alpha$. Suppose for contradiction $\{A \cap U, A \cap V\}$ is a separation of $A$, with $U, V$ open in $X$ and the usual conditions. Then $p$ is in exactly one of $U, V$ -- say $p \in U$.
+
+For each $\alpha$, consider $\{A_\alpha \cap U, A_\alpha \cap V\}$. We have:
+- $A_\alpha \cap U \neq \emptyset$: contains $p$.
+- $A_\alpha \cap U \cap V \subseteq A \cap U \cap V = \emptyset$.
+- $A_\alpha \subseteq A \subseteq U \cup V$.
+
+So if $A_\alpha \cap V \neq \emptyset$, this is a separation of $A_\alpha$, contradicting connectedness. Hence $A_\alpha \cap V = \emptyset$ for every $\alpha$. Taking the union, $A \cap V = \emptyset$, contradicting the assumption that $A \cap V$ is nonempty in the separation.
+</Proof>
+
+<Remark>
+**Intuition:** A "bouquet" of connected sets pinned together at a common point is still connected. The shared point prevents any separation from splitting the bouquet into two disjoint pieces -- wherever the point goes, each component of the bouquet must go with it (since each $A_\alpha$ is connected and contains the point). This is the main tool for building connected sets and is used, for instance, to show path-connected sets are connected.
+</Remark>
+
+<Corollary title="Closure of a Connected Set Is Connected">
+If $A \subseteq X$ is connected then so is any set $B$ with $A \subseteq B \subseteq \overline{A}$. In particular, $\overline{A}$ is connected.
+</Corollary>
+
+<Proof>
+Suppose $\{B \cap U, B \cap V\}$ is a separation of $B$. Since $A \subseteq B$ and $U \cap V \cap B = \emptyset$, we have $A \cap U \cap V = \emptyset$, and $A \subseteq U \cup V$.
+
+Suppose for contradiction $A \cap U = \emptyset$. Then $A \subseteq V$. Since $V$ is open, $U^c$ is closed, and $A \subseteq V \subseteq U^c$ implies $\overline{A} \subseteq U^c$, i.e. $\overline{A} \cap U = \emptyset$. Hence $B \cap U \subseteq \overline{A} \cap U = \emptyset$, contradicting the fact that $B \cap U$ is nonempty in the separation.
+
+By symmetry $A \cap V \neq \emptyset$ as well. But then $\{A \cap U, A \cap V\}$ is a separation of $A$, contradicting connectedness of $A$. So no separation of $B$ exists.
+</Proof>
+
+<Remark>
+**Intuition:** Adding limit points to a connected set preserves connectedness. This is useful: we can pass from a connected set to its closure without losing the one-piece property. It is why we often define connectedness of sets via the "two relatively open, disjoint, nonempty pieces" formulation -- closures are naturally closed, and closed sets enter the picture when taking unions or limits.
+</Remark>
+
+---
+
+## Path Connectedness
+
+<Definition title="Path and Path Connected Set">
+Let $X$ be a topological space and $a, b \in X$. A **path from $a$ to $b$** is a continuous function $\gamma : [0, 1] \to X$ with $\gamma(0) = a$ and $\gamma(1) = b$. A set $A \subseteq X$ is **path connected** if every pair of points $a, b \in A$ admits a path $\gamma : [0, 1] \to A$ from $a$ to $b$ (i.e. with image in $A$).
+</Definition>
+
+<Remark>
+**Intuition:** Path connectedness is the naive, geometric notion of "in one piece" -- you can walk continuously from any point to any other without leaving the set. This is the condition you typically visualize. It is stronger than connectedness: any path-connected set is connected, but the converse fails, as we will see with the topologist's sine curve.
+</Remark>
+
+<Theorem title="Path Connected Implies Connected">
+Every path connected set $A$ is connected.
+</Theorem>
+
+<Proof>
+If $A$ is empty the statement is trivial. Otherwise fix a basepoint $p \in A$. For each $a \in A$, there is a path $\gamma_a : [0, 1] \to A$ with $\gamma_a(0) = p$ and $\gamma_a(1) = a$. Let $P_a = \gamma_a([0, 1]) \subseteq A$.
+
+Each $P_a$ is the continuous image of $[0, 1]$ (which is connected), hence connected. Every $P_a$ contains $p$, so the family $\{P_a\}_{a \in A}$ has $p$ in its common intersection. By the union theorem, $\bigcup_{a \in A} P_a$ is connected.
+
+Finally $\bigcup_{a \in A} P_a = A$: each $a \in A$ is in $P_a$ (as $\gamma_a(1) = a$), and each $P_a \subseteq A$. Hence $A$ is connected.
+</Proof>
+
+<Remark>
+**Intuition:** The proof is the bouquet-at-a-basepoint argument. Each path from $p$ to $a$ is a connected set containing $p$; the union over all $a$ is all of $A$ and is connected because of the shared point $p$. Path connectedness is usually easy to check (just exhibit the paths), while connectedness requires ruling out all possible separations. So "path connected implies connected" is often the fastest way to prove connectedness in practice.
+</Remark>
+
+<Example>
+Every convex subset of $\mathbb{R}^n$ is path connected: for $a, b$ in a convex set $A$, the straight-line path $\gamma(t) = (1 - t)a + tb$ lies in $A$ for all $t \in [0, 1]$.
+</Example>
+
+<Example>
+$\mathbb{R}^n \setminus \{0\}$ is path connected for $n \ge 2$: any two points can be joined by a path avoiding the origin (e.g. a straight line if it misses $0$; otherwise take a small detour around $0$, which exists since in $\mathbb{R}^n \setminus \{0\}$ we have room to maneuver). For $n = 1$, $\mathbb{R} \setminus \{0\}$ has two components and is not path connected.
+</Example>
+
+### The Topologist's Sine Curve
+
+The most famous example of a connected set that is not path connected is the topologist's sine curve:
+$$T = \left\{(x, \sin(1/x)) : x \in (0, 1]\right\} \cup \left(\{0\} \times [-1, 1]\right) \subseteq \mathbb{R}^2.$$
+Call $S = \{(x, \sin(1/x)) : x \in (0, 1]\}$ the **oscillating piece** and $L = \{0\} \times [-1, 1]$ the **limit segment**.
+
+<Theorem title="The Topologist's Sine Curve Is Connected">
+The set $T$ is connected.
+</Theorem>
+
+<Proof>
+The oscillating piece $S$ is the image of the continuous function $x \mapsto (x, \sin(1/x))$ on the connected set $(0, 1]$, so $S$ is connected. We show $T \subseteq \overline{S}$; then by the closure corollary above, $T$ is connected.
+
+Let $(0, y) \in L$ with $y \in [-1, 1]$. We must show $(0, y)$ is a limit point of $S$ (or lies in $S$, but it does not). Since $\sin$ is continuous and $\sin$ takes every value in $[-1, 1]$ on any interval of length $\pi$, for each $n \in \mathbb{Z}_{>0}$ we can pick $x_n \in (0, 1/n)$ with $\sin(1/x_n) = y$. Then $(x_n, \sin(1/x_n)) = (x_n, y) \in S$, and $x_n \to 0$, so $(x_n, y) \to (0, y)$ in $\mathbb{R}^2$. Hence $(0, y) \in \overline{S}$.
+
+(More concretely: for any $y \in [-1, 1]$, pick $\theta \in [-\pi/2, \pi/2]$ with $\sin \theta = y$; then $\theta + 2\pi k$ works for every $k \in \mathbb{Z}_{>0}$, and taking $x_k = 1/(\theta + 2\pi k)$ gives a sequence in $(0, 1]$ with $x_k \to 0$ and $\sin(1/x_k) = y$.)
+
+Thus $L \subseteq \overline{S}$, and $T = S \cup L \subseteq \overline{S}$. Since $S$ is connected, so is $\overline{S}$, and $T$ is a subset containing $S$ and contained in $\overline{S}$, so $T$ is connected.
+</Proof>
+
+<Theorem title="The Topologist's Sine Curve Is Not Path Connected">
+The set $T$ is not path connected: there is no continuous $\gamma : [0, 1] \to T$ with $\gamma(0) = (0, 0)$ and $\gamma(1) = (1, \sin 1)$.
+</Theorem>
+
+<Proof>
+Suppose for contradiction $\gamma : [0, 1] \to T$ is continuous with $\gamma(0) \in L$ and $\gamma(1) \in S$. Write $\gamma(t) = (u(t), v(t))$ with $u, v : [0, 1] \to \mathbb{R}$ continuous.
+
+Let
+$$s = \sup\{t \in [0, 1] : \gamma(t) \in L\} = \sup\{t \in [0, 1] : u(t) = 0\}.$$
+Since $u$ is continuous and the set where $u = 0$ is closed, $u(s) = 0$, so $\gamma(s) \in L$. Since $u(1) > 0$, $s < 1$, and by definition of supremum there exist $t_n \downarrow s$ with $u(t_n) > 0$, i.e. $\gamma(t_n) \in S$.
+
+By continuity of $\gamma$, $\gamma(t_n) \to \gamma(s) = (0, v(s))$.
+
+Now $\gamma$ is continuous at $s$, so for any neighborhood $N$ of $\gamma(s)$ in $T$, there exists $\delta > 0$ with $\gamma([s, s + \delta]) \subseteq N$. Choose $N = T \cap (\mathbb{R} \times (v(s) - 1/2, v(s) + 1/2))$ -- this is open in $T$.
+
+Because $\gamma(s + \delta') \in S$ for some $\delta' \in (0, \delta]$ (indeed, for $t_n \in (s, s + \delta]$), $u(s + \delta') > 0$. By the intermediate value theorem applied to $u$, $u$ takes every value in $(0, u(s + \delta'))$ on $[s, s + \delta']$. For $n$ large enough, $1/u(s + \delta')$ is bigger than any prescribed value, so on $[s, s+\delta']$ the composition $t \mapsto \sin(1/u(t))$ hits every value in $[-1, 1]$ (by IVT applied to $\sin \circ (1/u)$, which is continuous on $(s, s + \delta']$ since $u > 0$ there).
+
+In particular $v(t) = \sin(1/u(t))$ takes values both equal to $v(s) + 1$ (or close to $v(s) + 1$, specifically $\ge v(s) + 3/4$) and equal to $v(s) - 3/4$, throughout $[s, s + \delta']$. But then $v$ exits the interval $(v(s) - 1/2, v(s) + 1/2)$ on $[s, s + \delta']$, contradicting $\gamma([s, s + \delta]) \subseteq N$.
+
+The contradiction shows no such $\gamma$ exists.
+</Proof>
+
+<Remark>
+**Intuition:** Any path starting on the limit segment $L$ and ending on the oscillating piece $S$ has to pass from $L$ to $S$ at some moment $s$. At that moment the path's $y$-coordinate is confined to a small neighborhood of $v(s)$ by continuity; but just after $s$ the path is on $S$, where the $y$-coordinate oscillates between $-1$ and $+1$ arbitrarily close to the $y$-axis because $\sin(1/x)$ wiggles infinitely fast as $x \to 0^+$. So the path must jump, contradicting continuity. Connectedness survives the oscillation because $L$ is in the closure of $S$; path connectedness does not, because a path cannot traverse infinitely many oscillations in finite time while its $x$-coordinate goes to zero.
+</Remark>
+
+---
+
+## Connected Components
+
+Even if a space is not connected, we can decompose it uniquely into maximal connected pieces.
+
+<Definition title="Connected Component">
+Let $X$ be a topological space and $x \in X$. The **connected component** of $x$, denoted $C(x)$, is the union of all connected subsets of $X$ containing $x$:
+$$C(x) = \bigcup\{A \subseteq X : x \in A \text{ and } A \text{ is connected}\}.$$
+</Definition>
+
+<Theorem title="Components Partition the Space">
+Let $X$ be a topological space.
+(i) For each $x \in X$, $C(x)$ is the largest connected subset of $X$ containing $x$.
+(ii) The set $\{x\}$ is connected, so $x \in C(x)$.
+(iii) The connected components partition $X$: either $C(x) = C(y)$ or $C(x) \cap C(y) = \emptyset$.
+(iv) Each connected component is closed.
+</Theorem>
+
+<Proof>
+**(i), (ii).** $\{x\}$ is trivially connected (no nonempty separation), so $x \in C(x)$. The family $\{A : x \in A, A \text{ connected}\}$ has $\{x\}$ in its common intersection, so by the union theorem $C(x)$ is connected. Any connected subset of $X$ containing $x$ is one of the $A$'s, hence contained in $C(x)$; so $C(x)$ is the largest such subset.
+
+**(iii).** Suppose $C(x) \cap C(y) \neq \emptyset$. Then $C(x) \cup C(y)$ is a union of two connected sets with common point, hence connected (union theorem), and contains $x$. By maximality $C(x) \supseteq C(x) \cup C(y)$, so $C(y) \subseteq C(x)$. By symmetry $C(x) \subseteq C(y)$, so $C(x) = C(y)$.
+
+**(iv).** $\overline{C(x)}$ is connected (closure of a connected set is connected) and contains $x$, so $\overline{C(x)} \subseteq C(x)$ by maximality. Hence $\overline{C(x)} = C(x)$, i.e. $C(x)$ is closed.
+</Proof>
+
+<Remark>
+**Intuition:** Every topological space decomposes uniquely into its maximal connected pieces -- the components. Each component is closed, but components need not be open (think of the components of $\mathbb{Q}$, which are single points; points are closed in $\mathbb{R}$ but not open). Local connectedness, introduced next, is the extra condition that guarantees components are open too.
+</Remark>
+
+<Example>
+In $\mathbb{Q}$, the connected component of each point is just that point: any subset of $\mathbb{Q}$ with two points is disconnected, so the only connected subset containing $x \in \mathbb{Q}$ is $\{x\}$. A space where every component is a single point is called **totally disconnected**.
+</Example>
+
+<Example>
+In $\mathbb{R} \setminus \{0\}$, the components are $(-\infty, 0)$ and $(0, \infty)$. Both are open intervals, hence connected, and they partition the space.
+</Example>
+
+---
+
+## Local Connectedness
+
+<Definition title="Locally Connected">
+A topological space $X$ is **locally connected** if for every $x \in X$ and every open set $U$ containing $x$, there is a connected open set $V$ with $x \in V \subseteq U$. Equivalently, $X$ has a basis of connected open sets.
+</Definition>
+
+<Remark>
+**Intuition:** Local connectedness says every point has arbitrarily small connected neighborhoods -- zooming in on any point, the neighborhood structure remains connected. This is a property about the *local* shape of the space, not its global structure. A space can be connected but not locally connected (the topologist's sine curve), or locally connected but not connected ($\mathbb{R} \setminus \{0\}$), or both (any convex subset of $\mathbb{R}^n$, or any open subset of $\mathbb{R}^n$).
+</Remark>
+
+<Theorem title="Components Are Open in Locally Connected Spaces">
+If $X$ is locally connected, then every connected component of $X$ is open.
+</Theorem>
+
+<Proof>
+Let $C$ be a component and $x \in C$. By local connectedness there is a connected open set $V$ with $x \in V$. Since $V$ is connected and contains $x$, $V \subseteq C$ by maximality of $C$. So every point of $C$ has an open neighborhood inside $C$, i.e. $C$ is open.
+</Proof>
+
+<Remark>
+**Intuition:** In a locally connected space, components are both open and closed. This matches our geometric intuition: a locally connected space looks like a disjoint union of open pieces (the components), each of which is itself connected. For example, any open subset of $\mathbb{R}^n$ is locally connected (because open balls are connected), so its components are open -- this is the familiar fact that an open subset of $\mathbb{R}^n$ is a disjoint union of open connected sets.
+</Remark>
+
+<Example>
+The topologist's sine curve $T$ is connected but not locally connected: near any point $(0, y) \in L$, every small neighborhood contains infinitely many arcs from $S$ and a slice of $L$, but no connected neighborhood (the arcs are separated from the slice of $L$ within a small box). So $T$ is a clean example of a connected, non-locally-connected space.
+</Example>
+
+<Example>
+Any open subset $U \subseteq \mathbb{R}^n$ is locally connected, because open balls are (path) connected and form a basis for the topology of $\mathbb{R}^n$. Consequently, the connected components of an open set in $\mathbb{R}^n$ are themselves open sets.
+</Example>
+
+---
+
+## Summary
+
+Connectedness is the topological non-decomposability condition: a set is connected if it cannot be cut into two disjoint open pieces. The key facts are:
+
+- **Intervals in $\mathbb{R}$** are exactly the connected subsets with more than one point, and the proof uses the least upper bound property of $\mathbb{R}$.
+- **Continuous images** of connected sets are connected.
+- **Intermediate Value Theorem** follows immediately: a continuous function on an interval takes every value between any two of its values.
+- **Unions** of connected sets sharing a common point are connected; closures of connected sets are connected.
+- **Path connectedness** is a stronger, more geometric notion: path connected implies connected. The topologist's sine curve shows the converse fails.
+- **Connected components** partition any space into maximal connected pieces; each is closed, and in locally connected spaces, each is also open.
+
+Connectedness is the dual companion of compactness in topology: compactness says a space is "finite enough," connectedness says it is "unified enough." Continuous functions preserve both, and together these two properties underwrite most of the existence theorems in elementary analysis -- a continuous function on a closed bounded interval attains its extreme values (compactness) and takes every intermediate value (connectedness).

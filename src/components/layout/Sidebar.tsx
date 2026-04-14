@@ -4,24 +4,34 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { chapters, groupLabels } from '@/lib/chapters'
+import { chapters328, groupLabels328 } from '@/lib/chapters-328'
+import { getCourseFromPath, buildChapterUrl, buildHomeworkUrl, courses } from '@/lib/courses'
 import { FileText, GraduationCap, Menu, Search, X } from 'lucide-react'
 import SearchDialog from '@/components/SearchDialog'
+import CourseSwitcher from '@/components/CourseSwitcher'
 
-const groups = ['foundations', 'transforms', 'control', 'advanced', 'appendix'] as const
+const groups335 = ['foundations', 'transforms', 'control', 'advanced', 'appendix'] as const
+const groups328 = ['foundations', 'structure', 'convergence', 'calculus', 'integration'] as const
 
 const groupDots: Record<string, string> = {
+  // 335
   foundations: 'bg-sky-400',
   transforms: 'bg-emerald-400',
   control: 'bg-amber-400',
   advanced: 'bg-violet-400',
   appendix: 'bg-slate-400',
+  // 328 (foundations reused; others new)
+  structure: 'bg-rose-400',
+  convergence: 'bg-teal-400',
+  calculus: 'bg-fuchsia-400',
+  integration: 'bg-orange-400',
 }
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const course = getCourseFromPath(pathname)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const filtered = chapters
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -34,20 +44,31 @@ export default function Sidebar() {
     return () => window.removeEventListener('keydown', handleKey)
   }, [])
 
+  const isActive = course === '328'
+  const currentChapters = isActive ? chapters328 : chapters
+  const currentGroupLabels = isActive ? groupLabels328 : groupLabels
+  const currentGroups = isActive ? groups328 : groups335
+  const homeworkBase = isActive ? '/328/homework' : '/homework'
+  const examsBase = isActive ? '/328/exams' : '/exams'
+  const meta = courses[course]
+
   const nav = (
     <div className="flex flex-col h-full">
       {/* Logo */}
       <Link
-        href="/"
+        href={isActive ? '/328' : '/'}
         onClick={() => setMobileOpen(false)}
-        className="flex items-baseline gap-2.5 px-5 py-5 border-b border-white/[0.06]"
+        className="flex items-baseline gap-2.5 px-5 py-4 border-b border-white/[0.06]"
       >
-        <span className="text-[15px] font-bold text-white tracking-tight">ACE 335</span>
-        <span className="text-[11px] text-slate-500 font-medium">MTHE / MATH</span>
+        <span className="text-[15px] font-bold text-white tracking-tight">ACE {course}</span>
+        <span className="text-[11px] text-slate-500 font-medium">{meta.shortName}</span>
       </Link>
 
+      {/* Course switcher */}
+      <CourseSwitcher />
+
       {/* Search */}
-      <div className="px-3 py-3">
+      <div className="px-3 pt-2 pb-3">
         <button
           onClick={() => { setSearchOpen(true); setMobileOpen(false) }}
           className="w-full flex items-center gap-2 bg-white/[0.05] text-[13px] text-slate-500 rounded-md pl-2.5 pr-2 py-[7px] border border-white/[0.06] hover:bg-white/[0.08] hover:border-white/[0.1] transition-all"
@@ -62,19 +83,19 @@ export default function Sidebar() {
 
       {/* Chapters */}
       <nav className="flex-1 overflow-y-auto sidebar-scroll px-2 pb-4 space-y-5">
-        {groups.map(group => {
-          const items = filtered.filter(c => c.group === group)
+        {currentGroups.map(group => {
+          const items = currentChapters.filter(c => c.group === group)
           if (!items.length) return null
           return (
             <div key={group}>
               <div className="flex items-center gap-2 px-3 mb-1">
                 <div className={`w-1.5 h-1.5 rounded-full ${groupDots[group]}`} />
                 <span className="text-[10px] uppercase tracking-[0.1em] text-slate-500 font-semibold">
-                  {groupLabels[group]}
+                  {(currentGroupLabels as Record<string, string>)[group]}
                 </span>
               </div>
               {items.map(ch => {
-                const href = `/chapters/${ch.slug}`
+                const href = buildChapterUrl(course, ch.slug)
                 const active = pathname === href
                 return (
                   <Link
@@ -87,7 +108,7 @@ export default function Sidebar() {
                         : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
                     }`}
                   >
-                    <span className={`font-mono text-[11px] min-w-[1rem] ${active ? 'text-indigo-400' : 'text-slate-600'}`}>
+                    <span className={`font-mono text-[11px] min-w-[1rem] ${active ? (course === '328' ? 'text-cyan-400' : 'text-indigo-400') : 'text-slate-600'}`}>
                       {ch.number}
                     </span>
                     <span>{ch.shortTitle}</span>
@@ -101,28 +122,28 @@ export default function Sidebar() {
         {/* Divider + links */}
         <div className="pt-2 mx-2 border-t border-white/[0.06] space-y-0.5">
           <Link
-            href="/homework"
+            href={homeworkBase}
             onClick={() => setMobileOpen(false)}
             className={`flex items-center gap-2.5 px-3 py-[6px] rounded-md text-[13px] transition-colors ${
-              pathname.startsWith('/homework')
+              pathname.startsWith(homeworkBase)
                 ? 'bg-white/[0.08] text-white font-medium'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
             }`}
           >
             <FileText className="h-3.5 w-3.5 opacity-50" />
-            Homework
+            {isActive ? 'Problem Sets' : 'Homework'}
           </Link>
           <Link
-            href="/exams"
+            href={examsBase}
             onClick={() => setMobileOpen(false)}
             className={`flex items-center gap-2.5 px-3 py-[6px] rounded-md text-[13px] transition-colors ${
-              pathname.startsWith('/exams')
+              pathname.startsWith(examsBase)
                 ? 'bg-white/[0.08] text-white font-medium'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
             }`}
           >
             <GraduationCap className="h-3.5 w-3.5 opacity-50" />
-            Past Exams
+            {isActive ? 'Tests & Finals' : 'Past Exams'}
           </Link>
         </div>
       </nav>
@@ -161,7 +182,7 @@ export default function Sidebar() {
       </aside>
 
       {/* Global search dialog */}
-      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} course={course} />
     </>
   )
 }

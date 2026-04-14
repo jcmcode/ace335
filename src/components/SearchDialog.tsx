@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import Fuse from 'fuse.js'
 import Link from 'next/link'
-import { Search, X, BookOpen, Hash } from 'lucide-react'
+import { Search, X, BookOpen } from 'lucide-react'
 import searchIndex from '@/data/search-index.json'
+import type { CourseId } from '@/lib/courses'
 
 type SearchItem = {
   type: string
@@ -12,37 +13,45 @@ type SearchItem = {
   content: string
   chapter: string
   chapterSlug: string
+  course: CourseId
   anchor: string
   level?: number
 }
 
-const typeStyles: Record<string, { badge: string; icon: string }> = {
-  Definition: { badge: 'bg-sky-100 text-sky-700', icon: 'text-sky-500' },
-  Theorem: { badge: 'bg-emerald-100 text-emerald-700', icon: 'text-emerald-500' },
-  Lemma: { badge: 'bg-amber-100 text-amber-700', icon: 'text-amber-500' },
-  Corollary: { badge: 'bg-violet-100 text-violet-700', icon: 'text-violet-500' },
-  Proposition: { badge: 'bg-indigo-100 text-indigo-700', icon: 'text-indigo-500' },
-  Example: { badge: 'bg-teal-100 text-teal-700', icon: 'text-teal-500' },
-  Problem: { badge: 'bg-rose-100 text-rose-700', icon: 'text-rose-500' },
-  Remark: { badge: 'bg-slate-100 text-slate-600', icon: 'text-slate-400' },
-  Proof: { badge: 'bg-slate-100 text-slate-600', icon: 'text-slate-400' },
-  Section: { badge: 'bg-slate-100 text-slate-600', icon: 'text-slate-400' },
+const typeStyles: Record<string, { badge: string }> = {
+  Definition: { badge: 'bg-sky-100 text-sky-700' },
+  Theorem: { badge: 'bg-emerald-100 text-emerald-700' },
+  Lemma: { badge: 'bg-amber-100 text-amber-700' },
+  Corollary: { badge: 'bg-violet-100 text-violet-700' },
+  Proposition: { badge: 'bg-indigo-100 text-indigo-700' },
+  Example: { badge: 'bg-teal-100 text-teal-700' },
+  Problem: { badge: 'bg-rose-100 text-rose-700' },
+  Remark: { badge: 'bg-slate-100 text-slate-600' },
+  Proof: { badge: 'bg-slate-100 text-slate-600' },
+  Section: { badge: 'bg-slate-100 text-slate-600' },
 }
 
 export default function SearchDialog({
   open,
   onClose,
+  course,
 }: {
   open: boolean
   onClose: () => void
+  course: CourseId
 }) {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const [selectedIdx, setSelectedIdx] = useState(0)
 
+  const courseItems = useMemo(
+    () => (searchIndex as SearchItem[]).filter(i => i.course === course),
+    [course]
+  )
+
   const fuse = useMemo(
     () =>
-      new Fuse(searchIndex as SearchItem[], {
+      new Fuse(courseItems, {
         keys: [
           { name: 'title', weight: 3 },
           { name: 'content', weight: 1 },
@@ -53,7 +62,7 @@ export default function SearchDialog({
         minMatchCharLength: 2,
         includeScore: true,
       }),
-    []
+    [courseItems]
   )
 
   const results = useMemo(() => {
@@ -98,6 +107,9 @@ export default function SearchDialog({
 
   if (!open) return null
 
+  const accent = course === '328' ? 'cyan' : 'indigo'
+  const hoverBg = course === '328' ? 'bg-cyan-50' : 'bg-indigo-50'
+
   return (
     <div
       className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center pt-[10vh] px-4"
@@ -114,9 +126,12 @@ export default function SearchDialog({
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Search theorems, definitions, examples..."
+            placeholder={`Search ACE ${course}...`}
             className="flex-1 text-sm bg-transparent outline-none placeholder-slate-400 text-slate-800"
           />
+          <span className={`text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded ${accent === 'cyan' ? 'bg-cyan-100 text-cyan-700' : 'bg-indigo-100 text-indigo-700'}`}>
+            {course}
+          </span>
           <kbd className="text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">ESC</kbd>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
             <X className="h-4 w-4" />
@@ -132,7 +147,7 @@ export default function SearchDialog({
 
           {!query.trim() && (
             <div className="p-8 text-center text-sm text-slate-400">
-              Start typing to search across {searchIndex.length} theorems, definitions, examples, and problems.
+              Start typing to search across {courseItems.length} theorems, definitions, examples, and problems in ACE {course}.
             </div>
           )}
 
@@ -149,7 +164,7 @@ export default function SearchDialog({
                       onClick={onClose}
                       onMouseEnter={() => setSelectedIdx(i)}
                       className={`flex items-start gap-3 px-4 py-2.5 text-sm transition-colors ${
-                        selectedIdx === i ? 'bg-indigo-50' : 'hover:bg-slate-50'
+                        selectedIdx === i ? hoverBg : 'hover:bg-slate-50'
                       }`}
                     >
                       <span className={`text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded shrink-0 mt-0.5 ${styles.badge}`}>
@@ -186,8 +201,9 @@ export default function SearchDialog({
 }
 
 function buildHref(r: SearchItem): string {
+  const coursePrefix = r.course === '328' ? '/328' : ''
   if (r.chapterSlug.startsWith('__hw__')) {
-    return `/homework/${r.chapterSlug.replace('__hw__', '')}`
+    return `${coursePrefix}/homework/${r.chapterSlug.replace('__hw__', '')}`
   }
-  return `/chapters/${r.chapterSlug}`
+  return `${coursePrefix}/chapters/${r.chapterSlug}`
 }

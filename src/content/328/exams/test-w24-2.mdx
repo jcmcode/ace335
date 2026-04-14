@@ -1,0 +1,140 @@
+---
+title: "Test 2 - Winter 2024"
+year: 2024
+---
+
+## Problem 1: Differentiability Definition and Chain Rule
+
+<Problem title="Differentiability Definition and Chain Rule">
+Let $\vec{F} : \mathbb{R}^2 \to \mathbb{R}^3$ be a function.
+
+(a) Without any mention of partial derivatives, give the definition of what it means for $\vec{F}$ to be *differentiable at* $\vec{p}_0 = (x_0, y_0)$ and explicitly say what the derivative of $\vec{F}$ at $\vec{p}_0$ is. Distinguish the Euclidean norms in $\mathbb{R}^2$ and $\mathbb{R}^3$ by writing $\|\cdot\|_{\mathbb{R}^2}$ and $\|\cdot\|_{\mathbb{R}^3}$.
+
+Let $F_1, F_2, F_3$ be the components of $\vec{F}$.
+
+(b) Assuming that $\vec{F}$ is differentiable at $\vec{p}_0$, express the derivative of $\vec{F}$ at $\vec{p}_0$ in terms of the gradients of the components of $\vec{F}$.
+
+(c) Let $\vec{F} : \mathbb{R}^2 \to \mathbb{R}^3$ be everywhere differentiable. Suppose that $\vec{F}(1, 2) = (3, 4, 5)$ and
+$$\frac{\partial F_1}{\partial x}(1, 2) = 2, \quad \frac{\partial F_1}{\partial y}(1, 2) = 0,$$
+$$\frac{\partial F_2}{\partial x}(1, 2) = 0, \quad \frac{\partial F_2}{\partial y}(1, 2) = \pi,$$
+$$\frac{\partial F_3}{\partial x}(1, 2) = -4, \quad \frac{\partial F_3}{\partial y}(1, 2) = -1.$$
+Let $G : \mathbb{R}^3 \to \mathbb{R}$ also be everywhere differentiable with $G(3, 4, 5) = 0$. Denote by $(u, v, w)$ the coordinates in the domain of $G$. Suppose that
+$$\frac{\partial G}{\partial u}(3, 4, 5) = 3, \quad \frac{\partial G}{\partial v}(3, 4, 5) = -5, \quad \frac{\partial G}{\partial w}(3, 4, 5) = 1.$$
+Let $\varphi : \mathbb{R}^2 \to \mathbb{R}$ be defined as $\varphi(x, y) = G(\vec{F}(x, y))$. Compute $\dfrac{\partial \varphi}{\partial x}(1, 2)$.
+</Problem>
+
+<Solution>
+**Part (a):** $\vec{F}$ is differentiable at $\vec{p}_0 = (x_0, y_0)$ if there exists a linear map $T : \mathbb{R}^2 \to \mathbb{R}^3$ such that
+$$\lim_{\vec{p} \to \vec{p}_0} \frac{\|\vec{F}(\vec{p}) - \vec{F}(\vec{p}_0) - T(\vec{p} - \vec{p}_0)\|_{\mathbb{R}^3}}{\|\vec{p} - \vec{p}_0\|_{\mathbb{R}^2}} = 0.$$
+If such $T$ exists, it is unique and called the *derivative of $\vec{F}$ at $\vec{p}_0$*, denoted $D\vec{F}(\vec{p}_0)$.
+
+**Part (b):** The derivative is the linear map whose matrix (the Jacobian) has rows equal to the gradients of the components:
+$$D\vec{F}(\vec{p}_0) = \begin{pmatrix} \nabla F_1(\vec{p}_0)^\top \\ \nabla F_2(\vec{p}_0)^\top \\ \nabla F_3(\vec{p}_0)^\top \end{pmatrix}.$$
+Equivalently, for $\vec{v} \in \mathbb{R}^2$:
+$$D\vec{F}(\vec{p}_0)\vec{v} = \big(\nabla F_1(\vec{p}_0) \cdot \vec{v},\ \nabla F_2(\vec{p}_0) \cdot \vec{v},\ \nabla F_3(\vec{p}_0) \cdot \vec{v}\big).$$
+
+**Part (c):** By the chain rule,
+$$\frac{\partial \varphi}{\partial x}(1, 2) = \frac{\partial G}{\partial u}(\vec{F}(1,2)) \cdot \frac{\partial F_1}{\partial x}(1,2) + \frac{\partial G}{\partial v}(\vec{F}(1,2)) \cdot \frac{\partial F_2}{\partial x}(1,2) + \frac{\partial G}{\partial w}(\vec{F}(1,2)) \cdot \frac{\partial F_3}{\partial x}(1,2).$$
+
+Substitute:
+$$= (3)(2) + (-5)(0) + (1)(-4) = 6 + 0 - 4 = 2.$$
+
+Therefore $\dfrac{\partial \varphi}{\partial x}(1, 2) = 2$.
+</Solution>
+
+## Problem 2: Partial Derivatives and Implicit Function Theorem
+
+<Problem title="Partial Derivatives and Implicit Function Theorem">
+Let $U = \{(x, y) \in \mathbb{R}^2 : x > 0, y > 0\}$. Let $f : U \to \mathbb{R}$ be given by $f(x, y) = y + \log(x) - \log(y)$. [Here log denotes the natural logarithm.]
+
+(a) For every $(x_0, y_0) \in U$, compute $\dfrac{\partial f}{\partial y}(x_0, y_0)$.
+
+(b) Find the unique point $\vec{q} = (x_0^*, y_0^*) \in U$ such that $\dfrac{\partial f}{\partial y}(\vec{q}) = 0$ and $f(\vec{q}) = 0$.
+
+(c) Consider the curve $\mathscr{C} \subset U$ given by the equation $f(x, y) = 0$. Let $\vec{p} = (x_0, y_0)$ be a point on the curve $\mathscr{C}$ and assume that $\vec{p} \neq \vec{q}$, where $\vec{q}$ is as in (b). Show that the equation defining $\mathscr{C}$ implicitly defines $y$ as a function of $x$, say $y = g(x)$, in a neighbourhood of the point $\vec{p}$.
+
+(d) Let $\vec{p} = (x_0, y_0)$ and $g$ be as in (c). Write $g'(x)$ explicitly in terms of $x$ and $g(x)$. Explain why the limit $\displaystyle\lim_{x \to x_0} \frac{g'(x)}{g(x)}$ exists and find its value explicitly in terms of $x_0$ and $y_0$.
+</Problem>
+
+<Solution>
+**Part (a):** $\dfrac{\partial f}{\partial y}(x_0, y_0) = 1 - \dfrac{1}{y_0}$.
+
+**Part (b):** Setting $\dfrac{\partial f}{\partial y} = 0$: $1 - 1/y_0^* = 0 \Rightarrow y_0^* = 1$.
+
+Setting $f(x_0^*, 1) = 0$: $1 + \log(x_0^*) - \log(1) = 0 \Rightarrow \log(x_0^*) = -1 \Rightarrow x_0^* = e^{-1} = 1/e$.
+
+So $\vec{q} = (1/e, 1)$.
+
+**Part (c):** Apply the Implicit Function Theorem. $f$ is $C^1$ on $U$ (since $\log$ is $C^\infty$ and $x, y > 0$). At $\vec{p} = (x_0, y_0)$ with $f(\vec{p}) = 0$, we need $\dfrac{\partial f}{\partial y}(\vec{p}) \neq 0$.
+
+Since $\vec{p} \neq \vec{q} = (1/e, 1)$ and $\vec{p}$ lies on $\mathscr{C}$, we show $\dfrac{\partial f}{\partial y}(\vec{p}) \neq 0$. Suppose for contradiction that $\dfrac{\partial f}{\partial y}(\vec{p}) = 0$; then $1 - 1/y_0 = 0$, so $y_0 = 1$. With $f(x_0, 1) = 0$: $1 + \log(x_0) = 0$, so $x_0 = 1/e$, giving $\vec{p} = (1/e, 1) = \vec{q}$, a contradiction.
+
+Hence $\dfrac{\partial f}{\partial y}(\vec{p}) \neq 0$, and by the IFT, in a neighbourhood of $\vec{p}$ the equation $f(x,y) = 0$ defines $y = g(x)$.
+
+**Part (d):** By the IFT,
+$$g'(x) = -\frac{\partial f/\partial x}{\partial f/\partial y}(x, g(x)) = -\frac{1/x}{1 - 1/g(x)} = -\frac{g(x)}{x(g(x) - 1)}.$$
+
+Then
+$$\frac{g'(x)}{g(x)} = -\frac{1}{x(g(x) - 1)}.$$
+
+As $x \to x_0$, $g$ is continuous (being differentiable) and $g(x_0) = y_0$, so
+$$\lim_{x \to x_0} \frac{g'(x)}{g(x)} = -\frac{1}{x_0(y_0 - 1)}.$$
+
+This limit exists because $x_0 > 0$ and $y_0 \neq 1$ (since $\vec{p} \neq \vec{q}$ implies either $x_0 \neq 1/e$ or $y_0 \neq 1$; the denominator $\partial f/\partial y(\vec{p}) = 1 - 1/y_0 \neq 0$ gives $y_0 \neq 1$).
+</Solution>
+
+## Problem 3: G-delta and F-sigma Sets
+
+<Problem title="G-delta and F-sigma Sets">
+Recall: a subset $A \subset \mathbb{R}$ is called a $G_\delta$ *set* iff $A$ is a countable intersection of open sets. Similarly, a subset $B \subset \mathbb{R}$ is called an $F_\sigma$ *set* iff $B$ is a countable union of closed sets.
+
+For each statement, say whether it is true or false. Justify your answers.
+
+(a) A singleton in $\mathbb{R}$ is a $G_\delta$ set.
+
+(b) If $S \subset \mathbb{R}$ is a $G_\delta$ set, then $S$ is not an $F_\sigma$ set.
+</Problem>
+
+<Solution>
+**Part (a):** **TRUE.** For any $a \in \mathbb{R}$,
+$$\{a\} = \bigcap_{n=1}^{\infty} \left(a - \tfrac{1}{n}, a + \tfrac{1}{n}\right),$$
+a countable intersection of open sets. So $\{a\}$ is $G_\delta$.
+
+**Part (b):** **FALSE.** Counterexample: $\mathbb{R}$ itself is open, hence $G_\delta$ (trivially $\mathbb{R} = \bigcap_{n=1}^\infty \mathbb{R}$). And $\mathbb{R}$ is closed, hence $F_\sigma$ (trivially $\mathbb{R} = \bigcup_{n=1}^\infty \mathbb{R}$). So $\mathbb{R}$ is both $G_\delta$ and $F_\sigma$.
+
+Another counterexample: any open interval $(a, b)$ is open (so $G_\delta$) and also $F_\sigma$ via $(a, b) = \bigcup_{n=1}^{\infty} [a + 1/n, b - 1/n]$.
+</Solution>
+
+## Problem 4: Compactness
+
+<Problem title="Compactness">
+Let $(X, \mathscr{T})$ be a topological space.
+
+(a) Let $S \subset X$. Define what it means for $S$ to be *compact in* $(X, \mathscr{T})$.
+
+(b) Define what it means for $(X, \mathscr{T})$ to be *compact*.
+
+(c) The following statement is false:
+*"If $f : (X, \mathscr{T}) \to (X, \mathscr{T})$ is a continuous function and the range of $f$ is compact in $(X, \mathscr{T})$, then $(X, \mathscr{T})$ is compact."*
+Show that it is false by providing a counterexample.
+
+(d) **Bonus.** Consider the topology on $\mathbb{R}$:
+$$\mathscr{C} = \{A \subset \mathbb{R} : A^c \text{ has finite cardinality}\} \cup \{\varnothing\}.$$
+Show that $(\mathbb{R}, \mathscr{C})$ is compact.
+</Problem>
+
+<Solution>
+**Part (a):** $S$ is *compact in* $(X, \mathscr{T})$ if every open cover of $S$ (by sets open in $(X, \mathscr{T})$) admits a finite subcover. Precisely: whenever $\{U_\alpha\}_{\alpha \in A}$ is a family of open sets with $S \subseteq \bigcup_\alpha U_\alpha$, there exist $\alpha_1, \ldots, \alpha_n \in A$ such that $S \subseteq U_{\alpha_1} \cup \cdots \cup U_{\alpha_n}$.
+
+**Part (b):** $(X, \mathscr{T})$ is *compact* if $X$ itself is compact in $(X, \mathscr{T})$: every open cover of $X$ admits a finite subcover.
+
+**Part (c):** Counterexample: let $X = \mathbb{R}$ with Euclidean topology, and define $f : \mathbb{R} \to \mathbb{R}$ by $f(x) = 0$ (constant). Then $f$ is continuous, and $\text{range}(f) = \{0\}$, which is compact (finite sets are always compact). But $(\mathbb{R}, \mathscr{T}_{\text{Eucl}})$ is not compact (e.g., the cover $\{(-n, n)\}_{n \in \mathbb{N}}$ has no finite subcover).
+
+**Part (d):** Let $\{\Omega_\alpha\}_{\alpha \in \mathscr{A}}$ be an open cover of $\mathbb{R}$ by nonempty sets in $\mathscr{C}$. Pick any $\tilde\alpha \in \mathscr{A}$; since $\Omega_{\tilde\alpha} \neq \varnothing$, we have $\Omega_{\tilde\alpha} \in \mathscr{C}$, so $\Omega_{\tilde\alpha}^c$ is finite. Let $\Omega_{\tilde\alpha}^c = \{x_1, \ldots, x_n\}$.
+
+Since $\{\Omega_\alpha\}$ covers $\mathbb{R}$, for each $x_j$ there exists $\alpha_j \in \mathscr{A}$ with $x_j \in \Omega_{\alpha_j}$. Then
+$$\Omega_{\tilde\alpha}^c = \{x_1, \ldots, x_n\} \subseteq \bigcup_{j=1}^{n} \Omega_{\alpha_j}.$$
+Therefore
+$$\mathbb{R} = \Omega_{\tilde\alpha} \cup \Omega_{\tilde\alpha}^c \subseteq \Omega_{\tilde\alpha} \cup \Omega_{\alpha_1} \cup \cdots \cup \Omega_{\alpha_n},$$
+a finite subcover. Hence $(\mathbb{R}, \mathscr{C})$ is compact.
+</Solution>

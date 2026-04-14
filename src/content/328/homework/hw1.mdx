@@ -1,0 +1,271 @@
+---
+title: "Problem Set 1 Solutions"
+homework: 1
+---
+
+## Problem 1: Discrete Metric Topology
+
+<Problem title="Discrete Metric Topology">
+Let $X$ be a set and let $d$ be the discrete metric on $X$, i.e.
+
+$$d(x,y) = \begin{cases} 0 & \text{if } x = y \\ 1 & \text{if } x \neq y \end{cases}$$
+
+(a) Fix $x \in X$. For every $r > 0$, describe what the open ball $B(x, r)$ is (with respect to the metric $d$).
+
+(b) Recall the definition of the metric topology $\mathcal{T}_d$ induced by $d$. Which subsets $\Omega \subseteq X$ belong to $\mathcal{T}_d$?
+
+(c) Describe all clopen sets in the topology $\mathcal{T}_d$.
+</Problem>
+
+<Solution>
+**(a)** By definition, $B(x, r) = \{y \in X : d(x, y) < r\}$.
+
+*Case 1:* $0 < r \leq 1$. If $d(x, y) < r \leq 1$, then since $d$ only takes values $0$ and $1$, we must have $d(x, y) = 0$, i.e. $y = x$. Hence
+
+$$B(x, r) = \{x\}.$$
+
+*Case 2:* $r > 1$. Then for every $y \in X$, $d(x, y) \in \{0, 1\} < r$, so
+
+$$B(x, r) = X.$$
+
+**(b)** Recall $\mathcal{T}_d = \{\Omega \subseteq X : \forall x \in \Omega, \exists r > 0 \text{ with } B(x, r) \subseteq \Omega\}$.
+
+We claim $\mathcal{T}_d = \mathcal{P}(X)$, i.e. every subset of $X$ is open.
+
+Let $\Omega \subseteq X$ be arbitrary. For every $x \in \Omega$, take $r = \tfrac{1}{2}$. Then by part (a), $B(x, \tfrac{1}{2}) = \{x\} \subseteq \Omega$. Therefore $\Omega \in \mathcal{T}_d$.
+
+Conversely, trivially $\mathcal{T}_d \subseteq \mathcal{P}(X)$. So $\mathcal{T}_d = \mathcal{P}(X)$ — the discrete metric induces the **discrete topology**.
+
+**(c)** A set $\Omega$ is clopen if both $\Omega$ and $X \setminus \Omega$ are open. Since every subset is open in $\mathcal{T}_d$, every $\Omega \subseteq X$ is clopen.
+
+Therefore, the clopen sets are precisely all subsets of $X$, i.e. $\mathcal{P}(X)$.
+</Solution>
+
+## Problem 2: Neighbourhood Axioms Determine a Topology
+
+<Problem title="Neighbourhood Axioms Determine a Topology">
+Let $X$ be a nonempty set. Assume that for every $x \in X$ we have a family $\mathcal{U}_x$ of subsets of $X$ satisfying:
+
+(1) $V \in \mathcal{U}_x \implies x \in V$
+
+(2) $V \in \mathcal{U}_x$ and $V \subseteq W \implies W \in \mathcal{U}_x$
+
+(3) $V_1, V_2 \in \mathcal{U}_x \implies V_1 \cap V_2 \in \mathcal{U}_x$
+
+(4) For every $V \in \mathcal{U}_x$ there exists $W \in \mathcal{U}_x$ such that $V \in \mathcal{U}_y$ for every $y \in W$.
+
+**(a)** Let $\mathcal{T} := \{\Omega \subseteq X : \Omega \in \mathcal{U}_x \text{ for every } x \in \Omega\}$. Verify that $\mathcal{T}$ is a topology.
+
+**(b1)** If $U \subseteq X$ is a neighbourhood of $x$ in $\mathcal{T}$, then $U \in \mathcal{U}_x$.
+
+**(b2)** If $U \in \mathcal{U}_x$, then $U$ is a neighbourhood of $x$ in $\mathcal{T}$.
+</Problem>
+
+<Solution>
+**(a)** We verify the three axioms for a topology.
+
+*Empty set:* $\emptyset \in \mathcal{T}$ vacuously (there is no $x \in \emptyset$ for which we must check $\emptyset \in \mathcal{U}_x$).
+
+*Whole space:* Fix any $x \in X$. By assumption $\mathcal{U}_x$ is nonempty (since we assume at least one $V$ exists, or since even without this, $X$ itself will qualify once we show it). Actually we argue directly: for any $x$, pick any $V \in \mathcal{U}_x$ (which exists since the family is nonempty by assumption; in fact property (4) presupposes nonemptyness). By property (1), $x \in V \subseteq X$, so $V \subseteq X$. By property (2), $X \in \mathcal{U}_x$. Since $x$ was arbitrary, $X \in \mathcal{U}_x$ for every $x \in X$, hence $X \in \mathcal{T}$.
+
+*Finite intersections:* Let $\Omega_1, \Omega_2 \in \mathcal{T}$ and let $x \in \Omega_1 \cap \Omega_2$. Then $x \in \Omega_1$ implies $\Omega_1 \in \mathcal{U}_x$, and similarly $\Omega_2 \in \mathcal{U}_x$. By property **(3)**, $\Omega_1 \cap \Omega_2 \in \mathcal{U}_x$. Since $x$ was arbitrary in $\Omega_1 \cap \Omega_2$, we conclude $\Omega_1 \cap \Omega_2 \in \mathcal{T}$.
+
+*Arbitrary unions:* Let $\{\Omega_\alpha\}_{\alpha \in A} \subseteq \mathcal{T}$ and let $x \in \bigcup_\alpha \Omega_\alpha$. Then $x \in \Omega_{\alpha_0}$ for some $\alpha_0$, so $\Omega_{\alpha_0} \in \mathcal{U}_x$. Since $\Omega_{\alpha_0} \subseteq \bigcup_\alpha \Omega_\alpha$, by property **(2)** we get $\bigcup_\alpha \Omega_\alpha \in \mathcal{U}_x$. Hence $\bigcup_\alpha \Omega_\alpha \in \mathcal{T}$.
+
+Thus $\mathcal{T}$ is a topology.
+
+**(b1)** Let $U$ be a neighbourhood of $x$ in $\mathcal{T}$. By definition there exists $\Omega \in \mathcal{T}$ with $x \in \Omega \subseteq U$. Since $\Omega \in \mathcal{T}$ and $x \in \Omega$, by the definition of $\mathcal{T}$ we have $\Omega \in \mathcal{U}_x$. Since $\Omega \subseteq U$, property **(2)** gives $U \in \mathcal{U}_x$.
+
+**(b2)** Let $U \in \mathcal{U}_x$. Define
+
+$$V := \{z \in U : U \in \mathcal{U}_z\}.$$
+
+We show $V$ is open (i.e. $V \in \mathcal{T}$) and $x \in V \subseteq U$.
+
+*$x \in V$:* By property **(1)**, $U \in \mathcal{U}_x$ implies $x \in U$. Together with $U \in \mathcal{U}_x$, this gives $x \in V$.
+
+*$V \subseteq U$:* Immediate from the definition.
+
+*$V \in \mathcal{T}$:* Let $z \in V$. Then $U \in \mathcal{U}_z$. By property **(4)** applied to $U \in \mathcal{U}_z$, there exists $W \in \mathcal{U}_z$ such that $U \in \mathcal{U}_y$ for every $y \in W$. By property **(1)**, $z \in W$, and by property **(2)** we may shrink or expand: since $U \in \mathcal{U}_z$ and we already have $z \in U$, consider $W' := W \cap U$. By property **(1)**, every $y \in W$ has $y \in W$, but we need $y \in U$ as well to conclude $y \in V$. We use that $U \in \mathcal{U}_y$ for every $y \in W$, hence by property **(1)**, $y \in U$. Thus every $y \in W$ satisfies both $y \in U$ and $U \in \mathcal{U}_y$, i.e. $y \in V$. So $W \subseteq V$, and by property **(2)**, $V \in \mathcal{U}_z$.
+
+Since $z \in V$ was arbitrary and we showed $V \in \mathcal{U}_z$ for each such $z$, we conclude $V \in \mathcal{T}$.
+
+Finally, since $x \in V \subseteq U$ and $V \in \mathcal{T}$, $U$ is a neighbourhood of $x$ in $\mathcal{T}$.
+</Solution>
+
+## Problem 3: Cluster Points in Hausdorff Spaces
+
+<Problem title="Cluster Points in Hausdorff Spaces">
+Let $(X, \mathcal{T})$ be a Hausdorff topological space. Let $A \subseteq X$ and $x_0 \in X$. Prove that $x_0$ is a cluster point of $A$ if and only if for every neighbourhood $V$ of $x_0$, the intersection $A \cap V$ is infinite.
+</Problem>
+
+<Solution>
+Recall: $x_0$ is a **cluster point** of $A$ iff every neighbourhood $V$ of $x_0$ satisfies $(A \setminus \{x_0\}) \cap V \neq \emptyset$.
+
+**($\Leftarrow$)** If $A \cap V$ is infinite for every neighbourhood $V$ of $x_0$, then in particular $A \cap V$ contains points other than $x_0$, i.e. $(A \setminus \{x_0\}) \cap V \neq \emptyset$. So $x_0$ is a cluster point.
+
+**($\Rightarrow$)** Suppose $x_0$ is a cluster point of $A$. We show, for every neighbourhood $V$ of $x_0$, that $A \cap V$ is infinite.
+
+Assume for contradiction that there exists a neighbourhood $V$ of $x_0$ with $A \cap V$ finite. Let
+
+$$A \cap V \setminus \{x_0\} = \{y_1, y_2, \dots, y_n\}$$
+
+(possibly empty). Since $X$ is Hausdorff, for each $i = 1, \dots, n$ there exist disjoint open sets $W_i \ni x_0$ and $Z_i \ni y_i$ with $W_i \cap Z_i = \emptyset$. In particular $y_i \notin W_i$.
+
+Define
+
+$$V' := V \cap W_1 \cap W_2 \cap \cdots \cap W_n.$$
+
+$V'$ is a neighbourhood of $x_0$ as a finite intersection of neighbourhoods of $x_0$. Moreover, $y_i \notin V'$ for any $i$ (since $y_i \notin W_i$), and $V' \subseteq V$, so
+
+$$(A \setminus \{x_0\}) \cap V' \subseteq (A \setminus \{x_0\}) \cap V \setminus \{y_1, \dots, y_n\} = \emptyset.$$
+
+This contradicts $x_0$ being a cluster point. Hence $A \cap V$ must be infinite.
+</Solution>
+
+## Problem 4: The Extended Real Line
+
+<Problem title="The Extended Real Line">
+Let $\overline{\mathbb{R}} = \mathbb{R} \cup \{-\infty, +\infty\}$ with $-\infty < x < +\infty$ for all $x \in \mathbb{R}$. For $x \in \mathbb{R}$, $r > 0$, $B(x, r) := (x - r, x + r)$; for $r > 0$, $B(+\infty, r) := (1/r, +\infty) \cup \{+\infty\}$ and $B(-\infty, r) := \{-\infty\} \cup (-\infty, -1/r)$. Define
+
+$$\overline{\mathcal{E}} := \{\Omega \subseteq \overline{\mathbb{R}} : \forall x \in \Omega, \exists \rho > 0 \text{ with } B(x, \rho) \subseteq \Omega\}.$$
+
+**(a)** Show that for every $x \in \overline{\mathbb{R}}$ and $0 < r_1 < r_2$, $B(x, r_1) \subseteq B(x, r_2)$. Deduce that $\overline{\mathcal{E}}$ is a topology on $\overline{\mathbb{R}}$.
+
+**(b)** Given $A \subseteq \mathbb{R}$, show $+\infty$ is a cluster point of $A$ iff $\sup A = +\infty$.
+
+**(c)** Let $A \subseteq \mathbb{R}$ with $\sup A = +\infty$, $f : A \to \mathbb{R}$, and $\lambda \in \mathbb{R}$. Prove $\lim_{x \to \infty} f(x) = \lambda$ iff $\forall \varepsilon > 0, \exists M > 0$ such that $|f(x) - \lambda| < \varepsilon$ for all $x \in A$ with $x > M$.
+</Problem>
+
+<Solution>
+**(a)** *Monotonicity of balls.*
+
+For $x \in \mathbb{R}$: $B(x, r_1) = (x - r_1, x + r_1) \subseteq (x - r_2, x + r_2) = B(x, r_2)$ since $r_1 < r_2$.
+
+For $x = +\infty$: $r_1 < r_2 \implies \tfrac{1}{r_1} > \tfrac{1}{r_2}$, so $(1/r_1, +\infty) \subseteq (1/r_2, +\infty)$, hence $B(+\infty, r_1) \subseteq B(+\infty, r_2)$.
+
+For $x = -\infty$: Similarly, $-\tfrac{1}{r_1} < -\tfrac{1}{r_2}$, so $(-\infty, -1/r_1) \subseteq (-\infty, -1/r_2)$ and $B(-\infty, r_1) \subseteq B(-\infty, r_2)$.
+
+*$\overline{\mathcal{E}}$ is a topology.*
+
+- $\emptyset \in \overline{\mathcal{E}}$ vacuously. $\overline{\mathbb{R}} \in \overline{\mathcal{E}}$: for any $x$, any $\rho > 0$ gives $B(x, \rho) \subseteq \overline{\mathbb{R}}$.
+
+- *Finite intersections:* Let $\Omega_1, \Omega_2 \in \overline{\mathcal{E}}$ and $x \in \Omega_1 \cap \Omega_2$. There exist $\rho_1, \rho_2 > 0$ with $B(x, \rho_i) \subseteq \Omega_i$. Let $\rho = \min(\rho_1, \rho_2)$. By monotonicity, $B(x, \rho) \subseteq B(x, \rho_i) \subseteq \Omega_i$, so $B(x, \rho) \subseteq \Omega_1 \cap \Omega_2$.
+
+- *Arbitrary unions:* Let $\{\Omega_\alpha\} \subseteq \overline{\mathcal{E}}$ and $x \in \bigcup_\alpha \Omega_\alpha$. Then $x \in \Omega_{\alpha_0}$ for some $\alpha_0$, so $\exists \rho > 0$ with $B(x, \rho) \subseteq \Omega_{\alpha_0} \subseteq \bigcup_\alpha \Omega_\alpha$.
+
+So $\overline{\mathcal{E}}$ is a topology.
+
+**(b)** ($\Rightarrow$) Suppose $+\infty$ is a cluster point of $A$. Then every neighbourhood of $+\infty$ contains a point of $A \setminus \{+\infty\} = A$. For every $M > 0$, $B(+\infty, 1/M) = (M, +\infty) \cup \{+\infty\}$ is a neighbourhood of $+\infty$, so it must contain a point of $A$, i.e. there is $x \in A$ with $x > M$. Thus $\sup A = +\infty$.
+
+($\Leftarrow$) Suppose $\sup A = +\infty$. Let $V$ be any neighbourhood of $+\infty$. Then $V$ contains some $B(+\infty, \rho) = (1/\rho, +\infty) \cup \{+\infty\}$. Taking $M = 1/\rho$, since $\sup A = +\infty$, there exists $x \in A$ with $x > M$. Then $x \in B(+\infty, \rho) \setminus \{+\infty\} \subseteq V \setminus \{+\infty\}$, so $(A \setminus \{+\infty\}) \cap V \neq \emptyset$. Hence $+\infty$ is a cluster point.
+
+**(c)** Recall: $\lim_{x \to \infty} f(x) = \lambda$ iff for every neighbourhood $U$ of $\lambda$, there exists a neighbourhood $V$ of $+\infty$ such that $f(V \cap A \setminus \{+\infty\}) \subseteq U$.
+
+($\Rightarrow$) Let $\varepsilon > 0$. Take $U = B(\lambda, \varepsilon) = (\lambda - \varepsilon, \lambda + \varepsilon)$, a neighbourhood of $\lambda$. By hypothesis there is a neighbourhood $V$ of $+\infty$ with $f(V \cap A) \subseteq U$. Then $V$ contains some $B(+\infty, \rho) = (1/\rho, +\infty) \cup \{+\infty\}$. Set $M := 1/\rho$. For every $x \in A$ with $x > M$, $x \in B(+\infty, \rho) \subseteq V$, so $f(x) \in U$, i.e. $|f(x) - \lambda| < \varepsilon$.
+
+($\Leftarrow$) Let $U$ be any neighbourhood of $\lambda$. Then $U \supseteq B(\lambda, \varepsilon) = (\lambda - \varepsilon, \lambda + \varepsilon)$ for some $\varepsilon > 0$. By hypothesis, there exists $M > 0$ such that $|f(x) - \lambda| < \varepsilon$ for all $x \in A$ with $x > M$. Let $V = B(+\infty, 1/M) = (M, +\infty) \cup \{+\infty\}$. Then for all $x \in V \cap A$, $x > M$, so $f(x) \in B(\lambda, \varepsilon) \subseteq U$. Hence $\lim_{x \to \infty} f(x) = \lambda$.
+</Solution>
+
+## Problem 5: Limits and Continuity with Mixed Topologies
+
+<Problem title="Limits and Continuity with Mixed Topologies">
+Consider $f : \mathbb{R} \to \mathbb{R}$, $f(x) = x^2$.
+
+(a) Domain discrete, codomain Euclidean. Is $\lim_{x \to 2} f(x) = 4$? Is $f$ continuous?
+
+(b) Domain Euclidean, codomain trivial. Find all $\lambda$ with $\lim_{x \to 2} f(x) = \lambda$. Is $f$ continuous?
+
+(c) Domain Euclidean, codomain $\mathcal{T}_{\text{lsc}} = \{\emptyset, \mathbb{R}\} \cup \{(a, +\infty) : a \in \mathbb{R}\}$ (lower semicontinuous topology). Find all $\lambda$ with $\lim_{x \to 2} f(x) = \lambda$. Is $f$ continuous?
+
+(d) Domain and codomain Euclidean. Find all $\lambda$ with $\lim_{x \to 2} f(x) = \lambda$. Is $f$ continuous?
+</Problem>
+
+<Solution>
+Recall $\lim_{x \to x_0} f(x) = \lambda$ requires $x_0$ to be a cluster point of the domain. We also recall that $x_0$ must be a cluster point for the limit to be well-defined.
+
+**(a)** In the discrete topology on $\mathbb{R}$, every singleton $\{x_0\}$ is open, so $x_0$ is isolated — hence $x_0 = 2$ is **not** a cluster point of the domain. Therefore $\lim_{x \to 2} f(x)$ is not defined and we cannot say $\lim_{x \to 2} f(x) = 4$.
+
+*Continuity:* Since the domain has the discrete topology, the preimage of every set is a subset of $\mathbb{R}$, which is automatically open. Thus $f$ is continuous.
+
+**(b)** Codomain trivial means $\mathcal{T} = \{\emptyset, \mathbb{R}\}$. The only neighbourhood of any $\lambda \in \mathbb{R}$ is $\mathbb{R}$ itself. Hence for every neighbourhood $U$ of $\lambda$, we trivially have $f(V \cap A \setminus \{2\}) \subseteq U = \mathbb{R}$ for any neighbourhood $V$ of $2$. So $\lim_{x \to 2} f(x) = \lambda$ for **every** $\lambda \in \mathbb{R}$.
+
+*Continuity:* Preimages of $\emptyset, \mathbb{R}$ are $\emptyset, \mathbb{R}$, both open. So $f$ is continuous.
+
+**(c)** In $\mathcal{T}_{\text{lsc}}$, the neighbourhoods of $\lambda$ are sets containing $(a, +\infty)$ for some $a < \lambda$.
+
+For $\lim_{x \to 2} f(x) = \lambda$: given any $a < \lambda$, we need a Euclidean neighbourhood $V$ of $2$ with $f(V \setminus \{2\}) \subseteq (a, +\infty)$, i.e. $x^2 > a$ for $x$ near $2$ (excluding $2$).
+
+Since $f$ is continuous in the Euclidean sense and $f(2) = 4$, $f(x) \to 4$ (Euclidean). For any $a < 4$, there's a neighbourhood of $2$ where $x^2 > a$. For any $a < \lambda$ where $\lambda \leq 4$, we have $a < 4$, so this works.
+
+What if $\lambda > 4$? Take $a$ with $4 < a < \lambda$. We need $x^2 > a$ for $x$ in a punctured neighbourhood of $2$. But at $x = 2$, $x^2 = 4 < a$, and by continuity of $x \mapsto x^2$, $x^2 < a$ for $x$ close enough to $2$ (with $x \neq 2$). So no such neighbourhood exists.
+
+Conclusion: $\lim_{x \to 2} f(x) = \lambda$ iff $\lambda \leq 4$.
+
+*Continuity:* $f$ is continuous at $x_0$ iff $\lim_{x \to x_0} f(x) = f(x_0) = x_0^2$. We need $\lambda = x_0^2$ to be an admissible limit. From the above reasoning generalized: $\lim_{x \to x_0} f(x) = \lambda$ iff $\lambda \leq x_0^2$ (since $\lambda = x_0^2$ is the pointwise Euclidean limit, and lsc admits all $\lambda \leq $ that). So $\lambda = x_0^2$ is always admissible, hence $f$ is continuous.
+
+**(d)** Standard Euclidean: $\lim_{x \to 2} x^2 = 4$, so $\lambda = 4$ is the unique value. $f$ is continuous on $\mathbb{R}$.
+</Solution>
+
+## Problem 6: The Cofinite Topology on $\mathbb{R}$
+
+<Problem title="The Cofinite Topology on R">
+Let $X = \mathbb{R}$ and $\mathcal{Z} = \{\emptyset\} \cup \{\Omega \subseteq X : X \setminus \Omega \text{ is finite}\}$.
+
+(a) Verify $\mathcal{Z}$ is a topology.
+
+(b) For each of $A = \{\sqrt{2}\}$, $B = \{-1, 0, 2\}$, $C = [1, \infty)$, $D = \mathbb{Q}$, find the derived set, interior, closure, and boundary.
+</Problem>
+
+<Solution>
+**(a)**
+
+- $\emptyset \in \mathcal{Z}$ by definition. $\mathbb{R} \in \mathcal{Z}$ since $\mathbb{R} \setminus \mathbb{R} = \emptyset$ is finite.
+
+- *Finite intersections:* If $\Omega_1, \Omega_2$ are nonempty with finite complements, then
+
+$$X \setminus (\Omega_1 \cap \Omega_2) = (X \setminus \Omega_1) \cup (X \setminus \Omega_2)$$
+
+is a finite union of finite sets, hence finite. If $\Omega_1 \cap \Omega_2 = \emptyset$, it's in $\mathcal{Z}$. If either $\Omega_i = \emptyset$, intersection is $\emptyset$.
+
+- *Arbitrary unions:* Let $\{\Omega_\alpha\}$ be in $\mathcal{Z}$. If all $\Omega_\alpha = \emptyset$, the union is $\emptyset \in \mathcal{Z}$. Otherwise pick some $\Omega_{\alpha_0} \neq \emptyset$. Then $X \setminus \Omega_{\alpha_0}$ is finite, and
+
+$$X \setminus \bigcup_\alpha \Omega_\alpha \subseteq X \setminus \Omega_{\alpha_0}$$
+
+is also finite, so $\bigcup_\alpha \Omega_\alpha \in \mathcal{Z}$.
+
+**(b)** *Key facts for the cofinite topology on $\mathbb{R}$:*
+
+- *Closed sets* are $\mathbb{R}$ and all finite sets.
+- For any set $S$: $\overline{S} = S$ if $S$ is finite, and $\overline{S} = \mathbb{R}$ if $S$ is infinite.
+- *Cluster points:* $x$ is a cluster point of $S$ iff every cofinite neighbourhood of $x$ contains a point of $S \setminus \{x\}$. Since cofinite neighbourhoods miss only finitely many points, this holds iff $S$ is infinite.
+- *Interior:* $\text{int}(S) = S$ if $\mathbb{R} \setminus S$ is finite, else $\text{int}(S) = \emptyset$ (unless $S = \emptyset$).
+
+Actually for interior: $\text{int}(S)$ is the largest open set in $S$. Open sets are $\emptyset$ or cofinite. A cofinite set $\Omega \subseteq S$ requires $\mathbb{R} \setminus S \subseteq \mathbb{R} \setminus \Omega$ finite, i.e. $\mathbb{R} \setminus S$ finite. So $\text{int}(S) = S$ when $\mathbb{R} \setminus S$ is finite, and $\text{int}(S) = \emptyset$ otherwise.
+
+**(b1)** $A = \{\sqrt{2}\}$.
+- $A$ finite, so $\overline{A} = A = \{\sqrt{2}\}$.
+- $A$ is finite, so not cofinite: $\text{int}(A) = \emptyset$.
+- *Derived set $A'$:* $A$ is finite, so $A$ has no cluster points: $A' = \emptyset$.
+- *Boundary:* $\partial A = \overline{A} \setminus \text{int}(A) = \{\sqrt{2}\}$.
+
+**(b2)** $B = \{-1, 0, 2\}$.
+- $\overline{B} = B = \{-1, 0, 2\}$ (finite).
+- $\text{int}(B) = \emptyset$ (not cofinite).
+- $B' = \emptyset$ ($B$ finite).
+- $\partial B = \{-1, 0, 2\}$.
+
+**(b3)** $C = [1, \infty)$.
+- $C$ is infinite, $\mathbb{R} \setminus C = (-\infty, 1)$ is infinite. So $C$ is neither closed nor cofinite.
+- $\overline{C} = \mathbb{R}$ ($C$ infinite).
+- $\text{int}(C) = \emptyset$ ($\mathbb{R} \setminus C$ infinite).
+- $C' = \mathbb{R}$: every $x \in \mathbb{R}$ has every cofinite neighbourhood meeting $C \setminus \{x\}$, since $C$ is infinite.
+- $\partial C = \overline{C} \setminus \text{int}(C) = \mathbb{R}$.
+
+**(b4)** $D = \mathbb{Q}$.
+- $D$ is infinite, $\mathbb{R} \setminus D = $ irrationals is infinite.
+- $\overline{D} = \mathbb{R}$.
+- $\text{int}(D) = \emptyset$.
+- $D' = \mathbb{R}$.
+- $\partial D = \mathbb{R}$.
+</Solution>

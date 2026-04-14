@@ -1,0 +1,461 @@
+---
+title: "Integration and Measure Theory"
+chapter: 11
+---
+
+In this chapter we develop the Riemann integral from first principles via Darboux sums, establish a sharp criterion for Riemann integrability (Lebesgue's theorem), and introduce the basic language of measure theory. The goal is twofold: first, to understand exactly which functions can be integrated in the classical Riemann sense and which cannot; and second, to lay the groundwork for a much more flexible theory of integration — the Lebesgue integral — that resolves the defects of the Riemann theory. Along the way we meet Jordan content, sets of Lebesgue measure zero, sigma-algebras, Borel sets, outer measures, Caratheodory's criterion, and the construction of Lebesgue measure on $\mathbb{R}$.
+
+---
+
+## Partitions and Darboux Sums
+
+<Definition title="Partition and Refinement">
+Let $[a, b] \subseteq \mathbb{R}$ be a compact interval. A **partition** of $[a, b]$ is a finite set $P = \{x_0, x_1, \dots, x_n\}$ with
+$$a = x_0 < x_1 < \cdots < x_{n-1} < x_n = b.$$
+Given two partitions $P, P'$ of $[a, b]$, we say $P'$ is a **refinement** of $P$ iff $P \subseteq P'$.
+</Definition>
+
+<Remark>
+**Intuition:** A partition chops $[a, b]$ into finitely many subintervals. A refinement adds more dividing points, so every subinterval of $P'$ sits inside a subinterval of $P$. Finer partitions give finer approximations of area.
+</Remark>
+
+<Definition title="Upper and Lower Riemann–Darboux Sums">
+Let $f : [a, b] \to \mathbb{R}$ be bounded and let $P = \{x_0, x_1, \dots, x_n\}$ be a partition of $[a, b]$. For $k = 1, \dots, n$, set
+$$M_k := \sup_{x \in [x_{k-1}, x_k]} f(x), \qquad m_k := \inf_{x \in [x_{k-1}, x_k]} f(x).$$
+The **upper Riemann–Darboux sum** and the **lower Riemann–Darboux sum** of $f$ over $[a, b]$ with partition $P$ are
+$$U(f, P) := \sum_{k=1}^{n} M_k (x_k - x_{k-1}), \qquad L(f, P) := \sum_{k=1}^{n} m_k (x_k - x_{k-1}).$$
+</Definition>
+
+<Remark>
+**Intuition:** The upper sum is the area of the smallest "staircase" that fits above the graph of $f$, while the lower sum is the area of the largest staircase fitting below. A finer partition can only make $U$ smaller and $L$ larger, squeezing them toward the "true" area.
+</Remark>
+
+<Lemma title="Monotonicity of Darboux Sums Under Refinement">
+If $P \subseteq P'$ are partitions of $[a, b]$ and $f : [a, b] \to \mathbb{R}$ is bounded, then
+$$L(f, P) \leq L(f, P') \leq U(f, P') \leq U(f, P).$$
+Moreover, if $P_1, P_2$ are any two partitions, $L(f, P_1) \leq U(f, P_2)$.
+</Lemma>
+
+<Proof>
+Adding a single new point to $P$ splits some subinterval $[x_{k-1}, x_k]$ into two pieces. The infimum of $f$ on either smaller piece is at least $m_k$, so the contribution to the lower sum weakly increases; the analogous statement for suprema gives weak decrease of the upper sum. Iterating over all new points in $P' \setminus P$ yields $L(f, P) \leq L(f, P')$ and $U(f, P') \leq U(f, P)$.
+
+For the two-partition claim, apply the above to the common refinement $P_1 \cup P_2$:
+$$L(f, P_1) \leq L(f, P_1 \cup P_2) \leq U(f, P_1 \cup P_2) \leq U(f, P_2). \qquad \square$$
+</Proof>
+
+---
+
+## The Riemann Integral
+
+<Definition title="Riemann Integrability">
+Let $f : [a, b] \to \mathbb{R}$ be bounded. We say $f$ is **Riemann integrable on $[a, b]$** iff
+$$\inf_{P \text{ partition}} U(f, P) = \sup_{P \text{ partition}} L(f, P),$$
+and this common value is called the **Riemann integral** of $f$ over $[a, b]$, denoted
+$$\int_{[a, b]} f \;=\; \int_a^b f \;=\; \int_a^b f(x)\, dx.$$
+</Definition>
+
+<Remark>
+**Intuition:** The upper integral $\inf_P U(f, P)$ is the best upper estimate for the area under $f$; the lower integral $\sup_P L(f, P)$ is the best lower estimate. When they agree, there is a unique sensible notion of area, and we call the common value the Riemann integral. From the lemma above, we always have lower integral $\leq$ upper integral.
+</Remark>
+
+<Theorem title="Riemann Integrability Criterion">
+A bounded function $f : [a, b] \to \mathbb{R}$ is Riemann integrable if and only if for every $\varepsilon > 0$ there exists a partition $P_\varepsilon$ of $[a, b]$ with
+$$U(f, P_\varepsilon) - L(f, P_\varepsilon) < \varepsilon.$$
+</Theorem>
+
+<Remark>
+**Intuition:** Riemann integrability is equivalent to the gap between upper and lower sums being controllable. This "squeeze" criterion is the workhorse for proving integrability in practice.
+</Remark>
+
+<Proof>
+**($\Leftarrow$):** Assume the criterion holds. Let $I_* = \sup_P L(f, P)$, $I^* = \inf_P U(f, P)$. By the lemma, $I_* \leq I^*$. For $\varepsilon > 0$, the hypothesis supplies a partition $P_\varepsilon$ with $U(f, P_\varepsilon) - L(f, P_\varepsilon) < \varepsilon$. Since $L(f, P_\varepsilon) \leq I_* \leq I^* \leq U(f, P_\varepsilon)$,
+$$0 \leq I^* - I_* \leq U(f, P_\varepsilon) - L(f, P_\varepsilon) < \varepsilon.$$
+Since $\varepsilon > 0$ was arbitrary, $I^* = I_*$, so $f$ is Riemann integrable.
+
+**($\Rightarrow$):** Assume $f$ is Riemann integrable with integral $I$. For $\varepsilon > 0$, choose partitions $P_1, P_2$ with $I - L(f, P_1) < \varepsilon/2$ and $U(f, P_2) - I < \varepsilon/2$ (possible because $I$ is the supremum/infimum). Let $P_\varepsilon = P_1 \cup P_2$ be the common refinement. By the lemma, $L(f, P_1) \leq L(f, P_\varepsilon) \leq U(f, P_\varepsilon) \leq U(f, P_2)$, so
+$$U(f, P_\varepsilon) - L(f, P_\varepsilon) \leq U(f, P_2) - L(f, P_1) < \varepsilon. \qquad \square$$
+</Proof>
+
+### Basic Properties
+
+<Theorem title="Properties of the Riemann Integral">
+Let $f, g : [a, b] \to \mathbb{R}$ be Riemann integrable, $\alpha, \beta \in \mathbb{R}$, and $c \in (a, b)$.
+
+**(1) Linearity:** $\alpha f + \beta g$ is Riemann integrable and
+$$\int_a^b (\alpha f + \beta g) = \alpha \int_a^b f + \beta \int_a^b g.$$
+
+**(2) Monotonicity:** If $f \leq g$ pointwise, then $\int_a^b f \leq \int_a^b g$.
+
+**(3) Additivity over intervals:** $f$ is Riemann integrable on $[a, c]$ and on $[c, b]$, and
+$$\int_a^b f = \int_a^c f + \int_c^b f.$$
+
+**(4) Absolute integrability:** $|f|$ is Riemann integrable and $\left|\int_a^b f\right| \leq \int_a^b |f|$.
+</Theorem>
+
+<Remark>
+**Intuition:** These properties are the bedrock of calculus. Linearity and monotonicity follow directly from the definition of Darboux sums; additivity is proved by concatenating partitions on $[a, c]$ and $[c, b]$; and absolute integrability uses $||f(x)| - |f(y)|| \leq |f(x) - f(y)|$ to control oscillations of $|f|$ by oscillations of $f$.
+</Remark>
+
+<Example title="A Non-Riemann-Integrable Function">
+Let $f : [0, 1] \to \mathbb{R}$ be the Dirichlet function $f(x) = 1$ if $x \in \mathbb{Q}$, $f(x) = 0$ otherwise. For any partition $P$, every subinterval contains both rationals and irrationals, so $M_k = 1$ and $m_k = 0$ for every $k$. Therefore $U(f, P) = 1$ and $L(f, P) = 0$ for every partition $P$. The upper integral is $1$ and the lower integral is $0$; they do not agree, so $f$ is not Riemann integrable.
+</Example>
+
+---
+
+## Integrating on Bounded Subsets and Jordan Content
+
+We extend the Riemann integral to bounded subsets $A \subseteq \mathbb{R}$ by zero-extension.
+
+<Definition title="Integral on a Bounded Set">
+Let $A \subseteq \mathbb{R}$ be bounded, $f : A \to \mathbb{R}$ bounded. Let $[a, b] \supseteq A$ and define
+$$f_A : \mathbb{R} \to \mathbb{R}, \qquad f_A(x) := \begin{cases} f(x) & \text{if } x \in A \\ 0 & \text{if } x \notin A. \end{cases}$$
+If $f_A$ is Riemann integrable on $[a, b]$, we define
+$$\int_A f := \int_{[a, b]} f_A.$$
+This definition is independent of the choice of $[a, b]$ containing $A$.
+</Definition>
+
+<Remark>
+**Intuition:** To integrate on a general bounded set, we set $f$ to be zero outside and integrate over any enclosing interval. The choice of enclosing interval does not matter because extending the partition outside $A$ only adds zero contributions.
+</Remark>
+
+<Definition title="Jordan Content">
+Let $A \subseteq \mathbb{R}$ be bounded. Consider the **indicator function**
+$$\mathbf{1}_A(x) = \begin{cases} 1 & x \in A \\ 0 & x \notin A. \end{cases}$$
+We say $A$ is **Jordan measurable** (or has **Jordan content**) iff $\int_A \mathbf{1}_A$ exists (equivalently, $\mathbf{1}_A$ is Riemann integrable on any enclosing interval). In that case, the value
+$$c(A) := \int_A \mathbf{1}_A$$
+is called the **Jordan content** of $A$.
+</Definition>
+
+<Remark>
+**Intuition:** Jordan content is the Riemann theorist's notion of "length" (or "area" in higher dimensions). A set is Jordan measurable exactly when its characteristic function is Riemann integrable, i.e. when upper and lower sums of $\mathbf{1}_A$ can be made arbitrarily close. Intervals $[a, b]$ have Jordan content $b - a$; finite sets have Jordan content $0$.
+</Remark>
+
+<Example title="A Set Without Jordan Content">
+The set $A = \mathbb{Q} \cap [0, 1]$ does not have Jordan content. Indeed, $\mathbf{1}_A$ is the Dirichlet function restricted to $[0, 1]$, which is not Riemann integrable by the previous example. Heuristically, $A$ is "too irregular" for Jordan's theory of length, despite being countable.
+</Example>
+
+<Theorem title="Jordan Content Zero — Finite Covers">
+A bounded set $A \subseteq \mathbb{R}$ has Jordan content zero if and only if for every $\varepsilon > 0$ there is a **finite** collection of intervals $[a_1, b_1], \dots, [a_m, b_m]$ with
+$$A \subseteq \bigcup_{i=1}^{m} [a_i, b_i] \qquad \text{and} \qquad \sum_{i=1}^{m}(b_i - a_i) < \varepsilon.$$
+</Theorem>
+
+<Remark>
+**Intuition:** Jordan content zero sets can be covered by a *finite* collection of intervals of arbitrarily small total length. This finiteness is the crucial limitation: it rules out sets like $\mathbb{Q} \cap [0, 1]$, which would require countably (not finitely) many intervals.
+</Remark>
+
+---
+
+## Sets of Lebesgue Measure Zero
+
+Relaxing "finite cover" to "countable cover" gives a much more permissive notion.
+
+<Definition title="Zero Lebesgue Measure">
+A set $A \subseteq \mathbb{R}$ has **zero Lebesgue measure** iff for every $\varepsilon > 0$ there exists a sequence of open intervals $(a_j, b_j)$, $j \geq 1$, such that
+$$A \subseteq \bigcup_{j \geq 1} (a_j, b_j) \qquad \text{and} \qquad \sum_{j \geq 1}(b_j - a_j) < \varepsilon.$$
+</Definition>
+
+<Remark>
+**Intuition:** A set has zero Lebesgue measure if it can be covered by a countable collection of intervals of arbitrarily small total length. The difference from Jordan content zero is that we now allow infinitely many intervals, which is far more flexible: countable sets always have Lebesgue measure zero, even when they have no Jordan content.
+</Remark>
+
+<Example title="Countable Sets Have Measure Zero">
+The set $\mathbb{Q} \cap [0, 1]$ has zero Lebesgue measure. Enumerate $\mathbb{Q} \cap [0, 1] = \{q_1, q_2, \dots\}$ and given $\varepsilon > 0$, for each $j \geq 1$ let
+$$I_j := \left(q_j - \tfrac{\varepsilon}{2^{j+1}},\; q_j + \tfrac{\varepsilon}{2^{j+1}}\right).$$
+Then $\mathbb{Q} \cap [0, 1] \subseteq \bigcup_j I_j$ and $\sum_j \text{length}(I_j) = \sum_j \tfrac{\varepsilon}{2^j} = \varepsilon$. So $\mathbb{Q} \cap [0, 1]$ has zero Lebesgue measure even though it has no Jordan content.
+</Example>
+
+<Theorem title="Countable Unions of Measure-Zero Sets">
+A countable union of sets of zero Lebesgue measure has zero Lebesgue measure.
+</Theorem>
+
+<Proof>
+Let $(A_n)_{n \geq 1}$ be a sequence of sets, each of zero Lebesgue measure. Fix $\varepsilon > 0$. For each $n$, cover $A_n$ by open intervals $(a_{n, j}, b_{n, j})$, $j \geq 1$, with total length less than $\varepsilon / 2^n$. Then $\bigcup_n A_n \subseteq \bigcup_{n, j} (a_{n, j}, b_{n, j})$, and the total length is
+$$\sum_{n, j} (b_{n, j} - a_{n, j}) = \sum_n \sum_j (b_{n, j} - a_{n, j}) < \sum_n \frac{\varepsilon}{2^n} = \varepsilon. \qquad \square$$
+</Proof>
+
+<Remark>
+**Intuition:** This is the first essential advantage of Lebesgue measure over Jordan content: Jordan content is not closed under countable unions. Countable additivity of Lebesgue measure is what will eventually make the Lebesgue integral so much more flexible.
+</Remark>
+
+### Lebesgue's Criterion for Riemann Integrability
+
+The notion of Lebesgue measure zero has a stunning consequence in Riemann theory.
+
+<Theorem title="Lebesgue Criterion for Riemann Integrability">
+Let $f : [a, b] \to \mathbb{R}$ be bounded. Then $f$ is Riemann integrable on $[a, b]$ if and only if the set of points where $f$ is discontinuous has zero Lebesgue measure.
+</Theorem>
+
+<Remark>
+**Intuition:** This is the cleanest possible description of which bounded functions are Riemann integrable. Continuity is not necessary; being *almost everywhere* continuous — with the "bad" set being negligible in the measure sense — is exactly what's needed. For example, the Dirichlet function is discontinuous on all of $[0, 1]$, which is a set of Lebesgue measure $1 \neq 0$, so it is not Riemann integrable. A bounded function continuous except on a countable set is Riemann integrable.
+</Remark>
+
+<Corollary title="Jordan Content via Boundary">
+Let $A \subseteq \mathbb{R}$ be a bounded set. Then $A$ has Jordan content if and only if its topological boundary $\partial A$ has zero Lebesgue measure.
+</Corollary>
+
+<Proof>
+By definition, $A$ has Jordan content iff $\mathbf{1}_A$ is Riemann integrable on an enclosing interval. By Lebesgue's criterion, this is equivalent to $\mathbf{1}_A$ being discontinuous on a set of zero Lebesgue measure. But $\mathbf{1}_A$ is discontinuous at $x$ iff $x \in \partial A$ (both $A$ and its complement accumulate at $x$). So $A$ has Jordan content iff $\partial A$ has zero Lebesgue measure. $\square$
+</Proof>
+
+<Corollary title="Riemann Integrability on Jordan-Measurable Sets">
+Let $A \subseteq \mathbb{R}$ be Jordan measurable and $f : A \to \mathbb{R}$ bounded. Then $f$ is Riemann integrable on $A$ if and only if $f$ is continuous almost everywhere on the interior of $A$ (i.e. the set of points in $\mathrm{int}(A)$ where $f$ is discontinuous has zero Lebesgue measure).
+</Corollary>
+
+---
+
+## Sigma-Algebras and Measurable Spaces
+
+To develop measure theory properly we need to decide which subsets of a set $X$ we are allowed to assign a "measure" to. The right structure is a $\sigma$-algebra.
+
+<Definition title="Sigma-Algebra">
+Let $X$ be a set, and write $2^X$ for the power set of $X$ (all subsets). A collection $\mathcal{A} \subseteq 2^X$ is a **$\sigma$-algebra** iff
+
+**(1)** $\emptyset \in \mathcal{A}$ and $X \in \mathcal{A}$.
+
+**(2)** If $A \in \mathcal{A}$, then $A^c := X \setminus A \in \mathcal{A}$.
+
+**(3)** If $A_j \in \mathcal{A}$ for every $j \in \mathbb{N}$, then $\bigcup_{j \in \mathbb{N}} A_j \in \mathcal{A}$.
+
+If $\mathcal{A}$ is a $\sigma$-algebra of subsets of $X$, the pair $(X, \mathcal{A})$ is called a **measurable space** and sets in $\mathcal{A}$ are called **$\mathcal{A}$-measurable** (or simply **measurable**).
+</Definition>
+
+<Remark>
+**Intuition:** A $\sigma$-algebra is a collection of sets that is closed under complementation and countable unions. Together with $\emptyset, X$, this closure makes it stable under every countable set-theoretic operation: finite and countable intersections, differences, symmetric differences, limsup/liminf of sequences of sets, and so on. It is exactly the minimal structure needed to consistently assign "sizes" via countable operations.
+</Remark>
+
+<Lemma title="Closure Under Countable Intersections">
+If $\mathcal{A}$ is a $\sigma$-algebra and $A_j \in \mathcal{A}$ for every $j \in \mathbb{N}$, then $\bigcap_{j \in \mathbb{N}} A_j \in \mathcal{A}$.
+</Lemma>
+
+<Proof>
+By De Morgan, $\bigcap_j A_j = \left(\bigcup_j A_j^c\right)^c$. Each $A_j^c \in \mathcal{A}$ by axiom (2), so $\bigcup_j A_j^c \in \mathcal{A}$ by (3), and its complement is again in $\mathcal{A}$ by (2). $\square$
+</Proof>
+
+### Generation of Sigma-Algebras
+
+<Theorem title="Intersection of Sigma-Algebras">
+Let $\{\mathcal{A}_\alpha : \alpha \in I\}$ be an arbitrary family of $\sigma$-algebras of subsets of $X$. Then $\bigcap_{\alpha \in I} \mathcal{A}_\alpha$ is a $\sigma$-algebra.
+</Theorem>
+
+<Proof>
+For each $\alpha$, $\emptyset, X \in \mathcal{A}_\alpha$, so $\emptyset, X \in \bigcap_\alpha \mathcal{A}_\alpha$. If $A$ is in every $\mathcal{A}_\alpha$, so is $A^c$. If $A_j$ is in every $\mathcal{A}_\alpha$ for each $j$, so is $\bigcup_j A_j$. All three axioms are inherited, so the intersection is a $\sigma$-algebra. $\square$
+</Proof>
+
+<Definition title="Generated Sigma-Algebra">
+Let $\mathcal{G} \subseteq 2^X$. The **$\sigma$-algebra generated by $\mathcal{G}$**, denoted $\sigma(\mathcal{G})$, is the intersection of all $\sigma$-algebras of subsets of $X$ that contain $\mathcal{G}$:
+$$\sigma(\mathcal{G}) := \bigcap \{\mathcal{A} : \mathcal{A} \text{ is a } \sigma\text{-algebra on } X, \mathcal{G} \subseteq \mathcal{A}\}.$$
+</Definition>
+
+<Remark>
+**Intuition:** $\sigma(\mathcal{G})$ is the smallest $\sigma$-algebra containing $\mathcal{G}$. It exists because $2^X$ itself is always a $\sigma$-algebra containing $\mathcal{G}$, so the collection being intersected is nonempty, and the intersection is a $\sigma$-algebra by the previous theorem.
+</Remark>
+
+### Borel Sets on $\mathbb{R}$
+
+<Definition title="Borel Sigma-Algebra">
+Let $(X, \tau)$ be a topological space. The **Borel $\sigma$-algebra** on $X$ is $\mathcal{B}(X) := \sigma(\tau)$, the $\sigma$-algebra generated by the open sets. Sets in $\mathcal{B}(X)$ are called **Borel sets**.
+</Definition>
+
+<Remark>
+**Intuition:** Borel sets are the sets you can build from open sets by applying countable unions, countable intersections, and complements (possibly repeatedly). Every open set is Borel, every closed set is Borel, every countable union of closed sets (an $F_\sigma$) is Borel, every countable intersection of open sets (a $G_\delta$) is Borel, and so on. For practical purposes, every set you can "describe reasonably" on $\mathbb{R}$ is Borel.
+</Remark>
+
+<Theorem title="Generators of the Borel Sigma-Algebra on the Real Line">
+On $\mathbb{R}$ with its Euclidean topology $\tau$, the Borel $\sigma$-algebra coincides with the $\sigma$-algebra generated by each of the following collections:
+$$\mathcal{G}_1 = \{(a, b) : a < b\}, \quad \mathcal{G}_2 = \{[a, b) : a < b\}, \quad \mathcal{G}_3 = \{(a, b] : a < b\}, \quad \mathcal{G}_4 = \{[a, b] : a < b\}.$$
+That is, $\mathcal{B}(\mathbb{R}) = \sigma(\tau) = \sigma(\mathcal{G}_1) = \sigma(\mathcal{G}_2) = \sigma(\mathcal{G}_3) = \sigma(\mathcal{G}_4)$.
+</Theorem>
+
+<Remark>
+**Intuition:** Any of these natural collections of intervals generates the Borel $\sigma$-algebra. The essential observation is that open intervals, closed intervals, and half-open intervals can all be built from one another using countable operations (e.g. $[a, b] = \bigcap_n (a - 1/n, b + 1/n)$ and $(a, b) = \bigcup_n [a + 1/n, b - 1/n]$).
+</Remark>
+
+---
+
+## Measures
+
+<Definition title="Measure">
+Given a measurable space $(X, \Sigma)$, a **measure** on $(X, \Sigma)$ is a function $\mu : \Sigma \to [0, +\infty]$ such that
+
+**(1)** $\mu(A) < \infty$ for at least one $A \in \Sigma$.
+
+**(2) Countable additivity:** If $(A_j)_{j \in \mathbb{N}}$ is a sequence of pairwise disjoint sets in $\Sigma$, then
+$$\mu\left(\bigcup_{j \in \mathbb{N}} A_j\right) = \sum_{j \in \mathbb{N}} \mu(A_j).$$
+
+In this case we call $(X, \Sigma, \mu)$ a **measure space**. If in addition $\mu(X) = 1$, $\mu$ is a **probability measure** and $(X, \Sigma, \mu)$ is a **probability space**.
+</Definition>
+
+<Remark>
+**Intuition:** A measure is a consistent way of assigning a nonnegative size to each measurable set, respecting the fact that disjoint pieces should have sizes that add. Countable additivity is the key axiom: it handles limit operations correctly. From countable additivity one derives $\mu(\emptyset) = 0$ (using any $A$ with $\mu(A) < \infty$ and the disjoint union $A = A \cup \emptyset \cup \emptyset \cup \cdots$).
+</Remark>
+
+<Theorem title="Basic Properties of Measures">
+Let $(X, \Sigma, \mu)$ be a measure space.
+
+**(1) Monotonicity:** If $A, B \in \Sigma$ with $A \subseteq B$, then $\mu(A) \leq \mu(B)$. Moreover if $\mu(B) < \infty$, $\mu(B \setminus A) = \mu(B) - \mu(A)$.
+
+**(2) Countable subadditivity:** If $A_j \in \Sigma$ for $j \in \mathbb{N}$, then $\mu\left(\bigcup_j A_j\right) \leq \sum_j \mu(A_j)$.
+
+**(3) Continuity from below:** If $A_j \in \Sigma$ and $A_j \subseteq A_{j+1}$ for every $j$, then
+$$\mu\left(\bigcup_j A_j\right) = \lim_{j \to \infty} \mu(A_j).$$
+
+**(4) Continuity from above:** If $A_j \in \Sigma$ and $A_j \supseteq A_{j+1}$ for every $j$, and there exists $j_0$ with $\mu(A_{j_0}) < \infty$, then
+$$\mu\left(\bigcap_j A_j\right) = \lim_{j \to \infty} \mu(A_j).$$
+</Theorem>
+
+<Proof>
+**(1)** Write $B = A \cup (B \setminus A)$, a disjoint union of sets in $\Sigma$. By countable additivity (padding with $\emptyset$), $\mu(B) = \mu(A) + \mu(B \setminus A) \geq \mu(A)$. If $\mu(B) < \infty$, rearranging gives $\mu(B \setminus A) = \mu(B) - \mu(A)$.
+
+**(2)** Define $B_1 := A_1$ and $B_j := A_j \setminus (A_1 \cup \cdots \cup A_{j-1})$ for $j \geq 2$. Then $B_j \in \Sigma$ (finite intersections/differences of measurable sets), $B_j \subseteq A_j$, the $B_j$ are pairwise disjoint, and $\bigcup_j B_j = \bigcup_j A_j$. Countable additivity and monotonicity give
+$$\mu\left(\bigcup_j A_j\right) = \mu\left(\bigcup_j B_j\right) = \sum_j \mu(B_j) \leq \sum_j \mu(A_j).$$
+
+**(3)** Set $B_1 := A_1$ and $B_j := A_j \setminus A_{j-1}$ for $j \geq 2$. The $B_j$ are pairwise disjoint and $A_N = \bigcup_{j=1}^N B_j$, $\bigcup_j A_j = \bigcup_j B_j$. By countable additivity,
+$$\mu\left(\bigcup_j A_j\right) = \sum_{j=1}^{\infty} \mu(B_j) = \lim_{N \to \infty} \sum_{j=1}^{N} \mu(B_j) = \lim_{N \to \infty} \mu(A_N).$$
+
+**(4)** Let $C_j := A_{j_0} \setminus A_j$ for $j \geq j_0$. Then $C_j \subseteq C_{j+1}$ and $\bigcup_{j \geq j_0} C_j = A_{j_0} \setminus \bigcap_{j \geq j_0} A_j = A_{j_0} \setminus \bigcap_j A_j$. By (3) and (1),
+$$\mu(A_{j_0}) - \mu\left(\bigcap_j A_j\right) = \mu\left(A_{j_0} \setminus \bigcap_j A_j\right) = \lim_j \mu(C_j) = \lim_j [\mu(A_{j_0}) - \mu(A_j)] = \mu(A_{j_0}) - \lim_j \mu(A_j),$$
+where finiteness of $\mu(A_{j_0})$ lets us subtract safely. Therefore $\mu(\bigcap_j A_j) = \lim_j \mu(A_j)$. $\square$
+</Proof>
+
+---
+
+## Outer Measures and Caratheodory's Construction
+
+The axiomatic definition of measure leaves open the question of existence. A standard route is to first build an **outer measure** defined on *all* subsets of $X$, then restrict to a carefully chosen sub-$\sigma$-algebra on which the outer measure is actually countably additive.
+
+<Definition title="Outer Measure">
+Given a set $X$, an **outer measure** on $X$ is a function $\mu^* : 2^X \to [0, +\infty]$ such that
+
+**(1)** $\mu^*(\emptyset) = 0$.
+
+**(2) Monotonicity:** if $A \subseteq B$, then $\mu^*(A) \leq \mu^*(B)$.
+
+**(3) Countable subadditivity:** if $A_j \subseteq X$ for $j \in \mathbb{N}$, then
+$$\mu^*\left(\bigcup_j A_j\right) \leq \sum_j \mu^*(A_j).$$
+</Definition>
+
+<Remark>
+**Intuition:** An outer measure is a set function defined on *every* subset that is monotone and subadditive over countable unions. It is not a measure in general — there is no additivity, only subadditivity. The point is that outer measures are easy to construct, and we can restrict to measurable sets to recover genuine additivity.
+</Remark>
+
+### Constructing Outer Measures
+
+<Definition title="Sequential Covering Class">
+A collection $\mathcal{K} \subseteq 2^X$ is a **sequential covering class** of $X$ iff
+
+**(1)** $\emptyset \in \mathcal{K}$.
+
+**(2)** For every $A \subseteq X$, there exists a sequence $(E_j)_{j \in \mathbb{N}}$ with $E_j \in \mathcal{K}$ such that $A \subseteq \bigcup_{j \in \mathbb{N}} E_j$.
+</Definition>
+
+<Example title="Half-Open Intervals Cover the Real Line">
+$\mathcal{K} = \{[a, b) : a \leq b\}$ is a sequential covering class of $\mathbb{R}$: $\emptyset = [a, a) \in \mathcal{K}$, and any $A \subseteq \mathbb{R}$ is covered by $\bigcup_{j \in \mathbb{Z}} [j, j+1)$, a countable union of sets in $\mathcal{K}$.
+</Example>
+
+<Theorem title="Outer Measure from a Covering Class">
+Let $\mathcal{K}$ be a sequential covering class of $X$ and $\lambda : \mathcal{K} \to [0, +\infty]$ with $\lambda(\emptyset) = 0$. Define, for every $A \subseteq X$,
+$$\mu^*(A) := \inf\left\{\sum_{j \in \mathbb{N}} \lambda(E_j) : E_j \in \mathcal{K}, \; A \subseteq \bigcup_{j \in \mathbb{N}} E_j\right\}.$$
+Then $\mu^*$ is an outer measure on $X$.
+</Theorem>
+
+<Proof>
+**(1)** $\mu^*(\emptyset) = 0$: take $E_j = \emptyset$ for all $j$, giving sum $0$.
+
+**(2) Monotonicity:** If $A \subseteq B$, any cover of $B$ is a cover of $A$, so the infimum for $\mu^*(A)$ is over a larger set of sums, hence $\mu^*(A) \leq \mu^*(B)$.
+
+**(3) Countable subadditivity:** Let $(A_j)$ be given. If any $\mu^*(A_j) = +\infty$ the inequality is trivial; otherwise, fix $\varepsilon > 0$. For each $j$, choose a cover $(E_{j, k})_{k \in \mathbb{N}} \subseteq \mathcal{K}$ of $A_j$ with
+$$\sum_{k} \lambda(E_{j, k}) < \mu^*(A_j) + \varepsilon / 2^j.$$
+Then $(E_{j, k})_{j, k \in \mathbb{N}}$ is a countable cover of $\bigcup_j A_j$ by sets in $\mathcal{K}$, so
+$$\mu^*\left(\bigcup_j A_j\right) \leq \sum_{j, k} \lambda(E_{j, k}) < \sum_j \mu^*(A_j) + \varepsilon.$$
+Letting $\varepsilon \to 0$ gives countable subadditivity. $\square$
+</Proof>
+
+<Definition title="Lebesgue Outer Measure">
+Take $X = \mathbb{R}$, $\mathcal{K} = \{[a, b) : a \leq b\}$, and $\lambda([a, b)) := b - a$. The associated outer measure $\mu^*$ is called the **Lebesgue outer measure** on $\mathbb{R}$.
+</Definition>
+
+<Remark>
+**Intuition:** The Lebesgue outer measure of $A$ is the infimum of total lengths of countable covers of $A$ by half-open intervals. This is exactly the definition of "zero Lebesgue measure" from earlier — that case corresponds to $\mu^*(A) = 0$.
+</Remark>
+
+### Caratheodory's Criterion
+
+<Definition title="Caratheodory Measurable">
+Let $\mu^*$ be an outer measure on $X$. A set $A \subseteq X$ is **$\mu^*$-measurable** (or **Caratheodory measurable**) iff for every $E \subseteq X$,
+$$\mu^*(E) = \mu^*(E \cap A) + \mu^*(E \cap A^c).$$
+</Definition>
+
+<Remark>
+**Intuition:** The Caratheodory criterion says that $A$ cleanly "splits" every test set $E$ into two pieces whose outer measures add. By countable subadditivity, the inequality $\mu^*(E) \leq \mu^*(E \cap A) + \mu^*(E \cap A^c)$ is automatic; the content is the reverse inequality. The criterion singles out sets that are nice enough for additivity to hold.
+</Remark>
+
+<Theorem title="Caratheodory — From Outer Measure to Measure">
+Let $\mu^*$ be an outer measure on $X$. The collection
+$$\mathcal{M} := \{A \subseteq X : A \text{ is } \mu^*\text{-measurable}\}$$
+is a $\sigma$-algebra of subsets of $X$, and the restriction $\mu := \mu^*|_{\mathcal{M}}$ is a measure on $(X, \mathcal{M})$.
+</Theorem>
+
+<Remark>
+**Intuition:** Caratheodory's theorem is the engine that produces measures out of outer measures. Starting from any outer measure, we obtain a $\sigma$-algebra (automatically closed under all countable operations) and a genuine measure on it. The trade-off is that $\mathcal{M}$ may be smaller than $2^X$: not every set is Caratheodory measurable.
+</Remark>
+
+<Proof>
+We sketch the main steps.
+
+**(1) $\emptyset, X \in \mathcal{M}$:** For any $E$, $\mu^*(E \cap \emptyset) + \mu^*(E \cap X) = 0 + \mu^*(E)$, so $\emptyset \in \mathcal{M}$; taking complements (which is symmetric in the Caratheodory condition) gives $X \in \mathcal{M}$.
+
+**(2) Closure under complementation:** The Caratheodory condition is symmetric in $A$ and $A^c$, so $A \in \mathcal{M} \Leftrightarrow A^c \in \mathcal{M}$.
+
+**(3) Closure under finite unions:** Let $A, B \in \mathcal{M}$. Given any test set $E$,
+$$\mu^*(E) = \mu^*(E \cap A) + \mu^*(E \cap A^c).$$
+Applying the Caratheodory condition for $B$ to each of the test sets $E \cap A$ and $E \cap A^c$, and combining with
+$$E \cap (A \cup B) = (E \cap A) \cup (E \cap A^c \cap B), \qquad E \cap (A \cup B)^c = E \cap A^c \cap B^c,$$
+a computation gives $\mu^*(E) = \mu^*(E \cap (A \cup B)) + \mu^*(E \cap (A \cup B)^c)$, so $A \cup B \in \mathcal{M}$. By induction, $\mathcal{M}$ is closed under finite unions.
+
+**(4) Additivity on $\mathcal{M}$:** If $A_1, \dots, A_n \in \mathcal{M}$ are pairwise disjoint, applying the Caratheodory condition for $A_n$ with test set $E \cap \bigcup_{j=1}^n A_j$ and using disjointness yields, by induction on $n$,
+$$\mu^*\left(E \cap \bigcup_{j=1}^n A_j\right) = \sum_{j=1}^n \mu^*(E \cap A_j).$$
+
+**(5) Closure under countable unions:** Let $(A_j)_{j \in \mathbb{N}} \subseteq \mathcal{M}$. Replacing with disjointified sets $B_j := A_j \setminus \bigcup_{i < j} A_i$ (which remain in $\mathcal{M}$ by (3)), we may assume disjoint. Let $A := \bigcup_j A_j$ and $S_n := \bigcup_{j=1}^n A_j$. For any $E$, since $S_n \in \mathcal{M}$,
+$$\mu^*(E) = \mu^*(E \cap S_n) + \mu^*(E \cap S_n^c) \geq \sum_{j=1}^n \mu^*(E \cap A_j) + \mu^*(E \cap A^c),$$
+using (4) and monotonicity ($S_n^c \supseteq A^c$). Letting $n \to \infty$,
+$$\mu^*(E) \geq \sum_{j=1}^\infty \mu^*(E \cap A_j) + \mu^*(E \cap A^c) \geq \mu^*(E \cap A) + \mu^*(E \cap A^c),$$
+using countable subadditivity of $\mu^*$ in the last step. The reverse inequality is automatic, so $A \in \mathcal{M}$, and taking $E = A$ in the chain above also gives $\mu^*(A) = \sum_j \mu^*(A_j)$, which is countable additivity.
+
+**(6)** Combining (1), (2), (5) gives that $\mathcal{M}$ is a $\sigma$-algebra, and (4) plus (5) give countable additivity of $\mu^*|_\mathcal{M}$. $\square$
+</Proof>
+
+---
+
+## Lebesgue Measure on $\mathbb{R}$
+
+<Definition title="Lebesgue Sigma-Algebra and Lebesgue Measure">
+Let $\mu^*$ be the Lebesgue outer measure on $\mathbb{R}$. The $\sigma$-algebra $\mathcal{M}$ of all $\mu^*$-measurable sets is called the **Lebesgue $\sigma$-algebra** on $\mathbb{R}$. The measure
+$$\mu := \mu^*|_{\mathcal{M}}$$
+is called the **Lebesgue measure** on $\mathbb{R}$.
+</Definition>
+
+<Remark>
+**Intuition:** Lebesgue measure is the unique "natural" extension of length from intervals to a large class of subsets of $\mathbb{R}$, obtained by combining the covering-class outer measure construction with the Caratheodory restriction. It is countably additive, assigns length $b - a$ to the interval $[a, b)$, and contains every Borel set.
+</Remark>
+
+<Theorem title="Fundamental Properties of Lebesgue Measure">
+Let $\mu$ denote Lebesgue measure on $\mathbb{R}$, $\mathcal{M}$ the Lebesgue $\sigma$-algebra. Then
+
+**(1) Extension of length:** $\mu([a, b)) = \mu((a, b)) = \mu([a, b]) = \mu((a, b]) = b - a$ for all $a \leq b$.
+
+**(2) Borel sets are measurable:** $\mathcal{B}(\mathbb{R}) \subseteq \mathcal{M}$. In particular, all open and closed sets are Lebesgue measurable.
+
+**(3) Countable additivity:** For any sequence $(A_j)$ of pairwise disjoint sets in $\mathcal{M}$, $\mu\left(\bigcup_j A_j\right) = \sum_j \mu(A_j)$.
+
+**(4) Translation invariance:** For any $A \in \mathcal{M}$ and $t \in \mathbb{R}$, the translate $A + t := \{a + t : a \in A\}$ is in $\mathcal{M}$ and $\mu(A + t) = \mu(A)$.
+
+**(5) Null sets:** A set $N \subseteq \mathbb{R}$ has zero Lebesgue measure (in the sense of the earlier definition) iff $N \in \mathcal{M}$ and $\mu(N) = 0$.
+</Theorem>
+
+<Remark>
+**Intuition:** These are the basic features that justify calling $\mu$ "length": it agrees with usual length on intervals, it contains all Borel sets (so in particular every set we can "describe"), it is countably additive, and it is invariant under translation — the geometry of the real line is respected. Countable additivity makes it vastly more flexible than Jordan content, and countable unions of null sets remain null, which is the technical underpinning of the Lebesgue integral.
+</Remark>
+
+<Remark>
+**Why not just use Borel sets?** The Lebesgue $\sigma$-algebra is strictly larger than the Borel $\sigma$-algebra; it contains, for instance, every subset of a Lebesgue null Borel set (such subsets need not be Borel). This **completeness** property is useful because it implies that changing an integrable function on a null set does not affect measurability or integrability.
+</Remark>

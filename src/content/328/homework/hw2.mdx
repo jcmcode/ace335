@@ -1,0 +1,266 @@
+---
+title: "Problem Set 2 Solutions"
+homework: 2
+---
+
+## Problem 1: Baire Category Theorem and Perfect Sets
+
+<Problem title="Baire Category Theorem and Perfect Sets">
+**(a)** Prove **Theorem A**: Let $(X, d)$ be a nonempty complete metric space. Let $\Omega_1, \Omega_2, \ldots \subseteq X$ be open dense sets. Then $\bigcap_{n \geq 1} \Omega_n$ is dense in $X$.
+
+**(b)** A set $P$ is **perfect** iff it is closed with no isolated points.
+
+**(b1)** Show $P$ is perfect iff $P = P'$ (the derived set).
+
+**(b2)** Prove **Theorem B**: Let $(X, d)$ be a complete metric space and $P$ a nonempty perfect subset. Then $P$ is uncountable.
+</Problem>
+
+<Solution>
+**(a)** We show $\bigcap_{n \geq 1} \Omega_n \cap U \neq \emptyset$ for every nonempty open $U \subseteq X$.
+
+Since $\Omega_1$ is dense, $\Omega_1 \cap U \neq \emptyset$ and is open. Pick $x_1 \in \Omega_1 \cap U$ and $0 < r_1 < 1$ with the closed ball $\overline{B(x_1, r_1)} \subseteq \Omega_1 \cap U$ (possible since open balls have the property that for any $r'$ sufficiently smaller than the radius, the closed ball of radius $r'$ sits inside the open ball).
+
+Inductively, suppose $x_n, r_n$ are chosen. Since $\Omega_{n+1}$ is dense and open, $\Omega_{n+1} \cap B(x_n, r_n) \neq \emptyset$ and is open. Pick $x_{n+1} \in \Omega_{n+1} \cap B(x_n, r_n)$ and $0 < r_{n+1} < \tfrac{1}{n+1}$ with
+
+$$\overline{B(x_{n+1}, r_{n+1})} \subseteq \Omega_{n+1} \cap B(x_n, r_n).$$
+
+*Claim:* $(x_n)$ is Cauchy. For $m \geq n$, $x_m \in B(x_n, r_n)$, so $d(x_n, x_m) < r_n < 1/n \to 0$.
+
+By completeness, $x_n \to x \in X$. For every $n$, the tail $(x_m)_{m \geq n}$ lies in $\overline{B(x_n, r_n)}$ (which is closed), so $x \in \overline{B(x_n, r_n)} \subseteq \Omega_n$. For $n = 1$ we additionally get $x \in U$. Thus
+
+$$x \in U \cap \bigcap_{n \geq 1} \Omega_n,$$
+
+so the intersection meets every nonempty open set, i.e. is dense.
+
+**(b1)** Recall $P' = \{x : \text{every neighbourhood of } x \text{ meets } P \setminus \{x\}\}$, and $\overline{P} = P \cup P'$.
+
+($\Rightarrow$) $P$ perfect. Closed means $\overline{P} = P$, so $P' \subseteq P$. No isolated points means every $x \in P$ is a cluster point: $P \subseteq P'$. Hence $P = P'$.
+
+($\Leftarrow$) $P = P'$. Then $\overline{P} = P \cup P' = P$, so $P$ is closed. And every $x \in P$ is in $P'$, i.e. a cluster point, so no isolated points.
+
+**(b2)** *Step 1: Case $P = X$.*
+
+Suppose for contradiction $X$ is countable: $X = \{x_1, x_2, \dots\}$. Since $X$ has no isolated points, each $\{x_n\}$ is not open (otherwise $x_n$ would be isolated). Hence $X \setminus \{x_n\}$ is open. Also, $X \setminus \{x_n\}$ is dense: every nonempty open set $U$ contains infinitely many points (since if $U$ were finite and open, its points would be isolated in $X$; in fact $U$ being open and nonempty in a perfect space contains points other than any given single point), so $U \cap (X \setminus \{x_n\}) \neq \emptyset$.
+
+More carefully: if $U$ is open and nonempty, pick $y \in U$. Since $y$ is not isolated, every neighbourhood of $y$ (in particular $U$) meets $X \setminus \{y\}$. If $y \neq x_n$, then $y \in U \cap (X \setminus \{x_n\})$. If $y = x_n$, pick $z \in U \cap X \setminus \{y\}$ — then $z \neq x_n$, so $z \in U \cap (X \setminus \{x_n\})$. Either way, $U \cap (X \setminus \{x_n\}) \neq \emptyset$.
+
+By Theorem A, $\bigcap_n (X \setminus \{x_n\}) = X \setminus \bigcup_n \{x_n\} = X \setminus X = \emptyset$ is dense — contradiction (since $X \neq \emptyset$).
+
+Hence $X$ is uncountable.
+
+*Step 2: $P \subseteq X$ perfect nonempty in complete $(X, d)$.*
+
+$P$ is closed in $X$, and $(X, d)$ complete, so $(P, d|_P)$ is complete. As a subspace, isolated points of $P$ (in the subspace topology) coincide with isolated points of $P$ as a subset of $X$ (since we restrict). So $P$ is perfect in itself, hence a nonempty complete metric space with no isolated points. By Step 1 applied to $P$, $P$ is uncountable.
+</Solution>
+
+## Problem 2: Discontinuity Set of a Pointwise Limit is Meagre
+
+<Problem title="Discontinuity Set of a Pointwise Limit is Meagre">
+Let $(X, \mathcal{T})$ be a topological space, $f_n : X \to \mathbb{R}$ continuous for all $n \geq 1$, with $f_n(x) \to f(x)$ pointwise. Let $D$ be the discontinuity set of $f$. Show $D$ is meagre. Follow the strategy using $P_n(\varepsilon) = \{x : |f(x) - f_n(x)| \leq \varepsilon\}$, $G(\varepsilon) = \bigcup_n \text{int}(P_n(\varepsilon))$, $Y = \bigcap_k G(2^{-k})$, $F_n(\varepsilon) = \{x : |f_n(x) - f_m(x)| \leq \varepsilon \,\forall m \geq n\}$, $L(\varepsilon) = \bigcup_n \text{int}(F_n(\varepsilon))$.
+</Problem>
+
+<Solution>
+**(a1)** Suppose $f$ is continuous at $x_0$. Fix $k \geq 1$ and let $\varepsilon = 2^{-k}$.
+
+Since $f_n(x_0) \to f(x_0)$, choose $\overline{n}$ with $|f_{\overline{n}}(x_0) - f(x_0)| < \varepsilon/3$.
+
+By continuity of $f$ at $x_0$, there is a neighbourhood $V_1$ of $x_0$ with $|f(x) - f(x_0)| < \varepsilon/3$ for $x \in V_1$.
+
+By continuity of $f_{\overline{n}}$ at $x_0$, there is a neighbourhood $V_2$ of $x_0$ with $|f_{\overline{n}}(x) - f_{\overline{n}}(x_0)| < \varepsilon/3$ for $x \in V_2$.
+
+Let $V = V_1 \cap V_2$. For $x \in V$:
+
+$$|f_{\overline{n}}(x) - f(x)| \leq |f_{\overline{n}}(x) - f_{\overline{n}}(x_0)| + |f_{\overline{n}}(x_0) - f(x_0)| + |f(x_0) - f(x)| < \tfrac{\varepsilon}{3} + \tfrac{\varepsilon}{3} + \tfrac{\varepsilon}{3} = \varepsilon.$$
+
+Thus $V \subseteq P_{\overline{n}}(\varepsilon)$, and since $V$ is a neighbourhood of $x_0$, $x_0 \in \text{int}(P_{\overline{n}}(\varepsilon)) \subseteq G(\varepsilon)$. This holds for every $k$, so $x_0 \in Y$.
+
+**(a2)** Suppose $x_0 \in Y$. Let $\varepsilon > 0$. Choose $k$ with $2^{-k} < \varepsilon/3$. Since $x_0 \in G(2^{-k}) = \bigcup_n \text{int}(P_n(2^{-k}))$, there exists $n$ with $x_0 \in \text{int}(P_n(2^{-k}))$, i.e. there is a neighbourhood $V_1$ of $x_0$ with $V_1 \subseteq P_n(2^{-k})$: for $x \in V_1$, $|f(x) - f_n(x)| \leq 2^{-k} < \varepsilon/3$.
+
+By continuity of $f_n$ at $x_0$, there's a neighbourhood $V_2$ of $x_0$ with $|f_n(x) - f_n(x_0)| < \varepsilon/3$ for $x \in V_2$.
+
+Taking $n' = n$ in the convergence $f_m(x_0) \to f(x_0)$, we get $|f_n(x_0) - f(x_0)| \leq 2^{-k} < \varepsilon/3$ (since $x_0 \in P_n(2^{-k})$, we have this inequality).
+
+Wait — actually $x_0 \in \text{int}(P_n(2^{-k})) \subseteq P_n(2^{-k})$, so $|f(x_0) - f_n(x_0)| \leq 2^{-k} < \varepsilon/3$.
+
+For $x \in V_1 \cap V_2$:
+
+$$|f(x) - f(x_0)| \leq |f(x) - f_n(x)| + |f_n(x) - f_n(x_0)| + |f_n(x_0) - f(x_0)| < \varepsilon.$$
+
+So $f$ is continuous at $x_0$.
+
+Thus $Y$ is exactly the continuity set of $f$, and $D = X \setminus Y$.
+
+**(b)** $F_n(\varepsilon) = \bigcap_{m \geq n} \{x : |f_n(x) - f_m(x)| \leq \varepsilon\}$. Each set in the intersection is the preimage of the closed set $[0, \varepsilon]$ under the continuous function $|f_n - f_m|$, hence closed. Intersection of closed sets is closed.
+
+**(c)** For every $x \in X$, $(f_n(x))$ converges, so it is Cauchy. Hence there exists $n$ with $|f_n(x) - f_m(x)| \leq \varepsilon$ for all $m \geq n$. So $x \in F_n(\varepsilon)$, proving $X = \bigcup_n F_n(\varepsilon)$.
+
+**(d)** For fixed $x \in F_n(\varepsilon)$, take limit as $m \to \infty$: $|f_n(x) - f_m(x)| \leq \varepsilon$ gives $|f_n(x) - f(x)| \leq \varepsilon$. Hence $F_n(\varepsilon) \subseteq P_n(\varepsilon)$, so $\text{int}(F_n(\varepsilon)) \subseteq \text{int}(P_n(\varepsilon))$. Taking unions, $L(\varepsilon) \subseteq G(\varepsilon)$.
+
+**(e)** $X \setminus L(\varepsilon) = X \setminus \bigcup_n \text{int}(F_n(\varepsilon))$. We have $X = \bigcup_n F_n(\varepsilon)$, so
+
+$$X \setminus L(\varepsilon) = \bigcup_n F_n(\varepsilon) \setminus \bigcup_n \text{int}(F_n(\varepsilon)) \subseteq \bigcup_n (F_n(\varepsilon) \setminus \text{int}(F_n(\varepsilon))) = \bigcup_n \partial F_n(\varepsilon).$$
+
+Each $\partial F_n(\varepsilon) = F_n(\varepsilon) \setminus \text{int}(F_n(\varepsilon))$ is closed (as $F_n$ closed minus its interior). It is also nowhere dense: it's the boundary of a closed set, which has empty interior because $\text{int}(\partial F_n) = \text{int}(F_n \setminus \text{int}(F_n)) \subseteq \text{int}(F_n) \cap (X \setminus \text{int}(F_n)) = \emptyset$.
+
+Hence $X \setminus L(\varepsilon)$ is a subset of a countable union of closed nowhere dense sets, so is meagre. Since $L(\varepsilon) \subseteq G(\varepsilon)$, $X \setminus G(\varepsilon) \subseteq X \setminus L(\varepsilon)$ is meagre.
+
+**(f)** $X \setminus Y = X \setminus \bigcap_k G(2^{-k}) = \bigcup_k (X \setminus G(2^{-k}))$, a countable union of meagre sets, hence meagre.
+
+From (a1) and (a2), $Y$ is exactly the continuity set of $f$, so $D = X \setminus Y$ is meagre.
+</Solution>
+
+## Problem 3: $\lambda = \sum_{n \geq 1} 10^{-n!}$ is Liouville
+
+<Problem title="Lambda Is a Liouville Number">
+Let $\lambda = \sum_{n=1}^\infty 10^{-n!}$.
+
+(a) Show $\lambda \notin \mathbb{Q}$.
+
+(b) Show $\bigcap_{m \geq 1} \bigcap_{n \geq 1} \bigcup_{p/q \in \mathbb{Q}} (p/q - 1/(nq^m), p/q + 1/(nq^m)) = \bigcap_{k \geq 1} \bigcup_{p/q \in \mathbb{Q}, q > 1} (p/q - 1/q^k, p/q + 1/q^k)$.
+
+(c) Let $q_k = 10^{k!}$, $p_k = \sum_{\ell=1}^k 10^{k! - \ell!}$. Show $|\lambda - p_k/q_k| < 1/q_k^k$.
+</Problem>
+
+<Solution>
+**(a)** Suppose $\lambda = a/b$ with $a, b \in \mathbb{Z}$, $b > 0$. Consider the decimal expansion of $\lambda$:
+
+$$\lambda = 0.\underbrace{1}_{10^{-1!}}\underbrace{1}_{10^{-2!}}000\underbrace{1}_{10^{-3!}}\underbrace{00\cdots0}_{\text{lots}}\underbrace{1}_{10^{-4!}}\cdots$$
+
+The digits are $1$ at positions $n!$ for $n = 1, 2, 3, \dots$ and $0$ elsewhere.
+
+The gaps between consecutive $1$'s grow without bound: position $n!$ to $(n+1)!$ is a gap of $(n+1)! - n! - 1 = n \cdot n!  - 1$ zeros, which $\to \infty$. A rational number has an eventually periodic decimal expansion, but $\lambda$ has arbitrarily long runs of zeros followed by an isolated $1$, hence is not eventually periodic. So $\lambda \notin \mathbb{Q}$.
+
+**(b)** Let $L = \bigcap_m \bigcap_n \bigcup_{p/q} (p/q - 1/(nq^m), p/q + 1/(nq^m))$ and $R = \bigcap_k \bigcup_{p/q, q > 1} (p/q - 1/q^k, p/q + 1/q^k)$.
+
+($L \subseteq R$) Let $x \in L$ and fix $k \geq 1$. Apply the definition with $m = k + 1$ and $n = 1$: there is a rational $p/q$ (any $q$) with $|x - p/q| < 1/q^{k+1}$. If $q = 1$, then $p/q = p \in \mathbb{Z}$. Apply again with $m = k + 1, n$ arbitrarily large to find rationals closer to $x$ — in particular we can always find $q > 1$. More concretely: if $x \in L$ and $x \neq p$ for that integer $p$, we can apply the definition with larger $n$ to find $p'/q'$ with $q' > 1$ arbitrarily close, but we need a single choice per $k$. 
+
+Simpler argument: for $x \in L$, choose $m = k+1, n = 1$ in the definition to get $p/q$ with $|x - p/q| < 1/q^{k+1}$. If $q = 1$, replace by equivalent fraction $2p/2$: $|x - 2p/2| = |x - p| < 1/1^{k+1} = 1$, but we need $<1/q^k = 1/2^k$. Instead, use the definition with $m = k+1$ and $n$ large enough: $|x - p/q| < 1/(nq^{k+1})$. For $n$ large, this is much smaller. If the only solution is $q = 1$, the $p$ is unique (integer closest to $x$) and the distance $|x - p|$ is positive (unless $x \in \mathbb{Z}$); by taking $n > 1/|x - p|$ we rule out $q = 1$. If $x \in \mathbb{Z}$, say $x = n_0$, we can write $x = (2n_0)/2$ giving $q = 2 > 1$ with $|x - x| = 0 < 1/2^k$. So in every case we find $q > 1$ with $|x - p/q| < 1/q^k$, so $x \in R$.
+
+($R \subseteq L$) Let $x \in R$ and fix $m, n \geq 1$. Choose $k \geq m$ with $2^{k - m} > n$. By $x \in R$ applied at this $k$, there is $p/q, q > 1$ with $|x - p/q| < 1/q^k$. Now
+
+$$\frac{1}{q^k} = \frac{1}{q^{k-m} \cdot q^m} \leq \frac{1}{2^{k-m} \cdot q^m} < \frac{1}{n q^m}.$$
+
+So $|x - p/q| < 1/(nq^m)$, confirming $x \in L$.
+
+Hence $L = R$.
+
+**(c)** $p_k/q_k = \sum_{\ell=1}^k 10^{k! - \ell!}/10^{k!} = \sum_{\ell=1}^k 10^{-\ell!}$. So
+
+$$\lambda - \frac{p_k}{q_k} = \sum_{\ell=k+1}^\infty 10^{-\ell!}.$$
+
+Bound the tail: $10^{-\ell!} \leq 10^{-(k+1)!}$ for $\ell \geq k+1$, and in fact the tail is dominated by a geometric series:
+
+$$\sum_{\ell=k+1}^\infty 10^{-\ell!} \leq \sum_{j=0}^\infty 10^{-(k+1)! - j} = \frac{10^{-(k+1)!}}{1 - 10^{-1}} = \frac{10}{9} \cdot 10^{-(k+1)!} < 2 \cdot 10^{-(k+1)!}.$$
+
+For $k \geq 1$: $(k+1)! = (k+1) \cdot k! \geq k \cdot k! + k!$. So $10^{-(k+1)!} \leq 10^{-k \cdot k!} \cdot 10^{-k!} = q_k^{-k} \cdot 10^{-k!}$. Thus
+
+$$\left|\lambda - \frac{p_k}{q_k}\right| < 2 \cdot 10^{-(k+1)!} \leq 2 \cdot 10^{-k!} \cdot q_k^{-k} \leq \frac{1}{q_k^k}$$
+
+for $k \geq 1$ (since $2 \cdot 10^{-k!} < 1$ for $k \geq 1$).
+
+So $|\lambda - p_k/q_k| < 1/q_k^k$. This holds for every $k \geq 1$, and by part (a), $\lambda$ is irrational, so the rational approximation is strict (nonzero). Hence $\lambda$ is a Liouville number.
+</Solution>
+
+## Problem 4: Connected Component
+
+<Problem title="Connected Component C(p)">
+Let $(X, \mathcal{T})$ be topological, $p \in X$, $C(p) = \bigcup_{S \ni p, S \text{ connected}} S$. Show $C(p)$ is connected.
+</Problem>
+
+<Solution>
+Suppose for contradiction $C(p)$ is disconnected in the subspace topology: $C(p) = A \sqcup B$ with $A, B$ nonempty, disjoint, open in $C(p)$.
+
+Write $A = U \cap C(p)$, $B = V \cap C(p)$ for some $U, V \in \mathcal{T}$.
+
+WLOG $p \in A$. Now let $S$ be any connected subset with $p \in S \subseteq C(p)$.
+
+Consider $A \cap S = U \cap S$ and $B \cap S = V \cap S$: both open in $S$. They are disjoint (since $A, B$ disjoint) and their union is $S \cap (A \cup B) = S \cap C(p) = S$. So $S = (A \cap S) \sqcup (B \cap S)$.
+
+$A \cap S$ contains $p$, hence nonempty. $S$ is connected, so $B \cap S = \emptyset$, i.e. $S \subseteq A$.
+
+Since this holds for every connected $S \ni p$, $C(p) = \bigcup S \subseteq A$, so $B = \emptyset$. Contradiction.
+
+Hence $C(p)$ is connected.
+</Solution>
+
+## Problem 5: Cosine Oscillation Lemma
+
+<Problem title="Cosine Oscillation Lemma">
+For every $a \in \mathbb{R}$ and $k \geq 1$, there exists $x \in (a + \pi/k, a + 3\pi/k)$ with $|\cos(ka) - \cos(kx)| \geq 1$.
+</Problem>
+
+<Solution>
+**(a)** Let $\varphi(x) = \cos(kx)$. For $x \in (a + \pi/k, a + 3\pi/k)$, $kx \in (ka + \pi, ka + 3\pi)$, an open interval of length $2\pi$. Since $\cos$ is $2\pi$-periodic and $[ka + \pi, ka + 3\pi]$ has length $2\pi$, $\cos$ attains every value in $[-1, 1]$ on this closed interval. On the open interval $(ka+\pi, ka+3\pi)$, we miss at most the endpoint value (just one value of $\cos$ could be missed). So $\varphi(a+\pi/k, a+3\pi/k)$ contains $[-1,1]$ possibly except one point.
+
+**(b)** If $\cos(ka) = 1$: we want $x$ with $\cos(kx) \leq 0$ so $|\cos(ka) - \cos(kx)| \geq 1$. The image contains $[-1, 1]$ minus at most one point. Since $[-1, 0]$ is a full interval, it contains infinitely many values in the image — pick any $x$ with $\cos(kx) \leq 0$ (e.g. $\cos(kx) = -1/2$ if $-1/2$ is in the image; if the missed point is $-1/2$, pick another value like $0$). Then $|\cos(ka) - \cos(kx)| = 1 - \cos(kx) \geq 1$.
+
+Similarly if $\cos(ka) = -1$, pick $x$ with $\cos(kx) \geq 0$; then $|\cos(kx) - (-1)| = \cos(kx) + 1 \geq 1$.
+
+**(c)** Suppose $\cos(ka) \neq \pm 1$, so $\cos(ka) \in (-1, 1)$.
+
+If $\cos(ka) \geq 0$: The image of $\varphi$ on $(a+\pi/k, a+3\pi/k)$ contains $[-1, 1]$ except possibly one point. Pick $x$ with $\cos(kx) = -1$ if $-1$ is in the image. We need: is $-1$ possibly the excluded point? $-1 = \cos(kx)$ iff $kx = \pi + 2\pi m$ for integer $m$. This requires $kx \in \{ka + \pi + 2\pi m\}$ — the specific value $ka + \pi$ is an endpoint, excluded; inside $(ka+\pi, ka+3\pi)$ the only value giving $\cos = -1$ is $kx = 3\pi(?) $ — actually $\cos(3\pi) = -1$. Let's reconsider.
+
+$\cos$ has value $-1$ at $\pi + 2\pi m$. In $[ka + \pi, ka + 3\pi]$, values of $kx$ giving $\cos(kx) = -1$ occur where $kx \equiv \pi \pmod{2\pi}$. This happens at $kx = \pi + 2\pi m$ for integer $m$. We need such a value in $(ka + \pi, ka + 3\pi)$ — depends on $ka$. Actually $\cos$ reaches $-1$ exactly once per $2\pi$ period. On the interval of length $2\pi$, it reaches $-1$ once (at the point where $kx = \pi \mod 2\pi$ interior to the interval) — or possibly at the boundary.
+
+If the $-1$-value happens to be at the boundary of $(ka+\pi, ka+3\pi)$, then $-1$ might be missed (only value missed is a boundary value $\cos(ka+\pi) = -\cos(ka)$ or $\cos(ka+3\pi) = -\cos(ka)$). So $-1$ is missed only if $-\cos(ka) = -1$, i.e. $\cos(ka) = 1$ — but we assumed $\cos(ka) \neq 1$. So $-1$ is in the image, pick $x$ with $\cos(kx) = -1$, then $|\cos(ka) - \cos(kx)| = \cos(ka) - (-1) \geq 0 + 1 = 1$.
+
+Similarly if $\cos(ka) < 0$, pick $x$ with $\cos(kx) = 1$. The value $1$ is $\cos$ at $0 \mod 2\pi$; missed only if that's the boundary value, i.e. $\cos(ka) = -\cos(ka + \pi) \neq 1$... actually: the excluded value is $\cos(ka+\pi) = -\cos(ka) > 0$. So $1$ is excluded only if $-\cos(ka) = 1$, i.e. $\cos(ka) = -1$, which we excluded. So $1$ is in the image. Then $|\cos(ka) - 1| = 1 - \cos(ka) > 1 - 0 = 1$.
+
+**(d)** Cases (b) and (c) together cover $\cos(ka) = \pm 1$ and $\cos(ka) \in (-1, 1)$, i.e. all possibilities. In each case we found $x \in (a + \pi/k, a + 3\pi/k)$ with $|\cos(ka) - \cos(kx)| \geq 1$.
+</Solution>
+
+## Problem 6: A Continuous Nowhere Differentiable Function
+
+<Problem title="A Continuous Nowhere Differentiable Function">
+Let $f(x) = \sum_{k=0}^\infty 5^{-k} \cos(200^k x)$.
+
+(a) Show $f$ is continuous.
+
+(b)–(i) Show $f$ is nowhere differentiable by constructing $x_n \to a$ with $|f(x_n) - f(a)|/|x_n - a| \to \infty$.
+</Problem>
+
+<Solution>
+**(a)** $|5^{-k}\cos(200^k x)| \leq 5^{-k}$. The series $\sum 5^{-k}$ converges (geometric, ratio $1/5$). By the Weierstrass M-test, the partial sums converge uniformly on $\mathbb{R}$. Each partial sum is a continuous function (finite sum of cosines), and the uniform limit of continuous functions is continuous. So $f$ is continuous.
+
+**(b)** By Problem 5 applied to $a$ and $k \to 200^n$ (treating $200^n a$ as "$ka$" there), there exists $y \in (200^n a + \pi, 200^n a + 3\pi)$ with $|\cos(200^n a) - \cos(y)| \geq 1$. Set $x_n := y / 200^n$; then $200^n x_n = y \in (200^n a + \pi, 200^n a + 3\pi)$ and $|\cos(200^n x_n) - \cos(200^n a)| \geq 1$.
+
+**(c)** Simply split the series at index $n$:
+
+$$f(x_n) - f(a) = \sum_{k=0}^\infty 5^{-k}(\cos(200^k x_n) - \cos(200^k a)) = (\text{term } k=n) + \sum_{k=0}^{n-1}(\cdots) + \sum_{k=n+1}^\infty(\cdots).$$
+
+With $f_k(x) = 5^{-k}\cos(200^k x)$, the $k=n$ term is $A_n := f_n(x_n) - f_n(a)$, etc.
+
+**(d)** $|A_n| = 5^{-n}|\cos(200^n x_n) - \cos(200^n a)| \geq 5^{-n} \cdot 1 = 5^{-n}$.
+
+**(e1)** For $x, y \in \mathbb{R}$, by the mean value theorem applied to $\cos$, $|\cos(x) - \cos(y)| \leq |\sin(\xi)| \cdot |x - y| \leq |x - y|$ for some $\xi$.
+
+Then $|f_k(x_n) - f_k(a)| = 5^{-k}|\cos(200^k x_n) - \cos(200^k a)| \leq 5^{-k} \cdot 200^k |x_n - a|$. Summing:
+
+$$|B_n| \leq \sum_{k=0}^{n-1} 5^{-k} \cdot 200^k |x_n - a|.$$
+
+**(e2)** From (b), $200^n x_n \in (200^n a + \pi, 200^n a + 3\pi)$, so $|x_n - a| < 3\pi / 200^n$. Hence
+
+$$|B_n| \leq 3\pi |x_n - a| \sum_{k=0}^{n-1} 40^k \leq 3\pi \cdot \frac{3\pi}{200^n} \cdot \frac{40^n - 1}{40 - 1} < \frac{9\pi^2}{39} \cdot \frac{40^n}{200^n} = \frac{9\pi^2}{39} \cdot 5^{-n}.$$
+
+Since $9\pi^2/39 \approx 2.28 > 1/4$, this bound isn't quite $5^{-n}/4$. Let me tighten: we also have the lower bound $|x_n - a| > \pi/200^n$, but we only need an upper bound. Re-examining:
+
+$$\sum_{k=0}^{n-1} 5^{-k} 200^k = \sum_{k=0}^{n-1} 40^k = \frac{40^n - 1}{39} < \frac{40^n}{39}.$$
+
+$$|B_n| \leq \frac{3\pi}{200^n} \cdot \frac{40^n}{39} = \frac{3\pi}{39 \cdot 5^n} = \frac{\pi}{13 \cdot 5^n}.$$
+
+Since $\pi/13 \approx 0.242 < 1/4$, we get $|B_n| \leq 5^{-n}/4$.
+
+**(f)** $|\cos(200^k x_n) - \cos(200^k a)| \leq 2$, so
+
+$$|C_n| \leq \sum_{k=n+1}^\infty 5^{-k} \cdot 2 = 2 \cdot \frac{5^{-(n+1)}}{1 - 1/5} = 2 \cdot \frac{5^{-n-1}}{4/5} = \frac{2 \cdot 5^{-n}}{4} = \frac{5^{-n}}{2}.$$
+
+**(g)** $|A + B + C| \geq |A| - |B| - |C|$ is the reverse triangle inequality iterated.
+
+$$|f(x_n) - f(a)| = |A_n + B_n + C_n| \geq |A_n| - |B_n| - |C_n| \geq 5^{-n} - \frac{5^{-n}}{4} - \frac{5^{-n}}{2} = \frac{5^{-n}}{4}.$$
+
+**(h)** $|x_n - a| < 3\pi / 200^n$, so
+
+$$\frac{|f(x_n) - f(a)|}{|x_n - a|} \geq \frac{5^{-n}/4}{3\pi / 200^n} = \frac{200^n}{12\pi \cdot 5^n} = \frac{40^n}{12\pi} \to \infty \text{ as } n \to \infty.$$
+
+**(i)** Also $|x_n - a| < 3\pi/200^n \to 0$, so $x_n \to a$. If $f$ were differentiable at $a$, $(f(x_n) - f(a))/(x_n - a)$ would converge to $f'(a)$, but the absolute value $\to \infty$. Contradiction. So $f$ is not differentiable at $a$. Since $a$ was arbitrary, $f$ is nowhere differentiable.
+</Solution>

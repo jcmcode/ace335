@@ -1,0 +1,411 @@
+---
+title: "Continuity and Limits"
+chapter: 4
+---
+
+Continuity is the backbone of analysis. In this chapter we develop the notion of a continuous function first in the very general setting of topological spaces, then specialize to metric spaces where it coincides with the familiar epsilon-delta condition and with sequential continuity. We then discuss uniform continuity, Lipschitz continuity, homeomorphisms, and the limit of a function at a point. Much of this material is a more abstract recasting of ideas from MATH/MTHE 281.
+
+---
+
+## Continuity in Topological Spaces
+
+The topological definition of continuity refers only to open sets. It makes no reference to distances, sequences, or epsilons.
+
+<Definition title="Topological Continuity">
+Let $(X, \tau)$ and $(Y, \sigma)$ be topological spaces and let $f : X \to Y$. We say that $f$ is **continuous** if, for every open set $\Omega \in \sigma$,
+$$f^{-1}(\Omega) = \{x \in X : f(x) \in \Omega\} \in \tau.$$
+That is, the preimage of every open set is open.
+</Definition>
+
+<Remark>
+**Intuition:** Continuity means that information pulls back nicely: if you "zoom in" on a region of the target $Y$ (an open set), the points of $X$ that land there form an open region too. There are no jumps — nearby points are sent to nearby points, where "nearby" is expressed through the open sets. This definition is powerful because it works in any topological space, not just metric spaces.
+</Remark>
+
+<Theorem title="Equivalent Characterizations of Continuity">
+Let $f : (X, \tau) \to (Y, \sigma)$. The following are equivalent:
+
+**(i)** $f$ is continuous.
+
+**(ii)** For every closed set $F \subseteq Y$, the set $f^{-1}(F)$ is closed in $X$.
+
+**(iii)** For every $A \subseteq X$, $f(\overline{A}) \subseteq \overline{f(A)}$.
+
+**(iv)** For every $B \subseteq Y$, $\overline{f^{-1}(B)} \subseteq f^{-1}(\overline{B})$.
+</Theorem>
+
+<Remark>
+**Intuition:** Continuity has many equivalent faces. The open-set version is the cleanest, but sometimes it is more convenient to argue about closed sets, or to say that the image of the closure is contained in the closure of the image — which expresses "points accumulating in $A$ get sent to points accumulating in $f(A)$."
+</Remark>
+
+<Proof>
+**(i) $\iff$ (ii):** $F \subseteq Y$ is closed iff $Y \setminus F$ is open. Since $f^{-1}(Y \setminus F) = X \setminus f^{-1}(F)$, the preimage of a closed set is closed iff the preimage of the complementary open set is open.
+
+**(i) $\Rightarrow$ (iii):** Let $A \subseteq X$. The set $\overline{f(A)}$ is closed in $Y$, so by (ii), $f^{-1}(\overline{f(A)})$ is closed in $X$. Since $A \subseteq f^{-1}(f(A)) \subseteq f^{-1}(\overline{f(A)})$ and the latter is closed, $\overline{A} \subseteq f^{-1}(\overline{f(A)})$. Applying $f$ to both sides gives $f(\overline{A}) \subseteq \overline{f(A)}$.
+
+**(iii) $\Rightarrow$ (iv):** Let $B \subseteq Y$ and set $A = f^{-1}(B)$. By (iii), $f(\overline{A}) \subseteq \overline{f(A)} \subseteq \overline{B}$. Thus $\overline{A} \subseteq f^{-1}(\overline{B})$, which is exactly (iv).
+
+**(iv) $\Rightarrow$ (ii):** Let $F \subseteq Y$ be closed, so $\overline{F} = F$. By (iv), $\overline{f^{-1}(F)} \subseteq f^{-1}(\overline{F}) = f^{-1}(F)$. Since always $f^{-1}(F) \subseteq \overline{f^{-1}(F)}$, we get equality, so $f^{-1}(F)$ is closed. $\square$
+</Proof>
+
+### Local Continuity
+
+Continuity is defined globally above, but there is also a pointwise version.
+
+<Definition title="Continuity at a Point">
+Let $f : (X, \tau) \to (Y, \sigma)$ and let $x_0 \in X$. We say that $f$ is **continuous at $x_0$** if for every open neighbourhood $V$ of $f(x_0)$, there exists an open neighbourhood $U$ of $x_0$ such that $f(U) \subseteq V$.
+</Definition>
+
+<Remark>
+**Intuition:** Continuity at a point says that we can force $f$ to land in any prescribed neighbourhood of $f(x_0)$ by starting from a small enough neighbourhood of $x_0$. This is the topological generalization of "nearby inputs produce nearby outputs."
+</Remark>
+
+<Theorem title="Global Continuity via Pointwise Continuity">
+$f : (X, \tau) \to (Y, \sigma)$ is continuous if and only if $f$ is continuous at every point $x_0 \in X$.
+</Theorem>
+
+<Proof>
+**($\Rightarrow$):** Assume $f$ is continuous. Let $x_0 \in X$ and let $V$ be an open neighbourhood of $f(x_0)$. Then $U := f^{-1}(V)$ is open and contains $x_0$, and $f(U) \subseteq V$.
+
+**($\Leftarrow$):** Assume $f$ is continuous at each point. Let $\Omega \in \sigma$ be open. For each $x \in f^{-1}(\Omega)$, $\Omega$ is an open neighbourhood of $f(x)$, so there is an open $U_x \ni x$ with $f(U_x) \subseteq \Omega$, i.e. $U_x \subseteq f^{-1}(\Omega)$. Then
+$$f^{-1}(\Omega) = \bigcup_{x \in f^{-1}(\Omega)} U_x$$
+is a union of open sets, hence open. $\square$
+</Proof>
+
+---
+
+## Continuity in Metric Spaces
+
+We now specialize to metric spaces, where distances make several additional characterizations available.
+
+<Definition title="Epsilon-Delta Continuity">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces and let $f : X \to Y$. We say that $f$ is **continuous at $x_0 \in X$** if for every $\varepsilon > 0$ there exists $\delta > 0$ such that
+$$d_X(x, x_0) < \delta \implies d_Y(f(x), f(x_0)) < \varepsilon.$$
+We say $f$ is continuous if it is continuous at every $x_0 \in X$.
+</Definition>
+
+<Remark>
+**Intuition:** This is the familiar definition from calculus: given any desired output tolerance $\varepsilon$, we can find an input tolerance $\delta$ that guarantees it. The quantifier order matters: $\varepsilon$ is chosen first, then $\delta$ depends on both $\varepsilon$ and $x_0$.
+</Remark>
+
+<Definition title="Sequential Continuity">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces. We say that $f : X \to Y$ is **sequentially continuous at $x_0$** if for every sequence $(x_n) \subseteq X$ with $x_n \to x_0$, we have $f(x_n) \to f(x_0)$.
+</Definition>
+
+<Remark>
+**Intuition:** Sequential continuity says: if inputs converge to $x_0$, then outputs converge to $f(x_0)$. This formulation is often the easiest to use in practice, since sequences are concrete objects.
+</Remark>
+
+<Theorem title="Equivalence of Continuity Notions in Metric Spaces">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces, equipped with their metric topologies, and let $f : X \to Y$. The following are equivalent:
+
+**(i)** $f$ is topologically continuous (preimage of open is open).
+
+**(ii)** $f$ is $\varepsilon$-$\delta$ continuous at every point.
+
+**(iii)** $f$ is sequentially continuous at every point.
+</Theorem>
+
+<Proof>
+**(i) $\Rightarrow$ (ii):** Fix $x_0 \in X$ and $\varepsilon > 0$. The open ball $B_\varepsilon(f(x_0)) \subseteq Y$ is open, so $f^{-1}(B_\varepsilon(f(x_0)))$ is open in $X$ and contains $x_0$. Hence there exists $\delta > 0$ with $B_\delta(x_0) \subseteq f^{-1}(B_\varepsilon(f(x_0)))$, i.e. $d_X(x, x_0) < \delta$ implies $d_Y(f(x), f(x_0)) < \varepsilon$.
+
+**(ii) $\Rightarrow$ (iii):** Suppose $x_n \to x_0$ in $X$ and fix $\varepsilon > 0$. By (ii), choose $\delta > 0$ with $d_X(x, x_0) < \delta$ implying $d_Y(f(x), f(x_0)) < \varepsilon$. Since $x_n \to x_0$, there exists $N$ with $d_X(x_n, x_0) < \delta$ for all $n \geq N$. Then $d_Y(f(x_n), f(x_0)) < \varepsilon$ for all $n \geq N$, so $f(x_n) \to f(x_0)$.
+
+**(iii) $\Rightarrow$ (i):** We prove the contrapositive. Suppose $f$ is not continuous; then there exists an open $\Omega \subseteq Y$ such that $f^{-1}(\Omega)$ is not open. Pick $x_0 \in f^{-1}(\Omega)$ that is not an interior point. Then for every $n \geq 1$, the ball $B_{1/n}(x_0)$ is not contained in $f^{-1}(\Omega)$, so we may pick $x_n \in B_{1/n}(x_0)$ with $f(x_n) \notin \Omega$. Now $d_X(x_n, x_0) < 1/n$, so $x_n \to x_0$. But $f(x_0) \in \Omega$ and $f(x_n) \notin \Omega$ for all $n$. Since $\Omega$ is open, $f(x_n)$ cannot converge to $f(x_0)$, contradicting (iii). $\square$
+</Proof>
+
+<Example title="Basic Continuous Maps">
+**(1)** The identity map $\mathrm{id} : (X, \tau) \to (X, \tau)$ is always continuous, since $\mathrm{id}^{-1}(\Omega) = \Omega$.
+
+**(2)** Any constant map $f \equiv c$ is continuous: $f^{-1}(\Omega)$ is either $X$ or $\emptyset$, both open.
+
+**(3)** The map $f : \mathbb{R} \to \mathbb{R}$ defined by $f(x) = x^2$ is continuous: given $x_0$ and $\varepsilon > 0$, take $\delta = \min\{1, \varepsilon/(2|x_0| + 1)\}$. Then $|x - x_0| < \delta$ gives $|x| \leq |x_0| + 1$ and
+$$|x^2 - x_0^2| = |x - x_0| \cdot |x + x_0| \leq \delta(2|x_0| + 1) \leq \varepsilon.$$
+
+**(4)** The Dirichlet function $\chi_{\mathbb{Q}} : \mathbb{R} \to \mathbb{R}$, equal to $1$ on rationals and $0$ on irrationals, is nowhere continuous. Indeed for any $x_0 \in \mathbb{R}$ we can find rationals $r_n \to x_0$ and irrationals $i_n \to x_0$, so $\chi_{\mathbb{Q}}(r_n) \to 1$ and $\chi_{\mathbb{Q}}(i_n) \to 0$; sequential continuity fails.
+</Example>
+
+---
+
+## Composition, Algebraic Operations, Restrictions
+
+<Theorem title="Composition of Continuous Maps">
+Let $(X, \tau)$, $(Y, \sigma)$, $(Z, \rho)$ be topological spaces and let $f : X \to Y$, $g : Y \to Z$ be continuous. Then $g \circ f : X \to Z$ is continuous.
+</Theorem>
+
+<Remark>
+**Intuition:** Continuity composes. Reading the proof, this is essentially just a restatement of the identity $(g \circ f)^{-1}(W) = f^{-1}(g^{-1}(W))$.
+</Remark>
+
+<Proof>
+Let $W \in \rho$. Since $g$ is continuous, $g^{-1}(W) \in \sigma$. Since $f$ is continuous, $f^{-1}(g^{-1}(W)) \in \tau$. But
+$$(g \circ f)^{-1}(W) = \{x : g(f(x)) \in W\} = f^{-1}(g^{-1}(W)),$$
+which is open. $\square$
+</Proof>
+
+<Theorem title="Algebraic Operations on Real-Valued Continuous Functions">
+Let $(X, d)$ be a metric space and let $f, g : X \to \mathbb{R}$ be continuous at $x_0 \in X$. Then $f + g$, $f - g$, $fg$ are continuous at $x_0$, and $f/g$ is continuous at $x_0$ whenever $g(x_0) \neq 0$.
+</Theorem>
+
+<Proof>
+We prove continuity of $fg$; the other cases are analogous. Let $(x_n) \subseteq X$ with $x_n \to x_0$. By sequential continuity of $f$ and $g$, $f(x_n) \to f(x_0)$ and $g(x_n) \to g(x_0)$. Since convergent real sequences have product converging to the product of limits,
+$$f(x_n) g(x_n) \to f(x_0) g(x_0).$$
+By sequential continuity, $fg$ is continuous at $x_0$. $\square$
+</Proof>
+
+<Theorem title="Continuity and Restrictions">
+Let $f : (X, \tau) \to (Y, \sigma)$ be continuous and let $A \subseteq X$, equipped with the relative topology $\tau_A$. Then $f|_A : (A, \tau_A) \to (Y, \sigma)$ is continuous.
+</Theorem>
+
+<Proof>
+Let $\Omega \in \sigma$. Then $(f|_A)^{-1}(\Omega) = f^{-1}(\Omega) \cap A$, which belongs to $\tau_A$ by definition of the relative topology. $\square$
+</Proof>
+
+---
+
+## Continuous Functions on $\mathbb{R}$ and $\mathbb{R}^n$
+
+In $\mathbb{R}^n$ with the Euclidean topology, continuity is equivalent to continuity of each component function.
+
+<Theorem title="Componentwise Continuity">
+Let $(X, d)$ be a metric space and let $f : X \to \mathbb{R}^n$, $f(x) = (f_1(x), \dots, f_n(x))$. Then $f$ is continuous at $x_0$ if and only if each $f_i : X \to \mathbb{R}$ is continuous at $x_0$.
+</Theorem>
+
+<Proof>
+Note that for $y = (y_1, \dots, y_n) \in \mathbb{R}^n$,
+$$|y_i| \leq \|y\| \leq \sqrt{n} \max_i |y_i|.$$
+
+**($\Rightarrow$):** If $x_k \to x_0$ in $X$, then $\|f(x_k) - f(x_0)\| \to 0$, so $|f_i(x_k) - f_i(x_0)| \leq \|f(x_k) - f(x_0)\| \to 0$.
+
+**($\Leftarrow$):** If each $f_i(x_k) \to f_i(x_0)$, then $\|f(x_k) - f(x_0)\| \leq \sqrt{n} \max_i |f_i(x_k) - f_i(x_0)| \to 0$. $\square$
+</Proof>
+
+<Example title="Polynomials and Rational Functions">
+Every polynomial $p : \mathbb{R}^n \to \mathbb{R}$ is continuous on all of $\mathbb{R}^n$, since polynomials are built from continuous coordinate projections via sums and products. Every rational function $p/q$ is continuous at every point where $q \neq 0$.
+</Example>
+
+---
+
+## Uniform Continuity
+
+Continuity is pointwise: the $\delta$ depends on both $\varepsilon$ and the base point $x_0$. Uniform continuity requires a single $\delta$ that works for all points simultaneously.
+
+<Definition title="Uniform Continuity">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces. A function $f : X \to Y$ is **uniformly continuous** if for every $\varepsilon > 0$ there exists $\delta > 0$ such that for all $x, x' \in X$,
+$$d_X(x, x') < \delta \implies d_Y(f(x), f(x')) < \varepsilon.$$
+</Definition>
+
+<Remark>
+**Intuition:** Ordinary continuity allows $\delta$ to shrink as we move to different parts of the domain; uniform continuity forbids this. A uniformly continuous function never becomes "arbitrarily steep" over its domain. Any uniformly continuous function is continuous; the converse fails in general.
+</Remark>
+
+<Example title="Continuous but not Uniformly Continuous">
+$f : \mathbb{R} \to \mathbb{R}$ with $f(x) = x^2$ is continuous but not uniformly continuous. Given $\delta > 0$, take $x_n = n$ and $x_n' = n + \delta/2$; then $|x_n - x_n'| = \delta/2 < \delta$, yet
+$$|f(x_n) - f(x_n')| = |2n \cdot \delta/2 + (\delta/2)^2| = n\delta + \delta^2/4 \to \infty.$$
+So no single $\delta$ works for $\varepsilon = 1$.
+</Example>
+
+<Theorem title="Heine-Cantor Theorem">
+Let $(X, d_X)$ be a compact metric space and let $(Y, d_Y)$ be a metric space. Every continuous function $f : X \to Y$ is uniformly continuous.
+</Theorem>
+
+<Remark>
+**Intuition:** On a compact set, there is no "room at infinity" for continuity to deteriorate. Because the domain is totally controlled, the pointwise $\delta$'s admit a uniform lower bound.
+</Remark>
+
+<Proof>
+Fix $\varepsilon > 0$. By continuity, for each $x \in X$ there exists $\delta_x > 0$ such that $d_X(y, x) < \delta_x$ implies $d_Y(f(y), f(x)) < \varepsilon/2$. The balls $\{B_{\delta_x / 2}(x) : x \in X\}$ form an open cover of $X$. Since $X$ is compact, there exist $x_1, \dots, x_N$ with
+$$X = \bigcup_{i=1}^N B_{\delta_{x_i}/2}(x_i).$$
+Set $\delta = \min_{1 \leq i \leq N} \delta_{x_i}/2 > 0$.
+
+Let $x, x' \in X$ with $d_X(x, x') < \delta$. Pick $i$ with $x \in B_{\delta_{x_i}/2}(x_i)$, so $d_X(x, x_i) < \delta_{x_i}/2$. Then
+$$d_X(x', x_i) \leq d_X(x', x) + d_X(x, x_i) < \delta + \delta_{x_i}/2 \leq \delta_{x_i}.$$
+Hence both $x$ and $x'$ lie in $B_{\delta_{x_i}}(x_i)$, giving
+$$d_Y(f(x), f(x')) \leq d_Y(f(x), f(x_i)) + d_Y(f(x_i), f(x')) < \varepsilon/2 + \varepsilon/2 = \varepsilon. \qquad \square$$
+</Proof>
+
+---
+
+## Lipschitz Continuity
+
+A strong quantitative form of continuity that implies uniform continuity.
+
+<Definition title="Lipschitz Continuous Function">
+A function $f : (X, d_X) \to (Y, d_Y)$ is **Lipschitz continuous** (with constant $K$) if there exists $K \geq 0$ such that
+$$d_Y(f(x), f(x')) \leq K \, d_X(x, x') \quad \text{for all } x, x' \in X.$$
+The smallest such $K$ is the **Lipschitz constant** of $f$, denoted $\mathrm{Lip}(f)$. If $K < 1$, $f$ is called a **contraction**.
+</Definition>
+
+<Remark>
+**Intuition:** Lipschitz continuity is a uniform "slope bound." The ratio of output change to input change can never exceed $K$. Differentiable functions on $\mathbb{R}$ with bounded derivative are Lipschitz; the Lipschitz constant equals the sup of $|f'|$.
+</Remark>
+
+<Theorem title="Lipschitz Implies Uniformly Continuous">
+Every Lipschitz continuous function is uniformly continuous.
+</Theorem>
+
+<Proof>
+Let $f$ be Lipschitz with constant $K$. If $K = 0$, $f$ is constant and trivially uniformly continuous. Otherwise, given $\varepsilon > 0$, take $\delta = \varepsilon / K$. Then $d_X(x, x') < \delta$ gives $d_Y(f(x), f(x')) \leq K \cdot \delta = \varepsilon$. $\square$
+</Proof>
+
+<Example title="Lipschitz Examples and Non-Examples">
+**(1)** The absolute value function $x \mapsto |x|$ on $\mathbb{R}$ is Lipschitz with constant $1$ (by the reverse triangle inequality).
+
+**(2)** For any fixed $y \in (X, d)$, the distance function $x \mapsto d(x, y)$ is Lipschitz with constant $1$:
+$$|d(x, y) - d(x', y)| \leq d(x, x')$$
+(reverse triangle inequality).
+
+**(3)** $f(x) = \sqrt{x}$ on $[0, \infty)$ is uniformly continuous but not Lipschitz, because near $0$ the slope blows up: $|\sqrt{x} - \sqrt{0}| / |x - 0| = 1/\sqrt{x} \to \infty$ as $x \to 0^+$.
+</Example>
+
+---
+
+## Homeomorphisms
+
+<Definition title="Homeomorphism">
+A map $f : (X, \tau) \to (Y, \sigma)$ is a **homeomorphism** if $f$ is a bijection, $f$ is continuous, and $f^{-1}$ is continuous. Two spaces are **homeomorphic** if a homeomorphism between them exists.
+</Definition>
+
+<Remark>
+**Intuition:** A homeomorphism is an isomorphism of topological spaces: it matches up points AND open sets. Homeomorphic spaces have the same topological properties — connectedness, compactness, Hausdorffness, etc. A donut and a coffee cup are the classical example of homeomorphic spaces that differ geometrically but not topologically.
+</Remark>
+
+<Example title="Homeomorphism Examples">
+**(1)** The open interval $(-1, 1)$ and $\mathbb{R}$ are homeomorphic via $f(x) = \tan(\pi x / 2)$, with inverse $g(y) = (2/\pi) \arctan(y)$. Both are continuous.
+
+**(2)** The closed square $[0, 1]^2$ and the closed disk $\overline{B_1(0)} \subseteq \mathbb{R}^2$ are homeomorphic (radially stretch the square onto the disk).
+
+**(3)** $[0, 1)$ and $\mathbb{R}$ are **not** homeomorphic. If they were, connectedness would be preserved, but removing any interior point of $[0, 1)$ disconnects it into two components or leaves it connected depending on the point; while removing any point of $\mathbb{R}$ produces two components. A careful argument using connectedness shows these spaces cannot be topologically equivalent.
+</Example>
+
+<Theorem title="Continuous Bijection on Compact Space is a Homeomorphism">
+Let $f : (X, \tau) \to (Y, \sigma)$ be a continuous bijection, where $(X, \tau)$ is compact and $(Y, \sigma)$ is Hausdorff. Then $f$ is a homeomorphism.
+</Theorem>
+
+<Proof>
+We must show $f^{-1} : Y \to X$ is continuous, equivalently, that $f$ is a closed map. Let $F \subseteq X$ be closed. Since $X$ is compact, $F$ is compact. Since $f$ is continuous, $f(F)$ is compact in $Y$. In a Hausdorff space every compact subset is closed. Thus $f(F)$ is closed, so $f$ is a closed map, proving $f^{-1}$ is continuous. $\square$
+</Proof>
+
+---
+
+## Limits of Functions
+
+We now define the limit of a function at a point in the metric-space setting, generalizing $\lim_{x \to a} f(x)$ from calculus.
+
+<Definition title="Limit of a Function">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces, $A \subseteq X$, $f : A \to Y$, and let $a \in X$ be an accumulation point of $A$ (i.e. every punctured ball around $a$ meets $A$). We write
+$$\lim_{x \to a} f(x) = L$$
+if for every $\varepsilon > 0$ there exists $\delta > 0$ such that for all $x \in A$,
+$$0 < d_X(x, a) < \delta \implies d_Y(f(x), L) < \varepsilon.$$
+</Definition>
+
+<Remark>
+**Intuition:** The limit of $f$ at $a$ is the value that $f(x)$ approaches as $x$ approaches $a$, but without touching $a$ itself. The requirement that $a$ be an accumulation point ensures we can actually approach $a$ through $A$. The value of $f$ at $a$ (if defined) is irrelevant.
+</Remark>
+
+<Theorem title="Sequential Characterization of Limits">
+Under the assumptions of the definition, $\lim_{x \to a} f(x) = L$ if and only if for every sequence $(x_n) \subseteq A \setminus \{a\}$ with $x_n \to a$, we have $f(x_n) \to L$.
+</Theorem>
+
+<Proof>
+**($\Rightarrow$):** Let $x_n \in A \setminus \{a\}$, $x_n \to a$, and fix $\varepsilon > 0$. Pick $\delta > 0$ as in the definition. Since $x_n \to a$, there exists $N$ with $d_X(x_n, a) < \delta$ for all $n \geq N$. Since $x_n \neq a$, also $d_X(x_n, a) > 0$. Thus $d_Y(f(x_n), L) < \varepsilon$ for $n \geq N$.
+
+**($\Leftarrow$):** Suppose $\lim_{x \to a} f(x) \neq L$. Then there is $\varepsilon_0 > 0$ such that for every $n \geq 1$ there is $x_n \in A$ with $0 < d_X(x_n, a) < 1/n$ and $d_Y(f(x_n), L) \geq \varepsilon_0$. Then $x_n \in A \setminus \{a\}$ and $x_n \to a$, but $f(x_n) \not\to L$, contradicting the hypothesis. $\square$
+</Proof>
+
+<Theorem title="Continuity in Terms of Limits">
+Let $f : (X, d_X) \to (Y, d_Y)$ and $x_0 \in X$ be an accumulation point of $X$. Then $f$ is continuous at $x_0$ if and only if $\lim_{x \to x_0} f(x) = f(x_0)$.
+</Theorem>
+
+<Proof>
+Direct from comparing the $\varepsilon$-$\delta$ definitions: continuity requires the condition at $x = x_0$ (trivially satisfied), while the limit excludes $x = x_0$. The two conditions coincide because the case $x = x_0$ is vacuous for continuity. $\square$
+</Proof>
+
+### Algebraic Properties of Limits
+
+<Theorem title="Algebra of Limits">
+Let $f, g : A \to \mathbb{R}$ with $A \subseteq X$, and suppose $\lim_{x \to a} f(x) = L_1$, $\lim_{x \to a} g(x) = L_2$. Then:
+
+**(i)** $\lim_{x \to a} (f(x) + g(x)) = L_1 + L_2$.
+
+**(ii)** $\lim_{x \to a} (f(x) g(x)) = L_1 L_2$.
+
+**(iii)** If $L_2 \neq 0$, $\lim_{x \to a} f(x)/g(x) = L_1/L_2$.
+</Theorem>
+
+<Proof>
+Use the sequential characterization: take any $x_n \in A \setminus \{a\}$ with $x_n \to a$; then $f(x_n) \to L_1$, $g(x_n) \to L_2$, and the corresponding algebraic rules for sequences in $\mathbb{R}$ give the conclusions. $\square$
+</Proof>
+
+---
+
+## Oscillation and Discontinuities
+
+We classify how a function can fail to be continuous at a point, using the notion of oscillation.
+
+<Definition title="Oscillation of a Function">
+Let $f : (X, d) \to \mathbb{R}$ be a bounded function and $A \subseteq X$ nonempty. The **oscillation** of $f$ on $A$ is
+$$\mathrm{osc}(f, A) = \sup_{x \in A} f(x) - \inf_{x \in A} f(x).$$
+The **oscillation of $f$ at $x_0 \in X$** is
+$$\omega_f(x_0) = \lim_{r \to 0^+} \mathrm{osc}(f, B_r(x_0)) = \inf_{r > 0} \mathrm{osc}(f, B_r(x_0)).$$
+(The limit exists because $r \mapsto \mathrm{osc}(f, B_r(x_0))$ is nonnegative and nondecreasing.)
+</Definition>
+
+<Remark>
+**Intuition:** The oscillation $\omega_f(x_0)$ measures how much $f$ jumps near $x_0$. It is zero exactly when $f$ is continuous at $x_0$, so it serves as a quantitative failure-of-continuity.
+</Remark>
+
+<Theorem title="Oscillation Characterizes Continuity">
+Let $f : (X, d) \to \mathbb{R}$ be bounded. Then $f$ is continuous at $x_0$ if and only if $\omega_f(x_0) = 0$.
+</Theorem>
+
+<Proof>
+**($\Rightarrow$):** If $f$ is continuous at $x_0$, fix $\varepsilon > 0$ and pick $\delta$ such that $d(x, x_0) < \delta$ implies $|f(x) - f(x_0)| < \varepsilon/2$. Then for $x, x' \in B_\delta(x_0)$, $|f(x) - f(x')| \leq |f(x) - f(x_0)| + |f(x_0) - f(x')| < \varepsilon$, so $\mathrm{osc}(f, B_\delta(x_0)) \leq \varepsilon$. Letting $\varepsilon \to 0$ gives $\omega_f(x_0) = 0$.
+
+**($\Leftarrow$):** If $\omega_f(x_0) = 0$, for each $\varepsilon > 0$ there is $\delta > 0$ with $\mathrm{osc}(f, B_\delta(x_0)) < \varepsilon$. In particular, for $x \in B_\delta(x_0)$, $|f(x) - f(x_0)| \leq \mathrm{osc}(f, B_\delta(x_0)) < \varepsilon$. $\square$
+</Proof>
+
+### Classification of Discontinuities on $\mathbb{R}$
+
+For a function $f : \mathbb{R} \to \mathbb{R}$, define the one-sided limits $f(x_0^-) = \lim_{x \to x_0^-} f(x)$ and $f(x_0^+) = \lim_{x \to x_0^+} f(x)$ when they exist.
+
+- **Removable discontinuity:** $f(x_0^-) = f(x_0^+) \neq f(x_0)$ (or $f(x_0)$ is undefined). Redefining $f$ at one point restores continuity.
+- **Jump (first-kind) discontinuity:** $f(x_0^-)$ and $f(x_0^+)$ both exist and are finite, but differ. The oscillation is $|f(x_0^+) - f(x_0^-)|$.
+- **Essential (second-kind) discontinuity:** at least one of $f(x_0^-)$, $f(x_0^+)$ fails to exist (for instance because of oscillation, as in $\sin(1/x)$ at $x = 0$).
+
+<Example title="Set of Discontinuities is an F-sigma Set">
+For any function $f : \mathbb{R} \to \mathbb{R}$, the set
+$$D_f = \{x_0 \in \mathbb{R} : f \text{ is discontinuous at } x_0\} = \bigcup_{n=1}^{\infty} \{x_0 : \omega_f(x_0) \geq 1/n\}$$
+is a countable union of closed sets (an $F_\sigma$ set). This is a key ingredient in showing, via the Baire Category Theorem, that there is no function $f : \mathbb{R} \to \mathbb{R}$ whose set of continuity points is exactly $\mathbb{Q}$.
+</Example>
+
+---
+
+## Continuity and Connectedness: The Intermediate Value Theorem
+
+We close with a classical application: the topological version of the Intermediate Value Theorem, which is a direct consequence of Bolzano's theorem that continuous functions preserve connectedness.
+
+<Theorem title="Bolzano's Theorem">
+Let $f : (X, \tau) \to (Y, \sigma)$ be continuous and surjective. If $(X, \tau)$ is connected, then $(Y, \sigma)$ is connected. More generally, if $A \subseteq X$ is connected, then $f(A)$ is connected.
+</Theorem>
+
+<Proof>
+Suppose $(Y, \sigma)$ is disconnected by open sets $\Omega_1, \Omega_2$: $\Omega_1, \Omega_2 \neq \emptyset$, $\Omega_1 \cap \Omega_2 = \emptyset$, $\Omega_1 \cup \Omega_2 = Y$. Let $O_i = f^{-1}(\Omega_i)$. By continuity, both are open. Since $f$ is surjective, both are nonempty. We have $O_1 \cap O_2 = f^{-1}(\Omega_1 \cap \Omega_2) = \emptyset$ and $O_1 \cup O_2 = f^{-1}(Y) = X$. So $O_1, O_2$ disconnect $X$, contradicting connectedness of $X$.
+
+For a subset $A \subseteq X$, apply this to the restriction $f|_A : (A, \tau_A) \to (f(A), \sigma_{f(A)})$. $\square$
+</Proof>
+
+<Corollary title="Intermediate Value Theorem">
+Let $f : [a, b] \to \mathbb{R}$ be continuous. If $y$ lies between $f(a)$ and $f(b)$, there exists $c \in [a, b]$ with $f(c) = y$.
+</Corollary>
+
+<Proof>
+The interval $[a, b]$ is connected in $\mathbb{R}$, so by Bolzano's theorem $f([a, b])$ is a connected subset of $\mathbb{R}$, hence an interval. An interval containing $f(a)$ and $f(b)$ contains every value between them, so $y \in f([a, b])$. $\square$
+</Proof>
+
+<Corollary title="Extreme Value Theorem">
+Let $X$ be a nonempty compact topological space and $f : X \to \mathbb{R}$ continuous. Then $f$ attains its maximum and minimum on $X$.
+</Corollary>
+
+<Proof>
+$f(X)$ is compact in $\mathbb{R}$, hence closed and bounded by Heine-Borel. A closed bounded nonempty subset of $\mathbb{R}$ contains its supremum and infimum. $\square$
+</Proof>

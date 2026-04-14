@@ -1,61 +1,69 @@
 import Link from 'next/link'
-import { BookOpen, FileText, GraduationCap, ArrowRight, ChevronRight } from 'lucide-react'
-import { chapters, groupLabels, groupDescriptions } from '@/lib/chapters'
-import type { Chapter } from '@/lib/chapters'
-import CourseMindmap from '@/components/visualizations/CourseMindmap'
+import { BookOpen, FileText, GraduationCap, ArrowRight } from 'lucide-react'
+import { chapters328, groupLabels328, groupDescriptions328 } from '@/lib/chapters-328'
+import type { Chapter328 } from '@/lib/chapters-328'
+import CourseMindmap328 from '@/components/visualizations/CourseMindmap328'
 import CourseSwitcher from '@/components/CourseSwitcher'
 
-const groups = ['foundations', 'transforms', 'control', 'advanced', 'appendix'] as const
+const groups = ['foundations', 'structure', 'convergence', 'calculus', 'integration'] as const
 
-const groupColors: Record<Chapter['group'], { card: string; badge: string; border: string }> = {
+const groupColors: Record<Chapter328['group'], { card: string; badge: string; border: string }> = {
   foundations: {
     card: 'hover:border-blue-300 hover:shadow-blue-100',
     badge: 'bg-blue-100 text-blue-700',
     border: 'border-blue-400',
   },
-  transforms: {
-    card: 'hover:border-emerald-300 hover:shadow-emerald-100',
-    badge: 'bg-emerald-100 text-emerald-700',
-    border: 'border-emerald-400',
+  structure: {
+    card: 'hover:border-rose-300 hover:shadow-rose-100',
+    badge: 'bg-rose-100 text-rose-700',
+    border: 'border-rose-400',
   },
-  control: {
-    card: 'hover:border-amber-300 hover:shadow-amber-100',
-    badge: 'bg-amber-100 text-amber-700',
-    border: 'border-amber-400',
+  convergence: {
+    card: 'hover:border-teal-300 hover:shadow-teal-100',
+    badge: 'bg-teal-100 text-teal-700',
+    border: 'border-teal-400',
   },
-  advanced: {
-    card: 'hover:border-purple-300 hover:shadow-purple-100',
-    badge: 'bg-purple-100 text-purple-700',
-    border: 'border-purple-400',
+  calculus: {
+    card: 'hover:border-fuchsia-300 hover:shadow-fuchsia-100',
+    badge: 'bg-fuchsia-100 text-fuchsia-700',
+    border: 'border-fuchsia-400',
   },
-  appendix: {
-    card: 'hover:border-slate-300 hover:shadow-slate-100',
-    badge: 'bg-slate-100 text-slate-700',
-    border: 'border-slate-400',
+  integration: {
+    card: 'hover:border-orange-300 hover:shadow-orange-100',
+    badge: 'bg-orange-100 text-orange-700',
+    border: 'border-orange-400',
   },
 }
 
-const homeworks = [
-  { id: '0', label: 'Review' },
-  { id: '1', label: 'HW 1' },
-  { id: '2', label: 'HW 2' },
-  { id: '3', label: 'HW 3' },
-  { id: '4', label: 'HW 4' },
-  { id: '5', label: 'HW 5' },
-  { id: '6', label: 'HW 6' },
-  { id: '7', label: 'HW 7' },
-  { id: '8', label: 'HW 8' },
-  { id: '9', label: 'HW 9' },
-  { id: '10', label: 'HW 10' },
+const problemSets = [
+  { id: '1', label: 'PS 1' },
+  { id: '2', label: 'PS 2' },
+  { id: '3', label: 'PS 3' },
+  { id: '4', label: 'PS 4' },
 ]
 
-export default function HomePage() {
+const exams = [
+  { id: 'test-w24-1', label: 'Test 1 (W24)' },
+  { id: 'test-w24-2', label: 'Test 2 (W24)' },
+  { id: 'test-w25-1', label: 'Test 1 (W25)' },
+  { id: 'test-w25-2', label: 'Test 2 (W25)' },
+  { id: 'final-2024', label: 'Final 2024' },
+  { id: 'final-2025', label: 'Final 2025' },
+]
+
+export const metadata = {
+  title: 'ACE 328 — Real Analysis',
+  description:
+    'Complete course reference for MTHE / MATH 328: Real Analysis at Queen\'s University. Topological and metric spaces, continuity, compactness, completeness, and series of functions.',
+}
+
+export default function HomePage328() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
       <header className="relative overflow-hidden bg-slate-900 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_rgba(99,102,241,0.12),_transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,_rgba(16,185,129,0.08),_transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_rgba(6,182,212,0.18),_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,_rgba(244,63,94,0.1),_transparent_50%)]" />
         <div className="relative max-w-6xl mx-auto px-6 pt-10 pb-10 lg:pt-14 lg:pb-12">
           <div className="flex justify-end mb-6">
             <CourseSwitcher variant="hero" />
@@ -63,19 +71,18 @@ export default function HomePage() {
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl lg:text-5xl font-bold tracking-tight leading-tight">
               <span className="text-white">ACE</span>{' '}
-              <span className="text-indigo-400">MTHE 335</span>
+              <span className="text-cyan-400">MTHE 328</span>
             </h1>
             <p className="mt-3 text-xl lg:text-2xl text-slate-300 font-medium">
-              Mathematics of Engineering Systems
+              Real Analysis
             </p>
             <p className="mt-4 text-sm text-slate-500 max-w-xl mx-auto leading-relaxed">
-              Complete course reference covering 12 chapters from signal spaces to control theory.
-              Worked examples, homework solutions, and past exams.
+              Complete course reference covering topological and metric spaces, continuity, compactness, completeness, and series of functions. Worked problem sets, past tests, and final exams.
             </p>
             <div className="mt-6 flex justify-center flex-wrap gap-3">
               <Link
-                href="/chapters/introduction"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
+                href="/328/chapters/topological-spaces"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-medium rounded-lg transition-colors"
               >
                 Start Reading
                 <ArrowRight className="h-4 w-4" />
@@ -89,9 +96,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Mindmap */}
           <div className="mt-10">
-            <CourseMindmap />
+            <CourseMindmap328 />
           </div>
         </div>
       </header>
@@ -101,43 +107,28 @@ export default function HomePage() {
         <div className="text-center mb-12">
           <h2 className="text-2xl font-bold text-slate-900">Course Roadmap</h2>
           <p className="mt-2 text-slate-500 max-w-2xl mx-auto">
-            12 chapters building from functional analysis foundations through transform methods to control system design and analysis.
+            11 chapters building from foundational topology and metric spaces through convergence, compactness, and function spaces.
           </p>
         </div>
 
-        {/* Flow indicator */}
-        <div className="hidden lg:flex items-center justify-center gap-4 mb-10">
-          {groups.map((group, i) => (
-            <div key={group} className="flex items-center gap-4">
-              <span className={`px-3 py-1 text-xs font-semibold rounded-full ${groupColors[group].badge}`}>
-                {groupLabels[group]}
-              </span>
-              {i < groups.length - 1 && (
-                <ChevronRight className="h-4 w-4 text-slate-300" />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Chapter grid by group */}
         <div className="space-y-12">
           {groups.map(group => {
-            const groupChapters = chapters.filter(c => c.group === group)
+            const groupChapters = chapters328.filter(c => c.group === group)
             const colors = groupColors[group]
             return (
               <div key={group}>
                 <div className="flex items-center gap-3 mb-4">
                   <div className={`w-1 h-6 rounded-full ${colors.border}`} />
                   <div>
-                    <h3 className="font-semibold text-slate-900">{groupLabels[group]}</h3>
-                    <p className="text-sm text-slate-500">{groupDescriptions[group]}</p>
+                    <h3 className="font-semibold text-slate-900">{groupLabels328[group]}</h3>
+                    <p className="text-sm text-slate-500">{groupDescriptions328[group]}</p>
                   </div>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {groupChapters.map(ch => (
                     <Link
                       key={ch.slug}
-                      href={`/chapters/${ch.slug}`}
+                      href={`/328/chapters/${ch.slug}`}
                       className={`group block p-5 bg-white border border-slate-200 rounded-xl transition-all hover:shadow-lg ${colors.card}`}
                     >
                       <div className="flex items-start justify-between mb-3">
@@ -173,59 +164,56 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Homework & Exams */}
+      {/* Problem Sets & Exams */}
       <section className="bg-slate-50 border-t border-slate-200">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <div className="grid lg:grid-cols-2 gap-10">
-            {/* Homework */}
             <div>
               <div className="flex items-center gap-3 mb-5">
                 <div className="p-2 bg-rose-100 rounded-lg">
                   <FileText className="h-5 w-5 text-rose-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900">Homework Solutions</h3>
-                  <p className="text-sm text-slate-500">Complete worked solutions for all assignments</p>
+                  <h3 className="font-semibold text-slate-900">Problem Sets</h3>
+                  <p className="text-sm text-slate-500">Complete worked solutions</p>
                 </div>
               </div>
-              <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-                {homeworks.map(hw => (
+              <div className="grid grid-cols-4 gap-2">
+                {problemSets.map(ps => (
                   <Link
-                    key={hw.id}
-                    href={`/homework/${hw.id}`}
+                    key={ps.id}
+                    href={`/328/homework/${ps.id}`}
                     className="text-center p-2.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-rose-300 hover:text-rose-600 hover:shadow-sm transition-all"
                   >
-                    {hw.label}
+                    {ps.label}
                   </Link>
                 ))}
               </div>
             </div>
 
-            {/* Exams */}
             <div>
               <div className="flex items-center gap-3 mb-5">
-                <div className="p-2 bg-indigo-100 rounded-lg">
-                  <GraduationCap className="h-5 w-5 text-indigo-600" />
+                <div className="p-2 bg-cyan-100 rounded-lg">
+                  <GraduationCap className="h-5 w-5 text-cyan-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900">Past Final Exams</h3>
-                  <p className="text-sm text-slate-500">Practice with previous year examinations</p>
+                  <h3 className="font-semibold text-slate-900">Tests & Finals</h3>
+                  <p className="text-sm text-slate-500">Past tests and final examinations</p>
                 </div>
               </div>
-              <div className="space-y-2">
-                {['2018', '2024', '2025'].map(year => (
+              <div className="grid grid-cols-2 gap-2">
+                {exams.map(ex => (
                   <Link
-                    key={year}
-                    href={`/exams/final-${year}`}
-                    className="flex items-center justify-between p-3.5 bg-white border border-slate-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition-all group"
+                    key={ex.id}
+                    href={`/328/exams/${ex.id}`}
+                    className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-lg hover:border-cyan-300 hover:shadow-sm transition-all group"
                   >
-                    <div className="flex items-center gap-3">
-                      <BookOpen className="h-4 w-4 text-slate-400 group-hover:text-indigo-500 transition-colors" />
-                      <span className="font-medium text-slate-700 group-hover:text-indigo-600 transition-colors">
-                        Final Exam {year}
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="h-3.5 w-3.5 text-slate-400 group-hover:text-cyan-500 transition-colors" />
+                      <span className="text-[13px] font-medium text-slate-700 group-hover:text-cyan-600 transition-colors">
+                        {ex.label}
                       </span>
                     </div>
-                    <ArrowRight className="h-4 w-4 text-slate-300 group-hover:text-indigo-400 transition-colors" />
                   </Link>
                 ))}
               </div>
@@ -234,10 +222,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="border-t border-slate-200 py-8">
         <div className="max-w-6xl mx-auto px-6 text-center text-sm text-slate-400">
-          <p>ACE MTHE 335 &middot; Mathematics of Engineering Systems &middot; Queen&apos;s University</p>
+          <p>ACE MTHE 328 · Real Analysis · Queen&apos;s University</p>
         </div>
       </footer>
     </div>

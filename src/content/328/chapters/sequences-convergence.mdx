@@ -1,0 +1,327 @@
+---
+title: "Sequences and Convergence"
+chapter: 5
+---
+
+Sequences are the fundamental tool for probing the fine structure of a space. In a metric space they recover open, closed, and compact sets; in a general topological space they still encode a great deal of information, though the correspondence is sometimes imperfect (a failure we document below). This chapter develops convergence of sequences in topological and metric spaces, treats uniqueness of limits via Hausdorffness, revisits subsequences and accumulation points, proves the Bolzano-Weierstrass theorem, and characterizes closed sets via sequential closure.
+
+---
+
+## Convergence in Topological Spaces
+
+<Definition title="Convergent Sequence in a Topological Space">
+Let $(X, \tau)$ be a topological space and let $(x_n)_{n \geq 1}$ be a sequence in $X$. We say that $(x_n)$ **converges to $x \in X$**, and write $x_n \to x$, if for every open neighbourhood $U$ of $x$ there exists $N \geq 1$ such that $x_n \in U$ for all $n \geq N$. The point $x$ is then called a **limit** of $(x_n)$.
+</Definition>
+
+<Remark>
+**Intuition:** A sequence converges to $x$ if it is eventually inside every open neighbourhood of $x$, no matter how small. In a general topological space, "small" is measured through the system of open sets, not through a distance. A single sequence can, however, converge to more than one limit unless the topology is sufficiently separated — see the next section.
+</Remark>
+
+<Example title="Convergence in the Trivial Topology">
+Let $X = \{a, b\}$ with $\tau = \{\emptyset, X\}$ (the trivial topology). Then every sequence in $X$ converges to both $a$ and $b$: the only nonempty open set is $X$ itself, and every sequence is eventually (in fact always) in $X$. This shows that uniqueness of limits can fail in general topological spaces.
+</Example>
+
+---
+
+## Convergence in Metric Spaces
+
+<Definition title="Convergent Sequence in a Metric Space">
+Let $(X, d)$ be a metric space and let $(x_n)_{n \geq 1} \subseteq X$. We say that $x_n \to x$ if for every $\varepsilon > 0$ there exists $N \geq 1$ such that
+$$d(x_n, x) < \varepsilon \quad \text{for all } n \geq N.$$
+Equivalently, $d(x_n, x) \to 0$ as a sequence of real numbers.
+</Definition>
+
+<Remark>
+**Intuition:** In a metric space, convergence reduces to "the distance from $x_n$ to $x$ shrinks to zero." This matches the topological definition because the open balls $B_\varepsilon(x)$ form a neighbourhood base at $x$: every open neighbourhood of $x$ contains some ball $B_\varepsilon(x)$, and every ball is an open neighbourhood.
+</Remark>
+
+<Theorem title="Metric and Topological Convergence Agree">
+Let $(X, d)$ be a metric space with the induced metric topology $\tau_d$. A sequence $(x_n) \subseteq X$ converges to $x$ in the metric sense iff $x_n \to x$ in $(X, \tau_d)$.
+</Theorem>
+
+<Proof>
+**($\Rightarrow$):** Assume metric convergence. Let $U \in \tau_d$ with $x \in U$. By definition of the metric topology, there exists $\varepsilon > 0$ with $B_\varepsilon(x) \subseteq U$. Pick $N$ with $d(x_n, x) < \varepsilon$ for $n \geq N$; then $x_n \in B_\varepsilon(x) \subseteq U$ for $n \geq N$.
+
+**($\Leftarrow$):** Assume topological convergence. Fix $\varepsilon > 0$. The ball $B_\varepsilon(x)$ is an open neighbourhood of $x$, so there exists $N$ with $x_n \in B_\varepsilon(x)$ for $n \geq N$, i.e. $d(x_n, x) < \varepsilon$. $\square$
+</Proof>
+
+<Theorem title="Convergence in Euclidean Space is Componentwise">
+Let $(x_n)$ be a sequence in $\mathbb{R}^d$ with $x_n = (x_{n,1}, \dots, x_{n,d})$, and let $L = (L_1, \dots, L_d) \in \mathbb{R}^d$. Then $x_n \to L$ (in the Euclidean metric) iff $x_{n,i} \to L_i$ in $\mathbb{R}$ for every $i = 1, \dots, d$.
+</Theorem>
+
+<Proof>
+Use the elementary bounds
+$$|x_{n,i} - L_i| \leq \|x_n - L\| \leq \sqrt{d} \max_{1 \leq i \leq d} |x_{n,i} - L_i|.$$
+**($\Rightarrow$):** If $\|x_n - L\| \to 0$, each $|x_{n,i} - L_i| \to 0$ by the left inequality.
+
+**($\Leftarrow$):** If each $|x_{n,i} - L_i| \to 0$, then $\max_i |x_{n,i} - L_i| \to 0$, hence $\|x_n - L\| \to 0$ by the right inequality. $\square$
+</Proof>
+
+### Basic Properties
+
+<Theorem title="Convergent Sequences are Bounded">
+Let $(X, d)$ be a metric space. If $x_n \to x$, then $(x_n)$ is bounded (i.e. contained in some ball $B_R(x_0)$).
+</Theorem>
+
+<Proof>
+Pick $N$ with $d(x_n, x) < 1$ for $n \geq N$. Let $R = \max\{1, d(x_1, x), \dots, d(x_{N-1}, x)\} + 1$; then $d(x_n, x) \leq R$ for all $n$, so $(x_n) \subseteq B_{R+1}(x)$. $\square$
+</Proof>
+
+<Theorem title="Algebra of Limits in the Real Numbers">
+If $a_n \to a$ and $b_n \to b$ in $\mathbb{R}$, then $a_n + b_n \to a + b$, $a_n b_n \to ab$, and if $b \neq 0$, $a_n / b_n \to a/b$ for $n$ sufficiently large.
+</Theorem>
+
+<Proof>
+**Addition:** $|a_n + b_n - (a + b)| \leq |a_n - a| + |b_n - b| \to 0$.
+
+**Multiplication:** Write $a_n b_n - ab = a_n(b_n - b) + b(a_n - a)$. Since $(a_n)$ is bounded, say by $M$, we get $|a_n b_n - ab| \leq M|b_n - b| + |b||a_n - a| \to 0$.
+
+**Division:** For $n$ large, $|b_n| \geq |b|/2 > 0$. Then
+$$\left|\frac{a_n}{b_n} - \frac{a}{b}\right| = \left|\frac{a_n b - a b_n}{b_n b}\right| \leq \frac{|a_n b - ab| + |ab - a b_n|}{|b_n b|} \leq \frac{|b| |a_n - a| + |a| |b - b_n|}{|b|^2 / 2} \to 0. \qquad \square$$
+</Proof>
+
+---
+
+## Uniqueness of Limits: Hausdorff Spaces
+
+<Definition title="Hausdorff Space">
+A topological space $(X, \tau)$ is **Hausdorff** (or **$T_2$**) if for any two distinct points $x, y \in X$, there exist disjoint open sets $U, V$ with $x \in U$, $y \in V$.
+</Definition>
+
+<Remark>
+**Intuition:** Hausdorffness says that points can be separated by open neighbourhoods. This is the natural minimum condition under which the notion of "the limit" of a sequence is well defined. Every metric space is Hausdorff: given $x \neq y$, the balls $B_{d(x,y)/2}(x)$ and $B_{d(x,y)/2}(y)$ are disjoint by the triangle inequality.
+</Remark>
+
+<Theorem title="Uniqueness of Limits in Hausdorff Spaces">
+In a Hausdorff space $(X, \tau)$, a convergent sequence has exactly one limit.
+</Theorem>
+
+<Proof>
+Suppose $x_n \to x$ and $x_n \to y$ with $x \neq y$. Pick disjoint open sets $U \ni x$, $V \ni y$. There exist $N_1, N_2$ such that $x_n \in U$ for $n \geq N_1$ and $x_n \in V$ for $n \geq N_2$. For $n \geq \max(N_1, N_2)$, $x_n \in U \cap V = \emptyset$, a contradiction. $\square$
+</Proof>
+
+<Corollary title="Uniqueness in Metric Spaces">
+In a metric space, limits of convergent sequences are unique.
+</Corollary>
+
+<Proof>
+Every metric space is Hausdorff. $\square$
+</Proof>
+
+---
+
+## Subsequences and Accumulation Points of Sequences
+
+<Definition title="Subsequence">
+Let $(x_n)_{n \geq 1}$ be a sequence in $X$. A **subsequence** is a sequence of the form $(x_{n_k})_{k \geq 1}$ where $n_1 < n_2 < n_3 < \cdots$ is a strictly increasing sequence of positive integers.
+</Definition>
+
+<Theorem title="Subsequences of Convergent Sequences">
+If $x_n \to x$ in $(X, \tau)$, then every subsequence $(x_{n_k})$ also converges to $x$.
+</Theorem>
+
+<Proof>
+Let $U$ be an open neighbourhood of $x$. Pick $N$ with $x_n \in U$ for $n \geq N$. Since $n_k \geq k$ (proved by induction using strict monotonicity), we have $n_k \geq N$ whenever $k \geq N$, so $x_{n_k} \in U$ for $k \geq N$. $\square$
+</Proof>
+
+<Definition title="Accumulation Point of a Sequence">
+A point $a \in (X, \tau)$ is an **accumulation point** (or **cluster point**) of a sequence $(x_n)$ if for every open neighbourhood $U$ of $a$ and every $N \geq 1$, there exists $n \geq N$ with $x_n \in U$. That is, the sequence enters $U$ infinitely often.
+</Definition>
+
+<Remark>
+**Intuition:** A limit requires "eventually in every neighbourhood"; an accumulation point only requires "infinitely often in every neighbourhood." Every limit is an accumulation point; in a Hausdorff space, a sequence has at most one limit but may have many accumulation points (e.g. $((-1)^n)$ has accumulation points $+1$ and $-1$).
+</Remark>
+
+<Theorem title="Subsequential Characterization of Accumulation Points">
+In a metric space $(X, d)$, a point $a$ is an accumulation point of $(x_n)$ if and only if there is a subsequence $(x_{n_k})$ with $x_{n_k} \to a$.
+</Theorem>
+
+<Proof>
+**($\Leftarrow$):** If $x_{n_k} \to a$, then for any open neighbourhood $U$ of $a$ and any $N$, eventually $x_{n_k} \in U$; since $n_k \to \infty$ there is some $k$ with $n_k \geq N$ and $x_{n_k} \in U$.
+
+**($\Rightarrow$):** Assume $a$ is an accumulation point. Construct $(n_k)$ inductively. Pick $n_1$ with $x_{n_1} \in B_1(a)$. Having chosen $n_1 < n_2 < \cdots < n_{k-1}$, apply the accumulation property to $U = B_{1/k}(a)$ and $N = n_{k-1} + 1$ to pick $n_k \geq N$ with $x_{n_k} \in B_{1/k}(a)$. Then $(x_{n_k})$ is a subsequence and $d(x_{n_k}, a) < 1/k \to 0$, so $x_{n_k} \to a$. $\square$
+</Proof>
+
+---
+
+## The Bolzano-Weierstrass Theorem
+
+<Theorem title="Bolzano-Weierstrass on the Real Line">
+Every bounded sequence in $\mathbb{R}$ has a convergent subsequence.
+</Theorem>
+
+<Proof>
+Let $(x_n) \subseteq [-M, M]$ be bounded. Set $I_0 = [-M, M]$. Split $I_0$ into two closed subintervals of equal length; at least one contains $x_n$ for infinitely many $n$. Call this interval $I_1$ and pick $n_1$ with $x_{n_1} \in I_1$.
+
+Inductively, having chosen closed intervals $I_0 \supseteq I_1 \supseteq \cdots \supseteq I_k$ with $|I_k| = 2M/2^k$ and $n_1 < \cdots < n_k$ with $x_{n_j} \in I_j$, split $I_k$ in half; at least one half contains $x_n$ for infinitely many $n$. Call it $I_{k+1}$ and pick $n_{k+1} > n_k$ with $x_{n_{k+1}} \in I_{k+1}$.
+
+The intervals are nested closed bounded with lengths shrinking to $0$, so by the nested intervals property (a form of completeness of $\mathbb{R}$), $\bigcap_k I_k$ is a single point $L$. Since $x_{n_k} \in I_k$ and $L \in I_k$, $|x_{n_k} - L| \leq |I_k| = 2M/2^k \to 0$. Thus $x_{n_k} \to L$. $\square$
+</Proof>
+
+<Theorem title="Bolzano-Weierstrass in Euclidean Space">
+Every bounded sequence in $\mathbb{R}^d$ has a convergent subsequence.
+</Theorem>
+
+<Proof>
+Let $(x_n) \subseteq \mathbb{R}^d$ be bounded, with $x_n = (x_{n,1}, \dots, x_{n,d})$. Then each component sequence $(x_{n,i})_n$ is bounded in $\mathbb{R}$ since $|x_{n,i}| \leq \|x_n\|$.
+
+Apply Bolzano-Weierstrass in $\mathbb{R}$ to the first component: get a subsequence $(x_{n_k^{(1)}})_k$ with $x_{n_k^{(1)}, 1} \to L_1$. Now apply Bolzano-Weierstrass to the second component of this subsequence; get a further subsequence with the second component converging to some $L_2$, while the first component still converges to $L_1$ (subsequences of convergent sequences converge to the same limit).
+
+Repeating $d$ times, we obtain a subsequence of $(x_n)$ whose every component converges. By componentwise convergence in $\mathbb{R}^d$, the subsequence converges to $L = (L_1, \dots, L_d)$. $\square$
+</Proof>
+
+<Remark>
+**Intuition:** In $\mathbb{R}^d$, "bounded" gives enough compactness for a convergent subsequence. The theorem is essentially a manifestation of the fact that closed bounded subsets of $\mathbb{R}^d$ are compact (Heine-Borel). In general metric spaces, boundedness alone is not enough — one needs **total boundedness**, and the result becomes: in a complete metric space, a sequence has a convergent subsequence iff it is totally bounded.
+</Remark>
+
+<Corollary title="Compactness and Sequential Compactness in Euclidean Space">
+A subset $K \subseteq \mathbb{R}^d$ is compact iff every sequence in $K$ has a subsequence converging to a point of $K$.
+</Corollary>
+
+<Proof>
+**($\Rightarrow$):** Assume $K$ is compact. By Heine-Borel, $K$ is closed and bounded. Given $(x_n) \subseteq K$, boundedness and Bolzano-Weierstrass give a convergent subsequence $x_{n_k} \to L$. Since $K$ is closed and all $x_{n_k} \in K$, the limit $L \in K$.
+
+**($\Leftarrow$):** Assume every sequence in $K$ has a subsequence converging in $K$. We show $K$ is closed and bounded.
+
+*Closed:* Let $x \in \overline{K}$. Pick $x_n \in K$ with $x_n \to x$; by hypothesis there is a subsequence converging in $K$, necessarily to $x$ by uniqueness, so $x \in K$.
+
+*Bounded:* If not, there is $(x_n) \subseteq K$ with $\|x_n\| \to \infty$. Any subsequence has $\|x_{n_k}\| \to \infty$ too, so it cannot converge. Contradiction. $\square$
+</Proof>
+
+---
+
+## Sequences and Closed Sets
+
+We now characterize closed sets and closures via sequences, a central link between topology and analysis.
+
+<Definition title="Sequential Closure">
+Let $(X, \tau)$ be a topological space and $A \subseteq X$. The **sequential closure** of $A$ is
+$$\mathrm{scl}(A) = \{x \in X : \text{there exists } (a_n) \subseteq A \text{ with } a_n \to x\}.$$
+</Definition>
+
+<Theorem title="Sequential Closure is Contained in the Closure">
+For any $A \subseteq X$, $\mathrm{scl}(A) \subseteq \overline{A}$.
+</Theorem>
+
+<Proof>
+Let $x \in \mathrm{scl}(A)$, with $a_n \in A$ and $a_n \to x$. For any open neighbourhood $U$ of $x$, eventually $a_n \in U$, so $U \cap A \neq \emptyset$. Hence every open neighbourhood of $x$ meets $A$, which means $x \in \overline{A}$. $\square$
+</Proof>
+
+The reverse inclusion $\overline{A} \subseteq \mathrm{scl}(A)$ can fail in general topological spaces (one needs first-countability, which we will not discuss in detail), but holds in metric spaces.
+
+<Theorem title="Closure via Sequences in Metric Spaces">
+Let $(X, d)$ be a metric space and $A \subseteq X$. Then
+$$\overline{A} = \mathrm{scl}(A) = \{x \in X : \exists (a_n) \subseteq A \text{ with } a_n \to x\}.$$
+</Theorem>
+
+<Proof>
+The inclusion $\mathrm{scl}(A) \subseteq \overline{A}$ holds in any topological space by the previous theorem. For the reverse inclusion, let $x \in \overline{A}$. For every $n \geq 1$, the ball $B_{1/n}(x)$ meets $A$, so pick $a_n \in A \cap B_{1/n}(x)$. Then $d(a_n, x) < 1/n \to 0$, so $a_n \to x$, showing $x \in \mathrm{scl}(A)$. $\square$
+</Proof>
+
+<Corollary title="Sequential Characterization of Closed Sets in Metric Spaces">
+A subset $A$ of a metric space $(X, d)$ is closed iff for every sequence $(a_n) \subseteq A$ with $a_n \to x$, we have $x \in A$.
+</Corollary>
+
+<Proof>
+$A$ is closed iff $A = \overline{A}$, and by the previous theorem $\overline{A}$ equals the set of limits of convergent sequences from $A$. $\square$
+</Proof>
+
+<Remark>
+**Intuition:** In metric spaces, closed sets are "closed under taking limits of sequences." This is the usual working definition of closedness in real analysis and typically the easiest to check.
+</Remark>
+
+### Sequential Continuity Revisited
+
+We can now restate continuity in metric spaces in its cleanest form.
+
+<Theorem title="Sequential Continuity in Metric Spaces">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces and $f : X \to Y$. Then $f$ is continuous iff for every convergent sequence $x_n \to x$ in $X$, $f(x_n) \to f(x)$ in $Y$.
+</Theorem>
+
+<Proof>
+See the continuity chapter — this is the equivalence of topological and sequential continuity in metric spaces, restated here for emphasis. $\square$
+</Proof>
+
+---
+
+## Limits Superior and Inferior
+
+For bounded sequences in $\mathbb{R}$, two useful quantities capture the asymptotic oscillation behaviour.
+
+<Definition title="Limit Superior and Limit Inferior">
+Let $(a_n)$ be a bounded sequence of real numbers. Define
+$$\limsup_{n \to \infty} a_n = \lim_{n \to \infty} \sup_{k \geq n} a_k, \qquad \liminf_{n \to \infty} a_n = \lim_{n \to \infty} \inf_{k \geq n} a_k.$$
+The sequences $(\sup_{k \geq n} a_k)$ and $(\inf_{k \geq n} a_k)$ are monotone (decreasing and increasing respectively) and bounded, so these limits exist.
+</Definition>
+
+<Remark>
+**Intuition:** $\limsup a_n$ is the largest accumulation point of $(a_n)$; $\liminf a_n$ is the smallest. The sequence converges iff they are equal, and the common value is the limit.
+</Remark>
+
+<Theorem title="Convergence via lim sup and lim inf">
+Let $(a_n)$ be a bounded real sequence. Then $a_n \to L$ iff $\limsup a_n = \liminf a_n = L$.
+</Theorem>
+
+<Proof>
+**($\Rightarrow$):** If $a_n \to L$, for $\varepsilon > 0$ eventually $L - \varepsilon < a_n < L + \varepsilon$, so $L - \varepsilon \leq \inf_{k \geq n} a_k \leq \sup_{k \geq n} a_k \leq L + \varepsilon$. Letting $n \to \infty$ then $\varepsilon \to 0$ gives $\liminf = \limsup = L$.
+
+**($\Leftarrow$):** Assume $\liminf a_n = \limsup a_n = L$. For $\varepsilon > 0$, eventually $\sup_{k \geq n} a_k < L + \varepsilon$ and $\inf_{k \geq n} a_k > L - \varepsilon$, so for $n$ large enough $L - \varepsilon < a_n < L + \varepsilon$, i.e. $a_n \to L$. $\square$
+</Proof>
+
+<Theorem title="lim sup as the Greatest Subsequential Limit">
+Let $(a_n)$ be a bounded real sequence. Then $\limsup a_n$ is the greatest accumulation point of $(a_n)$, and $\liminf a_n$ is the smallest.
+</Theorem>
+
+<Proof>
+Let $L = \limsup a_n$. We show $L$ is an accumulation point: given $\varepsilon > 0$ and $N$, we have $\sup_{k \geq N} a_k \geq L$, so there exists $k \geq N$ with $a_k > L - \varepsilon$. Also, for $n$ large enough $\sup_{k \geq n} a_k < L + \varepsilon$, so $a_k < L + \varepsilon$ for $k$ large. Hence there exists $k \geq N$ with $|a_k - L| < \varepsilon$, and $L$ is an accumulation point.
+
+Now let $M > L$ be any number. Then eventually $\sup_{k \geq n} a_k < M$, so $a_k < M$ for $k$ large, which means $M$ cannot be an accumulation point. Hence $L$ is the greatest accumulation point. The argument for $\liminf$ is analogous. $\square$
+</Proof>
+
+<Example title="Oscillating Sequences">
+**(1)** $a_n = (-1)^n$: $\limsup = 1$, $\liminf = -1$; the sequence does not converge.
+
+**(2)** $a_n = (-1)^n (1 + 1/n)$: $\limsup = 1$, $\liminf = -1$; again divergent.
+
+**(3)** $a_n = \sin(n)$: the set of accumulation points is exactly $[-1, 1]$ (a nontrivial equidistribution argument), so $\limsup = 1$, $\liminf = -1$.
+</Example>
+
+---
+
+## Cauchy Sequences (Preview)
+
+Cauchy sequences — sequences whose terms become arbitrarily close to each other — play a central role in the following chapter on completeness. We record the definition here because it is a property of sequences, and we note the basic relationship with convergence.
+
+<Definition title="Cauchy Sequence">
+A sequence $(x_n)$ in a metric space $(X, d)$ is a **Cauchy sequence** if for every $\varepsilon > 0$ there exists $N \geq 1$ such that $d(x_n, x_m) < \varepsilon$ for all $n, m \geq N$.
+</Definition>
+
+<Theorem title="Convergent Implies Cauchy">
+In any metric space, every convergent sequence is Cauchy.
+</Theorem>
+
+<Proof>
+Let $x_n \to x$ and fix $\varepsilon > 0$. Choose $N$ with $d(x_n, x) < \varepsilon/2$ for $n \geq N$. Then for $n, m \geq N$,
+$$d(x_n, x_m) \leq d(x_n, x) + d(x, x_m) < \varepsilon/2 + \varepsilon/2 = \varepsilon. \qquad \square$$
+</Proof>
+
+The converse — every Cauchy sequence converges — is the completeness property, studied in detail next.
+
+<Theorem title="Cauchy Sequences are Bounded">
+Every Cauchy sequence in a metric space is bounded.
+</Theorem>
+
+<Proof>
+Taking $\varepsilon = 1$, pick $N$ with $d(x_n, x_m) < 1$ for $n, m \geq N$. Then for $n \geq N$, $d(x_n, x_N) < 1$. Let $R = \max\{1, d(x_1, x_N), \dots, d(x_{N-1}, x_N)\} + 1$; then $d(x_n, x_N) \leq R$ for all $n$. $\square$
+</Proof>
+
+<Theorem title="Cauchy Sequence with a Convergent Subsequence Converges">
+Let $(x_n)$ be a Cauchy sequence in a metric space $(X, d)$. If a subsequence $(x_{n_k})$ converges to $L$, then the full sequence converges to $L$.
+</Theorem>
+
+<Proof>
+Fix $\varepsilon > 0$. By the Cauchy property, pick $N_1$ with $d(x_n, x_m) < \varepsilon/2$ for $n, m \geq N_1$. By subsequential convergence, pick $K$ with $d(x_{n_k}, L) < \varepsilon/2$ for $k \geq K$. Choose $k \geq K$ with $n_k \geq N_1$. Then for $n \geq N_1$,
+$$d(x_n, L) \leq d(x_n, x_{n_k}) + d(x_{n_k}, L) < \varepsilon/2 + \varepsilon/2 = \varepsilon. \qquad \square$$
+</Proof>
+
+This last result is the key technical observation that drives the next chapter: in $\mathbb{R}^d$, a Cauchy sequence is bounded, hence has a convergent subsequence by Bolzano-Weierstrass, hence converges. That argument establishes completeness of $\mathbb{R}^d$.

@@ -1,0 +1,413 @@
+---
+title: "Interior, Closure, and Boundary"
+chapter: 3
+---
+
+Having established the frameworks of topological and metric spaces, we now develop the basic vocabulary for describing the "shape" of a subset from a topological perspective. Given any subset $A$ of a topological space, three canonical sets are associated with it: the **interior** (the largest open set inside $A$), the **closure** (the smallest closed set containing $A$), and the **boundary** (the set of points on the edge of $A$). These operations are the workhorses of point-set topology and appear everywhere in analysis.
+
+We also introduce the related notions of **accumulation (cluster) points**, **isolated points**, **dense** and **nowhere dense** sets, and — for metric spaces specifically — the characterization of closure via convergent sequences. The chapter culminates in the hierarchy of sets (meagre, comeagre, $G_\delta$, $F_\sigma$) that underlies the Baire Category Theorem.
+
+---
+
+## Interior, Closure, and Boundary: Definitions
+
+Throughout this chapter, $(X, \mathcal{T})$ is a topological space and $\mathcal{F}$ denotes the family of all closed subsets.
+
+<Definition title="Interior, Closure, Boundary">
+Let $A \subseteq X$. We define:
+
+- The **interior of $A$**:
+$$\text{int}(A) = \bigcup_{\substack{\Omega \in \mathcal{T} \\ \Omega \subseteq A}} \Omega.$$
+Also denoted $A^\circ$ or $\mathring{A}$.
+
+- The **closure of $A$**:
+$$\overline{A} = \bigcap_{\substack{F \in \mathcal{F} \\ A \subseteq F}} F.$$
+Also denoted $\text{cl}(A)$.
+
+- The **boundary of $A$**:
+$$\partial A = \overline{A} \setminus \text{int}(A).$$
+Also denoted $\text{bd}(A)$ or $\text{fr}(A)$ (for *frontier*).
+</Definition>
+
+<Remark>
+**Intuition:** Think of a painted region $A$ on a page.
+
+- $\text{int}(A)$ is the part of $A$ that is "safely inside" — every point has a little room around it also in $A$. This is a union of open sets, so it is itself open. It is in fact the **largest open set contained in $A$**.
+- $\overline{A}$ is $A$ together with all the points "just outside" that $A$ nearly touches. This is an intersection of closed sets, so it is itself closed. It is the **smallest closed set containing $A$**.
+- $\partial A$ is the "edge": points that are in the closure but not in the interior — those touching both $A$ and its complement.
+
+Always, $\text{int}(A) \subseteq A \subseteq \overline{A}$.
+</Remark>
+
+<Remark>
+$\text{int}(A)$ is automatically open (as a union of open sets), and $\overline{A}$ is automatically closed (as an intersection of closed sets). The boundary $\partial A = \overline{A} \setminus \text{int}(A) = \overline{A} \cap \text{int}(A)^c$ is an intersection of two closed sets, hence closed.
+</Remark>
+
+---
+
+## Basic Characterizations
+
+<Proposition title="Interior and Closure Characterize Open and Closed">
+Let $A \subseteq X$. Then:
+
+1. $A \in \mathcal{T} \iff A = \text{int}(A) \iff A \cap \partial A = \emptyset$.
+2. $A \in \mathcal{F} \iff A = \overline{A} \iff \partial A \subseteq A$.
+</Proposition>
+
+<Proof>
+**(1)** $A \in \mathcal{T} \implies A = \text{int}(A)$: if $A$ is open, then $A$ itself appears among the open sets $\Omega \subseteq A$ whose union defines $\text{int}(A)$, so $A \subseteq \text{int}(A)$. The reverse inclusion $\text{int}(A) \subseteq A$ holds always. Hence $A = \text{int}(A)$.
+
+$A = \text{int}(A) \implies A \in \mathcal{T}$: the interior is always a union of open sets, hence open.
+
+Next we show $A = \text{int}(A) \iff A \cap \partial A = \emptyset$. Note
+$$A \cap \partial A = A \cap (\overline{A} \setminus \text{int}(A)) = A \cap \overline{A} \cap \text{int}(A)^c = A \cap \text{int}(A)^c = A \setminus \text{int}(A)$$
+(since $A \subseteq \overline{A}$). Therefore $A \cap \partial A = \emptyset \iff A \setminus \text{int}(A) = \emptyset \iff A \subseteq \text{int}(A) \iff A = \text{int}(A)$.
+
+**(2)** $A \in \mathcal{F} \implies A = \overline{A}$: if $A$ is closed, then $A$ itself is one of the closed sets $F \supseteq A$ in the intersection defining $\overline{A}$, so $\overline{A} \subseteq A$. The reverse inclusion $A \subseteq \overline{A}$ is always true. So $A = \overline{A}$.
+
+$A = \overline{A} \implies A \in \mathcal{F}$: the closure is always an intersection of closed sets, hence closed.
+
+For $A = \overline{A} \iff \partial A \subseteq A$: if $A = \overline{A}$ then $\partial A = \overline{A} \setminus \text{int}(A) = A \setminus \text{int}(A) \subseteq A$. Conversely, if $\partial A \subseteq A$, then $\overline{A} = \text{int}(A) \cup \partial A \subseteq A$ (using $\overline{A} = \text{int}(A) \sqcup \partial A$, which follows from the definitions), and combined with $A \subseteq \overline{A}$ gives equality.
+</Proof>
+
+<Remark>
+**Intuition:** A set equals its own interior exactly when it is open; a set equals its own closure exactly when it is closed. This gives operational tests: to check whether $A$ is open, compute $\text{int}(A)$ and compare with $A$; to check whether $A$ is closed, compute $\overline{A}$.
+</Remark>
+
+### Characterization via Neighbourhoods
+
+<Proposition title="Interior and Closure via Neighbourhoods">
+Let $(X, \mathcal{T})$ be a topological space and let $A \subseteq X$. Then:
+
+1. $\text{int}(A) = \{ x \in X : \exists V \in \mathcal{U}_x \text{ with } V \subseteq A \}.$
+2. $\overline{A} = \{ x \in X : A \cap V \ne \emptyset \text{ for every } V \in \mathcal{U}_x \}.$
+</Proposition>
+
+<Proof>
+**(1, $\subseteq$)** Let $x \in \text{int}(A) = \bigcup_{\Omega \in \mathcal{T}, \Omega \subseteq A} \Omega$. Then there exists $\Omega \in \mathcal{T}$ with $x \in \Omega \subseteq A$. Take $V = A$; then $V$ is a neighbourhood of $x$ (it contains the open set $\Omega$ through $x$) and $V \subseteq A$.
+
+**(1, $\supseteq$)** Let $x \in X$ with some $V \in \mathcal{U}_x$ satisfying $V \subseteq A$. By definition of neighbourhood there exists $\Omega \in \mathcal{T}$ with $x \in \Omega \subseteq V \subseteq A$. Then $\Omega$ is one of the open sets appearing in the union $\bigcup_{\Omega' \in \mathcal{T}, \Omega' \subseteq A} \Omega' = \text{int}(A)$, so $x \in \text{int}(A)$.
+
+**(2, $\supseteq$)** Let $x \in X$ satisfy $A \cap V \ne \emptyset$ for every $V \in \mathcal{U}_x$. Suppose for contradiction that $x \notin \overline{A}$. Then there exists $F \in \mathcal{F}$ with $A \subseteq F$ and $x \notin F$. Set $V = X \setminus F$; then $V \in \mathcal{T}$ (it is the complement of a closed set), $x \in V$, and $A \cap V = \emptyset$ (since $A \subseteq F$). Thus $V \in \mathcal{U}_x$ with $A \cap V = \emptyset$, contradicting the hypothesis.
+
+**(2, $\subseteq$)** Let $x \in X$ be such that there exists $V \in \mathcal{U}_x$ with $A \cap V = \emptyset$. By definition of neighbourhood there exists $\Omega \in \mathcal{T}$ with $x \in \Omega \subseteq V$; hence $A \cap \Omega = \emptyset$. Now let $F = X \setminus \Omega$; then $F \in \mathcal{F}$ and $A \subseteq F$, so $F$ appears in the intersection defining $\overline{A}$. Since $x \notin F$, we conclude $x \notin \overline{A}$.
+</Proof>
+
+<Remark>
+**Intuition:**
+
+- $x \in \text{int}(A)$ means "some whole neighbourhood of $x$ lies inside $A$."
+- $x \in \overline{A}$ means "every neighbourhood of $x$ hits $A$."
+
+In a metric space, "neighbourhood" can be replaced by "open ball of some radius," so:
+
+- $x \in \text{int}(A) \iff \exists \rho > 0 : B(x, \rho) \subseteq A$.
+- $x \in \overline{A} \iff \forall \rho > 0 : A \cap B(x, \rho) \ne \emptyset$.
+</Remark>
+
+---
+
+## Accumulation Points, Isolated Points, and the Derived Set
+
+<Definition title="Accumulation Point and Derived Set">
+Let $(X, \mathcal{T})$ be a topological space, let $A \subseteq X$, and let $x_0 \in X$. We say $x_0$ is an **accumulation point** (or **cluster point**, or **limit point**) of $A$ if and only if
+$$(A \setminus \{x_0\}) \cap V \ne \emptyset \qquad \text{for every } V \in \mathcal{U}_{x_0}.$$
+The **derived set** of $A$ is
+$$A' = \{ x \in X : x \text{ is an accumulation point of } A \}.$$
+</Definition>
+
+<Remark>
+**Intuition:** $x_0$ is an accumulation point of $A$ if every neighbourhood of $x_0$ contains *some other point* of $A$ (not just $x_0$ itself). So $A$ "piles up" near $x_0$. The distinction from "$x_0 \in \overline{A}$" is subtle but important: $x_0 \in \overline{A}$ only requires that every neighbourhood hits $A$ somewhere, possibly only at $x_0$; $x_0 \in A'$ requires that every neighbourhood hits $A$ at a point different from $x_0$. The notion is due to Georg Cantor (1872).
+</Remark>
+
+In a metric space, the definition rewrites as:
+$$x_0 \in A' \iff (A \setminus \{x_0\}) \cap B(x_0, \rho) \ne \emptyset \quad \text{for every } \rho > 0.$$
+
+<Definition title="Isolated Point">
+Let $A \subseteq X$ and $x \in A$. We say $x$ is an **isolated point** of $A$ if there exists $V \in \mathcal{U}_x$ with $A \cap V = \{x\}$. In a metric space: $x \in A$ is isolated if there exists $\rho > 0$ with $A \cap B(x, \rho) = \{x\}$.
+</Definition>
+
+<Remark>
+**Intuition:** $x$ is isolated in $A$ if $x$ sits in $A$ with a little buffer around it containing no other points of $A$. Isolated points of $A$ are in $A$ but not in $A'$. Conversely, a point of $A$ either is isolated in $A$ or is an accumulation point of $A$.
+</Remark>
+
+<Proposition title="Closure Equals Union of the Set and its Derived Set">
+For any $A \subseteq X$,
+$$\overline{A} = A \cup A'.$$
+</Proposition>
+
+<Proof>
+**($\supseteq$)** We have $A \subseteq \overline{A}$ always. We now show $A' \subseteq \overline{A}$: if $x_0 \in A'$ then every neighbourhood $V$ of $x_0$ contains a point of $A \setminus \{x_0\}$, and in particular $A \cap V \ne \emptyset$. By the neighbourhood characterization of closure, $x_0 \in \overline{A}$.
+
+**($\subseteq$)** Let $x_0 \in \overline{A}$. If $x_0 \in A$, we are done. Otherwise $x_0 \notin A$; we show $x_0 \in A'$. Let $V \in \mathcal{U}_{x_0}$. Since $x_0 \in \overline{A}$, $A \cap V \ne \emptyset$, say $y \in A \cap V$. Since $x_0 \notin A$ and $y \in A$, $y \ne x_0$, so $y \in (A \setminus \{x_0\}) \cap V$, proving $(A \setminus \{x_0\}) \cap V \ne \emptyset$. Thus $x_0 \in A'$.
+</Proof>
+
+<Corollary title="Closed Sets Contain Their Limit Points">
+$A$ is closed if and only if $A' \subseteq A$.
+</Corollary>
+
+<Proof>
+$A$ is closed iff $A = \overline{A}$ iff $A = A \cup A'$ iff $A' \subseteq A$.
+</Proof>
+
+<Remark>
+**Intuition:** "Closed" means "contains all its limit points." This is the sequential flavour of closedness we will make precise in metric spaces shortly.
+</Remark>
+
+---
+
+## Boundary: Additional Properties
+
+<Corollary title="Properties of Interior, Closure, and Boundary">
+Let $(X, \mathcal{T})$ be a topological space and $A \subseteq X$. Then:
+
+1. $\partial A = \{ x \in X : A \cap V \ne \emptyset \text{ and } A^c \cap V \ne \emptyset \text{ for every } V \in \mathcal{U}_x \}$, where $A^c = X \setminus A$.
+2. $\partial A^c = \partial A$.
+3. $\overline{A} \setminus A \subseteq A' \subseteq \overline{A}$.
+4. $A' \subseteq A \iff A = \overline{A}$ (which is the corollary above, restated).
+</Corollary>
+
+<Proof>
+**(1)** By the neighbourhood characterization of closure, $x \in \overline{A} \iff A \cap V \ne \emptyset$ for every $V \in \mathcal{U}_x$. By the neighbourhood characterization of interior, $x \in \text{int}(A) \iff$ there exists $V \in \mathcal{U}_x$ with $V \subseteq A$, equivalently, $x \notin \text{int}(A) \iff$ for every $V \in \mathcal{U}_x$, $V \not\subseteq A$, i.e., $A^c \cap V \ne \emptyset$. Combining these, $x \in \partial A = \overline{A} \setminus \text{int}(A) \iff $ for every $V \in \mathcal{U}_x$, $A \cap V \ne \emptyset$ and $A^c \cap V \ne \emptyset$.
+
+**(2)** Follows from (1), since the condition is symmetric in $A$ and $A^c$.
+
+**(3)** Let $x \in \overline{A} \setminus A$. We already showed $\overline{A} = A \cup A'$; since $x \in \overline{A}$ and $x \notin A$, we have $x \in A'$. Also, $A' \subseteq \overline{A}$ was shown above.
+
+**(4)** Shown above.
+</Proof>
+
+<Example title="Interior, Closure, Boundary in R">
+Consider $\mathbb{R}$ with the Euclidean topology.
+
+- $A = (0, 1]$: $\text{int}(A) = (0, 1)$, $\overline{A} = [0, 1]$, $\partial A = \{0, 1\}$, $A' = [0, 1]$.
+- $A = \mathbb{Q}$: $\text{int}(A) = \emptyset$ (every neighbourhood of any rational contains an irrational), $\overline{A} = \mathbb{R}$ (every neighbourhood of any real contains a rational), $\partial A = \mathbb{R}$, $A' = \mathbb{R}$.
+- $A = \{ 1/n : n \in \mathbb{Z}_{>0} \}$: $\text{int}(A) = \emptyset$, $\overline{A} = A \cup \{0\}$, $\partial A = A \cup \{0\}$, $A' = \{0\}$. Every point of $A$ is isolated; only $0$ is an accumulation point.
+- $A = \mathbb{Z}$: $\text{int}(A) = \emptyset$, $\overline{A} = \mathbb{Z}$, $\partial A = \mathbb{Z}$, $A' = \emptyset$. Every integer is isolated in $\mathbb{Z}$.
+</Example>
+
+---
+
+## Closure via Sequences in Metric Spaces
+
+In metric spaces, closure can be characterized using convergent sequences — a tangible, operational description that we do not have in a general topological space.
+
+<Theorem title="Sequential Characterization of Closure">
+Let $(X, d)$ be a metric space with metric topology $\mathcal{T}_d$, and let $A \subseteq X$. Then $x \in \overline{A}$ if and only if there exists a sequence $(a_n)_{n \ge 1}$ in $A$ with $\lim_{n \to \infty} a_n = x$.
+</Theorem>
+
+<Proof>
+**($\Leftarrow$)** Suppose $(a_n)$ is a sequence in $A$ with $a_n \to x$. Let $V \in \mathcal{U}_x$. By the neighbourhood characterization in metric spaces, there exists $\rho > 0$ with $B(x, \rho) \subseteq V$. By convergence, there exists $N$ with $d(a_n, x) < \rho$, i.e., $a_n \in B(x, \rho) \subseteq V$, for all $n \ge N$. In particular $a_N \in A \cap V$, so $A \cap V \ne \emptyset$. Since this holds for every $V \in \mathcal{U}_x$, we have $x \in \overline{A}$.
+
+**($\Rightarrow$)** Suppose $x \in \overline{A}$. For each $n \ge 1$, the ball $B(x, 1/n)$ is a neighbourhood of $x$, so $A \cap B(x, 1/n) \ne \emptyset$. Pick $a_n \in A \cap B(x, 1/n)$. Then $d(a_n, x) < 1/n$, so $a_n \to x$ as $n \to \infty$. The sequence $(a_n)$ lies in $A$ and converges to $x$.
+</Proof>
+
+<Corollary title="Sequential Characterization of Closed Sets">
+In a metric space, $A$ is closed if and only if for every sequence $(a_n)$ in $A$ converging to a point $x \in X$, one has $x \in A$.
+</Corollary>
+
+<Proof>
+$A$ is closed iff $A = \overline{A}$. The sequential characterization of closure says $\overline{A}$ consists exactly of limits of sequences from $A$. So $A = \overline{A}$ iff every such limit lies in $A$.
+</Proof>
+
+<Remark>
+**Intuition:** In metric spaces, "closed" really does mean "closed under taking limits of sequences." This is how many textbooks first introduce closedness in $\mathbb{R}^n$. Note that in a general topological space — one that need not be metric — this sequential characterization can fail; one needs the more abstract notions of nets or filters.
+</Remark>
+
+<Corollary title="Sequential Characterization of Accumulation Points">
+In a metric space, $x \in A'$ if and only if there exists a sequence $(a_n)$ in $A$ with $a_n \ne x$ for all $n$ and $a_n \to x$.
+</Corollary>
+
+<Proof>
+Analogous to the closure case, using $A \setminus \{x\}$ in place of $A$, and noting that $x \in (A \setminus \{x\})'$ iff $x \in A'$ (since the condition involves neighbourhoods avoiding $x$).
+</Proof>
+
+---
+
+## Dense Sets
+
+<Definition title="Dense Set">
+Let $(X, \mathcal{T})$ be a topological space and let $S \subseteq X$. We say $S$ is **dense in $X$** if and only if $\overline{S} = X$.
+
+More generally, given $A \subseteq X$ and $S \subseteq A$, we say $S$ is **dense in $A$** if and only if
+$$\bigcap_{\substack{F \in \mathcal{F} \\ S \subseteq F}} F \cap A = A.$$
+(Equivalently, $S$ is dense in $A$ with respect to the subspace topology on $A$.)
+</Definition>
+
+<Remark>
+**Intuition:** $S$ is dense in $X$ if every point of $X$ either lies in $S$ or is a limit of points from $S$. In a metric space, equivalently: every open ball in $X$ contains a point of $S$. The prototypical example is $\mathbb{Q} \subseteq \mathbb{R}$: the rationals are dense in the reals because every real number can be approximated to arbitrary precision by rationals.
+</Remark>
+
+<Example title="Q is Dense in R">
+In $(\mathbb{R}, \mathcal{E})$, $\mathbb{Q}$ is dense: $\overline{\mathbb{Q}} = \mathbb{R}$. This is the content of the archimedean property of $\mathbb{R}$ (between any two reals there is a rational).
+</Example>
+
+<Example title="Dense Subset of a Half-Open Interval">
+In $(\mathbb{R}, \mathcal{E})$, let $A = [0, 1)$ and $S = \mathbb{Q} \cap [0, 1)$. Then $S$ is dense in $A$. The closure of $S$ in $\mathbb{R}$ is $[0, 1]$, and $[0, 1] \cap A = [0, 1) = A$, so the condition is satisfied.
+</Example>
+
+---
+
+## Nowhere Dense Sets
+
+<Definition title="Nowhere Dense">
+Let $(X, \mathcal{T})$ be a topological space. A subset $S \subseteq X$ is **nowhere dense in $X$** if and only if its closure has empty interior:
+$$\text{int}(\overline{S}) = \emptyset. \tag{ND1}$$
+</Definition>
+
+<Remark>
+**Intuition:** Being nowhere dense is a strong form of "smallness." It's not enough for $S$ itself to miss open balls; even the *closure* of $S$ — the fattest version of $S$ — must contain no open ball. A nowhere dense set has no "fat" parts anywhere.
+</Remark>
+
+<Proposition title="Equivalent Definitions of Nowhere Dense">
+Let $(X, \mathcal{T})$ be a topological space and let $S \subseteq X$. The following are equivalent:
+
+1. (ND1) $\text{int}(\overline{S}) = \emptyset$.
+2. (ND2) $X \setminus S$ contains an open set that is dense in $X$.
+3. (ND3) Every nonempty open subset of $X$ contains a nonempty open subset which is disjoint from $S$.
+</Proposition>
+
+<Proof>
+We use the identities $X \setminus \text{int}(B) = \overline{X \setminus B}$ and $X \setminus \overline{B} = \text{int}(X \setminus B)$, which hold for any $B \subseteq X$ (easy to check from the definitions).
+
+**(ND1) $\iff$ (ND2).** Note
+$$
+\begin{aligned}
+(\text{ND1}) &\iff \text{int}(\overline{S}) = \emptyset \iff X \setminus \text{int}(\overline{S}) = X \\
+&\iff \overline{X \setminus \overline{S}} = X \iff \text{int}(X \setminus S) \text{ is dense in } X.
+\end{aligned}
+$$
+Here we used $X \setminus \overline{S} = \text{int}(X \setminus S)$. Thus (ND1) says $\text{int}(X \setminus S)$ is a dense open subset of $X \setminus S$. Since any dense open subset of $X \setminus S$ must lie inside $\text{int}(X \setminus S)$ (it's open and inside $X \setminus S$), (ND1) and (ND2) are equivalent.
+
+**(ND1) $\Rightarrow$ (ND3).** Let $D \in \mathcal{T}$ with $D \ne \emptyset$. Since $\text{int}(\overline{S}) = \emptyset$ is the largest open set contained in $\overline{S}$, we have $D \not\subseteq \overline{S}$, so $D \cap (X \setminus \overline{S}) \ne \emptyset$. Set $\Omega = D \cap (X \setminus \overline{S})$. Then $\Omega \in \mathcal{T}$ (both factors are open), $\Omega \subseteq D$, $\Omega \ne \emptyset$, and $\Omega \cap S \subseteq \Omega \cap \overline{S} = \emptyset$. So (ND3) holds.
+
+**(ND3) $\Rightarrow$ (ND1).** Suppose (ND3) holds. Let $V \in \mathcal{T}$ with $V \ne \emptyset$. By (ND3) there exists $W \in \mathcal{T}$ with $W \ne \emptyset$, $W \subseteq V$, and $W \cap S = \emptyset$. We claim $W \cap \overline{S} = \emptyset$, which gives $V \not\subseteq \overline{S}$ (since $W \subseteq V$ and $W \not\subseteq \overline{S}$).
+
+To see $W \cap \overline{S} = \emptyset$: if $x \in W \cap \overline{S}$, then $W \in \mathcal{U}_x$ and, by the neighbourhood characterization of closure, $W \cap S \ne \emptyset$, contradicting $W \cap S = \emptyset$.
+
+Hence no nonempty open $V$ is contained in $\overline{S}$, so $\text{int}(\overline{S}) = \emptyset$.
+</Proof>
+
+<Example title="Nowhere Dense Sets in R">
+In $(\mathbb{R}, \mathcal{E})$:
+
+- $\mathbb{Z}$ is nowhere dense: $\overline{\mathbb{Z}} = \mathbb{Z}$ (it's closed), and $\text{int}(\mathbb{Z}) = \emptyset$ (no open interval lies inside $\mathbb{Z}$).
+- $A = \{1/n : n \in \mathbb{Z}_{>0}\}$ is nowhere dense: $\overline{A} = A \cup \{0\}$, which contains no open interval of positive length, so its interior is empty.
+- $\mathbb{Q}$ is **not** nowhere dense: $\overline{\mathbb{Q}} = \mathbb{R}$, and $\text{int}(\mathbb{R}) = \mathbb{R} \ne \emptyset$.
+- $B = \mathbb{Q} \cap (a, b)$ is **not** nowhere dense: $\overline{B} = [a, b]$, and $\text{int}([a,b]) = (a,b) \ne \emptyset$.
+
+The key distinction: $\mathbb{Q}$ is dense (so its closure is all of $\mathbb{R}$), whereas $\mathbb{Z}$ is "spread out" enough that it has empty interior *even after taking closure*.
+</Example>
+
+---
+
+## Meagre, Nonmeagre, and Comeagre Sets
+
+<Definition title="Meagre, Nonmeagre, Comeagre">
+Let $(X, \mathcal{T})$ be a topological space and let $S \subseteq X$.
+
+- $S$ is **meagre** (or **thin**, or **of first category**) if $S$ can be written as a countable union of nowhere dense sets.
+- $S$ is **nonmeagre** (or **of second category**) if $S$ is not meagre.
+- $S$ is **comeagre** (or **thick**, or **residual**) if its complement $X \setminus S$ is meagre.
+</Definition>
+
+<Remark>
+**Intuition:** Meagre sets are "topologically small" — a countable bag of nowhere-dense sets. Comeagre sets are the topologically big ones — their complements are topologically small. In a "good" space (specifically, a complete metric space), these two classes do not overlap: a set cannot be both small and big at once. This is the content of the Baire Category Theorem, which we state at the end of this chapter.
+
+The terminology "first category" / "second category" was introduced by René Baire in 1899. Note: "residual" has nothing to do with category theory.
+</Remark>
+
+<Example title="Meagre and Comeagre Sets in R">
+In $(\mathbb{R}, \mathcal{E})$:
+
+- $\mathbb{Z}$ is meagre (it is itself nowhere dense, hence a "countable" union — with a single element — of nowhere dense sets).
+- $A = \{1/n : n \in \mathbb{Z}_{>0}\}$ is meagre (nowhere dense).
+- $\mathbb{Q}$ is meagre: $\mathbb{Q} = \bigcup_{q \in \mathbb{Q}} \{q\}$, a countable union of singletons, and each singleton is nowhere dense.
+- The irrationals $\mathbb{R} \setminus \mathbb{Q}$ are comeagre (since $\mathbb{Q}$ is meagre). Moreover $\mathbb{R} \setminus \mathbb{Q}$ is nonmeagre — but proving this requires the Baire Category Theorem.
+</Example>
+
+---
+
+## $G_\delta$ and $F_\sigma$ Sets
+
+<Definition title="G-delta and F-sigma Sets">
+Let $(X, \mathcal{T})$ be a topological space. A subset $S \subseteq X$ is called:
+
+- a **$G_\delta$ set** (or **$G_\delta$**) if $S$ can be written as a countable intersection of open sets.
+- an **$F_\sigma$ set** (or **$F_\sigma$**) if $S$ can be written as a countable union of closed sets.
+</Definition>
+
+<Remark>
+**Intuition:** The letters stand for German: $G$ for *Gebiet* (region) and $\delta$ for *Durchschnitt* (intersection); $F$ for *fermé* (closed, French) and $\sigma$ for *Summe* (sum/union). So $G_\delta$ is "open with intersections" and $F_\sigma$ is "closed with unions."
+
+These classes sit between open and closed: every open set is trivially $G_\delta$ (a single-term intersection), every closed set is trivially $F_\sigma$. But the classes are strictly larger: $\{0\} = \bigcap_{k=1}^\infty (-\tfrac{1}{k}, \tfrac{1}{k})$ is $G_\delta$ but (as a closed set in $\mathbb{R}$) it is certainly not open. Similarly, by complementation, $\mathbb{Q} = \bigcup_{q \in \mathbb{Q}} \{q\}$ is $F_\sigma$ but not closed.
+
+These classes are important in analysis and measure theory because many "natural" sets (the set of continuity points of a function, say) turn out to be $G_\delta$ or $F_\sigma$ even when they are neither open nor closed.
+</Remark>
+
+<Proposition title="Duality Between G-delta and F-sigma">
+$S \subseteq X$ is $G_\delta$ if and only if $X \setminus S$ is $F_\sigma$.
+</Proposition>
+
+<Proof>
+If $S = \bigcap_{n} \Omega_n$ with each $\Omega_n \in \mathcal{T}$, then by de Morgan's law,
+$$X \setminus S = \bigcup_n (X \setminus \Omega_n),$$
+a countable union of closed sets. So $X \setminus S$ is $F_\sigma$. The converse is analogous.
+</Proof>
+
+<Example title="Examples of G-delta and F-sigma Sets">
+- $\{0\}$ in $\mathbb{R}$ is $G_\delta$: $\{0\} = \bigcap_{k=1}^\infty (-1/k, 1/k)$. It is also closed (hence $F_\sigma$).
+- $\mathbb{Q}$ in $\mathbb{R}$ is $F_\sigma$: $\mathbb{Q} = \bigcup_{q \in \mathbb{Q}} \{q\}$, a countable union of singletons (each closed). Its complement, the irrationals, is therefore $G_\delta$.
+- Every open set is $G_\delta$ (one-term intersection); every closed set is $F_\sigma$ (one-term union).
+- The half-open interval $[0,1)$ is both $F_\sigma$ (it equals $\bigcup_{n \ge 1} [0, 1 - 1/n]$) and $G_\delta$ (it equals $\bigcap_{n \ge 1} (-1/n, 1)$). So the classes of $F_\sigma$ and $G_\delta$ sets intersect but are not equal.
+</Example>
+
+<Remark>
+**Significance.** A classical result (which we will not prove here) states that the set of points at which a function $f : \mathbb{R} \to \mathbb{R}$ is continuous is always a $G_\delta$ set. Conversely, there is *no* function on $\mathbb{R}$ whose set of continuity points is exactly $\mathbb{Q}$, because $\mathbb{Q}$ is not a $G_\delta$ set in $\mathbb{R}$ (the proof of this last fact uses the Baire Category Theorem).
+</Remark>
+
+---
+
+## Looking Ahead: The Baire Category Theorem
+
+The machinery developed in this chapter — interior, closure, accumulation points, dense and nowhere dense sets, meagre and comeagre — culminates in one of the cornerstone results of elementary real analysis.
+
+<Theorem title="Baire Category Theorem">
+Let $(X, d)$ be a nonempty complete metric space, equipped with the metric topology. Then:
+
+1. Every comeagre subset of $X$ is dense in $X$.
+2. $X$ is nonmeagre (i.e., $X$ cannot be written as a countable union of nowhere dense sets).
+</Theorem>
+
+<Remark>
+**Intuition:** In a complete metric space, "topologically small" (meagre) sets really are small: they cannot exhaust the space, and their complements are dense. The Baire Category Theorem has extraordinary reach — it gives a non-constructive proof that the irrationals are uncountable (and nonmeagre), lies at the heart of functional analysis (Open Mapping, Closed Graph, and Uniform Boundedness theorems), and connects to the deep fact that "most" continuous functions are nowhere differentiable.
+
+A full proof of the Baire Category Theorem uses the completeness of the underlying metric space to construct a nested sequence of closed balls whose radii shrink to zero, yielding a point that lies in every set $S_n$ of a given countable intersection of dense open sets. We will return to the full proof later in the course.
+</Remark>
+
+<Corollary title="Meagre vs. Comeagre in a Complete Metric Space">
+In a nonempty complete metric space, no subset is simultaneously meagre and comeagre.
+</Corollary>
+
+<Proof>
+Suppose $S \subseteq X$ is both meagre and comeagre. Then $X \setminus S$ is also meagre and comeagre. Hence $\emptyset = S \cap (X \setminus S)$ is a comeagre set (the intersection of two comeagre sets is comeagre). By the Baire Category Theorem, every comeagre set is dense. But $\emptyset$ is not dense in a nonempty space, contradiction.
+</Proof>
+
+<Remark>
+**Payoff: the irrationals are nonmeagre.** Since $\mathbb{Q}$ is meagre in $\mathbb{R}$ and $\mathbb{R}$ itself is nonmeagre (Baire), we can deduce that $\mathbb{R} \setminus \mathbb{Q}$ must be nonmeagre: if it were meagre, $\mathbb{R} = \mathbb{Q} \cup (\mathbb{R} \setminus \mathbb{Q})$ would be a union of two meagre sets, hence meagre — contradicting Baire. This also shows that there is no way to write $\mathbb{R} \setminus \mathbb{Q}$ as a countable union of closed sets, i.e., the irrationals are not $F_\sigma$.
+</Remark>
+
+---
+
+## Summary
+
+In this chapter we built the basic vocabulary of point-set topology inside a topological space:
+
+- **Interior, closure, boundary**, defined via unions of open sets and intersections of closed sets, equivalently characterized via neighbourhoods.
+- **Accumulation points** and **isolated points**, giving the decomposition $\overline{A} = A \cup A'$.
+- **Dense sets** (closure equals the whole space) and **nowhere dense sets** (closure has empty interior), with three equivalent characterizations of the latter.
+- **Sequential closure**: in metric spaces, closure equals the set of limits of sequences from the set.
+- **Meagre, nonmeagre, comeagre** sets; **$G_\delta$** and **$F_\sigma$** sets.
+- The **Baire Category Theorem** as the culminating statement tying these ideas to the completeness of metric spaces.
+
+These tools form the language we will use for the rest of the course, where compactness, connectedness, and continuity will be examined in metric and topological spaces.

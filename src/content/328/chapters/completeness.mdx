@@ -1,0 +1,329 @@
+---
+title: "Completeness and Cauchy Sequences"
+chapter: 6
+---
+
+Completeness is the property that distinguishes the real numbers from the rationals: every Cauchy sequence converges. It is the property that underlies fixed-point theorems, the construction of solutions to differential equations, and the Baire Category Theorem — an astonishingly powerful tool that, among other things, tells us that a "typical" continuous function on $[a, b]$ is nowhere differentiable. This chapter develops completeness systematically: definition and first examples, the Banach fixed-point (contraction mapping) theorem with its proof and applications, Cantor's intersection theorem, a brief discussion of metric completions, and the Baire Category Theorem.
+
+---
+
+## Cauchy Sequences
+
+We begin by recalling the definition of a Cauchy sequence and its basic properties.
+
+<Definition title="Cauchy Sequence">
+A sequence $(x_n)_{n \geq 1}$ in a metric space $(X, d)$ is a **Cauchy sequence** if for every $\varepsilon > 0$ there exists $N \geq 1$ such that
+$$d(x_n, x_m) < \varepsilon \quad \text{for all } n, m \geq N.$$
+</Definition>
+
+<Remark>
+**Intuition:** A Cauchy sequence is one whose terms cluster together: beyond some index, all pairs of terms are arbitrarily close. The notion is "internal" — it uses only the sequence itself, without reference to a candidate limit. This makes it powerful: we can check whether a sequence *should* converge without knowing its limit in advance.
+</Remark>
+
+<Theorem title="Every Convergent Sequence is Cauchy">
+Let $(X, d)$ be a metric space. If $x_n \to x$, then $(x_n)$ is Cauchy.
+</Theorem>
+
+<Proof>
+Given $\varepsilon > 0$, pick $N$ with $d(x_n, x) < \varepsilon/2$ for $n \geq N$. Then for $n, m \geq N$,
+$$d(x_n, x_m) \leq d(x_n, x) + d(x, x_m) < \varepsilon/2 + \varepsilon/2 = \varepsilon. \qquad \square$$
+</Proof>
+
+<Theorem title="Cauchy Sequences are Bounded">
+Every Cauchy sequence in a metric space is bounded.
+</Theorem>
+
+<Proof>
+Pick $N$ with $d(x_n, x_m) < 1$ for $n, m \geq N$, so in particular $d(x_n, x_N) < 1$ for $n \geq N$. Set $R = 1 + \max\{d(x_1, x_N), \dots, d(x_{N-1}, x_N), 1\}$; then $d(x_n, x_N) \leq R$ for every $n$. $\square$
+</Proof>
+
+The converse of "convergent implies Cauchy" is not true in every metric space — it is the content of the following definition.
+
+---
+
+## Complete Metric Spaces
+
+<Definition title="Complete Metric Space">
+A metric space $(X, d)$ is **complete** if every Cauchy sequence in $X$ converges to a point of $X$.
+</Definition>
+
+<Remark>
+**Intuition:** Completeness is the absence of "holes." If a sequence bunches up, there is actually a point inside the space where it bunches. Non-complete spaces have a ghost limit just outside; completion (discussed below) fills in these ghosts.
+</Remark>
+
+### Examples and Non-Examples
+
+<Theorem title="The Real Line is Complete">
+The real line $\mathbb{R}$ with the Euclidean metric is complete.
+</Theorem>
+
+<Proof>
+Let $(x_n)$ be Cauchy in $\mathbb{R}$. Cauchy sequences are bounded, so by the Bolzano-Weierstrass theorem there exists a convergent subsequence $x_{n_k} \to L$. Now fix $\varepsilon > 0$. Pick $N_1$ with $|x_n - x_m| < \varepsilon/2$ for $n, m \geq N_1$, and pick $k$ large enough that $n_k \geq N_1$ and $|x_{n_k} - L| < \varepsilon/2$. Then for $n \geq N_1$,
+$$|x_n - L| \leq |x_n - x_{n_k}| + |x_{n_k} - L| < \varepsilon/2 + \varepsilon/2 = \varepsilon,$$
+so $x_n \to L$. $\square$
+</Proof>
+
+<Theorem title="Euclidean Space is Complete">
+Euclidean space $\mathbb{R}^d$ is complete.
+</Theorem>
+
+<Proof>
+Let $(x_n)$ be Cauchy in $\mathbb{R}^d$. From $|x_{n,i} - x_{m,i}| \leq \|x_n - x_m\|$, each component sequence $(x_{n,i})_n$ is Cauchy in $\mathbb{R}$, hence converges to some $L_i \in \mathbb{R}$ by completeness of $\mathbb{R}$. Set $L = (L_1, \dots, L_d)$. By componentwise convergence, $x_n \to L$ in $\mathbb{R}^d$. $\square$
+</Proof>
+
+<Example title="The Rationals are Not Complete">
+The rationals $\mathbb{Q}$ with the standard metric $d(x, y) = |x - y|$ form a metric space that is **not** complete. For example, the sequence
+$$a_n = \left(1 + \frac{1}{n}\right)^n \in \mathbb{Q}$$
+is Cauchy (it is convergent in $\mathbb{R}$, hence Cauchy there, hence Cauchy in $\mathbb{Q}$), but its would-be limit $e$ is irrational, so the sequence does not converge in $\mathbb{Q}$.
+</Example>
+
+<Example title="Open Intervals are Not Complete">
+The space $X = (0, 1)$ with $d(x, y) = |x - y|$ is not complete: $a_n = 1/n$ is Cauchy but its limit $0$ is not in $X$. This illustrates that completeness depends on both the underlying set and the metric. Removing the endpoints creates "holes."
+</Example>
+
+<Theorem title="A Closed Subset of a Complete Metric Space is Complete">
+Let $(X, d)$ be complete and $F \subseteq X$ closed. Then $(F, d|_F)$ is complete.
+</Theorem>
+
+<Proof>
+Let $(x_n) \subseteq F$ be Cauchy in $F$. Then it is Cauchy in $X$, so $x_n \to x$ for some $x \in X$. Since $F$ is closed and $(x_n) \subseteq F$, $x \in F$. Thus the sequence converges in $F$. $\square$
+</Proof>
+
+<Theorem title="A Complete Subspace is Closed">
+Let $(X, d)$ be a metric space and $Y \subseteq X$ a subset such that $(Y, d|_Y)$ is complete. Then $Y$ is closed in $X$.
+</Theorem>
+
+<Proof>
+Let $x \in \overline{Y}$. Pick $y_n \in Y$ with $y_n \to x$. Then $(y_n)$ is convergent in $X$, hence Cauchy in $X$, hence Cauchy in $Y$. By completeness of $Y$, $y_n$ converges in $Y$, necessarily to $x$ (limits are unique in metric spaces). So $x \in Y$. $\square$
+</Proof>
+
+### The Space of Continuous Functions
+
+One of the most useful examples of a complete metric space is the space of continuous functions with the sup norm.
+
+<Theorem title="The Space of Continuous Functions is Complete">
+Let $C([a,b]) = \{f : [a,b] \to \mathbb{R} : f \text{ is continuous}\}$ with the **sup metric**
+$$d_\infty(f, g) = \|f - g\|_\infty = \sup_{x \in [a,b]} |f(x) - g(x)|.$$
+Then $(C([a,b]), d_\infty)$ is a complete metric space.
+</Theorem>
+
+<Remark>
+**Intuition:** Convergence in the sup metric is **uniform convergence**: $f_n \to f$ iff $\sup_x |f_n(x) - f(x)| \to 0$. The theorem says that a uniformly Cauchy sequence of continuous functions has a continuous limit. This is why the sup norm is such a useful tool in analysis: completeness gives us a stable playground for approximations.
+</Remark>
+
+<Proof>
+Let $(f_n) \subseteq C([a,b])$ be Cauchy with respect to $d_\infty$. We construct a candidate limit and show it is continuous, then verify uniform convergence.
+
+**Step 1: Pointwise limit exists.** For each $x \in [a, b]$, the sequence $(f_n(x))$ in $\mathbb{R}$ satisfies
+$$|f_n(x) - f_m(x)| \leq \|f_n - f_m\|_\infty \to 0 \quad \text{as } n, m \to \infty,$$
+so $(f_n(x))$ is Cauchy in $\mathbb{R}$, hence convergent. Define $f(x) = \lim_n f_n(x)$.
+
+**Step 2: Uniform convergence.** Fix $\varepsilon > 0$. By the Cauchy property, pick $N$ with $\|f_n - f_m\|_\infty < \varepsilon/2$ for $n, m \geq N$, i.e. $|f_n(x) - f_m(x)| < \varepsilon/2$ for every $x$ and all $n, m \geq N$. Letting $m \to \infty$ (with $n \geq N$ fixed),
+$$|f_n(x) - f(x)| \leq \varepsilon/2 < \varepsilon \quad \text{for all } x \in [a,b], \, n \geq N.$$
+So $\|f_n - f\|_\infty \leq \varepsilon/2 < \varepsilon$, and hence $f_n \to f$ uniformly.
+
+**Step 3: $f$ is continuous.** Let $x_0 \in [a, b]$ and $\varepsilon > 0$. By Step 2, pick $n$ with $\|f_n - f\|_\infty < \varepsilon/3$. By continuity of $f_n$, pick $\delta > 0$ such that $|x - x_0| < \delta$ implies $|f_n(x) - f_n(x_0)| < \varepsilon/3$. Then for $|x - x_0| < \delta$,
+$$|f(x) - f(x_0)| \leq |f(x) - f_n(x)| + |f_n(x) - f_n(x_0)| + |f_n(x_0) - f(x_0)| < \varepsilon/3 + \varepsilon/3 + \varepsilon/3 = \varepsilon.$$
+
+So $f \in C([a, b])$ and $f_n \to f$ in $(C([a,b]), d_\infty)$. $\square$
+</Proof>
+
+---
+
+## The Banach Fixed-Point Theorem
+
+A **fixed point** of a map $T : X \to X$ is a point $x$ with $T(x) = x$. The Banach theorem (also known as the contraction mapping principle) is one of the most-applied theorems in all of analysis: it guarantees existence AND uniqueness of a fixed point, and gives an explicit iterative construction with exponential error decay.
+
+<Definition title="Contraction">
+Let $(X, d)$ be a metric space. A map $T : X \to X$ is a **contraction** if there exists $K \in [0, 1)$ such that
+$$d(T(x), T(y)) \leq K \, d(x, y) \quad \text{for all } x, y \in X.$$
+The number $K$ is called a **contraction constant**.
+</Definition>
+
+<Remark>
+**Intuition:** A contraction strictly shrinks distances by a uniform factor $K < 1$. In particular, it is Lipschitz (hence continuous and uniformly continuous). The strictness of $K < 1$ is essential — with $K = 1$, the map $x \mapsto x + 1$ on $\mathbb{R}$ shrinks nothing and has no fixed point.
+</Remark>
+
+<Theorem title="Banach Fixed-Point Theorem (Contraction Mapping Principle)">
+Let $(X, d)$ be a nonempty complete metric space and $T : X \to X$ a contraction with contraction constant $K \in [0, 1)$. Then:
+
+**(i)** $T$ has a unique fixed point $x^* \in X$.
+
+**(ii)** For any initial point $x_0 \in X$, the iterates $x_{n+1} = T(x_n)$ converge to $x^*$.
+
+**(iii)** We have the explicit error bound
+$$d(x_n, x^*) \leq \frac{K^n}{1 - K} d(x_0, x_1) \quad \text{for all } n \geq 0.$$
+</Theorem>
+
+<Remark>
+**Intuition:** Pick any starting point, apply $T$ repeatedly, and the iterates converge exponentially to the unique fixed point — no matter what starting point you chose. The rate $K^n$ gives explicit quantitative control. This theorem powers proofs of the implicit function theorem, the Picard-Lindelof theorem for ODEs, and many numerical iteration schemes.
+</Remark>
+
+<Proof>
+Fix $x_0 \in X$ and define $x_{n+1} = T(x_n)$.
+
+**Step 1: The iterates form a Cauchy sequence.** By induction on $n$,
+$$d(x_{n+1}, x_n) = d(T(x_n), T(x_{n-1})) \leq K \, d(x_n, x_{n-1}) \leq \cdots \leq K^n d(x_1, x_0).$$
+For $m > n$, by the triangle inequality,
+$$d(x_n, x_m) \leq \sum_{k=n}^{m-1} d(x_{k+1}, x_k) \leq d(x_1, x_0) \sum_{k=n}^{m-1} K^k \leq d(x_1, x_0) \cdot \frac{K^n}{1 - K}.$$
+Since $K^n \to 0$, this shows $(x_n)$ is Cauchy.
+
+**Step 2: Existence of a fixed point.** By completeness, $x_n \to x^*$ for some $x^* \in X$. Since $T$ is a contraction (hence continuous), $T(x_n) \to T(x^*)$. But $T(x_n) = x_{n+1} \to x^*$ as well, so by uniqueness of limits, $T(x^*) = x^*$.
+
+**Step 3: Uniqueness.** Suppose $T(y^*) = y^*$ too. Then
+$$d(x^*, y^*) = d(T(x^*), T(y^*)) \leq K \, d(x^*, y^*).$$
+Since $K < 1$, this forces $d(x^*, y^*) = 0$, i.e. $x^* = y^*$.
+
+**Step 4: Error bound.** From Step 1 with $m \to \infty$,
+$$d(x_n, x^*) = \lim_{m \to \infty} d(x_n, x_m) \leq \frac{K^n}{1 - K} d(x_0, x_1). \qquad \square$$
+</Proof>
+
+<Example title="Newton-Type Iteration for the Square Root of Two">
+Define $T : [1, 2] \to [1, 2]$ by $T(x) = \frac{1}{2}\left(x + \frac{2}{x}\right)$. Calculus shows $T$ maps $[1, 2]$ into itself and
+$$|T'(x)| = \left|\frac{1}{2} - \frac{1}{x^2}\right| \leq \frac{1}{2} \quad \text{on } [1, 2],$$
+so $T$ is a contraction with constant $K = 1/2$ (by the mean value theorem). Since $[1, 2]$ is closed in $\mathbb{R}$, it is complete. By Banach, there is a unique fixed point $x^* \in [1, 2]$; solving $T(x^*) = x^*$ gives $x^* = \sqrt{2}$. Starting from $x_0 = 1$ produces the familiar Babylonian iteration converging rapidly to $\sqrt{2}$.
+</Example>
+
+---
+
+## Cantor's Intersection Theorem
+
+Another consequence of completeness: nested closed "small" sets have a nonempty intersection.
+
+<Definition title="Diameter">
+The **diameter** of a nonempty subset $A$ of a metric space is
+$$\mathrm{diam}(A) = \sup \{d(x, y) : x, y \in A\} \in [0, \infty].$$
+</Definition>
+
+<Theorem title="Cantor's Intersection Theorem">
+Let $(X, d)$ be a complete metric space and let $F_1 \supseteq F_2 \supseteq F_3 \supseteq \cdots$ be a decreasing sequence of nonempty closed subsets with $\mathrm{diam}(F_n) \to 0$. Then
+$$\bigcap_{n=1}^{\infty} F_n$$
+consists of exactly one point.
+</Theorem>
+
+<Remark>
+**Intuition:** Completeness guarantees that shrinking nested closed sets capture a unique point. Dropping any of the hypotheses kills the theorem: without completeness (e.g., in $\mathbb{Q}$) the intersection can be empty; without $\mathrm{diam}(F_n) \to 0$ (take $F_n = [n, \infty)$ in $\mathbb{R}$) the intersection can be empty; without closedness (take $F_n = (0, 1/n)$) the intersection can be empty.
+</Remark>
+
+<Proof>
+For each $n$, pick $x_n \in F_n$ (using nonemptyness).
+
+**Step 1: $(x_n)$ is Cauchy.** For $n, m \geq N$, both $x_n$ and $x_m$ belong to $F_N$ (since $F_n, F_m \subseteq F_N$), so $d(x_n, x_m) \leq \mathrm{diam}(F_N) \to 0$.
+
+**Step 2: The limit lies in every $F_n$.** By completeness, $x_n \to x$ for some $x \in X$. For any fixed $n$, the tail $(x_k)_{k \geq n}$ lies in $F_n$, which is closed; hence $x \in F_n$.
+
+**Step 3: Uniqueness.** If $y \in \bigcap_n F_n$ as well, then $d(x, y) \leq \mathrm{diam}(F_n) \to 0$, so $x = y$. $\square$
+</Proof>
+
+---
+
+## Completion of a Metric Space (Brief)
+
+Every metric space can be embedded in a canonical complete one — its "completion" — which fills in the missing limit points of Cauchy sequences. The standard construction of $\mathbb{R}$ from $\mathbb{Q}$ is one instance.
+
+<Theorem title="Existence of Completion (sketch)">
+Let $(X, d)$ be a metric space. There exists a complete metric space $(\widetilde{X}, \widetilde{d})$ and an isometric embedding $\iota : X \to \widetilde{X}$ such that $\iota(X)$ is dense in $\widetilde{X}$. The pair $(\widetilde{X}, \iota)$ is unique up to isometry and is called the **completion** of $X$.
+</Theorem>
+
+<Remark>
+**Construction sketch.** Consider the set of all Cauchy sequences in $X$. Define an equivalence relation $(x_n) \sim (y_n)$ iff $d(x_n, y_n) \to 0$. Let $\widetilde{X}$ be the set of equivalence classes, with distance $\widetilde{d}([x_n], [y_n]) = \lim_n d(x_n, y_n)$. Embed $X$ into $\widetilde{X}$ by $\iota(x) = [(x, x, x, \dots)]$. The details of checking that $\widetilde{d}$ is a well-defined metric, that $\widetilde{X}$ is complete, and that $\iota(X)$ is dense are routine but tedious.
+
+The completion of $\mathbb{Q}$ is $\mathbb{R}$; the completion of an open interval with the usual metric is its closure.
+</Remark>
+
+---
+
+## The Baire Category Theorem
+
+The Baire Category Theorem is one of the deepest consequences of completeness, with applications throughout analysis. We begin with the underlying notion of "topologically small" sets.
+
+<Definition title="Nowhere Dense, Meagre, Comeagre">
+Let $(X, \tau)$ be a topological space. A set $S \subseteq X$ is:
+
+- **nowhere dense** if $\mathrm{int}(\overline{S}) = \emptyset$, equivalently, every nonempty open set contains a nonempty open subset disjoint from $S$;
+- **meagre** (or **of first category**) if $S$ is a countable union of nowhere dense sets;
+- **non-meagre** (or **of second category**) if $S$ is not meagre;
+- **comeagre** (or **residual**) if $X \setminus S$ is meagre, equivalently, $S$ contains a countable intersection of open dense sets.
+</Definition>
+
+<Remark>
+**Intuition:** "Meagre" is the topological analogue of "negligible." A nowhere dense set has empty interior even after closing, so it cannot fill up any piece of the space. A meagre set is a countable pile of such small sets. Comeagre sets are their complements — topologically "large." Baire's theorem says that in a complete metric space, these two notions do not contradict each other and, moreover, comeagre sets are genuinely big.
+</Remark>
+
+<Example title="Nowhere Dense and Meagre Sets on the Real Line">
+**(1)** $\mathbb{Z}$ is nowhere dense in $\mathbb{R}$: $\overline{\mathbb{Z}} = \mathbb{Z}$, and between any two integers lies a nonempty open interval disjoint from $\mathbb{Z}$.
+
+**(2)** The set $\{1/n : n \in \mathbb{N}\}$ is nowhere dense: its closure is $\{0\} \cup \{1/n\}$, which contains no interval.
+
+**(3)** $\mathbb{Q}$ is NOT nowhere dense: $\overline{\mathbb{Q}} = \mathbb{R}$. But $\mathbb{Q}$ IS meagre — it is a countable union $\bigcup_{q \in \mathbb{Q}} \{q\}$ of singletons, each of which is nowhere dense.
+
+**(4)** $\mathbb{R} \setminus \mathbb{Q}$ is comeagre (its complement $\mathbb{Q}$ is meagre). By Baire's theorem below, the irrationals are non-meagre.
+</Example>
+
+<Theorem title="Baire Category Theorem">
+Let $(X, d)$ be a nonempty complete metric space. Then:
+
+**(i)** Every comeagre subset of $X$ is dense in $X$.
+
+**(ii)** $X$ is not meagre in itself.
+
+Equivalently: $X$ cannot be written as a countable union of nowhere dense sets, and the intersection of countably many open dense subsets of $X$ is dense.
+</Theorem>
+
+<Remark>
+**Intuition:** Completeness forces comeagre sets to be dense — you cannot hide a comeagre set in a small pocket of a complete space. The striking consequence is that many "generic" properties (what a typical element of $X$ looks like) can be proven by exhibiting a comeagre set of objects with that property. Baire's theorem guarantees that this comeagre set is nonempty, and in fact dense.
+</Remark>
+
+<Proof>
+**Proof of (i).** Let $S$ be comeagre, so we may write $S \supseteq \bigcap_{n=1}^{\infty} S_n$ where each $S_n$ is open and dense in $X$. We show $\bigcap_n S_n$ is dense; this implies $S$ is dense.
+
+Fix $a_0 \in X$ and $\varepsilon > 0$. We construct $a \in B(a_0, \varepsilon) \cap \bigcap_n S_n$. Since $S_1$ is open and dense, $B(a_0, \varepsilon) \cap S_1$ is open and nonempty, so it contains some closed ball $\overline{B(a_1, r_1)}$ with $r_1 < 1$, and we can arrange $\overline{B(a_1, r_1)} \subseteq B(a_0, \varepsilon) \cap S_1$.
+
+Inductively, having chosen $a_1, \dots, a_n$ and $r_1 > \cdots > r_n > 0$ with
+$$\overline{B(a_{k+1}, r_{k+1})} \subseteq B(a_k, r_k) \cap S_{k+1},$$
+use that $S_{n+1}$ is open and dense so $B(a_n, r_n) \cap S_{n+1}$ is open and nonempty; pick $a_{n+1}$ and $r_{n+1} < 1/(n+1)$ with $\overline{B(a_{n+1}, r_{n+1})} \subseteq B(a_n, r_n) \cap S_{n+1}$.
+
+The closed balls $\overline{B(a_n, r_n)}$ are nested closed sets with diameters $\leq 2 r_n \to 0$. By Cantor's intersection theorem, $\bigcap_n \overline{B(a_n, r_n)}$ is a single point $a$. By construction, $a \in S_n$ for every $n$, so $a \in \bigcap_n S_n$. Also $a \in \overline{B(a_1, r_1)} \subseteq B(a_0, \varepsilon)$.
+
+Since $a_0$ and $\varepsilon$ were arbitrary, $\bigcap_n S_n$ is dense. Hence so is $S \supseteq \bigcap_n S_n$.
+
+**Proof of (ii).** Suppose $X$ is meagre in itself. Then $\emptyset = X^c$ is comeagre, so by (i), $\emptyset$ is dense in $X$. Since $X$ is nonempty, this is a contradiction. $\square$
+</Proof>
+
+<Corollary title="Meagre and Comeagre are Disjoint in Complete Metric Spaces">
+In a nonempty complete metric space, no subset is simultaneously meagre and comeagre.
+</Corollary>
+
+<Proof>
+Suppose $S$ is both meagre and comeagre. Then $X \setminus S$ is also both (meagre and comeagre are preserved under complementation swapped). So $\emptyset = S \cap (X \setminus S)$ is comeagre, as the intersection of two comeagre sets. But by Baire's theorem (i), a comeagre set is dense. Since $X \neq \emptyset$, $\emptyset$ cannot be dense. Contradiction. $\square$
+</Proof>
+
+### Applications of Baire
+
+<Corollary title="The Irrationals are Non-meagre">
+$\mathbb{R} \setminus \mathbb{Q}$ is non-meagre in $\mathbb{R}$.
+</Corollary>
+
+<Proof>
+We know $\mathbb{Q}$ is meagre (countable union of singletons, which are nowhere dense in $\mathbb{R}$). If $\mathbb{R} \setminus \mathbb{Q}$ were also meagre, then $\mathbb{R} = \mathbb{Q} \cup (\mathbb{R} \setminus \mathbb{Q})$ would be a countable union of nowhere dense sets, i.e. meagre in itself. But $\mathbb{R}$ is a nonempty complete metric space, contradicting Baire (ii). $\square$
+</Proof>
+
+<Corollary title="No Function is Continuous Exactly on the Rationals">
+There is no function $f : \mathbb{R} \to \mathbb{R}$ whose set of continuity points equals $\mathbb{Q}$.
+</Corollary>
+
+<Proof>
+For any function $f$, the set of continuity points is a $G_\delta$ set (countable intersection of open sets), via
+$$C_f = \bigcap_{n \geq 1} \{x : \omega_f(x) < 1/n\}$$
+where $\omega_f$ is the oscillation (see the continuity chapter). So the set of *discontinuity* points is an $F_\sigma$ set (countable union of closed sets).
+
+If $C_f = \mathbb{Q}$, then $\mathbb{R} \setminus \mathbb{Q}$ would be an $F_\sigma$ set. But a countable union of closed sets equal to $\mathbb{R} \setminus \mathbb{Q}$ would express the irrationals as a countable union of closed sets, each of which must have empty interior (else it contains an interval, hence rationals). That would make the irrationals meagre, contradicting the previous corollary. $\square$
+</Proof>
+
+<Theorem title="Nowhere Differentiable Continuous Functions are Generic (Statement)">
+Let $C = C([a,b])$ with the sup metric. The set of functions $f \in C$ that are nowhere differentiable is comeagre in $C$. Consequently, "most" continuous functions are nowhere differentiable.
+</Theorem>
+
+<Remark>
+The full proof uses Baire's theorem: one exhibits the nowhere differentiable functions as the complement of a meagre set built from open dense approximations using the Weierstrass approximation theorem (polynomials are dense in $C$) and a sawtooth perturbation. Since $C$ is complete, the comeagre set is dense — in particular, nonempty — so such functions exist. The existence of even one nowhere differentiable continuous function was once shocking; Baire's theorem tells us the shocking objects are the norm, not the exception.
+</Remark>

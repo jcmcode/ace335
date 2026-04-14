@@ -1,0 +1,471 @@
+---
+title: "Final Exam - 2025"
+year: 2025
+---
+
+## Problem 1: Subspace Topology
+
+<Problem title="Subspace Topology">
+Let $\mathbb{R}^2$ be equipped with the Euclidean topology $\mathscr{E}$, and let $S = \{(x, y) \in \mathbb{R}^2 : x \geq 0 \text{ and } y > 0\}$ be equipped with the relative topology $\mathscr{E}_S$. Select the correct statement:
+
+(A) $\{(x, y) \in \mathbb{R}^2 : 0 \leq x \leq 1 \text{ and } 1 \leq y \leq 2\} \in \mathscr{E}_S$
+
+(B) $\{\varnothing\} \in \mathscr{E}_S$
+
+(C) Every function $f : S \to S$ is continuous
+
+(D) $\{(x, y) \in S : x \neq 3\} \in \mathscr{E}_S$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (D).**
+
+A set $U \subseteq S$ is in $\mathscr{E}_S$ iff $U = V \cap S$ for some $V$ open in $\mathbb{R}^2$.
+
+**(A):** The set $[0,1] \times [1,2]$ is closed in $\mathbb{R}^2$. Its intersection with $S$ contains the boundary (since $y = 1 > 0$ and $x \in [0,1]$ both have $x=0$ OK and $x=1$ OK). For this to equal $V \cap S$ with $V$ open in $\mathbb{R}^2$, $V$ would need to contain $(1, 1)$ with some ball, but the ball goes outside $[0,1] \times [1,2]$, and those extra points are in $S$ (e.g., $(1 + \varepsilon, 1)$ is in $S$ since $x \geq 0, y > 0$), so they'd be in $V \cap S$ but not in $[0,1] \times [1,2]$. False.
+
+**(B):** $\{\varnothing\}$ is a set containing $\varnothing$, not the empty set itself. The subspace topology contains $\varnothing$, not $\{\varnothing\}$. False.
+
+**(C):** Trivially false (not every function on any space is continuous).
+
+**(D):** $\{(x, y) \in S : x \neq 3\} = S \cap \{(x, y) \in \mathbb{R}^2 : x \neq 3\}$. The set $\{(x, y) \in \mathbb{R}^2 : x \neq 3\} = \mathbb{R}^2 \setminus \{x = 3\}$ is open in $\mathbb{R}^2$ (complement of a closed line). So this intersection is open in $\mathscr{E}_S$. **True.**
+</Solution>
+
+## Problem 2: Properties of Q cap (-1, 1)
+
+<Problem title="Properties of Q cap (-1, 1)">
+Let $\mathbb{R}$ be equipped with the Euclidean topology, and let $V = \mathbb{Q} \cap (-1, 1)$ be the set of rationals strictly between $-1$ and $1$. Select the correct statement:
+
+(A) $V$ is nowhere dense
+
+(B) $\partial V = \{-1, 1\}$
+
+(C) $\overline{V} = V'$
+
+(D) By the Baire Category Theorem, $V$ is comeagre
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (C).**
+
+$V \subseteq [-1, 1]$ and $V$ is dense in $[-1, 1]$ since $\mathbb{Q}$ is dense in $\mathbb{R}$. So $\overline{V} = [-1, 1]$.
+
+The cluster points $V'$: $v_0 \in V'$ iff every neighbourhood of $v_0$ contains a point of $V \setminus \{v_0\}$. Since $V$ is dense in $[-1, 1]$ and the points are rational, every point of $[-1, 1]$ is a limit of rationals in $(-1, 1)$. In particular, $V' = [-1, 1]$.
+
+So $\overline{V} = V' = [-1, 1]$. **(C) is TRUE.**
+
+**(A):** $V$ nowhere dense would mean $\text{int}(\overline{V}) = \text{int}([-1, 1]) = (-1, 1) \neq \varnothing$. So $V$ is NOT nowhere dense. False.
+
+**(B):** $\partial V = \overline{V} \setminus \text{int}(V) = [-1, 1] \setminus \varnothing = [-1, 1]$ (since $\text{int}(V) = \varnothing$: any neighborhood contains irrationals). Not $\{-1, 1\}$. False.
+
+**(D):** $V$ is countable, hence meagre. Cannot be comeagre in $\mathbb{R}$ (else $\mathbb{R}$ = meagre $\cup$ meagre would be meagre, contradicting BCT). False.
+</Solution>
+
+## Problem 3: Discrete Topology on Countable Set
+
+<Problem title="Discrete Topology on Countable Set">
+Let $X$ be a countably infinite set, and let $\mathscr{D}$ be the discrete topology on $X$. Select the correct statement:
+
+(A) $\mathscr{D}$ is countable
+
+(B) $(X, \mathscr{D})$ is compact
+
+(C) $(X, \mathscr{D})$ is Hausdorff
+
+(D) $\varnothing$ and $X$ are the only clopen sets according to $\mathscr{D}$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (C).**
+
+Discrete topology: $\mathscr{D} = 2^X$ (all subsets are open).
+
+**(A):** $|\mathscr{D}| = |2^X| = 2^{\aleph_0}$, uncountable. False.
+
+**(B):** Cover $X = \{x_1, x_2, \ldots\}$ by singletons $\{\{x_n\}\}$; every singleton is open. No finite subcover. So $(X, \mathscr{D})$ is not compact. False.
+
+**(C):** For $x \neq y$, $\{x\}$ and $\{y\}$ are disjoint open neighborhoods. **Hausdorff. True.**
+
+**(D):** In the discrete topology, every subset is both open and closed (clopen). So there are many clopen sets (e.g., $\{x_1\}$). False.
+</Solution>
+
+## Problem 4: Properties of Subsets of R
+
+<Problem title="Properties of Subsets of R">
+Let $\mathbb{R}$ be equipped with the Euclidean topology, and let $S \subseteq \mathbb{R}$ be nonempty. Select the correct statement:
+
+(A) If $S$ is an interval, then $S$ is connected
+
+(B) If there exists $r > 0$ such that $S \subseteq [-r, r]$, then $S$ is compact
+
+(C) If there exists $r > 0$ such that $[-r, r] \subseteq S$, then $S$ is compact
+
+(D) $\overline{S}$ and $\overline{S^c}$ are disjoint
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (A).**
+
+**(A):** A fundamental theorem: in $\mathbb{R}$, a subset is connected iff it is an interval (possibly degenerate, a singleton, empty, or the whole line). **True.**
+
+**(B):** False. $S = (0, 1) \subseteq [-1, 1]$ is bounded but not closed, so not compact.
+
+**(C):** False. $S = \mathbb{R}$ contains $[-1, 1]$ but is not compact (not bounded).
+
+**(D):** False. For $S = \mathbb{Q}$, $\overline{\mathbb{Q}} = \mathbb{R}$ and $\overline{\mathbb{Q}^c} = \overline{\mathbb{R} \setminus \mathbb{Q}} = \mathbb{R}$. They overlap completely.
+</Solution>
+
+## Problem 5: Interior of Infinite Subset
+
+<Problem title="Interior of Infinite Subset">
+Let $\mathbb{R}$ be equipped with the Euclidean topology, and let $W \subseteq \mathbb{R}$ be an infinite set. Select the correct statement:
+
+(A) $\text{int}(W)$ is the largest open set contained in $W$
+
+(B) $\text{int}(W)$ is the largest open set containing $W$
+
+(C) $\text{int}(W)$ is the largest closed set contained in $W$
+
+(D) $\text{int}(W)$ is the largest closed set containing $W$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (A).**
+
+By definition, the interior of a set $W$ is the union of all open sets contained in $W$, which is the *largest* open set contained in $W$. This is the standard characterization, true in any topological space. **(A) is correct.**
+
+(B) describes something like $W$ itself if open, but generally no largest open set contains $W$ (e.g., $\mathbb{R}$ is open and contains $W$, so there's no unique largest). Wrong.
+
+(C), (D): The interior is always open, not characterized as closed.
+</Solution>
+
+## Problem 6: Set of Continuity
+
+<Problem title="Set of Continuity">
+Let $\mathbb{R}$ be equipped with the Euclidean topology, and let $f : \mathbb{R} \to \mathbb{R}$ be a function. Select the correct statement:
+
+(A) $f$ must be of class $C^1$
+
+(B) The set of continuity of $f$ is necessarily open
+
+(C) The set of continuity of $f$ is necessarily closed
+
+(D) The set of continuity of $f$ is necessarily a countable intersection of open sets
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (D).**
+
+The set of points where a function $f : \mathbb{R} \to \mathbb{R}$ is continuous is always a $G_\delta$ set (countable intersection of open sets). This is a classical result: if $C(f)$ denotes the continuity set, then
+$$C(f) = \bigcap_{n=1}^\infty \{x : \text{oscillation of } f \text{ at } x < 1/n\},$$
+and each set $\{x : \text{osc}_f(x) < 1/n\}$ is open.
+
+**(A):** Obviously false (general $f$ need not even be continuous).
+
+**(B):** False. Consider Thomae's function: continuous exactly at irrationals, which is not open (irrationals are $G_\delta$ but not open).
+
+**(C):** False. Same Thomae function: continuity set is $\mathbb{R} \setminus \mathbb{Q}$, not closed.
+
+**(D):** **True** — this is a famous theorem: the set of continuity points of any real-valued function is a $G_\delta$ set.
+</Solution>
+
+## Problem 7: Partial Derivative
+
+<Problem title="Partial Derivative">
+Let $\mathbb{R}$ and $\mathbb{R}^2$ be equipped with their respective Euclidean topologies. Let $f : \mathbb{R}^2 \to \mathbb{R}$ be the function $f(x, y) = x^6 + y^5 + xy + 1$, and let $\vec{q} = (0, -1)$. Select $\dfrac{\partial f}{\partial y}(\vec{q})$.
+
+(A) $-5$  (B) $-4$  (C) $0$  (D) does not exist  (E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (E).**
+
+$\dfrac{\partial f}{\partial y}(x, y) = 5y^4 + x$.
+
+At $(0, -1)$: $5 \cdot (-1)^4 + 0 = 5 \cdot 1 + 0 = 5$.
+
+$5$ is not among options (A)-(D), so **(E) None of the above**.
+</Solution>
+
+## Problem 8: Implicit Function Theorem - Derivative of g
+
+<Problem title="Implicit Function Theorem - Derivative of g">
+Let $f : \mathbb{R}^2 \to \mathbb{R}$ and $\vec{q} \in \mathbb{R}^2$ be as in Question 7 (i.e., $f(x,y) = x^6 + y^5 + xy + 1$, $\vec{q} = (0, -1)$). By the IFT, in a neighbourhood of $\vec{q}$, the equation $f(x, y) = 0$ implicitly defines $y = g(x)$. Select the correct statement:
+
+(A) $g(-1) = 0$ and $g'(-1) = 5$
+
+(B) $g(0) = -1$ and $g'(0) = 5$
+
+(C) $g(0) = -1$ and $g'(0) = 1/5$
+
+(D) $g$ is continuous at $0$ but not differentiable at $0$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (E).**
+
+First check $f(0, -1) = 0 + (-1)^5 + 0 + 1 = -1 + 1 = 0$. Good.
+
+$\dfrac{\partial f}{\partial y}(0, -1) = 5 \cdot 1 + 0 = 5 \neq 0$. So IFT applies with $g(0) = -1$.
+
+$g'(0) = -\dfrac{\partial f/\partial x}{\partial f/\partial y}(0, -1)$.
+
+$\partial f/\partial x = 6x^5 + y$. At $(0, -1)$: $0 + (-1) = -1$.
+
+So $g'(0) = -\dfrac{-1}{5} = \dfrac{1}{5}$.
+
+Therefore $g(0) = -1$ and $g'(0) = 1/5$. That's option (C).
+
+Wait — reviewing: (C) says $g(0) = -1$ and $g'(0) = \frac{1}{5}$. Yes.
+
+**Answer: (C).**
+</Solution>
+
+## Problem 9: Second Order Taylor Polynomial
+
+<Problem title="Second Order Taylor Polynomial">
+Let $f : \mathbb{R}^2 \to \mathbb{R}$ and $\vec{q} \in \mathbb{R}^2$ be as in Question 7. Let $P_{\vec{q}, 2}$ denote the second order Taylor polynomial of $f$ around $\vec{q}$. For small $h, k$, $f(\vec{q} + (h, k)) = f(h, -1+k) \approx P_{\vec{q}, 2}(h, k)$. Select the correct statement:
+
+(A) $P_{\vec{q},2}(h, k) = \begin{pmatrix} -1 \\ 5 \end{pmatrix} \cdot \begin{pmatrix} h \\ k \end{pmatrix} + (h\ k) \begin{pmatrix} 0 & 1 \\ 1 & -20 \end{pmatrix} \begin{pmatrix} h \\ k \end{pmatrix}$
+
+(B) $P_{\vec{q},2}(h, k) = \begin{pmatrix} -1 \\ 5 \end{pmatrix} \cdot \begin{pmatrix} h \\ k \end{pmatrix} + (h\ k) \begin{pmatrix} 0 & 1 \\ 1 & -20 \end{pmatrix} \begin{pmatrix} h \\ k \end{pmatrix}$
+
+(C) $P_{\vec{q},2}(h, k) = (-1\ 5) \begin{pmatrix} h \\ k \end{pmatrix} + \begin{pmatrix} 0 & 1 \\ 1 & -20 \end{pmatrix} \begin{pmatrix} h^2 \\ k^2 \end{pmatrix}$
+
+(D) $P_{\vec{q},2}(h, k) = (-1\ 5) \begin{pmatrix} h \\ k \end{pmatrix} + (h^2\ k^2) \begin{pmatrix} 0 & 1 \\ 1 & -20 \end{pmatrix}$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (E).**
+
+The Taylor polynomial of order 2 of $f$ around $\vec{q}$ is
+$$P_{\vec{q},2}(h, k) = f(\vec{q}) + \nabla f(\vec{q}) \cdot (h, k) + \tfrac{1}{2}(h\ k) Hf(\vec{q}) \begin{pmatrix} h \\ k \end{pmatrix}.$$
+
+Compute at $\vec{q} = (0, -1)$:
+
+$f(0, -1) = 0$.
+
+$\nabla f = (6x^5 + y,\ 5y^4 + x)$. At $(0, -1)$: $(-1, 5)$.
+
+Hessian: $f_{xx} = 30 x^4$, $f_{xy} = 1$, $f_{yy} = 20 y^3$. At $(0, -1)$: $f_{xx} = 0$, $f_{xy} = 1$, $f_{yy} = -20$. So $Hf(\vec{q}) = \begin{pmatrix} 0 & 1 \\ 1 & -20 \end{pmatrix}$.
+
+$$P_{\vec{q},2}(h, k) = 0 + (-1, 5) \cdot (h, k) + \tfrac{1}{2}(h\ k)\begin{pmatrix} 0 & 1 \\ 1 & -20 \end{pmatrix}\begin{pmatrix} h \\ k \end{pmatrix}.$$
+
+The critical missing ingredient in options (A)-(D): the quadratic term should have a $\tfrac{1}{2}$ factor. Options (A), (B) write the quadratic form without $\tfrac{1}{2}$. So none of (A)-(D) correctly include the factor. 
+
+Also (A) and (B) appear identical except for the column vector notation — but notationally, the first factor $\begin{pmatrix}-1\\5\end{pmatrix}\cdot\begin{pmatrix}h\\k\end{pmatrix}$ equals $-h + 5k$ which matches the gradient term. The missing $\tfrac{1}{2}$ is the issue.
+
+**Answer: (E) None of the above.**
+
+(Note: some instructors absorb the $\tfrac{1}{2}$ into a "Hessian" convention; if the problem's intended convention omits the $\tfrac{1}{2}$, then (A)=(B) would be correct. With standard convention including $\tfrac{1}{2}$, the answer is (E).)
+</Solution>
+
+## Problem 10: Hessian and Local Extrema
+
+<Problem title="Hessian and Local Extrema">
+Let $f : \mathbb{R}^n \to \mathbb{R}$ be a $C^3$ function. Let $\vec{p} \in \mathbb{R}^n$ be a critical point for $f$. Let $\mathcal{H}_f(\vec{p})$ denote the Hessian matrix of $f$ at $\vec{p}$. Select the correct statement:
+
+(A) If all eigenvalues of $\mathcal{H}_f(\vec{p})$ are negative, then $f$ has a local minimum at $\vec{p}$
+
+(B) If all eigenvalues of $\mathcal{H}_f(\vec{p})$ are positive, then $f$ has a local maximum at $\vec{p}$
+
+(C) If $f$ has a local maximum at $\vec{p}$, then all eigenvalues of $\mathcal{H}_f(\vec{p})$ are negative
+
+(D) If all eigenvalues of $\mathcal{H}_f(\vec{p})$ are negative, then $f$ has a local maximum at $\vec{p}$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (D).**
+
+Standard second-derivative test:
+- Hessian positive definite (all eigenvalues $>0$) at critical point $\Rightarrow$ local min.
+- Hessian negative definite (all eigenvalues $<0$) at critical point $\Rightarrow$ local max.
+
+(A): reverses the conclusion. (B): also reverses. 
+
+(C): a local max only implies Hessian is negative *semidefinite* (eigenvalues $\leq 0$, not strictly negative). Counterexample: $f(x) = -x^4$ has local max at $0$, but $f''(0) = 0$, not negative. So (C) is false.
+
+**(D) is correct.**
+</Solution>
+
+## Problem 11: Jordan-Measurable and Indicator
+
+<Problem title="Jordan-Measurable and Indicator">
+Suppose that $U \subseteq \mathbb{R}$ has Jordan content (equivalently, is Jordan-measurable). Let $\mathbf{1}_U(x) = \begin{cases} 1 & x \in U \\ 0 & x \notin U \end{cases}$. Select the correct statement:
+
+(A) For every interval $[a, b]$ containing $U$, the function $\mathbf{1}_U$ is Riemann-integrable over $[a, b]$
+
+(B) $\int_U \mathbf{1}_U = 0$
+
+(C) $U$ is an interval
+
+(D) $U$ is a singleton
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (A).**
+
+A bounded set $U$ is Jordan-measurable iff its indicator function $\mathbf{1}_U$ is Riemann-integrable on any interval $[a, b] \supseteq U$. This is precisely the defining equivalence.
+
+**(A) is TRUE.**
+
+(B): $\int_U \mathbf{1}_U = \text{Jordan content}(U)$, not necessarily $0$ (e.g., $U = [0, 1]$ has content $1$). False.
+
+(C), (D): no reason for this; e.g., $U = [0,1] \cup [2, 3]$ is Jordan-measurable but not an interval or singleton.
+</Solution>
+
+## Problem 12: Borel sigma-algebra
+
+<Problem title="Borel sigma-algebra">
+Let $(X, \mathscr{T})$ be a topological space. Let $\Sigma$ be the corresponding Borel $\sigma$-algebra of subsets of $X$. Select the correct statement:
+
+(A) $\Sigma$ is the smallest $\sigma$-algebra of subsets of $X$ containing all singletons
+
+(B) $\Sigma$ is the smallest $\sigma$-algebra of subsets of $X$ containing all closed sets
+
+(C) Every $\Omega \in \Sigma$ is open
+
+(D) Every singleton belongs to $\Sigma$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (B).**
+
+The Borel $\sigma$-algebra is the smallest $\sigma$-algebra containing all open sets. Since $\sigma$-algebras are closed under complements, this equals the smallest $\sigma$-algebra containing all closed sets. **(B) is TRUE.**
+
+**(A):** False in general — e.g., in the indiscrete topology $\mathscr{T} = \{\varnothing, X\}$, $\Sigma = \{\varnothing, X\}$ does not contain singletons (unless $|X| = 1$).
+
+**(C):** False; Borel sets include closed sets and more, not all are open.
+
+**(D):** False in general; singletons need not be closed in arbitrary topological spaces, so need not be Borel (e.g., in an indiscrete topology).
+</Solution>
+
+## Problem 13: Critical Points of Phi
+
+<Problem title="Critical Points of Phi">
+Let $\Phi : \mathbb{R}^3 \to \mathbb{R}$ be the function $\Phi(x, y, z) = x^2 - y^2$. Select the correct statement:
+
+(A) $\Phi$ has no critical point
+
+(B) $\Phi$ has exactly one critical point
+
+(C) $\Phi$ has exactly two critical points
+
+(D) $\Phi$ has infinitely many critical points
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (D).**
+
+$\nabla \Phi = (2x, -2y, 0)$.
+
+Setting $\nabla \Phi = \vec{0}$: $2x = 0, -2y = 0$, $z$ free. So critical points are $\{(0, 0, z) : z \in \mathbb{R}\}$ — an entire line of critical points, **infinitely many**.
+</Solution>
+
+## Problem 14: Lagrange Multipliers
+
+<Problem title="Lagrange Multipliers">
+Let $\Phi : \mathbb{R}^3 \to \mathbb{R}$ be the function from Question 13 (i.e., $\Phi(x, y, z) = x^2 - y^2$). Let $\Psi : \mathbb{R}^3 \to \mathbb{R}$ be $\Psi(x, y, z) = x^2 + y^2 + z^2 - 1$. Subject to the constraint $S = \{(x, y, z) \in \mathbb{R}^3 : \Psi(x, y, z) = 0\}$, the function $\Phi$ has a point of constrained maximum, say $\vec{p}$. Select the correct statement:
+
+(A) $\nabla \Phi(\vec{p}) = \vec{0}$
+
+(B) $\vec{p}$ is one of the solutions of the system
+$$\begin{cases} \dfrac{\partial \Phi}{\partial x}(\vec{p}) = \dfrac{\partial \Psi}{\partial x}(\vec{p}) \\ \dfrac{\partial \Phi}{\partial y}(\vec{p}) = \dfrac{\partial \Psi}{\partial y}(\vec{p}) \\ \dfrac{\partial \Phi}{\partial z}(\vec{p}) = \dfrac{\partial \Psi}{\partial z}(\vec{p}) \\ \Psi(\vec{p}) = 0 \end{cases}$$
+
+(C) $\vec{p}$ is one of the solutions of the system
+$$\begin{cases} \dfrac{\partial \Phi}{\partial x}(\vec{p}) = 0 \\ \dfrac{\partial \Phi}{\partial y}(\vec{p}) = 0 \\ \dfrac{\partial \Phi}{\partial z}(\vec{p}) = 0 \\ \Psi(\vec{p}) = 0 \end{cases}$$
+
+(D) $\vec{p}$ is the unique point of constrained maximum for $\Phi$ subject to the constraint $S$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (E).**
+
+Lagrange multipliers: at a constrained extremum $\vec{p}$ on $S = \{\Psi = 0\}$ (with $\nabla \Psi(\vec{p}) \neq 0$), there exists $\lambda \in \mathbb{R}$ with $\nabla \Phi(\vec{p}) = \lambda \nabla \Psi(\vec{p})$. The system is
+$$\nabla \Phi(\vec{p}) = \lambda \nabla \Psi(\vec{p}), \quad \Psi(\vec{p}) = 0,$$
+for **some** $\lambda$, not necessarily $\lambda = 1$.
+
+**(A):** $\nabla \Phi = \vec{0}$ would mean unconstrained critical point, not necessary. False.
+
+**(B):** This is the Lagrange system with $\lambda = 1$ specifically, not general. False.
+
+**(C):** Same as (A). False.
+
+**(D):** Let's compute: $\Phi = x^2 - y^2$ on sphere $x^2 + y^2 + z^2 = 1$. Maximum occurs when $y = 0, z = 0, x^2 = 1$, i.e., $(\pm 1, 0, 0)$ both give $\Phi = 1$. Two maximum points, not unique. False.
+
+**Answer: (E) None of the above.**
+</Solution>
+
+## Problem 15: Derivative of Composition
+
+<Problem title="Derivative of Composition">
+Let $F : \mathbb{R}^3 \to \mathbb{R}^2$ be a $C^1$ function with components $F = (F_1, F_2)$. For $i = 1, 2$, denote
+- $F_i(0, 0, 0) = \alpha_i$, $F_i(1, 0, 0) = \omega_i$
+- $\dfrac{\partial F_i}{\partial x}(0,0,0) = \beta_i$, $\dfrac{\partial F_i}{\partial x}(1,0,0) = \mu_i$
+- $\dfrac{\partial F_i}{\partial y}(0,0,0) = \gamma_i$, $\dfrac{\partial F_i}{\partial y}(1,0,0) = \nu_i$
+- $\dfrac{\partial F_i}{\partial z}(0,0,0) = \delta_i$, $\dfrac{\partial F_i}{\partial z}(1,0,0) = \chi_i$
+
+Let $G : \mathbb{R}^2 \to \mathbb{R}^2$, $G(r, \theta) = (r\cos\theta, r\sin\theta)$. Select the correct statement:
+
+(A) The derivative of $G \circ F$ at $(1, 0, 0)$ is a $3 \times 2$ matrix
+
+(B) $D(G \circ F)(0, 0, 0)$ is a linear function $\mathbb{R}^3 \to \mathbb{R}^2$ that maps $(1, 0, 0)^\top$ to $\begin{pmatrix} \mu_1 \cos(\omega_2) - \omega_1 \mu_2 \sin(\omega_2) \\ \mu_1 \sin(\omega_2) + \omega_1 \mu_2 \cos(\omega_2) \end{pmatrix}$
+
+(C) $D(G \circ F)(0, 0, 0)$ is a linear function $\mathbb{R}^3 \to \mathbb{R}^2$ that maps $(1, 0, 0)^\top$ to $\begin{pmatrix} \beta_1 \cos(\alpha_2) - \alpha_1 \beta_2 \sin(\alpha_2) \\ \beta_1 \sin(\alpha_2) + \alpha_1 \beta_2 \cos(\alpha_2) \end{pmatrix}$
+
+(D) $D(G \circ F)(0, 0, 0)$ is a linear function $\mathbb{R}^2 \to \mathbb{R}^3$ that maps $(1, 0)^\top$ to $\begin{pmatrix} \beta_1 \cos(\alpha_2) - \alpha_1 \beta_2 \sin(\alpha_2) \\ \gamma_1 \cos(\alpha_2) - \alpha_1 \gamma_2 \sin(\alpha_2) \\ \delta_1 \cos(\alpha_2) - \alpha_1 \delta_2 \sin(\alpha_2) \end{pmatrix}$
+
+(E) None of the above
+</Problem>
+
+<Solution>
+**Answer: (C).**
+
+By the chain rule, $D(G \circ F)(\vec{p}) = DG(F(\vec{p})) \cdot DF(\vec{p})$.
+
+$G \circ F : \mathbb{R}^3 \to \mathbb{R}^2$, so its derivative at a point is a linear map $\mathbb{R}^3 \to \mathbb{R}^2$ (matrix: $2 \times 3$).
+
+**(A):** $3 \times 2$ is wrong — should be $2 \times 3$. False.
+
+**(D):** Incorrect domain/codomain ($\mathbb{R}^2 \to \mathbb{R}^3$). False.
+
+**(B) vs (C):** Evaluated at $\vec{p} = (0, 0, 0)$, so we use $F(0,0,0) = (\alpha_1, \alpha_2)$ and partials at $(0,0,0)$ (i.e., $\beta_i, \gamma_i, \delta_i$), not at $(1, 0, 0)$. So (B) uses wrong data.
+
+Compute $DG(r, \theta) = \begin{pmatrix} \cos\theta & -r\sin\theta \\ \sin\theta & r\cos\theta \end{pmatrix}$.
+
+At $F(0,0,0) = (\alpha_1, \alpha_2)$: $DG = \begin{pmatrix} \cos\alpha_2 & -\alpha_1 \sin\alpha_2 \\ \sin\alpha_2 & \alpha_1 \cos\alpha_2 \end{pmatrix}$.
+
+$DF(0,0,0) = \begin{pmatrix} \beta_1 & \gamma_1 & \delta_1 \\ \beta_2 & \gamma_2 & \delta_2 \end{pmatrix}$.
+
+Applied to $(1, 0, 0)^\top$: $DF \cdot (1,0,0)^\top = (\beta_1, \beta_2)^\top$.
+
+Then $DG \cdot (\beta_1, \beta_2)^\top = \begin{pmatrix} \beta_1 \cos\alpha_2 - \alpha_1 \beta_2 \sin\alpha_2 \\ \beta_1 \sin\alpha_2 + \alpha_1 \beta_2 \cos\alpha_2 \end{pmatrix}$.
+
+This matches **(C)** exactly.
+</Solution>

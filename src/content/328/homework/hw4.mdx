@@ -1,0 +1,368 @@
+---
+title: "Problem Set 4 Solutions"
+homework: 4
+---
+
+## Problem 1: Implicit System in Four Variables
+
+<Problem title="Implicit System in Four Variables">
+Consider
+
+$$\begin{cases} x^2 - y\cos(uv) = v \\ x^2 + y^2 - \sin(uv) = \tfrac{4}{\pi} u \end{cases}$$
+
+(a) Explain why near $(x, y, u, v) = (1, 1, \pi/2, 0)$, the system defines $x = g_1(u, v)$, $y = g_2(u, v)$.
+
+(b) Find $\tfrac{\partial g_1}{\partial u}(\pi/2, 0)$ and $\tfrac{\partial g_2}{\partial u}(\pi/2, 0)$.
+
+(c) Let $\gamma(u, v) = g_1(u, v)^4 + g_2(u, v)^4$. Find $\tfrac{\partial \gamma}{\partial u}(\pi/2, 0)$.
+</Problem>
+
+<Solution>
+Let $F_1(x, y, u, v) = x^2 - y\cos(uv) - v$, $F_2 = x^2 + y^2 - \sin(uv) - \tfrac{4}{\pi}u$.
+
+**Check point:** At $(1, 1, \pi/2, 0)$: $uv = 0$, $\cos(0) = 1$, $\sin(0) = 0$.
+
+$F_1 = 1 - 1\cdot 1 - 0 = 0$ ✓. $F_2 = 1 + 1 - 0 - \tfrac{4}{\pi} \cdot \tfrac{\pi}{2} = 2 - 2 = 0$ ✓.
+
+**Jacobian $\partial(F_1, F_2)/\partial(x, y)$ at the point:**
+
+$\partial F_1/\partial x = 2x = 2$. $\partial F_1/\partial y = -\cos(uv) = -1$.
+
+$\partial F_2/\partial x = 2x = 2$. $\partial F_2/\partial y = 2y = 2$.
+
+$J_{xy} = \begin{pmatrix} 2 & -1 \\ 2 & 2 \end{pmatrix}$, $\det = 4 + 2 = 6 \neq 0$.
+
+**(a)** By the Implicit Function Theorem (nonsingular Jacobian in $(x, y)$), near the point we can write $x = g_1(u, v)$, $y = g_2(u, v)$ as $C^1$ functions with $g_1(\pi/2, 0) = 1$, $g_2(\pi/2, 0) = 1$.
+
+**(b)** Differentiating the system with respect to $u$ (treating $x, y$ as functions of $(u, v)$):
+
+From $F_1$: $2x x_u - y_u \cos(uv) - y(-\sin(uv)) v = 0$, i.e.
+
+$$2x \, g_{1,u} - g_{2,u} \cos(uv) + y v \sin(uv) = 0.$$
+
+From $F_2$: $2x x_u + 2y y_u - \cos(uv) \cdot v - \tfrac{4}{\pi} = 0$, i.e.
+
+$$2x \, g_{1,u} + 2y \, g_{2,u} - v \cos(uv) - \tfrac{4}{\pi} = 0.$$
+
+At $(u, v) = (\pi/2, 0)$, $(x, y) = (1, 1)$, $uv = 0$, $\cos(0) = 1$, $\sin(0) = 0$, $v = 0$:
+
+Eq 1: $2 g_{1,u} - g_{2,u} = 0 \implies g_{2,u} = 2 g_{1,u}$.
+
+Eq 2: $2 g_{1,u} + 2 g_{2,u} - 0 - 4/\pi = 0 \implies g_{1,u} + g_{2,u} = 2/\pi$.
+
+Substitute: $g_{1,u} + 2 g_{1,u} = 2/\pi \implies 3 g_{1,u} = 2/\pi \implies g_{1,u} = \tfrac{2}{3\pi}$, and $g_{2,u} = \tfrac{4}{3\pi}$.
+
+**(c)** $\tfrac{\partial \gamma}{\partial u} = 4 g_1^3 g_{1,u} + 4 g_2^3 g_{2,u}$. At $(\pi/2, 0)$: $g_1 = g_2 = 1$, so
+
+$$\tfrac{\partial \gamma}{\partial u}(\pi/2, 0) = 4 \cdot 1 \cdot \tfrac{2}{3\pi} + 4 \cdot 1 \cdot \tfrac{4}{3\pi} = \tfrac{8}{3\pi} + \tfrac{16}{3\pi} = \tfrac{24}{3\pi} = \tfrac{8}{\pi}.$$
+</Solution>
+
+## Problem 2: Chain Rule from Table
+
+<Problem title="Chain Rule Computations from Table">
+With tables providing values of $f_1, f_2, g$ and their partials at $(0,0), (0,1), (1,0)$:
+
+(a) Explain why $g$ is differentiable at $(0, 0)$ and find $Dg(0, 0)$.
+
+(b) Let $\varphi(x, y) = g(\vec f(x, y))$. Find $\nabla \varphi(0, 1)$ and $D\varphi(0, 1)$.
+</Problem>
+
+<Solution>
+**(a)** $g$ is $C^2$, so in particular $C^1$. Continuity of partial derivatives implies differentiability (by the theorem of Problems 3–4 of PS3). Hence $g$ is differentiable at $(0, 0)$.
+
+$Dg(0, 0)$ is the $1 \times 2$ matrix
+
+$$Dg(0, 0) = \begin{pmatrix} \tfrac{\partial g}{\partial u}(0,0) & \tfrac{\partial g}{\partial v}(0,0) \end{pmatrix} = \begin{pmatrix} 0 & 0 \end{pmatrix}.$$
+
+**(b)** At $(x, y) = (0, 1)$: $\vec f(0, 1) = (f_1(0,1), f_2(0,1)) = (1, 0)$.
+
+By the chain rule, $D\varphi(0, 1) = Dg(\vec f(0,1)) \cdot D\vec f(0, 1) = Dg(1, 0) \cdot D\vec f(0, 1)$.
+
+$Dg(1, 0) = (\pi, -1)$ (from the table: $\partial g/\partial u(1,0) = \pi$, $\partial g/\partial v(1,0) = -1$).
+
+$D\vec f(0, 1) = \begin{pmatrix} \partial f_1/\partial x & \partial f_1/\partial y \\ \partial f_2/\partial x & \partial f_2/\partial y \end{pmatrix}(0,1) = \begin{pmatrix} 0 & 3 \\ 0 & \pi \end{pmatrix}$.
+
+So
+
+$$D\varphi(0, 1) = \begin{pmatrix} \pi & -1 \end{pmatrix} \begin{pmatrix} 0 & 3 \\ 0 & \pi \end{pmatrix} = \begin{pmatrix} 0 & 3\pi - \pi \end{pmatrix} = \begin{pmatrix} 0 & 2\pi \end{pmatrix}.$$
+
+$\nabla \varphi(0, 1) = (0, 2\pi)$.
+</Solution>
+
+## Problem 3: Taylor Expansions and Remainder Bounds
+
+<Problem title="Taylor Expansions with Remainder Bounds">
+Find second-order Taylor expansions near $\vec a$, with an explicit bound $|R_{\vec a, 2}(\vec h)| \leq \tfrac{n^3 M}{6}\|\vec h\|_\infty^3$, and determine how small $\|\vec h\|$ must be so $|R_{\vec a, 2}(\vec h)| < 10^{-4}$.
+
+(a) $f(x, y) = \sin(2x) + \cos(x + y)$ near $(0, 0)$.
+
+(b) $f(x, y, z) = e^{-(x^2 + y^2 + z^2)}$ near $(0, 0, 0)$.
+</Problem>
+
+<Solution>
+**(a)** $f(x, y) = \sin(2x) + \cos(x + y)$. $n = 2$.
+
+$f(0, 0) = 0 + 1 = 1$.
+
+*First partials:*
+$f_x = 2\cos(2x) - \sin(x+y)$, $f_x(0,0) = 2$.
+$f_y = -\sin(x+y)$, $f_y(0,0) = 0$.
+
+*Second partials:*
+$f_{xx} = -4\sin(2x) - \cos(x+y)$, $f_{xx}(0,0) = -1$.
+$f_{xy} = -\cos(x+y)$, $f_{xy}(0,0) = -1$.
+$f_{yy} = -\cos(x+y)$, $f_{yy}(0,0) = -1$.
+
+*Taylor expansion:*
+
+$$f(h_1, h_2) \approx 1 + 2h_1 + \tfrac{1}{2}(-h_1^2 - 2h_1 h_2 - h_2^2) = 1 + 2h_1 - \tfrac{1}{2}(h_1 + h_2)^2.$$
+
+*Bound on third-order partials:* All third partials involve terms of the form $\pm 8\cos(2x)$ or $\pm 8\sin(2x)$ (from $\sin(2x)$ part) and $\pm \sin(x+y)$ or $\pm \cos(x+y)$. Specifically:
+
+$f_{xxx} = -8\cos(2x) + \sin(x+y)$, max $|f_{xxx}| \leq 8 + 1 = 9$.
+$f_{xxy} = \sin(x+y)$, max $\leq 1$.
+$f_{xyy} = \sin(x+y)$, max $\leq 1$.
+$f_{yyy} = \sin(x+y)$, max $\leq 1$.
+
+So $M = 9$.
+
+Remainder bound: $|R_{\vec 0, 2}(\vec h)| \leq \tfrac{n^3 M}{6} \|\vec h\|_\infty^3 = \tfrac{8 \cdot 9}{6} \|\vec h\|_\infty^3 = 12 \|\vec h\|_\infty^3$.
+
+Since $\|\vec h\|_\infty \leq \|\vec h\|_2$, we have $|R| \leq 12 \|\vec h\|_2^3$.
+
+Require $12 \|\vec h\|^3 < 10^{-4}$: $\|\vec h\|^3 < 10^{-4}/12$, $\|\vec h\| < (10^{-4}/12)^{1/3} \approx (8.33 \cdot 10^{-6})^{1/3} \approx 0.0203$.
+
+So $\|\vec h\| < 0.02$ suffices (more precisely $\|\vec h\| < \sqrt[3]{10^{-4}/12} \approx 0.0203$).
+
+**(b)** $f(x, y, z) = e^{-(x^2+y^2+z^2)}$. $n = 3$.
+
+$f(0,0,0) = 1$.
+
+*First partials:* $f_{x_i} = -2x_i e^{-r^2}$ where $r^2 = x^2+y^2+z^2$. $f_{x_i}(0) = 0$. Similarly for $y, z$.
+
+*Second partials:* $f_{x_i x_i} = (-2 + 4x_i^2)e^{-r^2}$. $f_{x_i x_i}(0) = -2$.
+
+$f_{x_i x_j} = 4x_i x_j e^{-r^2}$ for $i \neq j$. $f_{x_i x_j}(0) = 0$.
+
+*Taylor:*
+
+$$f(h_1, h_2, h_3) \approx 1 + \tfrac{1}{2}(-2 h_1^2 - 2 h_2^2 - 2 h_3^2) = 1 - (h_1^2 + h_2^2 + h_3^2).$$
+
+*Bound on third partials:* To bound these, choose $U = B_{1/2}(\vec 0)$, so $\|\vec x\|_\infty \leq 1/2$ and $r^2 \leq 3/4$, $e^{-r^2} \leq 1$.
+
+Third partials have the structure of polynomials times $e^{-r^2}$. Let's bound them. For example:
+
+$f_{x_i x_i x_i} = \partial_{x_i} [(-2 + 4x_i^2)e^{-r^2}] = [8 x_i - 2x_i(-2 + 4x_i^2)]e^{-r^2} = [8x_i + 4x_i - 8x_i^3]e^{-r^2} = (12 x_i - 8 x_i^3)e^{-r^2}$.
+
+On $U$: $|12 x_i - 8 x_i^3| \leq 12 \cdot \tfrac{1}{2} + 8 \cdot \tfrac{1}{8} = 6 + 1 = 7$.
+
+$f_{x_i x_i x_j} = \partial_{x_j}[(-2 + 4x_i^2)e^{-r^2}] = (-2 + 4x_i^2)(-2x_j)e^{-r^2} = (4 x_j - 8 x_i^2 x_j)e^{-r^2}$.
+
+Bound: $|4 x_j - 8 x_i^2 x_j| \leq 4\cdot\tfrac{1}{2} + 8 \cdot \tfrac{1}{4} \cdot \tfrac{1}{2} = 2 + 1 = 3$.
+
+$f_{x_i x_j x_k}$ for distinct $i, j, k$: $\partial_{x_k}[4 x_i x_j e^{-r^2}] = 4 x_i x_j (-2 x_k) e^{-r^2} = -8 x_i x_j x_k e^{-r^2}$.
+
+Bound: $|8 x_i x_j x_k| \leq 8 \cdot (1/2)^3 = 1$.
+
+Max of all third partials on $U$: $M = 7$.
+
+So $|R_{\vec 0, 2}(\vec h)| \leq \tfrac{n^3 M}{6} \|\vec h\|_\infty^3 = \tfrac{27 \cdot 7}{6} \|\vec h\|_\infty^3 = \tfrac{63}{2} \|\vec h\|_\infty^3 = 31.5 \|\vec h\|_\infty^3$.
+
+Since $\|\vec h\|_\infty \leq \|\vec h\|_2$:
+
+$|R| \leq 31.5 \|\vec h\|_2^3$.
+
+Require $31.5 \|\vec h\|^3 < 10^{-4}$: $\|\vec h\| < (10^{-4}/31.5)^{1/3} \approx (3.17 \cdot 10^{-6})^{1/3} \approx 0.0147$.
+
+So $\|\vec h\| < 0.014$ suffices.
+</Solution>
+
+## Problem 4: Unconstrained Extrema
+
+<Problem title="Unconstrained Extrema of Several Functions">
+Find all maxima and minima of:
+
+(a) $f_1(x, y) = x^3 + xy + y^3$.
+
+(b) $f_2(x, y) = \dfrac{xy}{x^2 + y^2 + 1}$.
+
+(c) $f_3(x, y, z) = x^6 + y^6 + z^6$.
+
+(d) $f_4(x_1, \dots, x_n) = \sum_{i,j} a_i a_j x_i x_j$, where $\vec a \neq \vec 0$.
+</Problem>
+
+<Solution>
+**(a)** Critical points: $f_x = 3x^2 + y = 0$, $f_y = x + 3y^2 = 0$.
+
+From first: $y = -3x^2$. Substitute: $x + 3(9x^4) = x + 27 x^4 = x(1 + 27x^3) = 0$.
+
+Solutions: $x = 0$ giving $(0, 0)$; $x^3 = -1/27$ i.e. $x = -1/3$, $y = -3 \cdot 1/9 = -1/3$, giving $(-1/3, -1/3)$.
+
+Hessian: $H = \begin{pmatrix} 6x & 1 \\ 1 & 6y \end{pmatrix}$, $\det = 36xy - 1$.
+
+At $(0, 0)$: $\det = -1 < 0$, saddle point.
+
+At $(-1/3, -1/3)$: $\det = 36 \cdot 1/9 - 1 = 4 - 1 = 3 > 0$, and $H_{11} = -2 < 0$, so **local maximum**. Value: $f_1(-1/3, -1/3) = -1/27 + 1/9 - 1/27 = -2/27 + 3/27 = 1/27$.
+
+Behavior at infinity: $f_1(t, t) = 2t^3 + t^2 \to \pm\infty$. No global max/min.
+
+**Summary:** Local max at $(-1/3, -1/3)$ with value $1/27$. Saddle at $(0, 0)$. No global extrema.
+
+**(b)** Symmetric in sign. $f_2$ is bounded: $|xy| \leq (x^2 + y^2)/2 \leq (x^2 + y^2 + 1)/2$, so $|f_2| \leq 1/2$.
+
+Critical points: $f_x = \tfrac{y(x^2 + y^2 + 1) - xy \cdot 2x}{(x^2+y^2+1)^2} = \tfrac{y(y^2 + 1 - x^2)}{(x^2+y^2+1)^2}$.
+
+$f_y$ analogously $= \tfrac{x(x^2 + 1 - y^2)}{(x^2+y^2+1)^2}$.
+
+Setting both zero: either $x = y = 0$; or $y = 0, x \neq 0$, requires $x(x^2 + 1) = 0$ — no; or $y \neq 0, x = 0$, similar — no; or $y^2 + 1 = x^2$ and $x^2 + 1 = y^2$, adding gives $x^2 + y^2 + 2 = x^2 + y^2$, no; or $y \neq 0, x \neq 0, y^2 + 1 = x^2, x^2 + 1 = y^2$: subtracting $x^2 - y^2 = y^2 - x^2$, so $x^2 = y^2$, then $y^2 + 1 = y^2$, no.
+
+Wait, let me redo: $y(y^2 + 1 - x^2) = 0$ and $x(x^2 + 1 - y^2) = 0$.
+
+Case $x = 0, y = 0$: point $(0,0)$, $f = 0$.
+
+Case $x = 0, y \neq 0$: need $y(y^2 + 1 - 0) = y(y^2 + 1) = 0$, so $y = 0$. Contradiction.
+
+Case $y = 0, x \neq 0$: similarly no.
+
+Case $x, y \neq 0$: $y^2 + 1 = x^2$ and $x^2 + 1 = y^2$. Subtract: $y^2 - x^2 = x^2 - y^2$, so $2(y^2 - x^2) = 0$, $x^2 = y^2$. Plug into first: $x^2 + 1 = x^2$, impossible.
+
+Hmm, so only critical point is $(0, 0)$ with $f = 0$? But $f$ is bounded and continuous on $\mathbb{R}^2$. Let's check: $f \to 0$ as $(x, y) \to \infty$ (since denominator grows). And $f$ takes positive and negative values (e.g. $f(1,1) = 1/3$). Max and min must exist by boundedness and decay.
+
+Actually $f_x$ and $f_y$ should give critical points at extrema. Let me recompute: $y(y^2 + 1 - x^2) = 0$.
+
+Oh, I think the issue is I got the numerator wrong. Let's recompute $f_x$:
+
+$f = \tfrac{xy}{x^2+y^2+1}$. $\tfrac{\partial}{\partial x}: \tfrac{y(x^2+y^2+1) - xy \cdot 2x}{(x^2+y^2+1)^2} = \tfrac{y(x^2+y^2+1 - 2x^2)}{(x^2+y^2+1)^2} = \tfrac{y(y^2 + 1 - x^2)}{(x^2+y^2+1)^2}$.
+
+Yes that's right. $f_y = \tfrac{x(x^2 + 1 - y^2)}{(x^2+y^2+1)^2}$. 
+
+Setting both zero, either $x = 0$ or $x^2 + 1 = y^2$, AND either $y = 0$ or $y^2 + 1 = x^2$.
+
+Case $x = 0, y = 0$: OK.
+
+Case $x = 0, y^2 + 1 = x^2 = 0$: no.
+
+Case $x^2 + 1 = y^2, y = 0$: $x^2 = -1$, no.
+
+Case $x^2 + 1 = y^2$ and $y^2 + 1 = x^2$: adding, $x^2 + y^2 + 2 = x^2 + y^2$, no.
+
+So $(0,0)$ is the only critical point, and $f(0,0) = 0$.
+
+But by existence of max/min on $\mathbb{R}^2$ (since $f \to 0$ at infinity and $f$ attains nonzero values), we should have critical points. Let me reconsider.
+
+Oh! The decay $f(x,y) \to 0$ at infinity, and max $= 1/2$ achieved when $x = y$ and $x^2 + y^2 = 1$... let me check: $f(1/\sqrt 2, 1/\sqrt 2) = (1/2)/(1/2 + 1/2 + 1) = (1/2)/2 = 1/4$, not $1/2$.
+
+Actually by AM-GM, $xy \leq (x^2 + y^2)/2$. And $\tfrac{(x^2+y^2)/2}{x^2+y^2+1}$. Let $s = x^2 + y^2 \geq 0$: $\tfrac{s/2}{s+1}$. This increases to $1/2$ as $s \to \infty$ but never attains $1/2$. So $f$ does approach $1/2$ but never reaches; max value not attained? Wait but $f$ along $x=y$ is $\tfrac{x^2}{2x^2 + 1}$, which $\to 1/2$ as $x \to \infty$, never equals $1/2$.
+
+And along $x = y$, $f_x = \tfrac{y(y^2 + 1 - x^2)}{(\cdots)^2}$. At $x = y$: $= \tfrac{x(x^2 + 1 - x^2)}{(\cdots)^2} = \tfrac{x}{(\cdots)^2} \neq 0$ for $x \neq 0$. So $f$ has no critical points along $x = y \neq 0$.
+
+**Conclusion:** $f$ has only one critical point $(0, 0)$ with value $0$. $\sup f = 1/2$, $\inf f = -1/2$, neither attained. At $(0, 0)$, the Hessian:
+
+$f_{xx}(0,0) = ?$ $f_{xx} = \partial_x[\tfrac{y(y^2+1-x^2)}{D^2}]$ where $D = x^2+y^2+1$. At $(0,0)$, the numerator of $f_x$ is $y(y^2+1-x^2)$, which vanishes to order 1 in $y$; $f_{xx}(0,0) = 0$. Similarly $f_{yy}(0,0) = 0$. $f_{xy}(0,0)$: differentiate $f_x = y(y^2+1-x^2)/D^2$ in $y$: at origin, this is $(1 \cdot 1 + 0)/1 = 1$. So $H = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$, $\det = -1 < 0$, so $(0,0)$ is a saddle.
+
+**Summary:** Only critical point is $(0,0)$, a saddle. $\sup f = 1/2$ and $\inf f = -1/2$ are not attained. So no global or local extrema.
+
+**(c)** $f_3(x, y, z) = x^6 + y^6 + z^6$. Clearly $f_3 \geq 0$ with equality iff $x = y = z = 0$. So $(0, 0, 0)$ is a global minimum. No maximum (unbounded above).
+
+Critical points: $\nabla f_3 = (6x^5, 6y^5, 6z^5) = 0$ iff $(x, y, z) = (0, 0, 0)$. That's the only critical point.
+
+**(d)** $f_4(\vec x) = \sum_{i, j} a_i a_j x_i x_j = (\vec a \cdot \vec x)^2$.
+
+Since $f_4 \geq 0$ with equality iff $\vec a \cdot \vec x = 0$, the set of minima is the hyperplane $\vec a^\perp = \{\vec x : \vec a \cdot \vec x = 0\}$, with minimum value $0$. No maximum (unbounded above).
+
+Critical points: $\nabla f_4 = 2(\vec a \cdot \vec x) \vec a = 0$ iff $\vec a \cdot \vec x = 0$ (since $\vec a \neq 0$).
+</Solution>
+
+## Problem 5: Constrained Extrema on $4x^2 + y^2 = 4y$
+
+<Problem title="Constrained Extrema on Ellipse">
+Find maxima and minima subject to $4x^2 + y^2 = 4y$:
+
+(a) $f_1(x, y) = x^2 y^2 - 4 x^2 y - \tfrac{1}{4} x^4$.
+
+(b) $f_2(x, y) = -4xy + xy^2 - \tfrac{1}{3} x^3$.
+</Problem>
+
+<Solution>
+The constraint $4x^2 + y^2 = 4y$ rewrites as $4x^2 + (y - 2)^2 = 4$, i.e. an ellipse centered at $(0, 2)$ with semi-axes $1$ (in $x$) and $2$ (in $y$). It is compact, so continuous functions attain both max and min.
+
+From the constraint: $4x^2 = 4y - y^2 = y(4 - y)$, so on the ellipse, $x^2 = y(4-y)/4$, requiring $0 \leq y \leq 4$.
+
+**(a) Substitute $x^2 = y(4-y)/4$:**
+
+$f_1 = (y(4-y)/4) \cdot y^2 - 4(y(4-y)/4) y - \tfrac{1}{4}(y(4-y)/4)^2$
+
+$= \tfrac{y^3(4-y)}{4} - y^2(4-y) - \tfrac{y^2(4-y)^2}{64}$
+
+$= \tfrac{y^2(4-y)}{64}\left[16 y - 64 - (4-y)\right]$
+
+$= \tfrac{y^2(4-y)}{64}(16y - 64 - 4 + y)$
+
+$= \tfrac{y^2(4-y)(17y - 68)}{64}$
+
+$= \tfrac{17 y^2 (4 - y)(y - 4)}{64}$
+
+$= -\tfrac{17 y^2 (y - 4)^2}{64}$.
+
+Let $h(y) = -\tfrac{17}{64} y^2 (y-4)^2$ for $y \in [0, 4]$.
+
+$h(y) = -\tfrac{17}{64}(y^2(y-4)^2)$. $y^2(y-4)^2 \geq 0$ with zero at $y = 0$ and $y = 4$.
+
+Max of $y^2(y-4)^2$ on $[0,4]$: derivative $2y(y-4)^2 + y^2 \cdot 2(y-4) = 2y(y-4)(y-4+y) = 2y(y-4)(2y-4) = 4y(y-4)(y-2)$. Zero at $y \in \{0, 2, 4\}$. At $y = 2$: $4 \cdot 4 = 16$.
+
+So $\min h = -\tfrac{17}{64} \cdot 16 = -\tfrac{17}{4}$ at $y = 2$ ($x^2 = 2 \cdot 2/4 = 1$, so $x = \pm 1$).
+
+$\max h = 0$ at $y = 0$ or $y = 4$. At $y = 0$: $x = 0$. At $y = 4$: $x = 0$.
+
+**Maximum of $f_1 = 0$ at $(0, 0)$ and $(0, 4)$. Minimum $= -17/4$ at $(\pm 1, 2)$.**
+
+**(b)** Substitute: $f_2 = -4xy + xy^2 - \tfrac{1}{3} x^3$. Now we can't simply eliminate $x$ because of the $x^3$ term. Let's use Lagrange multipliers.
+
+Let $g(x, y) = 4x^2 + y^2 - 4y$. $\nabla g = (8x, 2y - 4)$.
+
+$\nabla f_2 = (-4y + y^2 - x^2, -4x + 2xy)$.
+
+Lagrange: $-4y + y^2 - x^2 = 8\lambda x$ and $-4x + 2xy = (2y - 4)\lambda$, i.e. $2x(y - 2) = 2(y-2)\lambda$.
+
+From second: $(y - 2)(2x - 2\lambda) = 0$ — wait: $2x(y-2) - 2(y-2)\lambda = 2(y-2)(x - \lambda) = 0$.
+
+*Case A: $y = 2$.* Constraint: $4x^2 + 4 = 8$, $x^2 = 1$, $x = \pm 1$.
+
+Values: $f_2(1, 2) = -8 + 4 - 1/3 = -4 - 1/3 = -13/3$. $f_2(-1, 2) = 8 - 4 + 1/3 = 4 + 1/3 = 13/3$.
+
+*Case B: $x = \lambda$.* Plug into first Lagrange: $-4y + y^2 - x^2 = 8x^2$, so $y^2 - 4y = 9x^2$. Combined with constraint $4x^2 + y^2 = 4y$: $9x^2 = y^2 - 4y = -(4y - y^2) = -4x^2$. So $13 x^2 = 0$, $x = 0$. Then $y^2 - 4y = 0$, $y \in \{0, 4\}$.
+
+At $(0, 0)$: $f_2 = 0$. At $(0, 4)$: $f_2 = 0$.
+
+**Candidate values: $-13/3, 13/3, 0, 0$.**
+
+**Maximum $= 13/3$ at $(-1, 2)$. Minimum $= -13/3$ at $(1, 2)$.**
+</Solution>
+
+## Problem 6: Liouville Numbers Have Zero Lebesgue Measure
+
+<Problem title="Liouville Numbers Have Zero Measure">
+Show the set of Liouville numbers has zero Lebesgue measure.
+</Problem>
+
+<Solution>
+**(a)** $\sum_{q=2}^\infty \tfrac{4}{q^{n-1}}$ converges for $n \geq 3$ (it's a $p$-series with $p = n - 1 \geq 2$). As $n \to \infty$, the sum tends to $0$ (all terms $\tfrac{4}{q^{n-1}} \to 0$ and dominated by $\tfrac{4}{q^2}$ for $n \geq 3$). Hence for $\varepsilon > 0$, there is $n$ with $\sum_{q \geq 2} 4/q^{n-1} < \varepsilon$.
+
+**(b)** If $\alpha \in [0, 1]$ is a Liouville number and $n$ as in (a), then for some $p/q$, $q \geq 2$, $0 < |\alpha - p/q| < 1/q^n$. Since $q \geq 2$, $1/q^n \leq 1/2^n \leq 1/2$. So $|p/q - \alpha| < 1/2$, giving $p/q \in (\alpha - 1/2, \alpha + 1/2) \subseteq (-1/2, 3/2)$. Thus $-1/2 < p/q < 3/2$. Multiplying by $q > 0$: $-q/2 < p < 3q/2$.
+
+**(c)** For each $q \geq 2$, $p$ ranges over integers in $(-q/2, 3q/2)$, which is an open interval of length $2q$. So there are at most $\lceil 2q \rceil = 2q$ integer values (actually at most $2q$ integers since the interval has length $2q$; strictly, at most $2q$ integers lie in an open interval of length $2q$, and often exactly $2q$).
+
+For each such $p, q$, $\alpha$ lies in $(p/q - 1/q^n, p/q + 1/q^n)$, an interval of length $2/q^n$.
+
+Total length (over all valid $p, q$):
+
+$$\sum_{q \geq 2} (\text{at most } 2q) \cdot \frac{2}{q^n} = \sum_{q \geq 2} \frac{4q}{q^n} = \sum_{q \geq 2} \frac{4}{q^{n-1}} < \varepsilon.$$
+
+So the Liouville numbers in $[0, 1]$ are covered by countably many open intervals of total length less than $\varepsilon$. Since $\varepsilon$ was arbitrary, Liouville numbers in $[0, 1]$ have Lebesgue measure zero.
+
+**(d)** The set $\mathcal{L}$ of all Liouville numbers in $\mathbb{R}$ is translation-invariant in integer units: if $\alpha$ is Liouville, so is $\alpha + k$ for $k \in \mathbb{Z}$ (since $|\alpha + k - (p + kq)/q| = |\alpha - p/q|$).
+
+Hence $\mathcal{L} = \bigcup_{k \in \mathbb{Z}} (\mathcal{L} \cap [k, k+1])$, a countable union of translates of subsets of unit intervals. Each has measure zero (by (c) applied to $[0,1]$, and by translation invariance of Lebesgue measure). Countable union of null sets is null.
+
+Hence $\mathcal{L}$ has Lebesgue measure zero.
+</Solution>

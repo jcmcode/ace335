@@ -1,0 +1,457 @@
+---
+title: "Compactness"
+chapter: 7
+---
+
+## Introduction
+
+Compactness is arguably the most important finiteness condition in analysis and topology. Roughly, a compact set behaves like a finite set: a continuous function on a compact set attains its extreme values, every sequence has a convergent subsequence, and the set cannot "escape to infinity" or "accumulate at the boundary." The definition via open covers looks abstract at first, but it is exactly the right notion to make these useful properties fall out cleanly. In Euclidean space the story collapses to a slogan — *closed and bounded* — via the Heine-Borel theorem. In more general metric spaces compactness is equivalent to being *complete and totally bounded*, and in a general topological space it is equivalent to *every open cover admits a finite subcover*, nothing more.
+
+This chapter develops all three characterizations in parallel, proves the major consequences (extreme value theorem, uniform continuity, Tychonoff), and shows why compactness is sometimes called "the next best thing to finiteness."
+
+---
+
+## Open Covers and Compactness
+
+We work in a topological space $(X, \tau)$, specializing to metric or Euclidean settings where indicated.
+
+<Definition title="Open Cover and Subcover">
+Let $A \subseteq X$. A family $\mathcal{U} = \{U_\alpha\}_{\alpha \in I}$ of open sets is an **open cover** of $A$ if
+$$A \subseteq \bigcup_{\alpha \in I} U_\alpha.$$
+A **subcover** of $\mathcal{U}$ is a subfamily $\{U_\alpha\}_{\alpha \in J}$ (with $J \subseteq I$) that still covers $A$. A **finite subcover** is a subcover with finitely many sets.
+</Definition>
+
+<Remark>
+**Intuition:** An open cover is a blanket of open sets laid over $A$ -- every point of $A$ lies in at least one set of the family. The blanket may use uncountably many pieces. The question compactness asks is whether, no matter how wastefully the blanket is chosen, we can always pull out finitely many of its pieces and still cover every point of $A$. This is a strong "finiteness" requirement on the set $A$ itself; it has nothing to do with the size of the index set of the cover.
+</Remark>
+
+<Definition title="Compact Set">
+A subset $K \subseteq X$ is **compact** if every open cover of $K$ has a finite subcover. Equivalently, for every family $\{U_\alpha\}_{\alpha \in I}$ of open sets with $K \subseteq \bigcup_\alpha U_\alpha$, there exist $\alpha_1, \ldots, \alpha_n \in I$ with
+$$K \subseteq U_{\alpha_1} \cup \cdots \cup U_{\alpha_n}.$$
+</Definition>
+
+<Remark>
+**Intuition:** Compactness is a universal-quantifier statement: *every* open cover must admit a finite subcover. To show a set is compact, you start with an arbitrary cover and must whittle it down to finitely many sets. To show a set is *not* compact, you need to exhibit just one open cover with no finite subcover. This asymmetry is typical: universal statements are proved by carefully controlling an arbitrary input; existential refutations need only one counterexample.
+</Remark>
+
+<Example>
+The open interval $(0,1)$ is **not** compact in $\mathbb{R}$. Consider the open cover
+$$\mathcal{U} = \left\{ \left(\tfrac{1}{n}, 1\right) : n \in \mathbb{Z}_{>0} \right\}.$$
+Every $x \in (0,1)$ lies in $(1/n, 1)$ once $n > 1/x$, so this is an open cover. But any finite subcollection $(1/n_1, 1), \ldots, (1/n_k, 1)$ has union $(1/N, 1)$ with $N = \max n_i$, which misses every point in $(0, 1/N]$. So no finite subcover exists.
+</Example>
+
+<Example>
+The set $\mathbb{R}$ itself is not compact: the cover $\{(-n, n) : n \in \mathbb{Z}_{>0}\}$ has no finite subcover, since finitely many of these intervals have bounded union.
+</Example>
+
+### Finite Sets Are Compact
+
+<Theorem title="Every Finite Set Is Compact">
+If $A = \{x_1, \ldots, x_n\} \subseteq X$ is finite, then $A$ is compact.
+</Theorem>
+
+<Proof>
+Let $\mathcal{U} = \{U_\alpha\}_{\alpha \in I}$ be any open cover of $A$. For each $i \in \{1, \ldots, n\}$, pick an index $\alpha_i \in I$ with $x_i \in U_{\alpha_i}$ -- such an index exists because $\mathcal{U}$ covers $A$. Then
+$$A \subseteq U_{\alpha_1} \cup \cdots \cup U_{\alpha_n},$$
+which is a finite subcover.
+</Proof>
+
+<Remark>
+**Intuition:** Finite sets are the trivial case: you just pick one open set per point. This is the template for all compactness arguments -- reduce an arbitrary cover to a finite one by making finitely many choices. More interesting compact sets mimic this by forcing a finiteness condition (total boundedness, sequential behavior) that lets us choose finitely many sets even when the set itself is infinite.
+</Remark>
+
+---
+
+## Stability Properties of Compactness
+
+### Closed Subsets of Compact Sets
+
+<Theorem title="Closed Subsets of Compact Sets Are Compact">
+Let $K \subseteq X$ be compact and let $F \subseteq K$ be closed in $X$ (equivalently, closed in the subspace topology on $K$). Then $F$ is compact.
+</Theorem>
+
+<Proof>
+Let $\mathcal{U} = \{U_\alpha\}_{\alpha \in I}$ be an open cover of $F$. Since $F$ is closed, its complement $F^c = X \setminus F$ is open. Adjoining it,
+$$\mathcal{V} = \mathcal{U} \cup \{F^c\}$$
+is a family of open sets covering $X$, hence covering $K$: indeed, every $x \in K$ is either in $F$ (hence in some $U_\alpha$) or in $F^c$.
+
+By compactness of $K$, there is a finite subcover of $K$ drawn from $\mathcal{V}$:
+$$K \subseteq U_{\alpha_1} \cup \cdots \cup U_{\alpha_n} \cup F^c.$$
+Since $F \subseteq K$ and $F \cap F^c = \emptyset$, we drop $F^c$ without loss:
+$$F \subseteq U_{\alpha_1} \cup \cdots \cup U_{\alpha_n}.$$
+This is a finite subcover of $F$ from $\mathcal{U}$.
+</Proof>
+
+<Remark>
+**Intuition:** Closed subsets inherit compactness because being closed is a "sealed edges" condition. When you cover $F$ by open sets, you can add the one extra open set $F^c$ to cover all of $K$, use $K$'s compactness to extract finitely many sets, and then discard $F^c$ -- it wasn't covering any point of $F$ anyway. The trick is that the complement of a closed set is open and thus available for use in an open cover.
+</Remark>
+
+### Compact Subsets of Hausdorff Spaces Are Closed
+
+Recall that $X$ is **Hausdorff** (or $T_2$) if for every pair of distinct points $x \neq y$ in $X$, there exist disjoint open sets $U, V$ with $x \in U$ and $y \in V$. Metric spaces are Hausdorff (take $U = B_{r/2}(x)$, $V = B_{r/2}(y)$ with $r = d(x,y)$).
+
+<Theorem title="Compact Subsets of Hausdorff Spaces Are Closed">
+Let $X$ be a Hausdorff topological space and let $K \subseteq X$ be compact. Then $K$ is closed in $X$.
+</Theorem>
+
+<Proof>
+We show the complement $K^c$ is open. Fix $y \in K^c$; we will find an open set containing $y$ that is disjoint from $K$.
+
+For each $x \in K$, the Hausdorff property gives disjoint open sets $U_x \ni x$ and $V_x \ni y$. The family $\{U_x : x \in K\}$ is an open cover of $K$. By compactness, there are $x_1, \ldots, x_n \in K$ with
+$$K \subseteq U_{x_1} \cup \cdots \cup U_{x_n}.$$
+Define
+$$V = V_{x_1} \cap \cdots \cap V_{x_n}.$$
+This is a finite intersection of open sets, hence open, and contains $y$. Moreover, $V$ is disjoint from each $U_{x_i}$ (since $V \subseteq V_{x_i}$ and $V_{x_i} \cap U_{x_i} = \emptyset$), hence $V$ is disjoint from $U_{x_1} \cup \cdots \cup U_{x_n}$, hence disjoint from $K$.
+
+So every $y \in K^c$ has an open neighborhood $V \subseteq K^c$; this shows $K^c$ is open.
+</Proof>
+
+<Remark>
+**Intuition:** The Hausdorff property lets us "separate" $y$ from each $x \in K$ individually. Compactness then allows us to combine these infinitely many separations into a single finite one. Without Hausdorff, compact sets need not be closed: in the trivial topology $\tau = \{\emptyset, X\}$ every subset is compact but only $\emptyset$ and $X$ are closed. In metric spaces, which are always Hausdorff, compactness does imply closedness, which is a key ingredient of Heine-Borel.
+</Remark>
+
+<Corollary title="Compact Sets in Metric Spaces Are Closed and Bounded">
+Let $(X, d)$ be a metric space and $K \subseteq X$ compact. Then $K$ is closed in $X$ and $K$ is bounded (contained in some ball $B_R(x_0)$).
+</Corollary>
+
+<Proof>
+Closedness follows from the preceding theorem since metric spaces are Hausdorff.
+
+For boundedness, fix any $x_0 \in X$. The family $\{B_n(x_0) : n \in \mathbb{Z}_{>0}\}$ is an open cover of $X$ and hence of $K$. By compactness, finitely many of these balls cover $K$:
+$$K \subseteq B_{n_1}(x_0) \cup \cdots \cup B_{n_k}(x_0) = B_N(x_0),$$
+where $N = \max\{n_1, \ldots, n_k\}$ (the last equality holds since $n_i \le N$ makes each ball contained in $B_N(x_0)$). So $K$ is bounded.
+</Proof>
+
+<Remark>
+**Intuition:** In a metric space, compactness is at least as strong as being closed and bounded. The Heine-Borel theorem shows that in $\mathbb{R}^n$ the converse also holds. In general metric spaces (e.g. infinite-dimensional ones) it does not: the closed unit ball of $\ell^2$ is closed and bounded but not compact, because sequences can escape via high-frequency oscillations that admit no convergent subsequence.
+</Remark>
+
+---
+
+## The Heine-Borel Theorem
+
+The deepest elementary result about compactness in Euclidean space is the Heine-Borel theorem: closed and bounded subsets of $\mathbb{R}^n$ are exactly the compact ones. We build up to it with two lemmas.
+
+<Lemma title="Closed Bounded Intervals Are Compact">
+Every closed bounded interval $[a, b] \subseteq \mathbb{R}$ is compact.
+</Lemma>
+
+<Proof>
+Let $\mathcal{U} = \{U_\alpha\}_{\alpha \in I}$ be an open cover of $[a, b]$. Define
+$$S = \{x \in [a, b] : [a, x] \text{ has a finite subcover from } \mathcal{U}\}.$$
+
+**Step 1: $S$ is nonempty.** Since $a \in [a, b]$, some $U_{\alpha_0}$ contains $a$. Then $[a, a] = \{a\} \subseteq U_{\alpha_0}$ has the finite subcover $\{U_{\alpha_0}\}$, so $a \in S$.
+
+**Step 2: $S$ is bounded above by $b$.** Clear from definition.
+
+**Step 3: $c := \sup S$ satisfies $c = b$.** Certainly $c \le b$. Suppose for contradiction $c < b$.
+
+Since $c \in [a, b]$, there is $U_\beta \in \mathcal{U}$ with $c \in U_\beta$. Since $U_\beta$ is open, there is $r > 0$ with $(c - r, c + r) \subseteq U_\beta$. By choice of $r$ we can also assume $c + r < b$ and $c - r > a$ (shrink $r$ if needed).
+
+Since $c = \sup S$, there is $x \in S$ with $c - r < x \le c$. Pick a finite subcover $U_{\alpha_1}, \ldots, U_{\alpha_m}$ of $[a, x]$. Then
+$$[a, c + r/2] \subseteq [a, x] \cup (c - r, c + r) \subseteq U_{\alpha_1} \cup \cdots \cup U_{\alpha_m} \cup U_\beta,$$
+so $c + r/2 \in S$. This contradicts $c = \sup S$, so $c = b$.
+
+**Step 4: $b \in S$.** The argument of Step 3 actually applies with $c = b$: choose $U_\beta \ni b$ open, then some $x \in S$ with $x$ close enough to $b$ that $[a, b] \subseteq [a, x] \cup U_\beta$. Combining the finite subcover of $[a, x]$ with $U_\beta$ gives a finite subcover of $[a, b]$. Hence $b \in S$ and the proof is complete.
+</Proof>
+
+<Remark>
+**Intuition:** The proof is a "least upper bound sweeps right" argument, using the completeness of $\mathbb{R}$ crucially (step 3 is where sup $S$ is used). The set $S$ tracks how far to the right we can cover from $a$ with a finite subcover; we show we can always push the boundary a bit further, so it must reach $b$. This is the only compactness proof in this chapter that genuinely uses the order structure of $\mathbb{R}$; everything else in $\mathbb{R}^n$ reduces to products of intervals.
+</Remark>
+
+<Lemma title="Products of Compact Sets Are Compact">
+If $K_1 \subseteq \mathbb{R}^m$ and $K_2 \subseteq \mathbb{R}^n$ are compact, then $K_1 \times K_2 \subseteq \mathbb{R}^{m+n}$ is compact.
+</Lemma>
+
+<Proof>
+Let $\mathcal{U}$ be an open cover of $K_1 \times K_2$. We construct a finite subcover in three stages: cover vertical slices, then assemble horizontally.
+
+Fix $x \in K_1$. The "vertical slice" $\{x\} \times K_2$ is covered by $\mathcal{U}$. For each $y \in K_2$ pick $U_y \in \mathcal{U}$ with $(x, y) \in U_y$. Since $U_y$ is open in $\mathbb{R}^{m+n}$, there exist open sets $V_y \subseteq \mathbb{R}^m$ and $W_y \subseteq \mathbb{R}^n$ with $x \in V_y$, $y \in W_y$, and $V_y \times W_y \subseteq U_y$ (basic open rectangles form a basis for the product topology).
+
+The family $\{W_y : y \in K_2\}$ is an open cover of $K_2$. By compactness of $K_2$, pick $y_1, \ldots, y_{k}$ with
+$$K_2 \subseteq W_{y_1} \cup \cdots \cup W_{y_k}.$$
+Define
+$$V(x) = V_{y_1} \cap \cdots \cap V_{y_k},$$
+an open neighborhood of $x$ in $\mathbb{R}^m$, and set $\mathcal{U}(x) = \{U_{y_1}, \ldots, U_{y_k}\} \subseteq \mathcal{U}$ -- a finite subfamily. Then
+$$V(x) \times K_2 \subseteq \bigcup_{j=1}^k (V_{y_j} \times W_{y_j}) \subseteq \bigcup_{j=1}^k U_{y_j}.$$
+
+Now $\{V(x) : x \in K_1\}$ is an open cover of $K_1$. By compactness of $K_1$, pick $x_1, \ldots, x_\ell \in K_1$ with
+$$K_1 \subseteq V(x_1) \cup \cdots \cup V(x_\ell).$$
+Then
+$$K_1 \times K_2 \subseteq \bigcup_{i=1}^\ell V(x_i) \times K_2 \subseteq \bigcup_{i=1}^\ell \bigcup_{U \in \mathcal{U}(x_i)} U,$$
+a finite subfamily of $\mathcal{U}$.
+</Proof>
+
+<Remark>
+**Intuition:** The "tube lemma" packaged inside this proof is the key idea: if $\{x\} \times K_2$ is covered by a set $U$, then a whole "tube" $V \times K_2$ around $x$ is also covered (for some open neighborhood $V$ of $x$), provided $K_2$ is compact. You prove this by using compactness of $K_2$ to get a finite subcover and intersecting the corresponding $V$s. Once you have tubes, you cover $K_1$ by tubes and reduce to finitely many using compactness of $K_1$. The argument is a template for Tychonoff's theorem in infinite products.
+</Remark>
+
+<Theorem title="Heine-Borel Theorem">
+For a subset $K \subseteq \mathbb{R}^n$, the following are equivalent:
+(i) $K$ is compact;
+(ii) $K$ is closed and bounded;
+(iii) every sequence in $K$ has a subsequence converging to a point of $K$.
+</Theorem>
+
+<Proof>
+**(i) $\Rightarrow$ (ii).** Proved above: compact subsets of metric spaces (in particular $\mathbb{R}^n$) are closed and bounded.
+
+**(ii) $\Rightarrow$ (i).** Since $K$ is bounded, there is $R > 0$ with $K \subseteq [-R, R]^n$. By the first lemma $[-R, R]$ is compact; by the product lemma iterated $n - 1$ times, $[-R, R]^n$ is compact. Since $K$ is a closed subset of the compact set $[-R, R]^n$, $K$ is compact.
+
+**(ii) $\Leftrightarrow$ (iii).** This is the Bolzano-Weierstrass theorem for $\mathbb{R}^n$, which you have seen: a set is closed and bounded iff every sequence in it has a subsequence convergent to a point of the set. The forward direction uses boundedness to extract a convergent subsequence (Bolzano-Weierstrass for bounded sequences in $\mathbb{R}^n$) and closedness to keep the limit in $K$. The reverse direction: if $K$ were unbounded there would be a sequence $\|x_k\| \to \infty$ with no convergent subsequence; if $K$ were not closed there would be a limit point $x \notin K$ achieved by a sequence in $K$, and any subsequence converges to $x \notin K$.
+</Proof>
+
+<Remark>
+**Intuition:** Heine-Borel is the bridge between the clean abstract definition of compactness and the concrete recognition test for subsets of $\mathbb{R}^n$. In $\mathbb{R}^n$, compactness is *exactly* closed and bounded, a condition you can usually check by inspection. This equivalence fails in infinite-dimensional spaces, which is why functional analysis needs finer notions like weak compactness. The route through products of intervals is characteristic: compactness questions in $\mathbb{R}^n$ reduce to the one-dimensional case by induction on dimension.
+</Remark>
+
+---
+
+## Sequential Compactness
+
+There is a parallel notion of compactness that talks about sequences rather than covers.
+
+<Definition title="Sequentially Compact Set">
+A subset $K$ of a topological space $X$ is **sequentially compact** if every sequence $(x_n)$ in $K$ has a subsequence $(x_{n_k})$ converging to some point of $K$.
+</Definition>
+
+<Remark>
+**Intuition:** Sequential compactness is the *dynamic* cousin of compactness: it says sequences cannot escape. Every infinite list of points in $K$ has an accumulation point still inside $K$. This is often the most useful form in analysis, since we reason about convergence constantly. In general topological spaces, compactness and sequential compactness are not equivalent -- there are compact spaces whose sequences do not all admit convergent subsequences, and sequentially compact spaces that are not compact. In *metric* spaces, the two notions coincide (proved below).
+</Remark>
+
+<Theorem title="In Metric Spaces, Compact ⇔ Sequentially Compact">
+Let $(X, d)$ be a metric space and $K \subseteq X$. Then $K$ is compact if and only if $K$ is sequentially compact.
+</Theorem>
+
+We prove this via two passes, postponing the second until after we introduce total boundedness and completeness.
+
+<Proof>
+**($\Rightarrow$) Compact implies sequentially compact.** Let $(x_n)$ be a sequence in $K$. Suppose for contradiction that $(x_n)$ has no subsequence convergent to any point of $K$. Then no $p \in K$ is a cluster point of the sequence, so for each $p \in K$ there exists an open ball $B_{r_p}(p)$ containing only finitely many terms of the sequence (counted with multiplicity).
+
+The family $\{B_{r_p}(p) : p \in K\}$ is an open cover of $K$. By compactness, there exist $p_1, \ldots, p_m$ with $K \subseteq \bigcup_{i=1}^m B_{r_{p_i}}(p_i)$. But each $B_{r_{p_i}}(p_i)$ contains only finitely many $x_n$, so the whole sequence $(x_n)$ is contained in $K$ only in finitely many terms -- a contradiction, since every $x_n \in K$.
+
+**($\Leftarrow$) Sequentially compact implies compact.** This direction is more delicate; we postpone the proof to the total boundedness section.
+</Proof>
+
+<Remark>
+**Intuition:** The forward direction is a covering argument: if no subsequence converges, each point has a "quarantine ball" missing most of the sequence, and finitely many quarantine balls cannot hold the whole sequence. The reverse direction needs to show open-cover compactness from a hypothesis that controls only sequences, which requires building a dense structure of "small" approximations -- that is where total boundedness enters.
+</Remark>
+
+---
+
+## Total Boundedness and Completeness
+
+<Definition title="Totally Bounded Set">
+Let $(X, d)$ be a metric space. A subset $A \subseteq X$ is **totally bounded** (or **precompact**) if for every $\varepsilon > 0$ there exist finitely many points $x_1, \ldots, x_n \in X$ (equivalently, in $A$) such that
+$$A \subseteq \bigcup_{i=1}^n B_\varepsilon(x_i).$$
+Such a finite set $\{x_1, \ldots, x_n\}$ is called an **$\varepsilon$-net** for $A$.
+</Definition>
+
+<Remark>
+**Intuition:** Total boundedness is a quantitative refinement of boundedness. "Bounded" says $A$ fits in one big ball; "totally bounded" says for every resolution $\varepsilon$, $A$ can be blanketed by finitely many tiny balls of radius $\varepsilon$. The finite $\varepsilon$-net is a kind of low-resolution approximation of $A$. In $\mathbb{R}^n$ the two notions coincide: a bounded set is totally bounded because a big cube can be partitioned into finitely many small cubes. In infinite dimensions they differ sharply -- the unit ball of $\ell^2$ is bounded but not totally bounded, because the orthonormal basis vectors are pairwise at distance $\sqrt 2$ and can never be covered by finitely many small balls.
+</Remark>
+
+<Example>
+In $\mathbb{R}^n$, every bounded set is totally bounded. Suppose $A \subseteq B_R(0)$ with $R > 0$, and let $\varepsilon > 0$. Partition the cube $[-R, R]^n$ into finitely many sub-cubes of side length less than $\varepsilon / \sqrt n$; their centers form an $\varepsilon$-net for $A$ since any point in a sub-cube is within $\varepsilon/2$ of its center.
+</Example>
+
+<Theorem title="Compact Implies Totally Bounded (in metric spaces)">
+If $(X, d)$ is a metric space and $K \subseteq X$ is compact, then $K$ is totally bounded.
+</Theorem>
+
+<Proof>
+Fix $\varepsilon > 0$. The family $\{B_\varepsilon(x) : x \in K\}$ is an open cover of $K$. By compactness there exist $x_1, \ldots, x_n \in K$ with $K \subseteq \bigcup_{i=1}^n B_\varepsilon(x_i)$.
+</Proof>
+
+<Theorem title="Sequentially Compact Implies Totally Bounded and Complete">
+Let $(X, d)$ be a metric space and $K \subseteq X$ sequentially compact. Then $K$ is totally bounded and complete (every Cauchy sequence in $K$ converges to a point of $K$).
+</Theorem>
+
+<Proof>
+**Totally bounded.** Suppose $K$ is not totally bounded. Then there is $\varepsilon_0 > 0$ for which no finite $\varepsilon_0$-net exists. We build a sequence $(x_n)$ in $K$ inductively with pairwise distances at least $\varepsilon_0$: pick $x_1 \in K$ arbitrarily; having chosen $x_1, \ldots, x_n$, the set $\{x_1, \ldots, x_n\}$ is not an $\varepsilon_0$-net, so there is $x_{n+1} \in K$ with $d(x_{n+1}, x_i) \ge \varepsilon_0$ for all $i \le n$.
+
+The sequence $(x_n)$ has no Cauchy subsequence (any two distinct terms differ by at least $\varepsilon_0$), hence no convergent subsequence, contradicting sequential compactness.
+
+**Complete.** Let $(y_n)$ be a Cauchy sequence in $K$. By sequential compactness, some subsequence $(y_{n_k})$ converges to $y \in K$. A Cauchy sequence with a convergent subsequence converges to the same limit: given $\varepsilon > 0$, pick $N$ with $d(y_m, y_n) < \varepsilon/2$ for $m, n \ge N$, and $k$ with $n_k \ge N$ and $d(y_{n_k}, y) < \varepsilon/2$. Then for $n \ge N$, $d(y_n, y) \le d(y_n, y_{n_k}) + d(y_{n_k}, y) < \varepsilon$. So $y_n \to y \in K$.
+</Proof>
+
+<Remark>
+**Intuition:** Sequential compactness prevents two bad behaviors at once. It forbids escape to infinity (forces boundedness, indeed total boundedness), and it forbids leaking through gaps (forces completeness). A space that is sequentially compact is thus "small in all directions and sealed tight."
+</Remark>
+
+### Complete + Totally Bounded ⇒ Sequentially Compact
+
+<Theorem title="Complete + Totally Bounded ⇒ Sequentially Compact">
+Let $(X, d)$ be a metric space and $K \subseteq X$ be complete (as a subspace) and totally bounded. Then $K$ is sequentially compact.
+</Theorem>
+
+<Proof>
+Let $(x_n)$ be a sequence in $K$. We construct a Cauchy subsequence; completeness then gives convergence.
+
+For each $k \in \mathbb{Z}_{>0}$, $K$ has a finite $(1/k)$-net $\mathcal{N}_k = \{p_1^{(k)}, \ldots, p_{m_k}^{(k)}\}$, so $K$ is covered by finitely many balls of radius $1/k$.
+
+**Inductive construction of nested subsequences.** Set $(x_n^{(0)}) = (x_n)$. Having constructed a subsequence $(x_n^{(k-1)})$ of $(x_n)$, note that $\mathcal{N}_k$ has finitely many balls and $(x_n^{(k-1)})$ has infinitely many terms, so by pigeonhole some ball $B_{1/k}(p_{j_k}^{(k)})$ contains infinitely many terms of $(x_n^{(k-1)})$. Let $(x_n^{(k)})$ be the subsequence of $(x_n^{(k-1)})$ consisting of those terms.
+
+**Diagonal subsequence.** Define $y_k = x_k^{(k)}$. For $k < \ell$, both $y_k$ and $y_\ell$ lie in $B_{1/k}(p_{j_k}^{(k)})$ (since $(x_n^{(\ell)})$ is a subsequence of $(x_n^{(k)})$, and in particular $y_\ell$ is a term of $(x_n^{(k)})$ hence lies in $B_{1/k}(p_{j_k}^{(k)})$; and $y_k = x_k^{(k)}$ obviously does). Thus
+$$d(y_k, y_\ell) \le d(y_k, p_{j_k}^{(k)}) + d(p_{j_k}^{(k)}, y_\ell) < \frac{2}{k}.$$
+
+Given $\varepsilon > 0$, pick $N > 2/\varepsilon$; then for $N \le k < \ell$, $d(y_k, y_\ell) < 2/k \le 2/N < \varepsilon$. So $(y_k)$ is Cauchy. By completeness of $K$, $y_k \to y$ for some $y \in K$.
+</Proof>
+
+<Remark>
+**Intuition:** This is the key existence theorem for convergent subsequences. The finite $(1/k)$-nets give us pigeonhole rooms of shrinking radius; a sequence with infinitely many terms is forced to concentrate in one such room at each scale, and the Cantor diagonal argument then picks a single subsequence that concentrates at every scale. Completeness then delivers the limit. The argument is the quantitative content of Bolzano-Weierstrass.
+</Remark>
+
+<Corollary title="Compact ⇔ Complete + Totally Bounded (metric spaces)">
+In a metric space, a subset $K$ is compact if and only if it is complete and totally bounded.
+</Corollary>
+
+<Proof>
+($\Rightarrow$) Compact implies sequentially compact (shown above), which implies totally bounded and complete.
+
+($\Leftarrow$) Complete + totally bounded implies sequentially compact. To complete the loop we now show sequentially compact implies compact (the deferred direction from earlier) -- see the next subsection via the Lebesgue number lemma.
+</Proof>
+
+<Remark>
+**Intuition:** This is the "metric space" version of Heine-Borel. In $\mathbb{R}^n$ completeness is automatic (every closed subset is complete) and total boundedness reduces to boundedness, recovering the classical "closed and bounded" slogan. The general statement is indispensable in infinite-dimensional analysis: to show a set in a Banach space is compact, you usually check that it is closed and show it is totally bounded directly (often via an equicontinuity argument, as in Arzelà-Ascoli).
+</Remark>
+
+---
+
+## The Lebesgue Number Lemma
+
+To finish the equivalence of compactness and sequential compactness in metric spaces we need a remarkable fact.
+
+<Lemma title="Lebesgue Number Lemma">
+Let $(X, d)$ be a metric space and $K \subseteq X$ sequentially compact. For every open cover $\mathcal{U} = \{U_\alpha\}_{\alpha \in I}$ of $K$ there exists $\delta > 0$ (a **Lebesgue number** of the cover) such that every subset $A \subseteq K$ with diameter less than $\delta$ is contained in some single $U_\alpha$.
+</Lemma>
+
+<Proof>
+Suppose for contradiction no such $\delta$ exists. Then for each $n \in \mathbb{Z}_{>0}$ there is a subset $A_n \subseteq K$ with $\operatorname{diam}(A_n) < 1/n$ that is not contained in any single $U_\alpha$. Pick $x_n \in A_n$; by sequential compactness there is a subsequence $x_{n_k} \to x \in K$.
+
+Since $\mathcal{U}$ covers $K$, there is $U_\beta \ni x$; since $U_\beta$ is open there is $r > 0$ with $B_r(x) \subseteq U_\beta$. Pick $k$ large enough that $d(x_{n_k}, x) < r/2$ and $1/n_k < r/2$. Then for every $y \in A_{n_k}$,
+$$d(y, x) \le d(y, x_{n_k}) + d(x_{n_k}, x) < \operatorname{diam}(A_{n_k}) + r/2 < 1/n_k + r/2 < r,$$
+so $A_{n_k} \subseteq B_r(x) \subseteq U_\beta$, contradicting the choice of $A_{n_k}$.
+</Proof>
+
+<Remark>
+**Intuition:** Any open cover of a sequentially compact set has a "universal scale" $\delta$: anything smaller than $\delta$ is small enough to be hidden inside a single set of the cover. This fails on non-compact sets -- the cover $\{(1/(n+1), 1/n) : n \ge 1\} \cup \{(1/2, 2)\}$ of $(0, 1]$ has no Lebesgue number, because near $0$ the sets of the cover become arbitrarily thin. The lemma is the tool that lets us upgrade "locally the cover is nice" to "uniformly the cover is nice."
+</Remark>
+
+<Theorem title="Sequentially Compact Implies Compact (metric spaces)">
+Let $(X, d)$ be a metric space and $K \subseteq X$ sequentially compact. Then $K$ is compact.
+</Theorem>
+
+<Proof>
+Let $\mathcal{U}$ be an open cover of $K$. Let $\delta > 0$ be a Lebesgue number. Since $K$ is sequentially compact it is totally bounded, so there is a finite $(\delta/3)$-net $\{p_1, \ldots, p_n\} \subseteq K$ with
+$$K \subseteq \bigcup_{i=1}^n B_{\delta/3}(p_i).$$
+Each ball $B_{\delta/3}(p_i)$ has diameter at most $2\delta/3 < \delta$, so by the Lebesgue number lemma there exists $\alpha_i \in I$ with $B_{\delta/3}(p_i) \subseteq U_{\alpha_i}$. Thus
+$$K \subseteq \bigcup_{i=1}^n U_{\alpha_i},$$
+a finite subcover of $\mathcal{U}$.
+</Proof>
+
+<Remark>
+**Intuition:** Total boundedness gives us finitely many small balls covering $K$, and the Lebesgue number lemma says each small ball fits inside some single $U_\alpha$. Combining, finitely many $U_\alpha$'s cover $K$. Sequential compactness gives both ingredients -- the finite-net structure and the uniform scale at which open covers become "well-behaved." Together with the earlier direction, this establishes: in a metric space, the three conditions *compact*, *sequentially compact*, and *complete + totally bounded* are all equivalent.
+</Remark>
+
+---
+
+## Continuous Images of Compact Sets
+
+<Theorem title="Continuous Image of a Compact Set Is Compact">
+Let $X, Y$ be topological spaces, $K \subseteq X$ compact, and $f : X \to Y$ continuous (restricted to $K$). Then $f(K) \subseteq Y$ is compact.
+</Theorem>
+
+<Proof>
+Let $\mathcal{V} = \{V_\alpha\}_{\alpha \in I}$ be an open cover of $f(K)$. For each $\alpha$, $f^{-1}(V_\alpha)$ is open in $X$ by continuity. These preimages cover $K$: indeed, for $x \in K$, $f(x) \in f(K) \subseteq \bigcup_\alpha V_\alpha$, so $f(x) \in V_\alpha$ for some $\alpha$, i.e. $x \in f^{-1}(V_\alpha)$.
+
+By compactness of $K$, finitely many cover: $K \subseteq f^{-1}(V_{\alpha_1}) \cup \cdots \cup f^{-1}(V_{\alpha_n})$. Apply $f$:
+$$f(K) \subseteq f\!\left(\bigcup_{i=1}^n f^{-1}(V_{\alpha_i})\right) = \bigcup_{i=1}^n f(f^{-1}(V_{\alpha_i})) \subseteq \bigcup_{i=1}^n V_{\alpha_i},$$
+a finite subcover of $\mathcal{V}$.
+</Proof>
+
+<Remark>
+**Intuition:** Compactness is *preserved* by continuous maps, the same way connectedness and path-connectedness are. This makes compactness a topological invariant and an extremely robust property -- once you have one compact set, applying any continuous map gives another. This is the origin of many applications: we produce compact sets by applying continuous maps to known compact sets such as closed intervals.
+</Remark>
+
+### The Extreme Value Theorem
+
+<Theorem title="Extreme Value Theorem">
+Let $K \subseteq X$ be compact and $f : K \to \mathbb{R}$ continuous. Then $f$ attains a maximum and a minimum: there exist $u, v \in K$ with
+$$f(u) \le f(x) \le f(v) \quad \text{for all } x \in K.$$
+</Theorem>
+
+<Proof>
+By the previous theorem, $f(K) \subseteq \mathbb{R}$ is compact, hence closed and bounded. Boundedness means $\sup f(K)$ and $\inf f(K)$ are finite real numbers; closedness means they belong to $f(K)$. Writing $M = \sup f(K) \in f(K)$, there is $v \in K$ with $f(v) = M$; similarly $u \in K$ with $f(u) = \inf f(K)$. These are the maximum and minimum.
+</Proof>
+
+<Remark>
+**Intuition:** This is perhaps the single most useful consequence of compactness. Continuous real-valued functions on compact sets attain their extremes -- the infimum and supremum are not just approached, they are *achieved* at actual points of the domain. The theorem fails without compactness: $f(x) = x$ on $(0, 1)$ has $\inf = 0$ and $\sup = 1$, neither attained; $f(x) = \arctan x$ on $\mathbb{R}$ has $\sup = \pi/2$, never attained. Compactness is the right hypothesis: it prevents both the domain from "escaping" (so suprema exist) and the supremum from "slipping out" (so they are attained).
+</Remark>
+
+### Uniform Continuity on Compact Sets
+
+<Theorem title="Heine-Cantor Theorem">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces, $K \subseteq X$ compact, and $f : K \to Y$ continuous. Then $f$ is uniformly continuous on $K$: for every $\varepsilon > 0$ there exists $\delta > 0$ such that
+$$d_X(x, x') < \delta \implies d_Y(f(x), f(x')) < \varepsilon$$
+for all $x, x' \in K$.
+</Theorem>
+
+<Proof>
+Let $\varepsilon > 0$. By continuity, for each $x \in K$ there is $\delta_x > 0$ such that $d_X(y, x) < \delta_x$ implies $d_Y(f(y), f(x)) < \varepsilon/2$.
+
+The family $\{B_{\delta_x/2}(x) : x \in K\}$ is an open cover of $K$. By compactness, finitely many suffice:
+$$K \subseteq \bigcup_{i=1}^k B_{\delta_{x_i}/2}(x_i).$$
+Set $\delta = \min\{\delta_{x_1}/2, \ldots, \delta_{x_k}/2\} > 0$.
+
+Now let $x, x' \in K$ with $d_X(x, x') < \delta$. Pick $i$ with $x \in B_{\delta_{x_i}/2}(x_i)$. Then
+$$d_X(x', x_i) \le d_X(x', x) + d_X(x, x_i) < \delta + \delta_{x_i}/2 \le \delta_{x_i}/2 + \delta_{x_i}/2 = \delta_{x_i},$$
+so $d_Y(f(x'), f(x_i)) < \varepsilon/2$. Also $d_Y(f(x), f(x_i)) < \varepsilon/2$. Hence
+$$d_Y(f(x), f(x')) \le d_Y(f(x), f(x_i)) + d_Y(f(x_i), f(x')) < \varepsilon/2 + \varepsilon/2 = \varepsilon.$$
+</Proof>
+
+<Remark>
+**Intuition:** Pointwise continuity means the $\delta$ you need may depend on the point -- near a steep part of the graph you need a smaller $\delta$. Uniform continuity means one $\delta$ works everywhere. On a compact domain, finitely many local $\delta$s suffice (by compactness), so you can take their minimum and get a uniform $\delta$. This is another instance of compactness upgrading local control to global control. An alternative proof uses the Lebesgue number lemma on the cover by $\varepsilon/2$-preimage balls directly.
+</Remark>
+
+---
+
+## Tychonoff's Theorem
+
+Tychonoff's theorem is the crown jewel of point-set topology: it says that compactness is preserved under arbitrary products. We state it in full generality and prove the finite-dimensional case.
+
+<Theorem title="Tychonoff's Theorem (full statement)">
+Let $\{X_\alpha\}_{\alpha \in I}$ be any family of compact topological spaces, and let $X = \prod_{\alpha \in I} X_\alpha$ carry the product topology (the coarsest topology making all projections $\pi_\alpha : X \to X_\alpha$ continuous). Then $X$ is compact.
+</Theorem>
+
+<Remark>
+**Intuition:** The full statement allows any indexing set, including uncountable ones. It uses the axiom of choice in an essential way (in fact it is *equivalent* to the axiom of choice over ZF). The theorem is the foundation for the abstract approach to compactness in functional analysis (e.g. Banach-Alaoglu, which says the closed unit ball of a dual Banach space is weak* compact, is proved via Tychonoff on a product of closed intervals).
+</Remark>
+
+<Theorem title="Tychonoff for Finite Products">
+If $K_1, \ldots, K_n$ are compact topological spaces, then $K_1 \times \cdots \times K_n$ with the product topology is compact.
+</Theorem>
+
+<Proof>
+Induct on $n$. The case $n = 1$ is trivial. For $n = 2$, we generalize the product lemma from the Heine-Borel section by replacing "open balls in $\mathbb{R}^m$" with arbitrary basic open rectangles $V \times W$ (with $V$ open in $K_1$ and $W$ open in $K_2$). The tube argument goes through verbatim: for each $x \in K_1$ find a finite subcover of the slice $\{x\} \times K_2$, intersect the base neighborhoods to get a tube $V(x) \times K_2$ covered by finitely many sets, then use compactness of $K_1$ to cover by finitely many tubes.
+
+For general $n$, apply the $n = 2$ case to $K_1 \times \cdots \times K_{n-1}$ (compact by induction) and $K_n$.
+</Proof>
+
+<Remark>
+**Intuition:** The finite case is essentially the same tube argument used for Heine-Borel, and it needs no choice. The infinite case genuinely requires deeper machinery (Alexander subbase theorem, ultrafilters, or Zorn's lemma). For this course the finite case is enough -- it is already enough to deduce that $[-R, R]^n$ is compact and hence to conclude Heine-Borel.
+</Remark>
+
+---
+
+## Summary
+
+Compactness in metric spaces admits three equivalent characterizations:
+
+- **Topological:** every open cover has a finite subcover.
+- **Sequential:** every sequence has a convergent subsequence with limit in the set.
+- **Metric-structural:** the set is complete and totally bounded.
+
+Compactness is preserved by continuous images and by finite products; the Heine-Borel theorem identifies compact subsets of $\mathbb{R}^n$ as the closed and bounded ones. The three major consequences -- continuous functions attain extreme values, are automatically uniformly continuous, and preserve compactness -- are workhorses throughout analysis.
+
+The key technical tools are the Lebesgue number lemma (uniform scale of an open cover) and total boundedness (finite $\varepsilon$-nets). Both reveal that compactness is a finiteness condition in disguise: at every scale $\varepsilon$, a compact set looks finite. That is why, as we said at the outset, compactness is "the next best thing to finiteness."

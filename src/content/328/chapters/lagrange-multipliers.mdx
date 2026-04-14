@@ -1,0 +1,213 @@
+---
+title: "Lagrange Multipliers"
+chapter: 10
+---
+
+We now turn from unconstrained optimization (where the critical point condition is $\nabla f = \vec{0}$) to **constrained optimization**, where we optimize $f$ subject to one or more constraints of the form $g(\vec{x}) = 0$. The method of Lagrange multipliers expresses the necessary condition for an interior constrained extremum as a geometric statement: at such a point, the gradient of $f$ must lie in the span of the gradients of the constraints. We derive the single-constraint theorem from the implicit function theorem, generalize to several constraints with a full-rank Jacobian hypothesis, and illustrate with worked examples.
+
+---
+
+## Constrained Extrema
+
+<Definition title="Constrained Extremum">
+Let $U \subseteq \mathbb{R}^n$ open, $f : U \to \mathbb{R}$, and $S \subseteq U$. We say $\vec{v}_0 \in S$ is a **constrained extremum** for $f$ (subject to the constraint $S$) iff the restriction $f|_S : S \to \mathbb{R}$ has a relative extremum at $\vec{v}_0$. That is, there is a neighbourhood $V$ of $\vec{v}_0$ in $\mathbb{R}^n$ such that $f(\vec{x}) \geq f(\vec{v}_0)$ (or $\leq$) for all $\vec{x} \in S \cap V$.
+</Definition>
+
+<Remark>
+**Intuition:** A constrained extremum need not be an unconstrained extremum. The constraint set $S$ is typically a level set of one or more functions $g_i$; the question is how $f$ behaves when we are forced to stay on $S$. For example, the function $f(x, y) = x + y$ has no unconstrained maximum on $\mathbb{R}^2$, but it has a constrained maximum on the unit circle $S = \{x^2 + y^2 = 1\}$.
+</Remark>
+
+---
+
+## Geometric Motivation
+
+Suppose $S = \{(x, y) \in \mathbb{R}^2 : g(x, y) = 0\}$ is a smooth curve in $\mathbb{R}^2$ and $f$ has a constrained extremum at $\vec{a} \in S$. Let $\gamma : (-\delta, \delta) \to S$ be a smooth path with $\gamma(0) = \vec{a}$. Then $t \mapsto f(\gamma(t))$ has a relative extremum at $t = 0$, so by the chain rule and the single-variable Fermat theorem,
+$$0 = (f \circ \gamma)'(0) = \nabla f(\vec{a}) \cdot \gamma'(0).$$
+Thus $\nabla f(\vec{a})$ is orthogonal to the tangent direction $\gamma'(0)$ to the curve $S$ at $\vec{a}$. On the other hand, $\nabla g(\vec{a})$ is always orthogonal to the level curve $\{g = 0\}$ at $\vec{a}$ (assuming $\nabla g(\vec{a}) \neq \vec{0}$). Since both $\nabla f(\vec{a})$ and $\nabla g(\vec{a})$ are orthogonal to the tangent line to $S$ at $\vec{a}$, and the tangent line is one-dimensional, the two gradients must be parallel:
+$$\nabla f(\vec{a}) = \lambda \, \nabla g(\vec{a}) \qquad \text{for some } \lambda \in \mathbb{R}.$$
+The scalar $\lambda$ is called the **Lagrange multiplier**.
+
+---
+
+## Single-Constraint Lagrange Multiplier Theorem
+
+We now prove this rigorously using the implicit function theorem.
+
+<Theorem title="Lagrange Multiplier Theorem — Single Constraint">
+Let $U \subseteq \mathbb{R}^n$ open and $f, g : U \to \mathbb{R}$ be $C^1$ functions. Let $\vec{v}_0 \in U$ with $g(\vec{v}_0) = 0$ and $\nabla g(\vec{v}_0) \neq \vec{0}$. Set $S := \{\vec{x} \in U : g(\vec{x}) = 0\}$. If $f$, subject to the constraint $S$, has a relative extremum at $\vec{v}_0$, then there exists $\lambda \in \mathbb{R}$ such that
+$$\nabla f(\vec{v}_0) = \lambda \, \nabla g(\vec{v}_0).$$
+</Theorem>
+
+<Remark>
+**Intuition:** The hypothesis $\nabla g(\vec{v}_0) \neq \vec{0}$ guarantees that the constraint set $S$ is a smooth $(n-1)$-dimensional manifold near $\vec{v}_0$ (by the implicit function theorem). When this fails, the geometric argument breaks down and the conclusion need not hold. The scalar $\lambda$ measures the proportionality between $\nabla f$ and $\nabla g$ at $\vec{v}_0$.
+</Remark>
+
+<Proof>
+Since $\nabla g(\vec{v}_0) \neq \vec{0}$, at least one partial derivative is nonzero; relabel coordinates so that $\partial g/\partial x_n(\vec{v}_0) \neq 0$. Write $\vec{v}_0 = (v_1, \dots, v_{n-1}, v_n)$. By the implicit function theorem, there is an open neighbourhood $U_1 \subseteq \mathbb{R}^{n-1}$ of $(v_1, \dots, v_{n-1})$ and a $C^1$ map $\phi : U_1 \to \mathbb{R}$ with $\phi(v_1, \dots, v_{n-1}) = v_n$ and
+$$g(x_1, \dots, x_{n-1}, \phi(x_1, \dots, x_{n-1})) = 0 \qquad \text{for all } (x_1, \dots, x_{n-1}) \in U_1.$$
+
+Define $h : U_1 \to \mathbb{R}$ by
+$$h(x_1, \dots, x_{n-1}) := f(x_1, \dots, x_{n-1}, \phi(x_1, \dots, x_{n-1})).$$
+Since $f$ has a constrained extremum at $\vec{v}_0 = (v_1, \dots, v_{n-1}, \phi(v_1, \dots, v_{n-1}))$ and the graph of $\phi$ near $(v_1, \dots, v_{n-1})$ lies in $S$, $h$ has a (free) relative extremum at $(v_1, \dots, v_{n-1})$. By the unconstrained Fermat theorem,
+$$\frac{\partial h}{\partial x_i}(v_1, \dots, v_{n-1}) = 0 \qquad \text{for } i = 1, \dots, n-1.$$
+By the chain rule applied to $h = f \circ (\mathrm{id}, \phi)$,
+$$0 = \frac{\partial h}{\partial x_i}(v_1, \dots, v_{n-1}) = \frac{\partial f}{\partial x_i}(\vec{v}_0) + \frac{\partial f}{\partial x_n}(\vec{v}_0)\, \frac{\partial \phi}{\partial x_i}(v_1, \dots, v_{n-1}). \qquad (\star)$$
+Similarly, differentiating the identity $g(x_1, \dots, x_{n-1}, \phi(x_1, \dots, x_{n-1})) = 0$ with respect to $x_i$,
+$$0 = \frac{\partial g}{\partial x_i}(\vec{v}_0) + \frac{\partial g}{\partial x_n}(\vec{v}_0)\, \frac{\partial \phi}{\partial x_i}(v_1, \dots, v_{n-1}). \qquad (\star\star)$$
+Solving $(\star\star)$ for $\partial \phi/\partial x_i$ (using $\partial g/\partial x_n(\vec{v}_0) \neq 0$) and substituting into $(\star)$,
+$$\frac{\partial f}{\partial x_i}(\vec{v}_0) = -\frac{\partial f}{\partial x_n}(\vec{v}_0) \cdot \left(-\frac{\partial g/\partial x_i(\vec{v}_0)}{\partial g/\partial x_n(\vec{v}_0)}\right) = \frac{\partial f/\partial x_n(\vec{v}_0)}{\partial g/\partial x_n(\vec{v}_0)} \cdot \frac{\partial g}{\partial x_i}(\vec{v}_0).$$
+Define
+$$\lambda := \frac{\partial f/\partial x_n(\vec{v}_0)}{\partial g/\partial x_n(\vec{v}_0)}.$$
+Then $\partial f/\partial x_i(\vec{v}_0) = \lambda\, \partial g/\partial x_i(\vec{v}_0)$ for $i = 1, \dots, n-1$. The equation for $i = n$ holds by the definition of $\lambda$. Therefore $\nabla f(\vec{v}_0) = \lambda\, \nabla g(\vec{v}_0)$. $\square$
+</Proof>
+
+### The Lagrangian
+
+It is often convenient to combine the necessary condition into a single system of equations via an auxiliary function.
+
+<Definition title="Lagrangian for One Constraint">
+Given $f, g : U \to \mathbb{R}$, the **Lagrangian** is the function $\mathcal{L} : U \times \mathbb{R} \to \mathbb{R}$ defined by
+$$\mathcal{L}(\vec{x}, \lambda) := f(\vec{x}) - \lambda\, g(\vec{x}).$$
+</Definition>
+
+<Remark>
+**Intuition:** Setting $\nabla_{\vec{x}} \mathcal{L} = \vec{0}$ recovers $\nabla f = \lambda \nabla g$. Setting $\partial \mathcal{L}/\partial \lambda = 0$ recovers the constraint $g(\vec{x}) = 0$. So finding the constrained critical points reduces to finding the unconstrained critical points of $\mathcal{L}$.
+</Remark>
+
+<Example title="Constrained Extrema on a Sphere">
+Find the maximum and minimum of $f(x, y, z) = x - 2y + 2z$ subject to $x^2 + y^2 + z^2 = 9$.
+
+Set $g(x, y, z) = x^2 + y^2 + z^2 - 9$. Form the Lagrangian
+$$\mathcal{L}(x, y, z, \lambda) = x - 2y + 2z - \lambda(x^2 + y^2 + z^2 - 9),$$
+and solve $\nabla \mathcal{L} = \vec{0}$:
+The first-order conditions are:
+
+- $1 - 2\lambda x = 0$
+- $-2 - 2\lambda y = 0$
+- $2 - 2\lambda z = 0$
+- $x^2 + y^2 + z^2 = 9$
+
+Solving the first three for $x$, $y$, $z$ in terms of $\lambda$:
+
+$$x = \tfrac{1}{2\lambda}, \qquad y = -\tfrac{1}{\lambda}, \qquad z = \tfrac{1}{\lambda}.$$
+
+Substituting into the constraint:
+
+$$\tfrac{1}{4\lambda^2} + \tfrac{1}{\lambda^2} + \tfrac{1}{\lambda^2} = 9.$$
+The last equation gives $\tfrac{9}{4 \lambda^2} = 9$, so $\lambda = \pm \tfrac{1}{2}$. The corresponding points are $(1, -2, 2)$ (when $\lambda = \tfrac{1}{2}$) and $(-1, 2, -2)$ (when $\lambda = -\tfrac{1}{2}$). Evaluating,
+$$f(1, -2, 2) = 1 + 4 + 4 = 9, \qquad f(-1, 2, -2) = -1 - 4 - 4 = -9.$$
+Since the sphere is compact and $f$ is continuous, the maximum and minimum are attained: the maximum is $9$ at $(1, -2, 2)$ and the minimum is $-9$ at $(-1, 2, -2)$.
+</Example>
+
+---
+
+## Multiple Constraints: The Rank Condition
+
+We now generalize to $k$ constraints $g_1(\vec{x}) = \cdots = g_k(\vec{x}) = 0$ with $0 < k < n$. The key hypothesis is that the Jacobian of $\vec{g} = (g_1, \dots, g_k)$ has full rank $k$ at the critical point.
+
+<Theorem title="Lagrange Multiplier Theorem — Several Constraints">
+Let $U \subseteq \mathbb{R}^n$ open and $f : U \to \mathbb{R}$ of class $C^1$. Let $0 < k < n$ and let $\vec{g} = (g_1, \dots, g_k) : U \to \mathbb{R}^k$ be $C^1$. Set
+$$S := \{\vec{x} \in U : \vec{g}(\vec{x}) = \vec{0}\} = \bigcap_{i=1}^{k} \{\vec{x} \in U : g_i(\vec{x}) = 0\}.$$
+Suppose $f$, subject to the constraints $\vec{g} = \vec{0}$, has a constrained relative extremum at $\vec{v}_0 \in S$, and the $k \times n$ Jacobian matrix
+$$J_{\vec{g}}(\vec{v}_0) = \left(\frac{\partial g_i}{\partial x_j}(\vec{v}_0)\right)_{\substack{i = 1, \dots, k \\ j = 1, \dots, n}}$$
+has rank $k$. Then there exist $\lambda_1, \dots, \lambda_k \in \mathbb{R}$ such that
+$$\nabla f(\vec{v}_0) = \lambda_1 \nabla g_1(\vec{v}_0) + \cdots + \lambda_k \nabla g_k(\vec{v}_0).$$
+</Theorem>
+
+<Remark>
+**Intuition:** The full-rank hypothesis says the $k$ constraints are independent at $\vec{v}_0$: the gradient vectors $\nabla g_1(\vec{v}_0), \dots, \nabla g_k(\vec{v}_0)$ are linearly independent, so the constraint set $S$ is locally a smooth $(n - k)$-dimensional manifold. The conclusion asserts that $\nabla f(\vec{v}_0)$ lies in the span of these gradient vectors — equivalently, in the *normal space* to $S$ at $\vec{v}_0$.
+</Remark>
+
+<Remark>
+**Why the rank condition matters:** If the Jacobian fails to have rank $k$ at $\vec{v}_0$, then the conclusion may fail even for smooth data. A classical example is $f(x, y) = x$ with constraints $g_1(x, y) = y$ and $g_2(x, y) = y - x^2$. The constraint set is $\{(0, 0)\}$, at which the Jacobian has rank $1$ (not $2$). The gradient of $f$ at the origin is $(1, 0)$, but the gradients of $g_1, g_2$ at the origin are $(0, 1)$ and $(0, 1)$ — neither direction contains $(1, 0)$ in its span.
+</Remark>
+
+<Proof>
+Write $n = m + k$ and split the coordinates as $\vec{x} = (\vec{z}, \vec{y})$ with $\vec{z} \in \mathbb{R}^m$, $\vec{y} \in \mathbb{R}^k$. Correspondingly $\vec{v}_0 = (\vec{z}_0, \vec{y}_0)$. The Jacobian $J_{\vec{g}}(\vec{v}_0)$ has rank $k$, so by relabelling the coordinates we may assume the $k \times k$ submatrix
+$$\frac{\partial \vec{g}}{\partial \vec{y}}(\vec{v}_0) := \left(\frac{\partial g_i}{\partial y_j}(\vec{z}_0, \vec{y}_0)\right)_{i, j = 1, \dots, k}$$
+is invertible.
+
+By the implicit function theorem, there is an open neighbourhood $U_1 \subseteq \mathbb{R}^m$ of $\vec{z}_0$ and a $C^1$ map $\vec{\phi} = (\phi_1, \dots, \phi_k) : U_1 \to \mathbb{R}^k$ with $\vec{\phi}(\vec{z}_0) = \vec{y}_0$ and
+$$\vec{g}(\vec{z}, \vec{\phi}(\vec{z})) = \vec{0} \qquad \text{for all } \vec{z} \in U_1.$$
+Thus the graph of $\vec{\phi}$ is contained in $S$ near $\vec{v}_0$.
+
+Define $h : U_1 \to \mathbb{R}$ by
+$$h(\vec{z}) := f(\vec{z}, \vec{\phi}(\vec{z})).$$
+Since $f$ has a constrained relative extremum at $\vec{v}_0$, $h$ has an (unconstrained) relative extremum at $\vec{z}_0$. Therefore $\nabla h(\vec{z}_0) = \vec{0} \in \mathbb{R}^m$. By the chain rule, for each $i = 1, \dots, m$,
+$$0 = \frac{\partial h}{\partial z_i}(\vec{z}_0) = \frac{\partial f}{\partial z_i}(\vec{v}_0) + \sum_{j=1}^{k} \frac{\partial f}{\partial y_j}(\vec{v}_0) \, \frac{\partial \phi_j}{\partial z_i}(\vec{z}_0).$$
+In matrix form, writing $\partial f / \partial \vec{z}, \partial f / \partial \vec{y}$ as column vectors of sizes $m, k$, and $\partial \vec{\phi}/\partial \vec{z}$ as an $m \times k$ matrix:
+$$\vec{0} = \frac{\partial f}{\partial \vec{z}}(\vec{v}_0) + \frac{\partial \vec{\phi}}{\partial \vec{z}}(\vec{z}_0) \, \frac{\partial f}{\partial \vec{y}}(\vec{v}_0). \qquad (\star)$$
+
+On the other hand, differentiating $\vec{g}(\vec{z}, \vec{\phi}(\vec{z})) = \vec{0}$ with respect to $z_i$ for each $i$ and $j = 1, \dots, k$,
+$$\frac{\partial g_j}{\partial z_i}(\vec{v}_0) + \sum_{\ell = 1}^{k} \frac{\partial g_j}{\partial y_\ell}(\vec{v}_0) \, \frac{\partial \phi_\ell}{\partial z_i}(\vec{z}_0) = 0,$$
+or in matrix form,
+$$\frac{\partial \vec{g}}{\partial \vec{z}}(\vec{v}_0) + \frac{\partial \vec{\phi}}{\partial \vec{z}}(\vec{z}_0) \, \frac{\partial \vec{g}}{\partial \vec{y}}(\vec{v}_0) = 0 \in \mathbb{R}^{m \times k}. \qquad (\star\star)$$
+Since $\partial \vec{g}/\partial \vec{y}(\vec{v}_0)$ is invertible, we solve $(\star\star)$:
+$$\frac{\partial \vec{\phi}}{\partial \vec{z}}(\vec{z}_0) = -\frac{\partial \vec{g}}{\partial \vec{z}}(\vec{v}_0)\, \left[\frac{\partial \vec{g}}{\partial \vec{y}}(\vec{v}_0)\right]^{-1}.$$
+Substituting into $(\star)$:
+$$\vec{0} = \frac{\partial f}{\partial \vec{z}}(\vec{v}_0) - \frac{\partial \vec{g}}{\partial \vec{z}}(\vec{v}_0) \left[\frac{\partial \vec{g}}{\partial \vec{y}}(\vec{v}_0)\right]^{-1} \frac{\partial f}{\partial \vec{y}}(\vec{v}_0).$$
+Define the column vector
+$$\vec{\lambda} := \left[\frac{\partial \vec{g}}{\partial \vec{y}}(\vec{v}_0)\right]^{-1} \frac{\partial f}{\partial \vec{y}}(\vec{v}_0) \in \mathbb{R}^k.$$
+Then
+$$\frac{\partial f}{\partial \vec{z}}(\vec{v}_0) = \frac{\partial \vec{g}}{\partial \vec{z}}(\vec{v}_0)\, \vec{\lambda} = \sum_{j=1}^{k} \lambda_j \frac{\partial g_j}{\partial \vec{z}}(\vec{v}_0). \qquad (\sharp)$$
+Also by the definition of $\vec{\lambda}$,
+$$\frac{\partial f}{\partial \vec{y}}(\vec{v}_0) = \frac{\partial \vec{g}}{\partial \vec{y}}(\vec{v}_0)\, \vec{\lambda} = \sum_{j=1}^{k} \lambda_j \frac{\partial g_j}{\partial \vec{y}}(\vec{v}_0). \qquad (\flat)$$
+Stacking $(\sharp)$ and $(\flat)$ recovers
+$$\nabla f(\vec{v}_0) = \sum_{j=1}^{k} \lambda_j \nabla g_j(\vec{v}_0),$$
+as required. $\square$
+</Proof>
+
+### The Multi-Constraint Lagrangian
+
+<Definition title="Lagrangian for Several Constraints">
+The Lagrangian for the problem of optimizing $f$ subject to $g_1 = \cdots = g_k = 0$ is the function of $n + k$ variables
+$$\mathcal{L}(\vec{x}, \lambda_1, \dots, \lambda_k) := f(\vec{x}) - \lambda_1 g_1(\vec{x}) - \cdots - \lambda_k g_k(\vec{x}).$$
+</Definition>
+
+<Remark>
+**Intuition:** Solving $\nabla \mathcal{L} = \vec{0}$ (in all $n + k$ variables) is equivalent to the system: $\nabla f(\vec{x}) = \sum_{j=1}^{k} \lambda_j \nabla g_j(\vec{x})$ together with the $k$ constraint equations $g_1(\vec{x}) = 0, \ldots, g_k(\vec{x}) = 0$. At solutions where $J_{\vec{g}}(\vec{x})$ has rank $k$, these are the candidate constrained extrema.
+</Remark>
+
+---
+
+## Worked Example with Two Constraints
+
+<Example title="Distance from the Origin to a Space Curve">
+Consider the curve $C$ in $\mathbb{R}^3$ defined as the intersection of the surfaces $z^2 = x^2 + y^2$ and $x - 2z = 3$. Find the distance from the origin to the closest point on $C$.
+
+**Setup.** Minimizing the distance is equivalent to minimizing its square. Let $f(x, y, z) = x^2 + y^2 + z^2$ and set
+$$g_1(x, y, z) = x^2 + y^2 - z^2, \qquad g_2(x, y, z) = x - 2z - 3.$$
+The Lagrangian is
+$$\mathcal{L}(x, y, z, \lambda, \mu) = f - \lambda g_1 - \mu g_2.$$
+
+**The Lagrange system.** Setting $\nabla \mathcal{L} = \vec{0}$ gives:
+
+- $2x = 2\lambda x + \mu$
+- $2y = 2\lambda y$
+- $2z = -2\lambda z - 2\mu$
+- $z^2 = x^2 + y^2$ (constraint 1)
+- $x - 2z = 3$ (constraint 2)
+The second equation gives $(1 - \lambda) y = 0$, so either $\lambda = 1$ or $y = 0$.
+
+**Case $\lambda = 1$.** The first equation becomes $2x = 2x + \mu$, so $\mu = 0$. The third becomes $2z = -2z$, so $z = 0$. The constraint $x - 2z = 3$ gives $x = 3$, and the constraint $z^2 = x^2 + y^2$ gives $0 = 9 + y^2$, which has no real solution. No solutions.
+
+**Case $y = 0$, $\lambda \neq 1$.** Rewrite the first and third equations as
+$$2(1 - \lambda) x = \mu, \qquad (1 + \lambda)\cdot 2z = -2\mu \quad \Longleftrightarrow \quad (1 + \lambda) z = -\mu.$$
+The fourth becomes $z^2 = x^2$, i.e. $z = \pm x$.
+
+**Subcase $z = x$.** Then $x - 2z = -x = 3$, so $x = -3$ and $z = -3$. The point is $(-3, 0, -3)$.
+
+**Subcase $z = -x$.** Then $x - 2z = 3x = 3$, so $x = 1$ and $z = -1$. The point is $(1, 0, -1)$.
+
+**Rank check.** At both points,
+$$J_{\vec{g}} = \begin{pmatrix} 2x & 2y & -2z \\ 1 & 0 & -2 \end{pmatrix}.$$
+At $(-3, 0, -3)$, this is $\begin{pmatrix} -6 & 0 & 6 \\ 1 & 0 & -2 \end{pmatrix}$, and the first and third columns give $\det\begin{pmatrix} -6 & 6 \\ 1 & -2 \end{pmatrix} = 6 \neq 0$, so rank $2$. At $(1, 0, -1)$, the matrix is $\begin{pmatrix} 2 & 0 & 2 \\ 1 & 0 & -2 \end{pmatrix}$ and the first/third columns have $\det = -6 \neq 0$, so rank $2$ as well.
+
+**Values.**
+$$f(-3, 0, -3) = 9 + 0 + 9 = 18, \qquad f(1, 0, -1) = 1 + 0 + 1 = 2.$$
+The constrained maximum of $f$ is $18$ at $(-3, 0, -3)$ (farthest point on $C$) and the constrained minimum is $2$ at $(1, 0, -1)$. The distance from the origin to the closest point on $C$ is $\sqrt{2}$.
+</Example>
+
+<Remark>
+**Intuition:** The Lagrange system is typically nonlinear, and real-world problems require careful case analysis. The rank check is essential: without it, the Lagrange conditions are not guaranteed to hold at the extremum. Once the candidates are in hand, plug them into $f$ to identify which is the max and which is the min; use compactness of the constraint set (when available) or direct estimation to confirm that the extrema are attained.
+</Remark>

@@ -1,0 +1,333 @@
+---
+title: "Multivariable Differentiation and Taylor Expansion"
+chapter: 9
+---
+
+In this chapter we develop the higher-order differential calculus of scalar-valued functions of several real variables. After recalling the partial and total derivatives, we prove Clairaut's theorem on the equality of mixed partials, derive the multivariable Taylor expansion with both integral and Lagrange remainders, and use this expansion to analyze critical points via the Hessian matrix. The culmination is the second derivative test, which classifies nondegenerate critical points as local minima, local maxima, or saddle points via the spectral theorem for symmetric matrices.
+
+---
+
+## Partial Derivatives and the Total Derivative
+
+We briefly recall the two notions of derivative for a function of several variables.
+
+<Definition title="Partial Derivative">
+Let $U \subseteq \mathbb{R}^n$ be open, $f : U \to \mathbb{R}$, and $\vec{a} \in U$. For $j \in \{1, \dots, n\}$, the **$j$-th partial derivative of $f$ at $\vec{a}$** is
+$$\frac{\partial f}{\partial x_j}(\vec{a}) := \lim_{t \to 0} \frac{f(\vec{a} + t \vec{e}_j) - f(\vec{a})}{t},$$
+whenever this limit exists, where $\vec{e}_j$ is the $j$-th standard basis vector.
+</Definition>
+
+<Remark>
+**Intuition:** The partial derivative $\partial f / \partial x_j$ measures the rate of change of $f$ in the direction of the $j$-th coordinate axis. All other variables are held fixed, so this reduces to a single-variable derivative.
+</Remark>
+
+<Definition title="Differentiability and the Total Derivative">
+Let $U \subseteq \mathbb{R}^n$ open and $f : U \to \mathbb{R}$. We say $f$ is **differentiable at $\vec{a} \in U$** if there exists a linear map $Df(\vec{a}) : \mathbb{R}^n \to \mathbb{R}$ such that
+$$\lim_{\vec{h} \to \vec{0}} \frac{|f(\vec{a} + \vec{h}) - f(\vec{a}) - Df(\vec{a})(\vec{h})|}{\|\vec{h}\|} = 0.$$
+The linear map $Df(\vec{a})$ is called the **total derivative** (or **differential**) of $f$ at $\vec{a}$.
+</Definition>
+
+<Remark>
+**Intuition:** Differentiability is a stronger notion than the existence of partial derivatives. It asks for a single linear map which approximates $f$ well in *every* direction simultaneously. When $f$ is differentiable, $Df(\vec{a})$ is represented by the gradient:
+$$Df(\vec{a})(\vec{h}) = \nabla f(\vec{a}) \cdot \vec{h} = \sum_{j=1}^{n} \frac{\partial f}{\partial x_j}(\vec{a}) h_j.$$
+</Remark>
+
+<Theorem title="Continuously Differentiable Implies Differentiable">
+If all partial derivatives of $f : U \to \mathbb{R}$ exist and are continuous on $U$ (that is, $f \in C^1(U)$), then $f$ is differentiable at every point of $U$.
+</Theorem>
+
+---
+
+## Higher Order Partial Derivatives
+
+We now iterate the process of taking partial derivatives.
+
+<Definition title="Higher Order Partial Derivatives">
+Let $f : U \to \mathbb{R}$ with $U \subseteq \mathbb{R}^n$ open. If $\partial f / \partial x_j$ exists on a neighbourhood of $\vec{a}$ and is itself differentiable in direction $x_i$ at $\vec{a}$, we define the **second order partial derivative**
+$$\frac{\partial^2 f}{\partial x_i \, \partial x_j}(\vec{a}) := \frac{\partial}{\partial x_i}\left( \frac{\partial f}{\partial x_j}\right)(\vec{a}).$$
+By iteration, for a multi-index $(k_1, \dots, k_n)$ with $k_1 + \cdots + k_n = k$ we define
+$$\frac{\partial^k f}{\partial x_1^{k_1} \cdots \partial x_n^{k_n}}(\vec{a}).$$
+We say $f$ is **of class $C^r$ on $U$** (written $f \in C^r(U)$) if all partial derivatives of $f$ up to order $r$ exist and are continuous on $U$.
+</Definition>
+
+<Remark>
+**Intuition:** Class $C^r$ functions have $r$ continuous derivatives in every mix of directions. The notation $\partial^2 f / \partial x_i \, \partial x_j$ means "first differentiate with respect to $x_j$, then with respect to $x_i$." A priori, this is different from reversing the order. Clairaut's theorem tells us that sufficient smoothness makes the order irrelevant.
+</Remark>
+
+<Theorem title="Clairaut — Equality of Mixed Partials">
+Let $U \subseteq \mathbb{R}^n$ open and $f : U \to \mathbb{R}$. Suppose $\partial f / \partial x_i$, $\partial f / \partial x_j$, $\partial^2 f / \partial x_i \, \partial x_j$, and $\partial^2 f / \partial x_j \, \partial x_i$ all exist and are continuous on $U$. Then
+$$\frac{\partial^2 f}{\partial x_i \, \partial x_j}(\vec{a}) = \frac{\partial^2 f}{\partial x_j \, \partial x_i}(\vec{a}) \qquad \text{for every } \vec{a} \in U.$$
+In particular, if $f \in C^2(U)$, mixed partials commute.
+</Theorem>
+
+<Remark>
+**Intuition:** Differentiation with respect to different variables can be performed in any order, provided the second derivatives are continuous. This turns the Hessian matrix into a symmetric matrix, which will be crucial for the spectral argument in the second derivative test.
+</Remark>
+
+<Proof>
+It suffices to treat $n = 2$, as only the $i$-th and $j$-th variables enter. Write $(x, y)$ for the coordinates and fix $\vec{a} = (a, b) \in U$. For small $h, k \neq 0$, consider the **second difference**
+$$\Delta(h, k) := f(a+h, b+k) - f(a+h, b) - f(a, b+k) + f(a, b).$$
+Define $\varphi(x) := f(x, b+k) - f(x, b)$. Then $\Delta(h, k) = \varphi(a+h) - \varphi(a)$. Since $\partial f/\partial x$ exists on $U$, $\varphi$ is differentiable and $\varphi'(x) = \partial f/\partial x(x, b+k) - \partial f/\partial x(x, b)$. By the mean value theorem, there is $\xi$ between $a$ and $a+h$ with
+$$\Delta(h, k) = h\, \varphi'(\xi) = h\left[\frac{\partial f}{\partial x}(\xi, b+k) - \frac{\partial f}{\partial x}(\xi, b)\right].$$
+Applying the mean value theorem again in the $y$-variable to $y \mapsto \partial f/\partial x(\xi, y)$, there is $\eta$ between $b$ and $b+k$ with
+$$\frac{\partial f}{\partial x}(\xi, b+k) - \frac{\partial f}{\partial x}(\xi, b) = k \, \frac{\partial^2 f}{\partial y \, \partial x}(\xi, \eta).$$
+Therefore
+$$\Delta(h, k) = h k \, \frac{\partial^2 f}{\partial y \, \partial x}(\xi, \eta).$$
+By a symmetric argument, starting with $\psi(y) := f(a+h, y) - f(a, y)$, we also obtain
+$$\Delta(h, k) = h k \, \frac{\partial^2 f}{\partial x \, \partial y}(\xi', \eta')$$
+for some $\xi'$ between $a$ and $a+h$, $\eta'$ between $b$ and $b+k$. Dividing by $hk$ and letting $(h, k) \to (0, 0)$, continuity of the mixed partials gives
+$$\frac{\partial^2 f}{\partial y \, \partial x}(a, b) = \frac{\partial^2 f}{\partial x \, \partial y}(a, b). \qquad \square$$
+</Proof>
+
+---
+
+## Multivariable Taylor Expansion
+
+We first recall the single-variable Taylor theorem, then lift it to several variables by restricting $f$ to a line.
+
+<Theorem title="Single-Variable Taylor Theorem with Integral Remainder">
+Let $I \subseteq \mathbb{R}$ open, $f : I \to \mathbb{R}$ of class $C^{r+1}$ for some $r \geq 0$. Let $a \in I$ and $h \in \mathbb{R}$ with $a + h \in I$. Then
+$$f(a+h) = \sum_{j=0}^{r} \frac{f^{(j)}(a)}{j!} h^{j} + \widetilde R_{a, r}(h),$$
+where the **integral remainder** is
+$$\widetilde R_{a, r}(h) = \frac{h^{r+1}}{r!} \int_{0}^{1} f^{(r+1)}(a + th)(1 - t)^{r} \, dt.$$
+</Theorem>
+
+<Remark>
+**Intuition:** The Taylor polynomial approximates $f$ at $a$ to order $r$, and the remainder records the error. The integral form of the remainder has a clean inductive proof by repeated integration by parts and is the cleanest remainder to lift to several variables.
+</Remark>
+
+<Proof>
+We prove the formula by induction on $r$. For $r = 0$, the fundamental theorem of calculus gives
+$$f(a+h) - f(a) = \int_0^1 h\, f'(a+th)\, dt = \frac{h^1}{0!} \int_0^1 f'(a+th)(1-t)^0\, dt = \widetilde R_{a, 0}(h),$$
+which is the statement for $r = 0$.
+
+Assume the formula holds for $r - 1$. Integrate by parts the remainder $\widetilde R_{a, r-1}(h)$ with
+$$u = f^{(r)}(a+th), \qquad dv = (1-t)^{r-1}\, dt, \qquad du = h\, f^{(r+1)}(a+th)\, dt, \qquad v = -\frac{(1-t)^{r}}{r}.$$
+Then
+$$\widetilde R_{a, r-1}(h) = \frac{h^{r}}{(r-1)!} \int_0^1 f^{(r)}(a+th)(1-t)^{r-1}\, dt$$
+$$= \frac{h^{r}}{(r-1)!}\left[\left.-\frac{(1-t)^{r}}{r} f^{(r)}(a+th)\right|_0^1 + \int_0^1 \frac{(1-t)^{r}}{r} h\, f^{(r+1)}(a+th)\, dt\right]$$
+$$= \frac{f^{(r)}(a)}{r!} h^{r} + \frac{h^{r+1}}{r!} \int_0^1 f^{(r+1)}(a+th)(1-t)^{r}\, dt = \frac{f^{(r)}(a)}{r!}h^{r} + \widetilde R_{a, r}(h).$$
+Substituting back into the inductive hypothesis yields the claim at level $r$. $\square$
+</Proof>
+
+We now use this to expand a multivariable function by restricting to a line.
+
+<Theorem title="Multivariable Taylor Theorem">
+Let $U \subseteq \mathbb{R}^n$ open and $f : U \to \mathbb{R}$ of class $C^{r+1}$. Let $\vec{a} \in U$ and $\vec{h} \in \mathbb{R}^n$ small enough that $\vec{a} + t\vec{h} \in U$ for all $t \in [-1, 1]$. Then
+$$f(\vec{a} + \vec{h}) = \sum_{\ell = 0}^{r} \frac{1}{\ell!} \left[\mathcal{L}_{\vec{h}}^{\ell} f\right](\vec{a}) + R_{\vec{a}, r}(\vec{h}),$$
+where $\mathcal{L}_{\vec{h}} := \sum_{i=1}^n h_i \, \partial/\partial x_i$ is the directional differential operator, and
+$$R_{\vec{a}, r}(\vec{h}) = \frac{1}{r!} \int_0^1 \left[\mathcal{L}_{\vec{h}}^{r+1} f\right](\vec{a} + t\vec{h})(1 - t)^{r}\, dt.$$
+</Theorem>
+
+<Remark>
+**Intuition:** The multivariable Taylor polynomial is obtained by applying the "total directional derivative" operator $\mathcal{L}_{\vec{h}}$ repeatedly. Each application of $\mathcal{L}_{\vec{h}}$ brings down a factor of $\vec{h}$ by the chain rule, producing all mixed partials weighted by appropriate products of the components of $\vec{h}$.
+</Remark>
+
+<Proof>
+Fix $\vec{a}$ and $\vec{h}$, and define $g : [-1, 1] \to \mathbb{R}$ by
+$$g(t) := f(\vec{a} + t \vec{h}).$$
+Since $f \in C^{r+1}(U)$, $g \in C^{r+1}([-1, 1])$. By the chain rule,
+$$g'(t) = \sum_{i=1}^{n} \frac{\partial f}{\partial x_i}(\vec{a} + t \vec{h}) \, h_i = \left[\mathcal{L}_{\vec{h}} f\right](\vec{a} + t\vec{h}).$$
+Differentiating again and using the chain rule term by term,
+$$g''(t) = \sum_{i=1}^{n} h_i \frac{\partial}{\partial x_i}\left[\mathcal{L}_{\vec{h}} f\right](\vec{a} + t\vec{h}) = \left[\mathcal{L}_{\vec{h}}^{2} f\right](\vec{a} + t\vec{h}),$$
+and by induction $g^{(\ell)}(t) = [\mathcal{L}_{\vec{h}}^{\ell} f](\vec{a} + t\vec{h})$ for $\ell = 0, 1, \dots, r+1$. Applying the single-variable Taylor theorem to $g$ at $t = 0$ with $h = 1$,
+$$f(\vec{a} + \vec{h}) = g(1) = \sum_{\ell = 0}^{r} \frac{g^{(\ell)}(0)}{\ell!} + \frac{1}{r!} \int_0^1 g^{(r+1)}(t)(1-t)^{r}\, dt.$$
+Substituting $g^{(\ell)}(0) = [\mathcal{L}_{\vec{h}}^{\ell} f](\vec{a})$ and $g^{(r+1)}(t) = [\mathcal{L}_{\vec{h}}^{r+1} f](\vec{a} + t\vec{h})$ yields the claim. $\square$
+</Proof>
+
+### Second-Order Expansion and the Hessian
+
+The case $r = 2$ (so $f \in C^3$) is the one we need for the second derivative test. Expanding $\mathcal{L}_{\vec{h}} f = \sum_i h_i \partial f/\partial x_i$ and $\mathcal{L}_{\vec{h}}^{2} f = \sum_{i, j} h_i h_j \, \partial^2 f/\partial x_i \partial x_j$, we obtain:
+
+<Corollary title="Taylor Expansion to Second Order">
+Let $f : U \to \mathbb{R}$ of class $C^3$ and $\vec{a} \in U$. Then for small $\vec{h}$,
+$$f(\vec{a} + \vec{h}) = f(\vec{a}) + \nabla f(\vec{a}) \cdot \vec{h} + \tfrac{1}{2}\, \vec{h}^{\,T} H_f(\vec{a}) \vec{h} + R_{\vec{a}, 2}(\vec{h}),$$
+where
+$$H_f(\vec{a}) := \left(\frac{\partial^2 f}{\partial x_i \partial x_j}(\vec{a})\right)_{i, j = 1, \dots, n}$$
+is the **Hessian matrix** of $f$ at $\vec{a}$.
+</Corollary>
+
+<Remark>
+**Intuition:** The Hessian plays the role of the second derivative for a scalar-valued function of several variables. Because $f \in C^3 \subseteq C^2$, Clairaut's theorem makes $H_f(\vec{a})$ symmetric. The quadratic form $\vec{h} \mapsto \tfrac{1}{2}\vec{h}^{\,T} H_f(\vec{a}) \vec{h}$ captures the leading-order curvature of $f$ at $\vec{a}$.
+</Remark>
+
+### Bound on the Remainder
+
+<Theorem title="Lagrange-Type Bound on the Second-Order Remainder">
+Suppose $f \in C^3(U)$ and all third order partial derivatives of $f$ are bounded in absolute value by $M$ on a neighbourhood of $\vec{a}$. Then for $\vec{h}$ sufficiently small,
+$$|R_{\vec{a}, 2}(\vec{h})| \leq \frac{n^{3} M}{6} \|\vec{h}\|_{\infty}^{3},$$
+where $\|\vec{h}\|_{\infty} = \max\{|h_1|, \dots, |h_n|\}$.
+</Theorem>
+
+<Proof>
+Starting from
+$$R_{\vec{a}, 2}(\vec{h}) = \frac{1}{2!} \int_0^1 \left[\mathcal{L}_{\vec{h}}^{3} f\right](\vec{a} + t\vec{h})(1-t)^{2}\, dt = \frac{1}{2!} \int_0^1 \sum_{i=1}^{n} \sum_{j=1}^{n} \sum_{\ell=1}^{n} h_i h_j h_\ell \, \frac{\partial^3 f}{\partial x_i \partial x_j \partial x_\ell}(\vec{a} + t \vec{h})(1-t)^2\, dt,$$
+apply the triangle inequality:
+$$|R_{\vec{a}, 2}(\vec{h})| \leq \frac{1}{2!} \sum_{i, j, \ell} |h_i||h_j||h_\ell|\, M \int_0^1 (1-t)^{2}\, dt = \frac{M}{2 \cdot 3} \sum_{i, j, \ell} |h_i||h_j||h_\ell|.$$
+Since each $|h_i| \leq \|\vec{h}\|_\infty$ and there are $n^3$ terms,
+$$|R_{\vec{a}, 2}(\vec{h})| \leq \frac{M n^3}{6} \|\vec{h}\|_{\infty}^{3}. \qquad \square$$
+</Proof>
+
+<Example title="Taylor Expansion of a Polynomial at a Point">
+Let $f : \mathbb{R}^2 \to \mathbb{R}$, $f(x, y) = xy^2 + 2xy$. We compute the Taylor expansion of $f$ to second order about $(1, -1)$.
+
+The partial derivatives at $(1, -1)$ are:
+$$\frac{\partial f}{\partial x}(x, y) = y^2 + 2y, \quad \frac{\partial f}{\partial y}(x, y) = 2xy + 2x, \quad \frac{\partial^2 f}{\partial x^2} = 0, \quad \frac{\partial^2 f}{\partial x \partial y} = 2y + 2, \quad \frac{\partial^2 f}{\partial y^2} = 2x.$$
+Evaluating at $(1, -1)$:
+$$\nabla f(1, -1) = \begin{pmatrix} -1 \\ 0 \end{pmatrix}, \qquad H_f(1, -1) = \begin{pmatrix} 0 & 0 \\ 0 & 2 \end{pmatrix}.$$
+Noting $f(1, -1) = 1 \cdot 1 + 2 \cdot 1 \cdot (-1) = -1$, the second-order Taylor expansion reads
+$$f(1 + h, -1 + k) = -1 - h + k^{2} + R_{(1,-1), 2}(h, k).$$
+Since $f$ is a polynomial, we may compute the remainder exactly:
+$$f(1 + h, -1 + k) = (1 + h)(-1 + k)^2 + 2(1 + h)(-1 + k) = -1 - h + k^2 + h k^2,$$
+so $R_{(1,-1), 2}(h, k) = h k^{2}$, which is a cubic monomial and hence not part of the second-order Taylor polynomial.
+
+For an upper bound: all third-order partials of $f$ equal $0$ except $\partial^3 f/\partial x \partial y^2 = 2$. So $M = 2$, and with $n = 2$,
+$$|R_{(1, -1), 2}(h, k)| \leq \frac{2^3 \cdot 2}{6} (\max\{|h|, |k|\})^3 = \frac{8}{3}(\max\{|h|, |k|\})^3.$$
+</Example>
+
+---
+
+## Relative Extrema and Critical Points
+
+<Definition title="Relative Extrema and Saddle Points">
+Let $U \subseteq \mathbb{R}^n$ open, $f : U \to \mathbb{R}$, $\vec{a} \in U$.
+
+- $f$ has a **relative (local) minimum at $\vec{a}$** iff $f(\vec{x}) \geq f(\vec{a})$ for all $\vec{x}$ in some neighbourhood of $\vec{a}$.
+- $f$ has a **relative (local) maximum at $\vec{a}$** iff $f(\vec{x}) \leq f(\vec{a})$ for all $\vec{x}$ in some neighbourhood of $\vec{a}$.
+- $f$ has a **saddle point at $\vec{a}$** iff in every neighbourhood of $\vec{a}$ there exist $\vec{x}$ and $\vec{z}$ with $f(\vec{z}) < f(\vec{a}) < f(\vec{x})$.
+- $f$ has a **relative extremum at $\vec{a}$** iff it has a relative min or max at $\vec{a}$.
+</Definition>
+
+<Remark>
+**Intuition:** The first two cases extend the familiar local min/max from calculus. A saddle point sits in between: along some directions $f$ increases away from $\vec{a}$, along others it decreases. Saddles are the genuinely higher-dimensional phenomenon.
+</Remark>
+
+<Theorem title="Vanishing Gradient at Interior Extrema">
+Let $U \subseteq \mathbb{R}^n$ open, $f : U \to \mathbb{R}$. If $f$ has a relative extremum at $\vec{a} \in U$ and $f$ is differentiable at $\vec{a}$, then $\nabla f(\vec{a}) = \vec{0}$.
+</Theorem>
+
+<Remark>
+**Intuition:** This is the natural multivariable Fermat theorem. If we can approach $\vec{a}$ from every direction and $f$ has an extremum there, then the directional derivative must vanish in every direction — equivalently, the gradient vanishes.
+</Remark>
+
+<Proof>
+For each $j = 1, \dots, n$, define $g_j(t) := f(\vec{a} + t \vec{e}_j)$ for $t$ small enough that $\vec{a} + t \vec{e}_j \in U$. Since $f$ has a relative extremum at $\vec{a}$, $g_j$ has a relative extremum at $0$. Since $f$ is differentiable at $\vec{a}$, $g_j$ is differentiable at $0$. By the single-variable Fermat theorem, $g_j'(0) = 0$. By the chain rule,
+$$0 = g_j'(0) = \nabla f(\vec{a}) \cdot \vec{e}_j = \frac{\partial f}{\partial x_j}(\vec{a}).$$
+Since this holds for every $j$, $\nabla f(\vec{a}) = \vec{0}$. $\square$
+</Proof>
+
+<Definition title="Critical Point">
+A point $\vec{a} \in U$ is a **critical point** of $f : U \to \mathbb{R}$ iff $\nabla f(\vec{a}) = \vec{0}$.
+</Definition>
+
+<Remark>
+**Intuition:** Critical points are the candidates for local extrema and saddle points. The vanishing gradient condition is necessary but not sufficient: not every critical point is an extremum.
+</Remark>
+
+---
+
+## The Hessian and Definiteness
+
+<Definition title="Positive/Negative (Semi-)Definite, Indefinite">
+Let $A$ be a symmetric $n \times n$ real matrix. We say $A$ is
+
+- **positive definite** iff $\vec{h}^{\,T} A \vec{h} > 0$ for all $\vec{h} \neq \vec{0}$;
+- **negative definite** iff $\vec{h}^{\,T} A \vec{h} < 0$ for all $\vec{h} \neq \vec{0}$;
+- **positive semi-definite** iff $\vec{h}^{\,T} A \vec{h} \geq 0$ for all $\vec{h}$;
+- **negative semi-definite** iff $\vec{h}^{\,T} A \vec{h} \leq 0$ for all $\vec{h}$;
+- **indefinite** iff there exist $\vec{h}_+, \vec{h}_- \in \mathbb{R}^n$ with $\vec{h}_+^{\,T} A \vec{h}_+ > 0$ and $\vec{h}_-^{\,T} A \vec{h}_- < 0$.
+</Definition>
+
+<Remark>
+**Intuition:** The sign of the quadratic form $\vec{h} \mapsto \vec{h}^{\,T} A \vec{h}$ encodes how curvature bends. Positive definite matrices curve upward in every direction, negative definite curve downward. Indefinite matrices curve up in some directions and down in others — the hallmark of a saddle.
+</Remark>
+
+<Theorem title="Definiteness via Eigenvalues">
+Let $A$ be a symmetric $n \times n$ real matrix with eigenvalues $\lambda_1, \dots, \lambda_n$. Then
+- $A$ is positive definite iff $\lambda_j > 0$ for all $j$;
+- $A$ is negative definite iff $\lambda_j < 0$ for all $j$;
+- $A$ is indefinite iff $A$ has both a positive and a negative eigenvalue;
+- $A$ is nonsingular iff no eigenvalue equals $0$, i.e. iff $\det A \neq 0$.
+</Theorem>
+
+<Proof>
+By the spectral theorem for real symmetric matrices, there exists an orthonormal basis $\{\vec{u}_1, \dots, \vec{u}_n\}$ of $\mathbb{R}^n$ with $A \vec{u}_j = \lambda_j \vec{u}_j$. Any $\vec{h} \in \mathbb{R}^n$ can be written uniquely as $\vec{h} = \sum_{j=1}^n c_j \vec{u}_j$. Then
+$$\vec{h}^{\,T} A \vec{h} = \left(\sum_j c_j \vec{u}_j\right) \cdot \left(\sum_k c_k A \vec{u}_k\right) = \sum_{j, k} c_j c_k \lambda_k \, \vec{u}_j \cdot \vec{u}_k = \sum_{j=1}^n \lambda_j c_j^{2},$$
+using orthonormality ($\vec{u}_j \cdot \vec{u}_k = \delta_{jk}$).
+
+If all $\lambda_j > 0$ and $\vec{h} \neq \vec{0}$, some $c_j \neq 0$ so $\vec{h}^{\,T} A \vec{h} > 0$; conversely, taking $\vec{h} = \vec{u}_j$ shows $\lambda_j = \vec{u}_j^{\,T} A \vec{u}_j > 0$. The negative definite case is analogous. Indefiniteness corresponds to the existence of both positive and negative eigenvalues by the same argument: $\vec{h} = \vec{u}_j$ achieves sign $\lambda_j$. Finally, $A$ is nonsingular iff $0$ is not an eigenvalue iff $\det A = \prod \lambda_j \neq 0$. $\square$
+</Proof>
+
+---
+
+## The Second Derivative Test
+
+We can now state and prove the multivariable second derivative test, which is the main application of the Taylor expansion.
+
+<Theorem title="Second Derivative Test">
+Let $U \subseteq \mathbb{R}^n$ open and $f \in C^3(U)$. Let $\vec{a} \in U$ be a critical point of $f$ (so $\nabla f(\vec{a}) = \vec{0}$) and assume $H_f(\vec{a})$ is nonsingular. Then:
+
+**(i)** If $H_f(\vec{a})$ is positive definite, $f$ has a relative minimum at $\vec{a}$.
+
+**(ii)** If $H_f(\vec{a})$ is negative definite, $f$ has a relative maximum at $\vec{a}$.
+
+**(iii)** If $H_f(\vec{a})$ is indefinite, $f$ has a saddle point at $\vec{a}$.
+</Theorem>
+
+<Remark>
+**Intuition:** Because $\nabla f(\vec{a}) = \vec{0}$, the leading order behaviour of $f$ near $\vec{a}$ is controlled by the quadratic form $\tfrac{1}{2} \vec{h}^{\,T} H_f(\vec{a}) \vec{h}$. The remainder is of order $\|\vec{h}\|^3$ and becomes negligible for small $\vec{h}$. The definiteness of the Hessian therefore determines whether $f$ curves up, down, or in different directions, locally.
+</Remark>
+
+<Proof>
+Since $\nabla f(\vec{a}) = \vec{0}$, the Taylor expansion to second order reads
+$$f(\vec{a} + \vec{h}) - f(\vec{a}) = \tfrac{1}{2}\, \vec{h}^{\,T} H_f(\vec{a}) \vec{h} + R_{\vec{a}, 2}(\vec{h}),$$
+and since $f \in C^3(U)$, $|R_{\vec{a}, 2}(\vec{h})| \leq C \|\vec{h}\|^3$ for a constant $C$ and all $\vec{h}$ in a neighbourhood of $\vec{0}$. In particular, $|R_{\vec{a}, 2}(\vec{h})|/\|\vec{h}\|^2 \to 0$ as $\vec{h} \to \vec{0}$.
+
+By the spectral theorem, let $\{\vec{u}_1, \dots, \vec{u}_n\}$ be an orthonormal basis of eigenvectors of $H_f(\vec{a})$ with eigenvalues $\lambda_1, \dots, \lambda_n$.
+
+**(i) Positive definite case.** Let $m := \min\{\lambda_1, \dots, \lambda_n\} > 0$. Writing $\vec{h} = \sum_j c_j \vec{u}_j$ we have
+$$\tfrac{1}{2}\, \vec{h}^{\,T} H_f(\vec{a}) \vec{h} = \tfrac{1}{2}\sum_{j=1}^n \lambda_j c_j^2 \geq \tfrac{m}{2} \sum_{j=1}^n c_j^2 = \tfrac{m}{2}\|\vec{h}\|^2.$$
+Choose $\delta > 0$ so small that $|R_{\vec{a}, 2}(\vec{h})| < \tfrac{m}{4} \|\vec{h}\|^2$ for $0 < \|\vec{h}\| < \delta$. Then for such $\vec{h}$,
+$$f(\vec{a} + \vec{h}) - f(\vec{a}) \geq \tfrac{m}{2}\|\vec{h}\|^2 - \tfrac{m}{4}\|\vec{h}\|^2 = \tfrac{m}{4}\|\vec{h}\|^2 > 0,$$
+so $f$ has a (strict) relative minimum at $\vec{a}$.
+
+**(ii) Negative definite case.** Apply case (i) to $-f$, which has a relative minimum at $\vec{a}$; hence $f$ has a relative maximum.
+
+**(iii) Indefinite case.** Let $\lambda_j > 0$ be a positive eigenvalue and $\lambda_k < 0$ a negative one, with unit eigenvectors $\vec{u}_j$ and $\vec{u}_k$. Along the line $\vec{a} + t\vec{u}_j$, define $g_j(t) := f(\vec{a} + t \vec{u}_j)$. Then by the second-order Taylor expansion,
+$$g_j(t) = f(\vec{a}) + t \, \nabla f(\vec{a}) \cdot \vec{u}_j + \tfrac{t^2}{2}\, \vec{u}_j^{\,T} H_f(\vec{a}) \vec{u}_j + \widetilde R_{0, 2}(t) = f(\vec{a}) + \tfrac{\lambda_j}{2} t^2 + \widetilde R_{0, 2}(t),$$
+using $\nabla f(\vec{a}) = \vec{0}$ and $\vec{u}_j^{\,T} H_f(\vec{a}) \vec{u}_j = \lambda_j$. Since $|\widetilde R_{0, 2}(t)|/t^2 \to 0$ as $t \to 0$, for $|t|$ sufficiently small and nonzero,
+$$f(\vec{a} + t \vec{u}_j) > f(\vec{a}).$$
+Similarly, $f(\vec{a} + t \vec{u}_k) < f(\vec{a})$ for all sufficiently small nonzero $t$. Thus every neighbourhood of $\vec{a}$ contains points $\vec{x}$ with $f(\vec{x}) > f(\vec{a})$ and points $\vec{z}$ with $f(\vec{z}) < f(\vec{a})$, so $\vec{a}$ is a saddle point. $\square$
+</Proof>
+
+<Remark>
+**Intuition:** When $\det H_f(\vec{a}) = 0$, the test is inconclusive: higher-order terms in the Taylor expansion are needed to decide the nature of the critical point. Examples such as $f(x, y) = x^4 + y^4$, $f(x, y) = -x^4 - y^4$, and $f(x, y) = x^4 - y^4$ at the origin show that a critical point with zero Hessian determinant may be a min, max, or saddle.
+</Remark>
+
+---
+
+## A Worked Example
+
+<Example title="Classifying Critical Points of a Polynomial">
+Classify all critical points of the function $f : \mathbb{R}^2 \to \mathbb{R}$ given by
+$$f(x, y) = x^4 + y^3 - 2 x^2 + y^2.$$
+
+**Step 1: Find the critical points.** We have
+$$\frac{\partial f}{\partial x} = 4 x^3 - 4 x = 4 x (x^2 - 1), \qquad \frac{\partial f}{\partial y} = 3 y^2 + 2 y = y(3 y + 2).$$
+Setting both to zero gives $x \in \{-1, 0, 1\}$ and $y \in \{-\tfrac{2}{3}, 0\}$, so the six critical points are
+$$(0, 0), \quad (0, -\tfrac{2}{3}), \quad (1, 0), \quad (1, -\tfrac{2}{3}), \quad (-1, 0), \quad (-1, -\tfrac{2}{3}).$$
+
+**Step 2: Compute the Hessian.** We have
+$$\frac{\partial^2 f}{\partial x^2} = 12 x^2 - 4, \quad \frac{\partial^2 f}{\partial x \partial y} = 0, \quad \frac{\partial^2 f}{\partial y^2} = 6 y + 2.$$
+Thus $H_f(x, y) = \begin{pmatrix} 12 x^2 - 4 & 0 \\ 0 & 6 y + 2 \end{pmatrix}$, which is diagonal, so its eigenvalues are the diagonal entries.
+
+**Step 3: Classify each point.**
+- At $(0, 0)$: $H_f = \operatorname{diag}(-4, 2)$, indefinite, so $(0, 0)$ is a **saddle point**.
+- At $(0, -\tfrac{2}{3})$: $H_f = \operatorname{diag}(-4, -2)$, negative definite, so it is a **relative maximum**.
+- At $(\pm 1, 0)$: $H_f = \operatorname{diag}(8, 2)$, positive definite, so these are **relative minima**.
+- At $(\pm 1, -\tfrac{2}{3})$: $H_f = \operatorname{diag}(8, -2)$, indefinite, so these are **saddle points**.
+</Example>
+
+<Remark>
+**Intuition:** In low dimensions the Hessian is diagonal or $2 \times 2$, and one can often see the classification at a glance. In higher dimensions one computes eigenvalues (or equivalently the principal minors) numerically. The key fact is that the second derivative test reduces the multivariable problem to an eigenvalue problem for a symmetric matrix.
+</Remark>

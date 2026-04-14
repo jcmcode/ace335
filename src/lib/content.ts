@@ -4,32 +4,41 @@ import matter from 'gray-matter'
 
 const contentDir = path.join(process.cwd(), 'src/content')
 
-export function getChapterContent(slug: string) {
-  const filePath = path.join(contentDir, 'chapters', `${slug}.mdx`)
+// Course-aware path helper
+function getCourseContentDir(course: '335' | '328' = '335') {
+  return course === '328' ? path.join(contentDir, '328') : contentDir
+}
+
+export function getChapterContent(slug: string, course: '335' | '328' = '335') {
+  const base = getCourseContentDir(course)
+  const filePath = path.join(base, 'chapters', `${slug}.mdx`)
   if (!fs.existsSync(filePath)) return null
   const source = fs.readFileSync(filePath, 'utf8')
   const { data, content } = matter(source)
   return { frontmatter: data, content }
 }
 
-export function getHomeworkContent(id: string) {
-  const filePath = path.join(contentDir, 'homework', `hw${id}.mdx`)
+export function getHomeworkContent(id: string, course: '335' | '328' = '335') {
+  const base = getCourseContentDir(course)
+  const filePath = path.join(base, 'homework', `hw${id}.mdx`)
   if (!fs.existsSync(filePath)) return null
   const source = fs.readFileSync(filePath, 'utf8')
   const { data, content } = matter(source)
   return { frontmatter: data, content }
 }
 
-export function getExamContent(id: string) {
-  const filePath = path.join(contentDir, 'exams', `${id}.mdx`)
+export function getExamContent(id: string, course: '335' | '328' = '335') {
+  const base = getCourseContentDir(course)
+  const filePath = path.join(base, 'exams', `${id}.mdx`)
   if (!fs.existsSync(filePath)) return null
   const source = fs.readFileSync(filePath, 'utf8')
   const { data, content } = matter(source)
   return { frontmatter: data, content }
 }
 
-export function getAllHomeworkIds(): string[] {
-  const dir = path.join(contentDir, 'homework')
+export function getAllHomeworkIds(course: '335' | '328' = '335'): string[] {
+  const base = getCourseContentDir(course)
+  const dir = path.join(base, 'homework')
   if (!fs.existsSync(dir)) return []
   return fs.readdirSync(dir)
     .filter(f => f.endsWith('.mdx'))
@@ -37,16 +46,18 @@ export function getAllHomeworkIds(): string[] {
     .sort((a, b) => parseInt(a) - parseInt(b))
 }
 
-export function getAllExamIds(): string[] {
-  const dir = path.join(contentDir, 'exams')
+export function getAllExamIds(course: '335' | '328' = '335'): string[] {
+  const base = getCourseContentDir(course)
+  const dir = path.join(base, 'exams')
   if (!fs.existsSync(dir)) return []
   return fs.readdirSync(dir)
     .filter(f => f.endsWith('.mdx'))
     .map(f => f.replace(/\.mdx$/, ''))
 }
 
-export function getAvailableChapterSlugs(): string[] {
-  const dir = path.join(contentDir, 'chapters')
+export function getAvailableChapterSlugs(course: '335' | '328' = '335'): string[] {
+  const base = getCourseContentDir(course)
+  const dir = path.join(base, 'chapters')
   if (!fs.existsSync(dir)) return []
   return fs.readdirSync(dir)
     .filter(f => f.endsWith('.mdx'))

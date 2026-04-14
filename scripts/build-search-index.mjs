@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..')
 
-const chapterMeta = {
+const chapterMeta335 = {
   'introduction': 'Introduction',
   'signal-spaces': 'Signal Spaces',
   'dual-spaces': 'Dual Spaces & Distributions',
@@ -20,6 +20,20 @@ const chapterMeta = {
   'controllability': 'Controllability',
   'appendix-integration': 'Appendix: Integration',
   'appendix-cauchy': 'Appendix: Cauchy Integral',
+}
+
+const chapterMeta328 = {
+  'topological-spaces': 'Topological Spaces',
+  'metric-spaces': 'Metric Spaces',
+  'interior-closure-boundary': 'Interior, Closure & Boundary',
+  'continuity': 'Continuity & Limits',
+  'sequences-convergence': 'Sequences & Convergence',
+  'completeness': 'Completeness',
+  'compactness': 'Compactness',
+  'connectedness': 'Connectedness',
+  'sequences-of-functions': 'Function Sequences',
+  'term-by-term': 'Term-by-Term',
+  'power-series': 'Power Series',
 }
 
 const COMPONENT_TYPES = ['Definition', 'Theorem', 'Lemma', 'Corollary', 'Proposition', 'Example', 'Remark', 'Proof']
@@ -44,7 +58,7 @@ function slugify(title) {
     .slice(0, 50)
 }
 
-function extractFromFile(filePath, chapterSlug) {
+function extractFromFile(filePath, chapterSlug, course, chapterMap) {
   const content = fs.readFileSync(filePath, 'utf8')
   const items = []
 
@@ -57,8 +71,9 @@ function extractFromFile(filePath, chapterSlug) {
       type: 'Section',
       title,
       content: '',
-      chapter: chapterMeta[chapterSlug] || chapterSlug,
+      chapter: chapterMap[chapterSlug] || chapterSlug,
       chapterSlug,
+      course,
       anchor: slugify(title),
       level,
     })
@@ -78,8 +93,9 @@ function extractFromFile(filePath, chapterSlug) {
         type,
         title: title || type,
         content: cleaned,
-        chapter: chapterMeta[chapterSlug] || chapterSlug,
+        chapter: chapterMap[chapterSlug] || chapterSlug,
         chapterSlug,
+        course,
         anchor: title ? slugify(title) : '',
       })
     }
@@ -88,38 +104,52 @@ function extractFromFile(filePath, chapterSlug) {
   return items
 }
 
-const chaptersDir = path.join(root, 'src/content/chapters')
-const files = fs.readdirSync(chaptersDir).filter(f => f.endsWith('.mdx'))
+function indexCourse(course, chapterMap) {
+  const base = course === '328' ? 'src/content/328' : 'src/content'
+  const chaptersDir = path.join(root, base, 'chapters')
+  const items = []
 
-let allItems = []
-for (const f of files) {
-  const slug = f.replace(/\.mdx$/, '')
-  const filePath = path.join(chaptersDir, f)
-  const items = extractFromFile(filePath, slug)
-  allItems = allItems.concat(items)
-}
-
-const homeworkDir = path.join(root, 'src/content/homework')
-if (fs.existsSync(homeworkDir)) {
-  const hwFiles = fs.readdirSync(homeworkDir).filter(f => f.endsWith('.mdx'))
-  for (const f of hwFiles) {
-    const id = f.replace(/^hw/, '').replace(/\.mdx$/, '')
-    const filePath = path.join(homeworkDir, f)
-    const content = fs.readFileSync(filePath, 'utf8')
-    const pattern = /<Problem(?:\s+[^>]*?title="([^"]+)")?[^>]*>([\s\S]*?)<\/Problem>/g
-    let match
-    while ((match = pattern.exec(content)) !== null) {
-      allItems.push({
-        type: 'Problem',
-        title: match[1] || 'Problem',
-        content: stripMdx(match[2] || '').slice(0, 200),
-        chapter: id === '0' ? 'Review HW' : 'Homework ' + id,
-        chapterSlug: '__hw__' + id,
-        anchor: '',
-      })
+  if (fs.existsSync(chaptersDir)) {
+    const files = fs.readdirSync(chaptersDir).filter(f => f.endsWith('.mdx'))
+    for (const f of files) {
+      const slug = f.replace(/\.mdx$/, '')
+      const filePath = path.join(chaptersDir, f)
+      items.push(...extractFromFile(filePath, slug, course, chapterMap))
     }
   }
+
+  const homeworkDir = path.join(root, base, 'homework')
+  if (fs.existsSync(homeworkDir)) {
+    const hwFiles = fs.readdirSync(homeworkDir).filter(f => f.endsWith('.mdx'))
+    for (const f of hwFiles) {
+      const id = f.replace(/^hw/, '').replace(/\.mdx$/, '')
+      const filePath = path.join(homeworkDir, f)
+      const content = fs.readFileSync(filePath, 'utf8')
+      const pattern = /<Problem(?:\s+[^>]*?title="([^"]+)")?[^>]*>([\s\S]*?)<\/Problem>/g
+      let match
+      while ((match = pattern.exec(content)) !== null) {
+        items.push({
+          type: 'Problem',
+          title: match[1] || 'Problem',
+          content: stripMdx(match[2] || '').slice(0, 200),
+          chapter: course === '328'
+            ? 'Problem Set ' + id
+            : (id === '0' ? 'Review HW' : 'Homework ' + id),
+          chapterSlug: '__hw__' + id,
+          course,
+          anchor: '',
+        })
+      }
+    }
+  }
+
+  return items
 }
+
+const allItems = [
+  ...indexCourse('335', chapterMeta335),
+  ...indexCourse('328', chapterMeta328),
+]
 
 const outDir = path.join(root, 'src/data')
 if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true })

@@ -1,0 +1,213 @@
+---
+title: "Final Exam - 2024"
+year: 2024
+---
+
+## Problem 1: Topology Basics and Cluster Points
+
+<Problem title="Topology Basics and Cluster Points">
+(a) Let $(X, \mathscr{T})$ be a topological space. For each statement, say TRUE or FALSE.
+
+(a1) $A \subset X$ is open only if the interior of $A$ is empty.
+
+(a2) $A \subset X$ is open if and only if the boundary of $A$ is empty.
+
+(a3) $A \subset X$ is open if and only if $A$ and $\partial A$ are disjoint.
+
+(a4) $A \subset X$ is closed only if $\partial A \subset A$.
+
+(a5) The closure of $A \subset X$ consists of all points $x \in X$ such that $A$ intersects every neighbourhood of $x$.
+
+(b) Let $(X, d)$ be a metric space with the metric topology.
+
+(b1) Let $A \subset X$ and $x_0 \in X$. Write what it means for $x_0$ to be a cluster point of $A$.
+
+(b2) Suppose $x_0$ is a cluster point of $A$. Does this necessarily imply $x_0 \in A$? Justify.
+</Problem>
+
+<Solution>
+**Part (a1):** **FALSE.** $A$ open means $A = \text{int}(A)$. A nonempty open $A$ has nonempty interior. (Also the wording "only if $\text{int}(A) = \varnothing$" would require every open set to have empty interior, which is false.)
+
+**Part (a2):** **FALSE.** Counterexample: $A = (0, 1)$ in $\mathbb{R}$. $A$ is open but $\partial A = \{0, 1\} \neq \varnothing$.
+
+**Part (a3):** **TRUE.** $A$ open $\iff A = \text{int}(A) \iff A \cap \partial A = \varnothing$ (since $\partial A = \overline{A} \setminus \text{int}(A)$, and $A$ open means every point of $A$ is interior, so not a boundary point).
+
+**Part (a4):** **TRUE.** $A$ closed $\iff A = \overline{A} \iff \partial A \subseteq A$ (since $\partial A \subseteq \overline{A} = A$).
+
+**Part (a5):** **TRUE.** This is the standard characterization: $x \in \overline{A} \iff$ every neighbourhood of $x$ intersects $A$.
+
+**Part (b1):** $x_0$ is a cluster point of $A$ if every neighbourhood $W$ of $x_0$ contains a point of $A$ different from $x_0$; equivalently, for every $\varepsilon > 0$, $B(x_0, \varepsilon) \cap (A \setminus \{x_0\}) \neq \varnothing$.
+
+**Part (b2):** **No.** Counterexample: $X = \mathbb{R}$ with the Euclidean metric, $A = (0, 1)$. Then $x_0 = 0$ is a cluster point of $A$ (every $\varepsilon$-ball around $0$ contains points of $(0, 1)$), but $0 \notin A$.
+</Solution>
+
+## Problem 2: Nowhere Dense, G-delta, Weierstrass Approximation
+
+<Problem title="Nowhere Dense, G-delta, Weierstrass Approximation">
+(a) Let $(X, \mathscr{T})$ be a topological space, and let $A \subset X$.
+
+(a1) Define what it means for $A$ to be nowhere dense in $X$.
+
+(a2) Prove that $A \subset X$ is nowhere dense iff the interior of the complement of $A$ is dense in $X$.
+
+(a3) The statement "A countable union of nowhere dense sets is necessarily nowhere dense" is false. Prove by counterexample.
+
+(b) Let $\mathbb{R}$ be equipped with the Euclidean topology. Let $A = \mathbb{R} \setminus \mathbb{Q}$ be the set of irrational numbers. Show that $A$ is a $G_\delta$-set.
+
+(c) State the Weierstrass Approximation Theorem rigorously.
+</Problem>
+
+<Solution>
+**Part (a1):** $A$ is *nowhere dense* in $X$ if $\text{int}(\overline{A}) = \varnothing$, i.e., the interior of the closure of $A$ is empty.
+
+**Part (a2):** ($\Rightarrow$) Suppose $A$ is nowhere dense, so $\text{int}(\overline{A}) = \varnothing$. Using $\text{int}(A^c) = (\overline{A})^c$:
+$$\overline{\text{int}(A^c)} = \overline{(\overline{A})^c}.$$
+We show $(\overline{A})^c$ is dense. For any nonempty open $U$, if $U \cap (\overline{A})^c = \varnothing$ then $U \subseteq \overline{A}$, so $U \subseteq \text{int}(\overline{A}) = \varnothing$, contradiction. Hence $(\overline{A})^c$ (which equals $\text{int}(A^c)$) is dense in $X$.
+
+($\Leftarrow$) If $\text{int}(A^c)$ is dense, then $(\overline{A})^c$ is dense, so for every nonempty open $U$, $U \cap (\overline{A})^c \neq \varnothing$, hence $U \not\subseteq \overline{A}$. Thus no nonempty open set is contained in $\overline{A}$, so $\text{int}(\overline{A}) = \varnothing$, i.e., $A$ is nowhere dense.
+
+**Part (a3):** Counterexample: in $\mathbb{R}$ (Euclidean), $\mathbb{Q} = \bigcup_{q \in \mathbb{Q}} \{q\}$. Each $\{q\}$ is closed with empty interior, hence nowhere dense. But $\overline{\mathbb{Q}} = \mathbb{R}$, so $\text{int}(\overline{\mathbb{Q}}) = \mathbb{R} \neq \varnothing$, so $\mathbb{Q}$ is not nowhere dense.
+
+**Part (b):** Enumerate $\mathbb{Q} = \{q_1, q_2, q_3, \ldots\}$. Then
+$$\mathbb{R} \setminus \mathbb{Q} = \bigcap_{n=1}^{\infty} (\mathbb{R} \setminus \{q_n\}).$$
+Each $\mathbb{R} \setminus \{q_n\}$ is open (singletons are closed in $\mathbb{R}$). So $\mathbb{R} \setminus \mathbb{Q}$ is a countable intersection of open sets, i.e., a $G_\delta$ set.
+
+**Part (c):** *Weierstrass Approximation Theorem:* Let $[a, b] \subset \mathbb{R}$ be a closed bounded interval, and let $f : [a, b] \to \mathbb{R}$ be continuous. Then for every $\varepsilon > 0$, there exists a polynomial $p : \mathbb{R} \to \mathbb{R}$ such that
+$$\sup_{x \in [a, b]} |f(x) - p(x)| < \varepsilon.$$
+
+Equivalently, the set of polynomials is dense in $C([a, b])$ under the uniform (sup) norm.
+</Solution>
+
+## Problem 3: Partial Derivative by Definition and Lagrange Multipliers
+
+<Problem title="Partial Derivative by Definition and Lagrange Multipliers">
+Let $f : \mathbb{R}^3 \to \mathbb{R}$ be defined as $f(x, y, z) = xy + z + 1$.
+
+(a) Use the limit definition of partial derivatives to compute $\dfrac{\partial f}{\partial x}(1, 2, 3)$.
+
+(b) Explain why $f$ has a maximum subject to the constraint $x^2 + y^2 + z^2 + 2z = 0$ and then compute it.
+</Problem>
+
+<Solution>
+**Part (a):** By definition,
+$$\frac{\partial f}{\partial x}(1, 2, 3) = \lim_{h \to 0} \frac{f(1+h, 2, 3) - f(1, 2, 3)}{h}.$$
+
+Compute $f(1+h, 2, 3) = (1+h)(2) + 3 + 1 = 2 + 2h + 4 = 6 + 2h$.
+And $f(1, 2, 3) = 1 \cdot 2 + 3 + 1 = 6$.
+
+So
+$$\frac{\partial f}{\partial x}(1, 2, 3) = \lim_{h \to 0} \frac{(6 + 2h) - 6}{h} = \lim_{h \to 0} \frac{2h}{h} = 2.$$
+
+**Part (b):** The constraint $x^2 + y^2 + z^2 + 2z = 0$ can be rewritten as $x^2 + y^2 + (z+1)^2 = 1$. This is a sphere of radius $1$ centered at $(0, 0, -1)$ in $\mathbb{R}^3$, which is closed and bounded, hence compact. Since $f$ is continuous on $\mathbb{R}^3$, $f$ attains its maximum on this compact set (Extreme Value Theorem).
+
+*Lagrange multipliers:* let $g(x, y, z) = x^2 + y^2 + z^2 + 2z$. Set $\nabla f = \lambda \nabla g$:
+$$\nabla f = (y, x, 1), \quad \nabla g = (2x, 2y, 2z + 2).$$
+
+System:
+$$y = 2\lambda x, \quad x = 2\lambda y, \quad 1 = 2\lambda(z + 1), \quad x^2 + y^2 + z^2 + 2z = 0.$$
+
+From the first two: $y = 2\lambda x$ and $x = 2\lambda y = 2\lambda(2\lambda x) = 4\lambda^2 x$. So $x(1 - 4\lambda^2) = 0$.
+
+*Case 1:* $x = 0$. Then $y = 2\lambda \cdot 0 = 0$. Constraint: $z^2 + 2z = 0 \Rightarrow z(z + 2) = 0 \Rightarrow z = 0$ or $z = -2$.
+- $(0, 0, 0)$: $f = 0 + 0 + 1 = 1$.
+- $(0, 0, -2)$: $f = 0 + (-2) + 1 = -1$.
+
+*Case 2:* $\lambda = 1/2$. Then $y = x$. $1 = 2 \cdot (1/2)(z + 1) = z + 1 \Rightarrow z = 0$. Constraint: $2x^2 + 0 = 0 \Rightarrow x = 0$, giving $(0, 0, 0)$ again.
+
+*Case 3:* $\lambda = -1/2$. Then $y = -x$. $1 = 2 \cdot (-1/2)(z + 1) = -(z + 1) \Rightarrow z = -2$. Constraint: $2x^2 + 4 - 4 = 0 \Rightarrow x = 0$, giving $(0, 0, -2)$ again.
+
+So critical values are $\{1, -1\}$. The **maximum is $1$**, attained at $(0, 0, 0)$.
+</Solution>
+
+## Problem 4: Implicit Function Theorem on Surface
+
+<Problem title="Implicit Function Theorem on Surface">
+Consider the surface $S$ in $\mathbb{R}^3$ with equation $x^5 + y^5 + z^5 + 2xz = 1$.
+
+(a) Show that the equation defining $S$ implicitly defines $z$ as a function of $x$ and $y$, say $z = g(x, y)$, in a neighbourhood of the point $(1, 0, 0)$. What is $g(1, 0)$?
+
+(b) Compute $\nabla g(1, 0)$.
+</Problem>
+
+<Solution>
+**Part (a):** Let $F(x, y, z) = x^5 + y^5 + z^5 + 2xz - 1$. Then $F$ is $C^\infty$ (polynomial).
+
+Check $F(1, 0, 0) = 1 + 0 + 0 + 0 - 1 = 0$. Good.
+
+Compute $\dfrac{\partial F}{\partial z}(x, y, z) = 5z^4 + 2x$. At $(1, 0, 0)$: $0 + 2 = 2 \neq 0$.
+
+By the Implicit Function Theorem, $F = 0$ locally defines $z = g(x, y)$ near $(1, 0, 0)$, with $g(1, 0) = 0$.
+
+**Part (b):** Differentiating $F(x, y, g(x, y)) = 0$:
+$$\frac{\partial g}{\partial x} = -\frac{\partial F/\partial x}{\partial F/\partial z}, \quad \frac{\partial g}{\partial y} = -\frac{\partial F/\partial y}{\partial F/\partial z}.$$
+
+$\partial F/\partial x = 5x^4 + 2z$. At $(1, 0, 0)$: $5 + 0 = 5$.
+$\partial F/\partial y = 5y^4$. At $(1, 0, 0)$: $0$.
+$\partial F/\partial z$ at $(1, 0, 0)$: $2$.
+
+So
+$$\frac{\partial g}{\partial x}(1, 0) = -\frac{5}{2}, \quad \frac{\partial g}{\partial y}(1, 0) = -\frac{0}{2} = 0.$$
+
+Therefore $\nabla g(1, 0) = \left(-\dfrac{5}{2}, 0\right)$.
+</Solution>
+
+## Problem 5: Taylor Expansion and Extremum Classification
+
+<Problem title="Taylor Expansion and Extremum Classification">
+Let $f : \mathbb{R}^3 \to \mathbb{R}$ be given by $f(x, y, z) = 3x^2 + x^3 + y^2 + z^2$.
+
+(a) Compute the Taylor expansion of $f$ to second order near the point $(-2, 0, 0)$. Specifically, find an explicit degree-2 polynomial approximation for $f(-2 + h_1, h_2, h_3)$.
+
+(b) Determine whether the point $(-2, 0, 0)$ is a local extremum or a saddle point for $f$.
+</Problem>
+
+<Solution>
+**Part (a):** Compute $f(-2, 0, 0) = 3 \cdot 4 + (-8) + 0 + 0 = 12 - 8 = 4$.
+
+Gradient: $\nabla f = (6x + 3x^2, 2y, 2z)$. At $(-2, 0, 0)$: $(-12 + 12, 0, 0) = (0, 0, 0)$.
+
+Hessian: $Hf = \begin{pmatrix} 6 + 6x & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 2 \end{pmatrix}$. At $(-2, 0, 0)$: $Hf = \begin{pmatrix} -6 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 2 \end{pmatrix}$.
+
+Second-order Taylor polynomial:
+$$P_2(h_1, h_2, h_3) = f(-2, 0, 0) + \nabla f \cdot \vec{h} + \tfrac{1}{2} \vec{h}^\top Hf \, \vec{h}$$
+$$= 4 + 0 + \tfrac{1}{2}(-6 h_1^2 + 2 h_2^2 + 2 h_3^2)$$
+$$= 4 - 3 h_1^2 + h_2^2 + h_3^2.$$
+
+So $f(-2 + h_1, h_2, h_3) \approx 4 - 3h_1^2 + h_2^2 + h_3^2$.
+
+**Part (b):** The Hessian at $(-2, 0, 0)$ has eigenvalues $-6, 2, 2$ — mixed signs. Therefore $(-2, 0, 0)$ is a **saddle point** of $f$.
+
+Alternatively, from the Taylor polynomial: along the $h_1$-axis, $f$ decreases (coefficient $-3$); along $h_2$ or $h_3$, $f$ increases. So neither a local min nor max.
+</Solution>
+
+## Problem 6: Jordan Measure, Lebesgue Measure
+
+<Problem title="Jordan Measure, Lebesgue Measure">
+(a) Let $A \subset \mathbb{R}$ be a bounded set. Define what it means for $A$ to be Jordan-measurable.
+
+(b) Prove that the singleton $\{1\} \subset \mathbb{R}$ has zero Jordan content.
+
+(c) Let $A$ be a countable set. Prove that $A$ has zero Lebesgue measure.
+
+(d) Let $B \subset \mathbb{R}$. Define the Lebesgue outer measure of $B$.
+</Problem>
+
+<Solution>
+**Part (a):** A bounded set $A \subset \mathbb{R}$ is *Jordan-measurable* if its inner Jordan content equals its outer Jordan content. Equivalently: for every $\varepsilon > 0$, there exist finite collections of closed intervals $\{I_j\}_{j=1}^n$ and $\{J_k\}_{k=1}^m$ with $\bigcup J_k \subseteq A \subseteq \bigcup I_j$ and $\sum |I_j| - \sum |J_k| < \varepsilon$.
+
+Equivalently, $A$ is Jordan-measurable iff its boundary $\partial A$ has Jordan content zero (iff $\partial A$ has Lebesgue measure zero, for bounded sets).
+
+**Part (b):** We show the outer Jordan content of $\{1\}$ is $0$. For any $\varepsilon > 0$, cover $\{1\}$ by the single interval $[1 - \varepsilon/2, 1 + \varepsilon/2]$ of length $\varepsilon$. So the outer Jordan content is $\leq \varepsilon$ for every $\varepsilon > 0$, hence $0$.
+
+The inner Jordan content is trivially $0$ (no nonempty interval fits inside $\{1\}$). So $\{1\}$ has zero Jordan content.
+
+**Part (c):** Let $A = \{a_1, a_2, a_3, \ldots\}$. Given $\varepsilon > 0$, cover each $a_n$ by the open interval $I_n = (a_n - \varepsilon/2^{n+1}, a_n + \varepsilon/2^{n+1})$, which has length $\varepsilon/2^n$. Then $A \subseteq \bigcup_{n=1}^\infty I_n$ and
+$$\sum_{n=1}^\infty |I_n| = \sum_{n=1}^\infty \frac{\varepsilon}{2^n} = \varepsilon.$$
+
+So the Lebesgue outer measure $m^*(A) \leq \varepsilon$ for every $\varepsilon > 0$, giving $m^*(A) = 0$. A set with zero outer measure is Lebesgue measurable with measure zero.
+
+**Part (d):** The *Lebesgue outer measure* of $B \subset \mathbb{R}$ is
+$$m^*(B) = \inf\left\{ \sum_{n=1}^\infty |I_n| : \{I_n\}_{n=1}^\infty \text{ is a countable collection of open intervals with } B \subseteq \bigcup_{n=1}^\infty I_n \right\}.$$
+
+Here $|I_n|$ denotes the length of $I_n$.
+</Solution>

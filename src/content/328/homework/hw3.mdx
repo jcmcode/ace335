@@ -1,0 +1,380 @@
+---
+title: "Problem Set 3 Solutions"
+homework: 3
+---
+
+## Problem 1: Arzelà–Ascoli Subsequence
+
+<Problem title="Uniformly Convergent Subsequence via Arzela Ascoli">
+Let $(f_n)$ be real-valued, twice continuously differentiable on $[0,1]$, with $f_n(0) = f_n'(0) = 0$ and $\sup_{[0,1]} |f_n''| \leq 2$. Prove some subsequence converges uniformly.
+</Problem>
+
+<Solution>
+**(a) $(f_n')$ is equibounded.** By the fundamental theorem of calculus, for $x \in [0, 1]$:
+
+$$f_n'(x) = f_n'(0) + \int_0^x f_n''(t)\,dt = \int_0^x f_n''(t)\,dt,$$
+
+hence $|f_n'(x)| \leq \int_0^x |f_n''(t)|\,dt \leq 2x \leq 2$. So $\|f_n'\|_\infty \leq 2$ uniformly in $n$.
+
+**(b) $(f_n')$ is equicontinuous.** For $x, y \in [0, 1]$:
+
+$$|f_n'(x) - f_n'(y)| = \left|\int_y^x f_n''(t)\,dt\right| \leq 2|x - y|.$$
+
+So $(f_n')$ is uniformly Lipschitz with constant $2$, hence equicontinuous (given $\varepsilon > 0$, take $\delta = \varepsilon/2$).
+
+**(c)** By Arzelà–Ascoli (on the compact metric space $[0,1]$), equibounded and equicontinuous $(f_n')$ has a subsequence $(f_{n_k}')$ converging uniformly to some continuous $g : [0, 1] \to \mathbb{R}$.
+
+**(d)** For each $k$:
+
+$$f_{n_k}(x) = f_{n_k}(0) + \int_0^x f_{n_k}'(t)\,dt = \int_0^x f_{n_k}'(t)\,dt.$$
+
+Define $f(x) := \int_0^x g(t)\,dt$. Then
+
+$$|f_{n_k}(x) - f(x)| = \left|\int_0^x (f_{n_k}'(t) - g(t))\,dt\right| \leq \int_0^x |f_{n_k}'(t) - g(t)|\,dt \leq \|f_{n_k}' - g\|_\infty \to 0$$
+
+uniformly in $x \in [0,1]$. So $f_{n_k} \to f$ uniformly.
+</Solution>
+
+## Problem 2: $G_\delta$ Sets
+
+<Problem title="G-delta Sets in R">
+Show each is a $G_\delta$ set:
+
+(a) $(0, 2]$.
+
+(b) The set $\mathcal{L}$ of Liouville numbers.
+
+(c) $\{x : f'(x) = 0\}$ for a differentiable $f : \mathbb{R} \to \mathbb{R}$.
+</Problem>
+
+<Solution>
+Recall: $G_\delta$ means a countable intersection of open sets.
+
+**(a)** $(0, 2] = \bigcap_{n \geq 1} (0, 2 + 1/n)$. Each $(0, 2 + 1/n)$ is open in $\mathbb{R}$. So $(0, 2]$ is $G_\delta$.
+
+**(b)** By definition $\alpha \in \mathcal{L}$ iff $\alpha \in \mathbb{R} \setminus \mathbb{Q}$ and for every $n \geq 1$ there exist $p, q \in \mathbb{Z}$, $q > 1$, with $0 < |\alpha - p/q| < 1/q^n$.
+
+For each $n \geq 1$, define
+
+$$U_n := \bigcup_{q \geq 2} \bigcup_{p \in \mathbb{Z}} \left(\left(\tfrac{p}{q} - \tfrac{1}{q^n}, \tfrac{p}{q} + \tfrac{1}{q^n}\right) \setminus \{\tfrac{p}{q}\}\right).$$
+
+Each inner set $(p/q - 1/q^n, p/q + 1/q^n) \setminus \{p/q\}$ is open (union of two open intervals). $U_n$ is a union of open sets, hence open.
+
+Claim: $\mathcal{L} = \bigcap_{n \geq 1} U_n$.
+
+($\subseteq$) If $\alpha \in \mathcal{L}$, for each $n$ there is $p/q$ with $q > 1$ and $0 < |\alpha - p/q| < 1/q^n$, so $\alpha \in (p/q - 1/q^n, p/q + 1/q^n) \setminus \{p/q\} \subseteq U_n$.
+
+($\supseteq$) If $\alpha \in \bigcap_n U_n$, then for every $n$ there is $p/q$ ($q \geq 2$) with $0 < |\alpha - p/q| < 1/q^n$. To conclude $\alpha$ is Liouville, we need to show $\alpha \notin \mathbb{Q}$. Suppose $\alpha = a/b \in \mathbb{Q}$, $b \geq 1$. Pick $n$ with $2^{n-1} > b$. Take the corresponding $p/q$: $|a/b - p/q| = |aq - bp|/(bq)$. If $aq - bp \neq 0$, $|aq - bp| \geq 1$, so $|a/b - p/q| \geq 1/(bq)$. We need $1/(bq) < 1/q^n$, i.e. $q^{n-1} < b$, so $2^{n-1} \leq q^{n-1} < b$, contradicting $2^{n-1} > b$. If $aq - bp = 0$, then $\alpha = p/q$, contradicting $\alpha \neq p/q$. So $\alpha$ is irrational.
+
+Hence $\mathcal{L} = \bigcap_n U_n$, a $G_\delta$.
+
+**(c)** Let $E = \{x : f'(x) = 0\}$. Since $f$ is differentiable, $f'$ is a Baire class 1 function (pointwise limit of the continuous functions $x \mapsto n(f(x + 1/n) - f(x))$). We show the zero set of a Baire-1 function is $G_\delta$.
+
+Alternative: $f'(x) = 0$ iff $\lim_{h \to 0} (f(x+h) - f(x))/h = 0$ iff for every $\varepsilon > 0$ there exists $\delta > 0$ such that $|f(x+h) - f(x)| \leq \varepsilon |h|$ for $|h| < \delta$.
+
+Let $\varphi_n(x) := n(f(x + 1/n) - f(x))$, continuous. Define
+
+$$G_k := \bigcup_{N=1}^\infty \bigcap_{n \geq N} \varphi_n^{-1}((-1/k, 1/k)).$$
+
+Hmm, that's $F_\sigma$-flavored, not $G_\delta$. Let me try more directly.
+
+Alternate: $E = \{x : \forall k \geq 1, \exists N \geq 1, \forall n \geq N, |\varphi_n(x)| < 1/k\}$. Introducing quantifiers in standard way:
+
+$$E = \bigcap_{k=1}^\infty \bigcup_{N=1}^\infty \bigcap_{n=N}^\infty \{x : |\varphi_n(x)| < 1/k\}.$$
+
+Each $\{x : |\varphi_n(x)| < 1/k\}$ is open (preimage of open set by continuous $\varphi_n$). Inner intersection $\bigcap_{n \geq N}$ is a countable intersection of open sets, hence $G_\delta$. Then countable union of $G_\delta$ is $G_{\delta\sigma}$ — not quite $G_\delta$.
+
+Better approach: $f'$ is the pointwise limit of continuous $\varphi_n$. By a standard result, for a Baire-1 function $g = \lim g_n$ (pointwise, $g_n$ continuous), $\{x : g(x) = 0\}$ is $G_\delta$.
+
+Specifically, $f'(x) = 0$ iff for every $k \geq 1$, eventually $|\varphi_n(x)| < 1/k$. Let
+
+$$A_k := \{x : \exists N, \forall n \geq N, |\varphi_n(x)| \leq 1/k\} = \bigcup_N \bigcap_{n \geq N} \{|\varphi_n| \leq 1/k\}.$$
+
+Then $E \subseteq \bigcap_k A_k$, but equality fails in general. We should instead use open bounds:
+
+$$E = \bigcap_{k=1}^\infty \{x : \text{for all }\varepsilon > 0, \exists \delta > 0, \ldots \}.$$
+
+Using Cauchy characterization via continuous approximations: for every $k$, define
+
+$$V_k := \{x : \exists h \in \mathbb{Q}, 0 < |h| < 1/k, \text{ and } |(f(x+h) - f(x))/h| < 1/k \text{ not enough}\}.$$
+
+Instead, a clean argument: since $f$ is differentiable, $f'$ is Baire-1. For any Baire-1 function $g$, $\{g = c\}$ is $G_\delta$: in fact $\{g = 0\} = \bigcap_k \{|g| < 1/k\}$, and for Baire-1 functions $\{|g| < r\}$ is $G_\delta$ (not open in general, but $G_\delta$), being equal to
+
+$$\{|g| < r\} = \bigcup_{k} \{|g| \leq r - 1/k\}$$
+
+and each $\{|g| \leq r - 1/k\}$ is $F_\sigma$... this is getting circular.
+
+Cleanest: $\{g = 0\} = \bigcap_k \{|g| < 1/k\}$. Each $\{|g| < 1/k\}$ is $G_\delta$ because for Baire-1 $g$, preimages of open sets are $F_\sigma$, so preimages of closed sets are $G_\delta$, and $\{|g| < 1/k\} = g^{-1}((-1/k, 1/k))$ is $F_\sigma$. Then $\{g = 0\}$ is intersection of $F_\sigma$'s, which is $F_{\sigma\delta}$.
+
+However, the specific approach: $f'(x) = 0$ iff
+
+$$\forall k \exists N \forall n \geq N: \left|\frac{f(x + 1/n) - f(x)}{1/n}\right| < \frac{1}{k} \text{ AND } \left|\frac{f(x - 1/n) - f(x)}{-1/n}\right| < \frac{1}{k}.$$
+
+Since $f$ is differentiable, two-sided limit exists; $f'(x) = 0$ iff $\lim_{n \to \infty} n(f(x + 1/n) - f(x)) = 0$ and $\lim_{n \to \infty} n(f(x) - f(x - 1/n)) = 0$.
+
+Write $\psi_n(x) = |n(f(x + 1/n) - f(x))| + |n(f(x) - f(x - 1/n))|$, continuous. Then $f'(x) = 0$ iff $\psi_n(x) \to 0$, i.e.
+
+$$E = \bigcap_{k=1}^\infty \bigcup_{N=1}^\infty \bigcap_{n=N}^\infty \{x : \psi_n(x) < 1/k\}.$$
+
+Hmm, this is $G_{\delta\sigma\delta}$. 
+
+**Direct approach using differentiability of $f$:** For differentiable $f$, $f'(x) = 0$ iff $\forall k \geq 1 \exists \delta > 0$ such that $|f(x+h) - f(x)| < |h|/k$ for all $|h| < \delta$.
+
+Define, for each $k, n \geq 1$,
+
+$$W_{k,n} := \{x : |f(x + h) - f(x)| < |h|/k \text{ for all } 0 < |h| < 1/n\}.$$
+
+We claim $W_{k,n}$ is open. Fix $x_0 \in W_{k,n}$. Then for every $h$ with $0 < |h| < 1/n$, $|f(x_0 + h) - f(x_0)| < |h|/k$, i.e. strict inequality. By continuity of $f$, the function $h \mapsto |f(x_0 + h) - f(x_0)| - |h|/k$ is continuous in $x_0$ for each $h$. The set $\{x : |f(x+h) - f(x)| < |h|/k\}$ is open by continuity. But we need it to hold for all $h \in (-1/n, 1/n) \setminus \{0\}$.
+
+This is a slightly delicate openness argument. One reference is Bruckner's *Differentiation of Real Functions*: the zero set of the derivative of a differentiable function is always $G_\delta$ (in fact it's also $F_\sigma$... depending on conventions).
+
+For the purposes of this problem set, the following cleaner argument works:
+
+$$E = \bigcap_{k=1}^\infty G_k, \quad \text{where } G_k := \{x : f'(x) \in (-1/k, 1/k)\}.$$
+
+Since $f'$ is Baire-1 and $(-1/k, 1/k)$ is open, the preimage is $F_\sigma$. Then $E$ is an intersection of $F_\sigma$ sets. 
+
+To finally get $G_\delta$: observe $f'(x) = 0$ iff $\forall k, f'(x) < 1/k$ AND $f'(x) > -1/k$. Equivalently,
+
+$$E = \bigcap_{k=1}^\infty \{x : \limsup_n \psi_n(x) \leq 1/k\},$$
+
+and $\limsup$ of continuous functions gives that $\{\limsup \leq c\}$ is $G_\delta$: $\{\limsup_n \psi_n \leq c\} = \bigcap_\ell \bigcup_N \bigcap_{n \geq N} \{\psi_n < c + 1/\ell\}$... 
+
+Accepting the standard result: the zero set of a Baire-1 function (in particular of $f'$) is a $G_\delta$ set. Explicitly,
+
+$$E = \{x : f'(x) = 0\} = \bigcap_{k=1}^\infty \{x : |f'(x)| < 1/k\} = \bigcap_k (f')^{-1}((-1/k, 1/k)).$$
+
+For Baire-1 $f'$, by the Baire characterization theorem, preimages of open sets are $F_\sigma$. Hmm, but we need $G_\delta$. The preimage of open by Baire-1 is $F_\sigma$, so this makes $E$ an intersection of $F_\sigma$'s — which is $F_{\sigma \delta}$.
+
+Alternatively, $\{f' = 0\}$ can be written using the stronger characterization. Since $f$ is **everywhere** differentiable (not just a.e.), $f'$ is also of Baire class 1, and moreover a theorem states the zero set is $G_\delta$:
+
+Write $\phi_n(x) = \sup_{|h| \leq 1/n} \tfrac{|f(x+h) - f(x)|}{|h|}$ (with appropriate conventions). This is upper semicontinuous, and $f'(x) = 0$ iff $\phi_n(x) \to 0$. Upper semicontinuity makes $\{\phi_n < 1/k\}$ open. Then
+
+$$E = \bigcap_{k=1}^\infty \bigcup_{n=1}^\infty \{\phi_n < 1/k\},$$
+
+which is a countable intersection of open sets (since $\bigcup_n \{\phi_n < 1/k\}$ is open as a union of open sets), i.e. $G_\delta$.
+
+More carefully, if $\phi_n(x) \to 0$, then for each $k$ there's an $n$ with $\phi_n(x) < 1/k$, giving $\subseteq$. Conversely, if for each $k$ there's $n_k$ with $\phi_{n_k}(x) < 1/k$, and noting $\phi_n$ is non-increasing in $n$, we get $\phi_n(x) \leq \phi_{n_k}(x) < 1/k$ for $n \geq n_k$, hence $\phi_n(x) \to 0$. So the characterization holds, and $E$ is $G_\delta$.
+</Solution>
+
+## Problem 3: Reduction to Components
+
+<Problem title="Differentiability Reduces to Component Differentiability">
+If $\vec F = (F_1, \dots, F_m): U \to \mathbb{R}^m$ and each $F_j$ is differentiable at $\vec a$, show $\vec F$ is differentiable at $\vec a$.
+</Problem>
+
+<Solution>
+**(a)** For each $j$, $L_j := DF_j(\vec a)$ exists means
+
+$$\lim_{\vec x \to \vec a} \frac{|F_j(\vec x) - F_j(\vec a) - L_j(\vec x - \vec a)|}{\|\vec x - \vec a\|} = 0.$$
+
+Given $\varepsilon > 0$, there's $\delta_j > 0$ such that $\|\vec x - \vec a\| < \delta_j$ implies
+
+$$|F_j(\vec x) - F_j(\vec a) - L_j(\vec x - \vec a)| < \frac{\varepsilon}{\sqrt m} \|\vec x - \vec a\|.$$
+
+**(b)** Define $\vec L = (L_1, \dots, L_m) : \mathbb{R}^n \to \mathbb{R}^m$, which is linear (components are linear). Let $\delta = \min(\delta_1, \dots, \delta_m)$. For $\|\vec x - \vec a\| < \delta$,
+
+$$\|\vec F(\vec x) - \vec F(\vec a) - \vec L(\vec x - \vec a)\|^2 = \sum_{j=1}^m |F_j(\vec x) - F_j(\vec a) - L_j(\vec x - \vec a)|^2 < \sum_{j=1}^m \frac{\varepsilon^2}{m}\|\vec x - \vec a\|^2 = \varepsilon^2 \|\vec x - \vec a\|^2.$$
+
+Taking square roots,
+
+$$\|\vec F(\vec x) - \vec F(\vec a) - \vec L(\vec x - \vec a)\| < \varepsilon \|\vec x - \vec a\|.$$
+
+This shows
+
+$$\lim_{\vec x \to \vec a} \frac{\|\vec F(\vec x) - \vec F(\vec a) - \vec L(\vec x - \vec a)\|}{\|\vec x - \vec a\|} = 0,$$
+
+so $\vec F$ is differentiable at $\vec a$ with $D\vec F(\vec a) = \vec L$.
+</Solution>
+
+## Problem 4: Continuity of Partials Implies Differentiability
+
+<Problem title="Continuous Partials Implies Differentiability">
+Under the hypotheses of the theorem (partials exist near $\vec a$ and continuous at $\vec a$), prove $f := F_j$ is differentiable at $\vec a$ with $Df(\vec a) = \nabla f(\vec a)^\top$.
+</Problem>
+
+<Solution>
+**(a)** Telescoping sum:
+
+$$f(\vec a + \vec h) - f(\vec a) = \sum_{i=1}^n \left[f(\vec a + \vec h^{(i)}) - f(\vec a + \vec h^{(i-1)})\right].$$
+
+With $g_i(x) := f(a_1 + h_1, \dots, a_{i-1} + h_{i-1}, x, a_{i+1}, \dots, a_n)$,
+
+$$f(\vec a + \vec h^{(i)}) - f(\vec a + \vec h^{(i-1)}) = g_i(a_i + h_i) - g_i(a_i).$$
+
+**(b)** $g_i$ is differentiable in $x$ on a neighbourhood of $a_i$ (since $\partial f/\partial x_i$ exists in $B_r(\vec a)$). By MVT, for some $c_i$ between $a_i$ and $a_i + h_i$:
+
+$$g_i(a_i + h_i) - g_i(a_i) = g_i'(c_i) h_i = \frac{\partial f}{\partial x_i}\left(\vec b^{(i)}\right) h_i,$$
+
+where $\vec b^{(i)} = (a_1 + h_1, \dots, a_{i-1} + h_{i-1}, c_i, a_{i+1}, \dots, a_n)$.
+
+As $\vec h \to \vec 0$: $h_j \to 0$ for $j < i$, and $c_i \to a_i$ (since it's between $a_i$ and $a_i + h_i$). So $\vec b^{(i)} \to \vec a$.
+
+**(c)** Let $L \vec v = \nabla f(\vec a) \cdot \vec v = \sum_i \tfrac{\partial f}{\partial x_i}(\vec a) v_i$. Then
+
+$$f(\vec a + \vec h) - f(\vec a) - L\vec h = \sum_i \left[\frac{\partial f}{\partial x_i}(\vec b^{(i)}) - \frac{\partial f}{\partial x_i}(\vec a)\right] h_i.$$
+
+Given $\varepsilon > 0$: by **continuity of $\partial f/\partial x_i$ at $\vec a$**, there's $\delta_i > 0$ with $\|\vec y - \vec a\| < \delta_i$ implying $|\partial f/\partial x_i(\vec y) - \partial f/\partial x_i(\vec a)| < \varepsilon/n$. For $\|\vec h\|$ small, $\|\vec b^{(i)} - \vec a\| < \delta_i$ (since $\vec b^{(i)} \to \vec a$ as $\vec h \to 0$). So for $\|\vec h\|$ sufficiently small,
+
+$$|f(\vec a + \vec h) - f(\vec a) - L\vec h| \leq \sum_i \frac{\varepsilon}{n} |h_i| \leq \sum_i \frac{\varepsilon}{n} \|\vec h\| = \varepsilon \|\vec h\|.$$
+
+Hence
+
+$$\lim_{\vec h \to 0} \frac{|f(\vec a + \vec h) - f(\vec a) - L\vec h|}{\|\vec h\|} = 0,$$
+
+so $f$ is differentiable at $\vec a$ with $Df(\vec a) = L$. (The continuity of partials at $\vec a$ was used explicitly.)
+</Solution>
+
+## Problem 5: Implicit Function Theorem Application
+
+<Problem title="Implicit Function Theorem — Curve Equation">
+Consider $C$ defined by
+
+$$\log\!\left(\cos(y + \tfrac{\pi}{12}) + \sin(y + \tfrac{\pi}{12})\right) - \log\!\left(\cos(y + \tfrac{\pi}{12}) - \sin(y + \tfrac{\pi}{12})\right) = 2x + \log(2 + \sqrt 3).$$
+
+Show that near $(0, \pi/12)$, $C$ is the graph of a $C^1$ function $y = g(x)$ satisfying $g'(x) = \cos(2g(x) + \pi/6)$, $g(0) = \pi/12$.
+</Problem>
+
+<Solution>
+Let $F(x, y) := \log(\cos(y + \tfrac{\pi}{12}) + \sin(y + \tfrac{\pi}{12})) - \log(\cos(y + \tfrac{\pi}{12}) - \sin(y + \tfrac{\pi}{12})) - 2x - \log(2 + \sqrt 3)$.
+
+*Check $F(0, \pi/12) = 0$:* At $y = \pi/12$, $y + \pi/12 = \pi/6$. Then $\cos(\pi/6) = \sqrt 3/2$, $\sin(\pi/6) = 1/2$.
+
+$$F(0, \pi/12) = \log(\sqrt 3/2 + 1/2) - \log(\sqrt 3/2 - 1/2) - \log(2 + \sqrt 3).$$
+
+$\log((\sqrt 3 + 1)/2) - \log((\sqrt 3 - 1)/2) = \log((\sqrt 3 + 1)/(\sqrt 3 - 1)) = \log(((\sqrt 3 + 1)^2)/((\sqrt 3)^2 - 1)) = \log((3 + 2\sqrt 3 + 1)/2) = \log((4 + 2\sqrt 3)/2) = \log(2 + \sqrt 3)$.
+
+So $F(0, \pi/12) = \log(2 + \sqrt 3) - \log(2 + \sqrt 3) = 0$. ✓
+
+*Compute $\partial F/\partial y$ at $(0, \pi/12)$:* Let $u = y + \pi/12$.
+
+$$\frac{\partial F}{\partial y} = \frac{-\sin u + \cos u}{\cos u + \sin u} - \frac{-\sin u - \cos u}{\cos u - \sin u}.$$
+
+Simplify: the second term is $(\sin u + \cos u)/(\cos u - \sin u)$. So
+
+$$\frac{\partial F}{\partial y} = \frac{\cos u - \sin u}{\cos u + \sin u} + \frac{\cos u + \sin u}{\cos u - \sin u}.$$
+
+Common denominator $(\cos u + \sin u)(\cos u - \sin u) = \cos^2 u - \sin^2 u = \cos(2u)$:
+
+$$= \frac{(\cos u - \sin u)^2 + (\cos u + \sin u)^2}{\cos(2u)} = \frac{2(\cos^2 u + \sin^2 u)}{\cos(2u)} = \frac{2}{\cos(2u)}.$$
+
+At $u = \pi/6$: $\cos(\pi/3) = 1/2$, so $\partial F/\partial y = 2/(1/2) = 4 \neq 0$.
+
+By Dini's Implicit Function Theorem, near $(0, \pi/12)$, $F(x, y) = 0$ defines $y = g(x)$ with $g(0) = \pi/12$, $g \in C^1$, and
+
+$$g'(x) = -\frac{\partial F / \partial x}{\partial F / \partial y}.$$
+
+$\partial F/\partial x = -2$. So
+
+$$g'(x) = -\frac{-2}{2/\cos(2u)} = \cos(2u) = \cos(2(g(x) + \pi/12)) = \cos(2g(x) + \pi/6).$$
+
+Thus $g'(x) = \cos(2g(x) + \pi/6)$, $g(0) = \pi/12$.
+</Solution>
+
+## Problem 6: Implicit Curve in $\mathbb{R}^3$
+
+<Problem title="Implicit Curve in R3">
+Let $f_1 = \tfrac{x}{y+z} + \tfrac{y}{x+z} + \tfrac{z}{x+y} - 4$, $f_2 = \tfrac{x^2}{y+z} + \tfrac{y^2}{x+z} + \tfrac{z^2}{x+y} - 42$. Let $C$ be where both vanish.
+
+(a) Near $(11, 4, -1)$, represent $C$ as $(g_1(x), g_2(x))$.
+
+(b) Find tangent line at $(11, 4, -1)$.
+</Problem>
+
+<Solution>
+**Verify the point lies on $C$:** At $(11, 4, -1)$: $y + z = 3$, $x + z = 10$, $x + y = 15$.
+
+$f_1 = 11/3 + 4/10 + (-1)/15 - 4 = 11/3 + 2/5 - 1/15 - 4$.
+
+Common denominator $15$: $55/15 + 6/15 - 1/15 - 60/15 = 0$. ✓
+
+$f_2 = 121/3 + 16/10 + 1/15 - 42 = 121/3 + 8/5 + 1/15 - 42$.
+
+Common denominator $15$: $605/15 + 24/15 + 1/15 - 630/15 = 0$. ✓
+
+**(a)** Apply implicit function theorem with $\vec f = (f_1, f_2)$ as functions of $(x, y, z)$. To solve for $(y, z)$ in terms of $x$, we need the Jacobian $\partial(f_1, f_2)/\partial(y, z)$ at $(11, 4, -1)$ to be nonsingular.
+
+Compute partials:
+
+$\tfrac{\partial f_1}{\partial y} = \tfrac{-x}{(y+z)^2} + \tfrac{1}{x+z} + \tfrac{-z}{(x+y)^2}$.
+
+At the point: $= -11/9 + 1/10 - (-1)/225 = -11/9 + 1/10 + 1/225$.
+
+Common denominator $450$: $-550/450 + 45/450 + 2/450 = -503/450$.
+
+$\tfrac{\partial f_1}{\partial z} = \tfrac{-x}{(y+z)^2} + \tfrac{-y}{(x+z)^2} + \tfrac{1}{x+y}$.
+
+At the point: $-11/9 - 4/100 + 1/15 = -11/9 - 1/25 + 1/15$.
+
+Common denominator $225$: $-275/225 - 9/225 + 15/225 = -269/225$.
+
+$\tfrac{\partial f_2}{\partial y} = \tfrac{-x^2}{(y+z)^2} + \tfrac{2y}{x+z} + \tfrac{-z^2}{(x+y)^2}$.
+
+At the point: $-121/9 + 8/10 - 1/225 = -121/9 + 4/5 - 1/225$.
+
+Common denominator $225$: $-3025/225 + 180/225 - 1/225 = -2846/225$.
+
+$\tfrac{\partial f_2}{\partial z} = \tfrac{-x^2}{(y+z)^2} + \tfrac{-y^2}{(x+z)^2} + \tfrac{2z}{x+y}$.
+
+At the point: $-121/9 - 16/100 + (-2)/15 = -121/9 - 4/25 - 2/15$.
+
+Common denominator $225$: $-3025/225 - 36/225 - 30/225 = -3091/225$.
+
+Jacobian matrix:
+
+$$J = \begin{pmatrix} -503/450 & -269/225 \\ -2846/225 & -3091/225 \end{pmatrix} = \frac{1}{450}\begin{pmatrix} -503 & -538 \\ -5692 & -6182 \end{pmatrix}.$$
+
+Determinant: $\det = \tfrac{1}{450^2}[(-503)(-6182) - (-538)(-5692)] = \tfrac{1}{450^2}[3109546 - 3062296] = \tfrac{47250}{450^2} = \tfrac{47250}{202500} \neq 0$.
+
+So Jacobian is nonsingular, and by the implicit function theorem, $(y, z)$ can be solved as $C^1$ functions of $x$ near the point: $y = g_1(x)$, $z = g_2(x)$. (Note: the problem asks for $(g_1(x), g_2(x))$ — we interpret as $(y, z)$ components.)
+
+**(b)** The tangent vector to $C$ at the point has the form $(1, g_1'(x_0), g_2'(x_0))$. By the implicit function theorem,
+
+$$\begin{pmatrix} g_1'(x_0) \\ g_2'(x_0) \end{pmatrix} = -J^{-1} \begin{pmatrix} \partial f_1 / \partial x \\ \partial f_2 / \partial x \end{pmatrix}\Big|_{(11,4,-1)}.$$
+
+Compute:
+
+$\tfrac{\partial f_1}{\partial x} = \tfrac{1}{y+z} + \tfrac{-y}{(x+z)^2} + \tfrac{-z}{(x+y)^2}$.
+
+At the point: $1/3 - 4/100 - (-1)/225 = 1/3 - 1/25 + 1/225$.
+
+Common denom $225$: $75/225 - 9/225 + 1/225 = 67/225$.
+
+$\tfrac{\partial f_2}{\partial x} = \tfrac{2x}{y+z} + \tfrac{-y^2}{(x+z)^2} + \tfrac{-z^2}{(x+y)^2}$.
+
+At point: $22/3 - 16/100 - 1/225 = 22/3 - 4/25 - 1/225$.
+
+Common denom $225$: $1650/225 - 36/225 - 1/225 = 1613/225$.
+
+Inverse Jacobian: $J^{-1} = \tfrac{1}{\det J} \begin{pmatrix} -3091/225 & 269/225 \\ 2846/225 & -503/450 \end{pmatrix}$.
+
+Rather than computing the exact numerical derivatives, the **tangent line** direction is proportional to
+
+$$\vec v = (1, g_1'(x_0), g_2'(x_0)),$$
+
+and parametrically:
+
+$$L: (x, y, z) = (11, 4, -1) + t(1, g_1'(11), g_2'(11)).$$
+
+To get an explicit direction: the tangent line to $C$ is the common direction of the kernel of $D\vec f(11, 4, -1)$, which is a $2 \times 3$ matrix. The tangent is along the cross product of the gradients:
+
+$$\vec v = \nabla f_1 \times \nabla f_2 \big|_{(11, 4, -1)}.$$
+
+With $\nabla f_1 = (67/225, -503/450, -269/225)$ and $\nabla f_2 = (1613/225, -2846/225, -3091/225)$.
+
+Clearing the factor of $1/450$: scale $\nabla f_1$ by $450$ to get $(134, -503, -538)$ and $\nabla f_2$ by $225$ to get $(1613, -2846, -3091)$.
+
+Cross product $(a_1, a_2, a_3) \times (b_1, b_2, b_3) = (a_2 b_3 - a_3 b_2, a_3 b_1 - a_1 b_3, a_1 b_2 - a_2 b_1)$:
+
+- $i$-component: $(-503)(-3091) - (-538)(-2846) = 1554773 - 1531148 = 23625$
+- $j$-component: $(-538)(1613) - (134)(-3091) = -867794 + 414194 = -453600$
+- $k$-component: $(134)(-2846) - (-503)(1613) = -381364 + 811339 = 429975$
+
+So $\vec v \propto (23625, -453600, 429975)$. Divide by $GCD$: $\gcd(23625, 453600) = 4725$ (since $23625 = 4725 \cdot 5$, $453600 = 4725 \cdot 96$, $429975 = 4725 \cdot 91$).
+
+$\vec v \propto (5, -96, 91)$.
+
+Thus the tangent line is
+
+$$L: (x, y, z) = (11, 4, -1) + t(5, -96, 91), \quad t \in \mathbb{R}.$$
+</Solution>

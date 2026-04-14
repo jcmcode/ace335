@@ -1,0 +1,382 @@
+---
+title: "Metric Spaces"
+chapter: 2
+---
+
+In the previous chapter, we took the abstract viewpoint: a topology is any collection of subsets satisfying three axioms. But almost every space that appears in practice carries an additional piece of data — a way to measure *distance* between points. This chapter introduces **metric spaces**, in which a distance function is given and a topology arises automatically from it.
+
+The key observation is one we already saw in $\mathbb{R}^n$: once you have a notion of distance, you can define open balls, and once you have open balls, you can say which sets are "open" — namely, those sets in which every point sits inside some small ball contained in the set. This construction generalizes from $\mathbb{R}^n$ to any set equipped with a suitable distance function.
+
+---
+
+## The Definition of a Metric
+
+<Definition title="Metric Space">
+Let $X$ be a nonempty set. A function $d : X \times X \to \mathbb{R}$ is called a **distance** (or **metric**) on $X$ if it satisfies the following four axioms:
+
+1. **Non-negativity and definiteness:** $d(x, y) \ge 0$ for all $x, y \in X$, and $d(x, y) = 0 \iff x = y$.
+2. **Symmetry:** $d(x, y) = d(y, x)$ for all $x, y \in X$.
+3. **Triangle inequality:** $d(x, z) \le d(x, y) + d(y, z)$ for all $x, y, z \in X$.
+
+The pair $(X, d)$ is called a **metric space**.
+</Definition>
+
+<Remark>
+**Intuition:** These axioms extract the bare minimum from our geometric intuition of distance. Non-negativity and definiteness say "distance is zero exactly between identical points." Symmetry says "the distance from $x$ to $y$ equals the distance from $y$ to $x$." The triangle inequality says "it's never shorter to detour through a third point." Any function obeying these three rules is, for our purposes, a perfectly good notion of distance — even if it looks exotic.
+</Remark>
+
+<Remark>
+Some authors split axiom 1 into two separate axioms (non-negativity; $d(x,y)=0$ iff $x=y$), giving four axioms total. Either formulation is standard. Occasionally one sees a weaker object called a **pseudometric**, which drops the "$d(x,y)=0 \implies x=y$" half of axiom 1.
+</Remark>
+
+---
+
+## Examples of Metrics
+
+<Example title="The Euclidean Metric on R to the n">
+On $\mathbb{R}^n$, the **Euclidean metric** is
+$$d_2(\boldsymbol{x}, \boldsymbol{y}) = \|\boldsymbol{x} - \boldsymbol{y}\| = \left( \sum_{j=1}^n (x_j - y_j)^2 \right)^{1/2}.$$
+Non-negativity, definiteness, and symmetry are clear. The triangle inequality follows from the Cauchy–Schwarz inequality and is the content of the classical "triangle inequality for the Euclidean norm." When $n = 1$ this reduces to $d_2(x, y) = |x - y|$.
+</Example>
+
+<Example title="The Discrete Metric">
+Let $X$ be any nonempty set. Define
+$$d(x, y) = \begin{cases} 0 & \text{if } x = y, \\ 1 & \text{if } x \ne y. \end{cases}$$
+This is the **discrete metric** on $X$. Axioms 1 and 2 are obvious. For the triangle inequality $d(x, z) \le d(x, y) + d(y, z)$: if $x = z$ then the left side is 0. If $x \ne z$ then the left side is 1, and at least one of $y \ne x$ or $y \ne z$ must hold (otherwise $x = y = z$), so the right side is at least 1.
+
+The discrete metric regards every pair of distinct points as being "at distance 1" — it is as if every point were isolated on its own island.
+</Example>
+
+<Example title="The Taxicab (L^1) Metric on R to the n">
+On $\mathbb{R}^n$, define
+$$d_1(\boldsymbol{x}, \boldsymbol{y}) = \sum_{j=1}^n |x_j - y_j|.$$
+This is called the **taxicab metric** or **$\ell^1$ metric** or **Manhattan metric** (because it measures distance as if one must travel along a grid of city blocks). Non-negativity, definiteness, and symmetry are clear. The triangle inequality follows from the triangle inequality for absolute values applied coordinate-by-coordinate:
+$$|x_j - z_j| \le |x_j - y_j| + |y_j - z_j|,$$
+then summing over $j$.
+</Example>
+
+<Example title="The Max (L^infinity) Metric on R to the n">
+On $\mathbb{R}^n$, define
+$$d_\infty(\boldsymbol{x}, \boldsymbol{y}) = \max_{1 \le j \le n} |x_j - y_j|.$$
+This is the **max metric** or **sup metric** or **$\ell^\infty$ metric**. Non-negativity, definiteness, and symmetry are clear. For the triangle inequality, for each $j$,
+$$|x_j - z_j| \le |x_j - y_j| + |y_j - z_j| \le d_\infty(\boldsymbol{x}, \boldsymbol{y}) + d_\infty(\boldsymbol{y}, \boldsymbol{z}).$$
+Taking the maximum over $j$ on the left gives $d_\infty(\boldsymbol{x}, \boldsymbol{z}) \le d_\infty(\boldsymbol{x}, \boldsymbol{y}) + d_\infty(\boldsymbol{y}, \boldsymbol{z})$.
+</Example>
+
+<Example title="The L^p Metric on R to the n">
+More generally, for $p \in [1, \infty)$, the **$\ell^p$ metric** on $\mathbb{R}^n$ is
+$$d_p(\boldsymbol{x}, \boldsymbol{y}) = \left( \sum_{j=1}^n |x_j - y_j|^p \right)^{1/p}.$$
+This recovers the taxicab metric when $p = 1$ and the Euclidean metric when $p = 2$. As $p \to \infty$ it approaches the max metric. Proving the triangle inequality for general $p$ requires **Minkowski's inequality**, a nontrivial result whose proof typically uses the Hölder inequality.
+</Example>
+
+<Example title="The Restricted (Subspace) Metric">
+If $(X, d)$ is a metric space and $A \subseteq X$ is a nonempty subset, then $(A, d|_{A \times A})$ is again a metric space. This is immediate — restricting a metric to a subset preserves all four axioms. For instance, the open interval $(0,1)$ is a metric space under the restricted Euclidean metric $d(x,y) = |x-y|$.
+</Example>
+
+---
+
+## Open Balls and the Metric Topology
+
+In a metric space, the distance function lets us define "open balls," and these in turn generate a topology.
+
+<Definition title="Open Ball">
+Let $(X, d)$ be a metric space. For $x \in X$ and $r > 0$, the **open ball** of radius $r$ centered at $x$ is
+$$B(x, r) = \{ y \in X : d(x, y) < r \}.$$
+</Definition>
+
+<Theorem title="The Metric Topology">
+Let $(X, d)$ be a metric space. The collection
+$$\mathcal{T}_d = \{ \Omega \subseteq X : \forall x \in \Omega, \, \exists \rho > 0 \text{ such that } B(x, \rho) \subseteq \Omega \}$$
+is a topology on $X$. It is called the **metric topology** on $(X, d)$.
+</Theorem>
+
+<Proof>
+The proof is identical in structure to the proof that the Euclidean topology is a topology, because the only properties of $\mathbb{R}^n$ we used there were the triangle inequality and the existence of open balls.
+
+**(1)** $\emptyset \in \mathcal{T}_d$ vacuously, and $X \in \mathcal{T}_d$ since for any $x \in X$, $B(x, 1) \subseteq X$.
+
+**(2)** Let $\Omega_1, \Omega_2 \in \mathcal{T}_d$. If $\Omega_1 \cap \Omega_2 = \emptyset$ we are done. Otherwise, let $x \in \Omega_1 \cap \Omega_2$. There exist $\rho_1, \rho_2 > 0$ with $B(x, \rho_1) \subseteq \Omega_1$ and $B(x, \rho_2) \subseteq \Omega_2$. Set $\rho = \min\{\rho_1, \rho_2\} > 0$; then $B(x, \rho) \subseteq \Omega_1 \cap \Omega_2$.
+
+**(3)** Let $(\Omega_\alpha)_{\alpha \in \mathcal{A}}$ be a family in $\mathcal{T}_d$. If $x \in \Omega := \bigcup_\alpha \Omega_\alpha$, then $x \in \Omega_{\tilde\alpha}$ for some $\tilde\alpha$, so there exists $\rho > 0$ with $B(x, \rho) \subseteq \Omega_{\tilde\alpha} \subseteq \Omega$.
+</Proof>
+
+<Remark>
+**Intuition:** The metric topology encodes "openness" in the familiar sense: $\Omega$ is open iff around every point of $\Omega$ we have a little buffer region (an open ball) that still sits inside $\Omega$. The definition of the Euclidean topology on $\mathbb{R}^n$ was just the special case of the metric topology for the Euclidean metric.
+</Remark>
+
+<Proposition title="Open Balls are Open">
+In any metric space $(X, d)$, every open ball $B(x, r)$ is an open set (i.e., belongs to $\mathcal{T}_d$).
+</Proposition>
+
+<Proof>
+Let $y \in B(x, r)$, so $d(x, y) < r$. Set $s = r - d(x, y) > 0$. We claim $B(y, s) \subseteq B(x, r)$. Indeed, if $z \in B(y, s)$, then by the triangle inequality,
+$$d(x, z) \le d(x, y) + d(y, z) < d(x, y) + s = d(x, y) + (r - d(x, y)) = r,$$
+so $z \in B(x, r)$.
+</Proof>
+
+### Neighbourhoods in a Metric Space
+
+<Proposition title="Neighbourhoods in the Metric Topology">
+Let $(X, d)$ be a metric space with metric topology $\mathcal{T}_d$, and let $x \in X$. Then $V \subseteq X$ is a neighbourhood of $x$ in $\mathcal{T}_d$ if and only if there exists $\rho > 0$ such that $B(x, \rho) \subseteq V$.
+</Proposition>
+
+<Proof>
+**($\Rightarrow$)** Let $V$ be a neighbourhood of $x$ in $\mathcal{T}_d$. Then there exists $\Omega \in \mathcal{T}_d$ with $x \in \Omega \subseteq V$. By definition of $\mathcal{T}_d$, there exists $\rho > 0$ with $B(x, \rho) \subseteq \Omega \subseteq V$.
+
+**($\Leftarrow$)** Suppose there exists $\rho > 0$ with $B(x, \rho) \subseteq V$. By the previous proposition, $B(x, \rho) \in \mathcal{T}_d$. Since $x \in B(x, \rho) \subseteq V$, $V$ is a neighbourhood of $x$.
+</Proof>
+
+<Remark>
+**Intuition:** In a metric space, open balls are the "canonical" neighbourhoods. Any neighbourhood must contain some small open ball, and any set that contains an open ball around $x$ is automatically a neighbourhood of $x$.
+</Remark>
+
+### Metric Spaces are Hausdorff
+
+<Proposition title="Every Metric Space is Hausdorff">
+If $(X, d)$ is a metric space, then $(X, \mathcal{T}_d)$ is a Hausdorff topological space.
+</Proposition>
+
+<Proof>
+Let $x, y \in X$ with $x \ne y$. By axiom 1 of a metric, $d(x, y) > 0$. Set $\rho = \tfrac{1}{2} d(x, y) > 0$. We claim $B(x, \rho) \cap B(y, \rho) = \emptyset$.
+
+Suppose for contradiction that $z \in B(x, \rho) \cap B(y, \rho)$. Then $d(x, z) < \rho$ and $d(y, z) < \rho$, so by the triangle inequality and symmetry,
+$$d(x, y) \le d(x, z) + d(z, y) < \rho + \rho = d(x, y),$$
+a contradiction.
+
+Since $B(x, \rho) \in \mathcal{U}_x$ and $B(y, \rho) \in \mathcal{U}_y$, the points $x$ and $y$ are separated by disjoint neighbourhoods.
+</Proof>
+
+<Remark>
+**Intuition:** The triangle inequality is exactly what lets us take two balls around two distinct points and shrink them so they don't overlap. This is why metric spaces are always "nice" in the separation sense, unlike exotic non-Hausdorff topologies such as $(\mathbb{R}, \mathcal{T}_{\text{lsc}})$ — no metric can induce that topology.
+</Remark>
+
+<Example title="The Discrete Metric Induces the Discrete Topology">
+Let $(X, d)$ be a discrete metric space. For any $x \in X$, the ball $B(x, \tfrac{1}{2}) = \{x\}$, since the only point at distance less than $\tfrac{1}{2}$ from $x$ is $x$ itself (every other point is at distance exactly 1). Thus every singleton $\{x\}$ is open in $\mathcal{T}_d$. Since every subset $A \subseteq X$ can be written as a union $A = \bigcup_{x \in A} \{x\}$ of open singletons, every subset is open. Hence $\mathcal{T}_d = 2^X$ is the discrete topology.
+</Example>
+
+---
+
+## Equivalent Metrics
+
+Two different metrics can induce the *same* topology. This turns out to be more important than which specific metric one uses — topological properties (continuity, compactness, convergence of sequences) depend only on the topology, not on the particular distance function.
+
+<Definition title="Equivalent Metrics">
+Let $X$ be a nonempty set and let $d, d'$ be two metrics on $X$. We say $d$ and $d'$ are **topologically equivalent** (or simply **equivalent**) if they induce the same topology: $\mathcal{T}_d = \mathcal{T}_{d'}$.
+</Definition>
+
+A useful sufficient condition for equivalence is the existence of two-sided bounds between the metrics:
+
+<Proposition title="Strongly Equivalent Metrics are Equivalent">
+Let $d, d'$ be two metrics on $X$. Suppose there exist constants $c, C > 0$ such that
+$$c \cdot d(x, y) \le d'(x, y) \le C \cdot d(x, y) \qquad \text{for all } x, y \in X.$$
+Then $\mathcal{T}_d = \mathcal{T}_{d'}$.
+</Proposition>
+
+<Proof>
+We show every $d$-open set is $d'$-open, and vice versa. Let $B(x, r)$ and $B'(x, r)$ denote open balls with respect to $d$ and $d'$ respectively.
+
+If $y \in B(x, r)$, then $d(x, y) < r$, so $d'(x, y) \le C \cdot d(x, y) < C r$. Conversely, if $d'(x, y) < cr$, then $d(x, y) \le (1/c) \cdot d'(x, y) < r$. Combining,
+$$B'(x, cr) \subseteq B(x, r) \subseteq B'(x, Cr).$$
+
+Now let $\Omega \in \mathcal{T}_d$ and let $x \in \Omega$. There exists $\rho > 0$ with $B(x, \rho) \subseteq \Omega$. Then $B'(x, c\rho) \subseteq B(x, \rho) \subseteq \Omega$, so $\Omega \in \mathcal{T}_{d'}$. The reverse inclusion is analogous.
+</Proof>
+
+<Example title="The L^1, L^2, and L^infinity Metrics on R^n are All Equivalent">
+On $\mathbb{R}^n$, the metrics $d_1$, $d_2$, $d_\infty$ are all topologically equivalent. We show this via the elementary chain of inequalities
+$$d_\infty(\boldsymbol{x}, \boldsymbol{y}) \le d_2(\boldsymbol{x}, \boldsymbol{y}) \le d_1(\boldsymbol{x}, \boldsymbol{y}) \le n \cdot d_\infty(\boldsymbol{x}, \boldsymbol{y}).$$
+
+*Proof of the chain.* Let $a_j = |x_j - y_j|$.
+
+- $d_\infty \le d_2$: $\max_j a_j = \sqrt{(\max_j a_j)^2} \le \sqrt{\sum_j a_j^2} = d_2$.
+- $d_2 \le d_1$: this follows from $\sum_j a_j^2 \le (\sum_j a_j)^2$ because the cross-terms $2 a_i a_j$ are non-negative.
+- $d_1 \le n \, d_\infty$: $\sum_j a_j \le n \cdot \max_j a_j$.
+
+Thus all three metrics are pairwise strongly equivalent and induce the same topology — namely, the Euclidean topology $\mathcal{E}$.
+</Example>
+
+<Remark>
+**Intuition:** Different metrics can have different-looking "balls" (the $\ell^1$ unit ball is a diamond, the $\ell^2$ unit ball is a disk, the $\ell^\infty$ unit ball is a square), but as long as balls of each type can be sandwiched between balls of the other, the open sets they generate are identical. The take-away: for topological questions on $\mathbb{R}^n$ (continuity, convergence, openness), the choice of $p$ in $\ell^p$ does not matter.
+</Remark>
+
+---
+
+## Product Metrics
+
+Given two metric spaces, we can form a metric on their Cartesian product in several natural ways.
+
+<Definition title="Product Metrics">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces. On $X \times Y$, define three candidate product metrics:
+
+- $d_1^{\text{prod}}((x_1, y_1), (x_2, y_2)) = d_X(x_1, x_2) + d_Y(y_1, y_2),$
+- $d_2^{\text{prod}}((x_1, y_1), (x_2, y_2)) = \sqrt{d_X(x_1, x_2)^2 + d_Y(y_1, y_2)^2},$
+- $d_\infty^{\text{prod}}((x_1, y_1), (x_2, y_2)) = \max\{d_X(x_1, x_2), \, d_Y(y_1, y_2)\}.$
+
+Each of these is a metric on $X \times Y$, and all three are topologically equivalent.
+</Definition>
+
+<Remark>
+**Intuition:** The product metrics are exactly the analogs of $d_1$, $d_2$, $d_\infty$ on $\mathbb{R}^n$, applied here to the "coordinates" $d_X(x_1, x_2)$ and $d_Y(y_1, y_2)$. Since all three are equivalent, there is a single well-defined **product topology** on $X \times Y$. A sequence $((x_n, y_n))$ converges in any one of these product metrics if and only if $x_n \to x$ in $(X, d_X)$ and $y_n \to y$ in $(Y, d_Y)$ simultaneously.
+</Remark>
+
+<Proof>
+We check the triangle inequality for $d_1^{\text{prod}}$; the others are similar. For three points $p_1 = (x_1, y_1), p_2 = (x_2, y_2), p_3 = (x_3, y_3)$,
+$$
+\begin{aligned}
+d_1^{\text{prod}}(p_1, p_3) &= d_X(x_1, x_3) + d_Y(y_1, y_3) \\
+&\le (d_X(x_1, x_2) + d_X(x_2, x_3)) + (d_Y(y_1, y_2) + d_Y(y_2, y_3)) \\
+&= d_1^{\text{prod}}(p_1, p_2) + d_1^{\text{prod}}(p_2, p_3).
+\end{aligned}
+$$
+Non-negativity, definiteness, and symmetry are clear.
+
+Equivalence of the three product metrics follows exactly as in the case of $\mathbb{R}^2$: one checks
+$$d_\infty^{\text{prod}} \le d_2^{\text{prod}} \le d_1^{\text{prod}} \le 2 d_\infty^{\text{prod}}.$$
+</Proof>
+
+---
+
+## Isometries and Contractions
+
+Metric spaces come with a natural notion of "distance-preserving" or "distance-shrinking" maps.
+
+<Definition title="Isometry">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces. A function $f : X \to Y$ is called an **isometry** if
+$$d_Y(f(x_1), f(x_2)) = d_X(x_1, x_2) \qquad \text{for all } x_1, x_2 \in X.$$
+If an isometry $f$ is also a bijection, we say $(X, d_X)$ and $(Y, d_Y)$ are **isometric**.
+</Definition>
+
+<Remark>
+**Intuition:** An isometry is a rigid embedding — it sends $X$ into $Y$ while preserving distances exactly. Rotations, reflections, and translations of $\mathbb{R}^n$ are isometries of $(\mathbb{R}^n, d_2)$. Two isometric metric spaces are indistinguishable from the metric point of view. Every isometry is automatically injective (if $f(x_1) = f(x_2)$, then $d_X(x_1, x_2) = d_Y(f(x_1), f(x_2)) = 0$, so $x_1 = x_2$).
+</Remark>
+
+<Proposition title="Isometries are Continuous">
+Every isometry $f : (X, d_X) \to (Y, d_Y)$ is continuous with respect to the metric topologies.
+</Proposition>
+
+<Proof>
+Let $a \in X$ and let $\varepsilon > 0$. Set $\delta = \varepsilon$. Then for every $x \in X$ with $d_X(x, a) < \delta = \varepsilon$,
+$$d_Y(f(x), f(a)) = d_X(x, a) < \varepsilon,$$
+so $f$ is continuous at $a$ (we have shown the $\varepsilon$-$\delta$ condition). Since $a$ was arbitrary, $f$ is continuous.
+</Proof>
+
+<Definition title="Contraction">
+Let $(X, d)$ be a metric space. A function $f : X \to X$ is called a **contraction** (or **contractive map**) if there exists a constant $0 \le k < 1$ such that
+$$d(f(x), f(y)) \le k \cdot d(x, y) \qquad \text{for all } x, y \in X.$$
+The constant $k$ is called the **contraction constant** or **Lipschitz constant**.
+</Definition>
+
+<Remark>
+**Intuition:** A contraction shrinks all distances by a uniform factor strictly less than 1. Think of repeatedly applying $f(x) = x/2$ on $\mathbb{R}$: iterating the map drives every point toward a single fixed point (the origin). This behaviour is general and is the content of the **Banach Fixed-Point Theorem**: on a complete metric space, every contraction has a unique fixed point, and iterating from any starting point converges to it. The Banach fixed-point theorem is the mathematical engine behind existence/uniqueness of solutions to ODEs, Markov chain convergence, and many practical iterative algorithms.
+</Remark>
+
+<Proposition title="Contractions are Continuous">
+Every contraction $f : (X, d) \to (X, d)$ is continuous.
+</Proposition>
+
+<Proof>
+Let $a \in X$ and $\varepsilon > 0$. Set $\delta = \varepsilon$. If $d(x, a) < \delta$, then
+$$d(f(x), f(a)) \le k \cdot d(x, a) < k \cdot \varepsilon \le \varepsilon$$
+(using $k < 1 \implies k \cdot \varepsilon \le \varepsilon$). So $f$ is continuous at $a$, and since $a$ was arbitrary, $f$ is continuous.
+</Proof>
+
+---
+
+## Continuity in Metric Spaces: the Familiar $\varepsilon$-$\delta$
+
+The topological definition of continuity simplifies dramatically when both spaces are metric.
+
+<Theorem title="Epsilon-Delta Characterization of Continuity">
+Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces, equipped with their metric topologies. Let $A \subseteq X$ and $f : A \to Y$. Let $a \in A$. Then $f$ is continuous at $a$ if and only if
+$$\forall \varepsilon > 0, \, \exists \delta > 0 \text{ such that } d_Y(f(x), f(a)) < \varepsilon \text{ for all } x \in A \text{ with } d_X(x, a) < \delta.$$
+</Theorem>
+
+<Proof>
+**($\Rightarrow$)** Suppose $f$ is continuous at $a$. Let $\varepsilon > 0$. The ball $V = B(f(a), \varepsilon)$ is a neighbourhood of $f(a)$. By topological continuity, there exists a neighbourhood $W$ of $a$ with $f(A \cap W) \subseteq V$. Since $W$ is a neighbourhood, there exists $\delta > 0$ with $B(a, \delta) \subseteq W$. Then for every $x \in A$ with $d_X(x, a) < \delta$, we have $x \in A \cap B(a, \delta) \subseteq A \cap W$, so $f(x) \in V = B(f(a), \varepsilon)$, i.e., $d_Y(f(x), f(a)) < \varepsilon$.
+
+**($\Leftarrow$)** Suppose the $\varepsilon$-$\delta$ condition holds. Let $V$ be a neighbourhood of $f(a)$. There exists $\rho > 0$ with $B(f(a), \rho) \subseteq V$. By hypothesis with $\varepsilon = \rho$, there exists $\delta > 0$ with $d_Y(f(x), f(a)) < \rho$ for all $x \in A$ with $d_X(x, a) < \delta$. Set $W = B(a, \delta)$, which is a neighbourhood of $a$. Then for $x \in A \cap W$, $d_X(x, a) < \delta$, so $f(x) \in B(f(a), \rho) \subseteq V$. Thus $f(A \cap W) \subseteq V$ and $f$ is continuous at $a$.
+</Proof>
+
+<Remark>
+**Intuition:** In metric spaces, "neighbourhood" can always be replaced by "open ball of some radius," so the general topological condition collapses to the familiar $\varepsilon$-$\delta$ formulation from first-year calculus. When $X = \mathbb{R}^n$ and $Y = \mathbb{R}^m$ with their Euclidean metrics, this is exactly the definition you have seen before:
+$$\lim_{\boldsymbol{x} \to \boldsymbol{a}} \boldsymbol{f}(\boldsymbol{x}) = \boldsymbol{\lambda} \iff \forall \varepsilon > 0 \, \exists \delta > 0 : \|\boldsymbol{f}(\boldsymbol{x}) - \boldsymbol{\lambda}\|_{\mathbb{R}^m} < \varepsilon \text{ whenever } \boldsymbol{x} \in A, \, 0 < \|\boldsymbol{x} - \boldsymbol{a}\|_{\mathbb{R}^n} < \delta.$$
+</Remark>
+
+---
+
+## Limits in Metric Spaces are Unique
+
+<Theorem title="Uniqueness of Limits in Hausdorff Spaces">
+Let $(X, \mathcal{T})$ and $(Y, \mathcal{S})$ be topological spaces with $(Y, \mathcal{S})$ Hausdorff. Let $A \subseteq X$, $f : A \to Y$, and let $a$ be an accumulation point of $A$. If $\lim_{x \to a} f(x) = \lambda$ and $\lim_{x \to a} f(x) = \mu$, then $\lambda = \mu$.
+</Theorem>
+
+<Proof>
+Suppose for contradiction $\lambda \ne \mu$. Since $(Y, \mathcal{S})$ is Hausdorff, there exist $V_1 \in \mathcal{U}_\lambda$ and $V_2 \in \mathcal{U}_\mu$ with $V_1 \cap V_2 = \emptyset$.
+
+Since $\lim_{x \to a} f(x) = \lambda$, there exists $W_1 \in \mathcal{U}_a$ with $f(x) \in V_1$ for every $x \in (A \setminus \{a\}) \cap W_1$.
+
+Since $\lim_{x \to a} f(x) = \mu$, there exists $W_2 \in \mathcal{U}_a$ with $f(x) \in V_2$ for every $x \in (A \setminus \{a\}) \cap W_2$.
+
+Set $W = W_1 \cap W_2$, which is a neighbourhood of $a$. Since $a$ is an accumulation point of $A$, there exists $x \in (A \setminus \{a\}) \cap W$. But then $f(x) \in V_1$ and $f(x) \in V_2$, contradicting $V_1 \cap V_2 = \emptyset$.
+</Proof>
+
+<Corollary title="Limits in Metric Spaces are Unique">
+If $(Y, d_Y)$ is a metric space (with its metric topology), then every function $f : A \to Y$ has at most one limit at each accumulation point of $A$. In particular, limits of sequences in metric spaces are unique.
+</Corollary>
+
+<Proof>
+Every metric space is Hausdorff, so the previous theorem applies directly.
+</Proof>
+
+<Remark>
+**Intuition:** Uniqueness of limits is something we take for granted in calculus, but it's a nontrivial *topological* fact — it holds precisely because metric spaces are Hausdorff. In the non-Hausdorff topology $(\mathbb{R}, \mathcal{T}_{\text{lsc}})$, limits are genuinely not unique (a function converging to $\lambda$ also converges to every $\mu \le \lambda$).
+</Remark>
+
+---
+
+## Cauchy Sequences and Completeness
+
+We close with one of the most important concepts tied to metric spaces — one that does *not* have a purely topological formulation.
+
+<Definition title="Cauchy Sequence">
+Let $(X, d)$ be a metric space. A sequence $(a_n)_{n \ge 1}$ in $X$ is called a **Cauchy sequence** if and only if
+$$\forall \varepsilon > 0, \, \exists N \ge 1 \text{ such that } d(a_n, a_m) < \varepsilon \text{ for all } n, m \ge N.$$
+</Definition>
+
+<Remark>
+**Intuition:** A Cauchy sequence is one whose terms eventually get arbitrarily close to *each other* — no reference to a limit point is made. Contrast this with convergence, which requires the terms to get close to a specific point.
+</Remark>
+
+<Proposition title="Convergent Implies Cauchy">
+Every convergent sequence in a metric space is Cauchy.
+</Proposition>
+
+<Proof>
+Suppose $a_n \to a$ in $(X, d)$. Let $\varepsilon > 0$. Applying convergence with $\varepsilon/2$, there exists $N \ge 1$ such that $d(a_n, a) < \varepsilon/2$ for all $n \ge N$. Then for $n, m \ge N$, the triangle inequality gives
+$$d(a_n, a_m) \le d(a_n, a) + d(a, a_m) < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon.$$
+Hence $(a_n)$ is Cauchy.
+</Proof>
+
+<Definition title="Complete Metric Space">
+A metric space $(X, d)$ is called **complete** if and only if every Cauchy sequence in $X$ converges (to a point in $X$).
+</Definition>
+
+<Example title="Examples and Non-Examples of Completeness">
+- $\mathbb{R}$ with the Euclidean metric is **complete** (the core theorem from MATH/MTHE 281). More generally, $\mathbb{R}^n$ with any of $d_1, d_2, d_\infty$ is complete.
+- $\mathbb{Q}$ with $d(x, y) = |x - y|$ is **not complete**. For instance, $a_n = (1 + \tfrac{1}{n})^n \in \mathbb{Q}$ defines a Cauchy sequence in $\mathbb{Q}$, but its limit is $e \notin \mathbb{Q}$.
+- The open interval $X = (0, 1)$ with $d(x, y) = |x - y|$ is **not complete**. The sequence $a_n = \tfrac{1}{n}$ is Cauchy but its limit $0$ is not in $X$.
+- The closed interval $[0, 1]$ with $d(x, y) = |x - y|$ is a **complete** metric space. (It is a closed subset of the complete space $\mathbb{R}$.)
+</Example>
+
+<Remark>
+**Why completeness matters.** Completeness is the property that lets us do analysis: it guarantees that "reasonable" sequences (those whose terms bunch up) have limits. Without completeness, many theorems fail — for example, in $\mathbb{Q}$ you cannot build $\sqrt{2}$ as the limit of a sequence of rationals that "should" converge to it. The Baire Category Theorem, the contraction mapping principle (Banach fixed-point theorem), and existence of solutions to differential equations all rely crucially on the underlying space being complete.
+</Remark>
+
+<Remark>
+**Completeness is metric-dependent, not topological.** Two equivalent metrics can differ in completeness: $(0, 1)$ with $d(x,y) = |x-y|$ is not complete, but $(0,1)$ is homeomorphic to $\mathbb{R}$ (via, e.g., $x \mapsto \tan(\pi(x - \tfrac{1}{2}))$), and $\mathbb{R}$ is complete. So completeness is a property of the *metric*, not just the topology it induces.
+</Remark>
+
+---
+
+## Looking Ahead
+
+Equipped with a metric, a space inherits a topology "for free," and many familiar notions from calculus — continuity, convergence, completeness — become available. The next chapter examines how the basic topological building blocks (interior, closure, boundary) behave on the metric side, and develops the language of dense sets, nowhere dense sets, and accumulation points that we'll need to state and prove deeper results such as the Baire Category Theorem.
