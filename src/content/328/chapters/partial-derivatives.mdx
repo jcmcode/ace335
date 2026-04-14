@@ -3,8 +3,6 @@ title: "Multivariable Differentiation"
 chapter: 9
 ---
 
-<JacobianDiagram />
-
 Differential calculus in one variable is the study of the local linear approximation of a function. The derivative $f'(a)$ is a number only because linear maps $\mathbb{R} \to \mathbb{R}$ are determined by a single scalar; the geometrically correct object is the linear map $h \mapsto f'(a) h$. In several variables this viewpoint becomes mandatory. The derivative of a function $\vec{F}: \mathbb{R}^n \to \mathbb{R}^m$ at a point is a linear map $\mathbb{R}^n \to \mathbb{R}^m$, represented once bases are chosen by an $m \times n$ matrix of partial derivatives. This chapter develops the theory: directional and partial derivatives, the total (Frechet) derivative, the Jacobian matrix, the delicate interplay between partial and total differentiability, the chain rule, higher-order partials, Clairaut's theorem on the equality of mixed partials, the classes $C^k$, and a mean-value inequality for vector-valued maps.
 
 <Remark>**A note on philosophy (Dieudonne).** In his classic *Foundations of Analysis*, Jean Dieudonne of the French Bourbaki school writes that presenting differential calculus "aims at keeping as close as possible to the fundamental idea of Calculus, namely the local approximation of functions by linear functions. In the classical teaching of Calculus, this idea is immediately obscured by the accidental fact that, on a one-dimensional vector space, there is a one-to-one correspondence between linear forms and numbers, and therefore the derivative at a point is defined as a number instead of a linear form. This slavish subservience to the shibboleth of numerical interpretation at any cost becomes much worse when dealing with functions of several variables." The viewpoint of this chapter — derivative as a linear map — is the one Dieudonne recommends.</Remark>
@@ -111,6 +109,8 @@ where $\|L\|_{\mathrm{op}} = \sup_{\vec{v} \neq 0} \|L\vec{v}\| / \|\vec{v}\|$ i
 
 ### The Jacobian Matrix
 
+<JacobianDiagram />
+
 Every linear map $T : \mathbb{R}^n \to \mathbb{R}^m$ is represented, in the canonical bases, by a unique $m \times n$ matrix $M$ such that $T\vec{h} = M\vec{h}$. The next theorem identifies this matrix for $T = D\vec{F}(\vec{a})$: its entries are precisely the partial derivatives of the components of $\vec{F}$.
 
 <Theorem title="Total Derivative is the Jacobian">
@@ -182,8 +182,6 @@ so $f$ is differentiable at $\vec{a}$ with $Df(\vec{a}) \vec{h} = \nabla f(\vec{
 
 ---
 
-<GradientContour />
-
 ## The Gradient
 
 <Definition title="Gradient">
@@ -191,6 +189,8 @@ Let $U \subseteq \mathbb{R}^n$ be open and $f : U \to \mathbb{R}$ have all parti
 $$(\nabla f)(\vec{x}) = \left( \frac{\partial f}{\partial x_1}(\vec{x}), \ldots, \frac{\partial f}{\partial x_n}(\vec{x}) \right).$$
 Equivalently, when $f$ is differentiable at $\vec{x}$, $Df(\vec{x})\vec{h} = \nabla f(\vec{x}) \cdot \vec{h}$.
 </Definition>
+
+<GradientContour />
 
 <Remark>**Intuition:** The gradient is the vector field that records, at each point, the direction of steepest ascent of $f$, with magnitude equal to the rate of ascent in that direction. A function $U \to \mathbb{R}^n$ with $U \subseteq \mathbb{R}^n$ is called a **vector field**, so the gradient of a scalar-valued function is always a vector field.</Remark>
 

@@ -328,8 +328,6 @@ This last result is the key technical observation that drives the next chapter: 
 
 ---
 
-<UniformVsPointwise />
-
 ## Sequences of Functions: Pointwise vs Uniform Convergence
 
 We now move from sequences of points to sequences of functions, recording the two basic notions of convergence and the central facts that uniform convergence preserves continuity and commutes with integrals.
@@ -344,6 +342,9 @@ Let $I \subseteq \mathbb{R}$ and $f_n, f : I \to \mathbb{R}$.
 <Remark>
 **Intuition:** Pointwise convergence asks each input separately; the speed at which $f_n(x) \to f(x)$ may depend on $x$. Uniform convergence requires a single rate that works for every $x$ simultaneously. Uniform convergence implies pointwise; the converse fails.
 </Remark>
+
+<UniformVsPointwise />
+
 
 <Example title="Pointwise Convergence Does Not Preserve Continuity">
 Let $f_n : [0, 1] \to \mathbb{R}$, $f_n(x) = x^n$. Then
