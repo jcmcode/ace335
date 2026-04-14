@@ -1,0 +1,256 @@
+---
+title: "The Implicit Function Theorem"
+chapter: 10
+---
+
+Given an equation $F(x, y) = 0$ relating two variables, when can we solve for $y$ as a function of $x$? Globally, rarely: the unit circle $x^2 + y^2 - 1 = 0$ is not the graph of any single function $y = g(x)$ because two values of $y$ correspond to each $x \in (-1, 1)$. But *locally* — in a neighbourhood of a given point on the curve — the answer is often yes, provided one partial derivative does not vanish. The implicit function theorem makes this precise, in arbitrary dimensions, and does so constructively: it proves the existence of the local solution function $g$ by applying the Banach fixed-point theorem to a contraction built from the data. It also gives an explicit formula for the derivative of $g$, even without a closed-form expression for $g$ itself. Its special case, the inverse function theorem, is the local invertibility criterion for smooth maps. This chapter develops the theorem, proves it in full, and explores its geometric and computational consequences.
+
+---
+
+## Motivation: The Circle
+
+The unit circle $C = \{(x, y) \in \mathbb{R}^2 : x^2 + y^2 = 1\}$ is not globally a graph, but every point of $C$ has a neighbourhood in which $C$ *is* the graph of a function of one of the variables:
+
+- Near any point with $y > 0$: $y = \sqrt{1 - x^2}$.
+- Near any point with $y < 0$: $y = -\sqrt{1 - x^2}$.
+- Near any point with $x > 0$: $x = \sqrt{1 - y^2}$.
+- Near any point with $x < 0$: $x = -\sqrt{1 - y^2}$.
+
+At $(\pm 1, 0)$ we cannot write $y$ as a function of $x$, but we can write $x$ as a function of $y$. The function $f(x, y) = x^2 + y^2 - 1$ has partials $f_x = 2x$ and $f_y = 2y$. The inability to solve for $y$ in terms of $x$ at $(\pm 1, 0)$ is mirrored by $f_y = 2y = 0$ there. The inability to solve for $x$ in terms of $y$ at $(0, \pm 1)$ is mirrored by $f_x = 0$ there. The implicit function theorem promotes this observation to a general principle.
+
+---
+
+## Two-Dimensional Implicit Function Theorem
+
+<Theorem title="Dini's Implicit Function Theorem (2D, 1877)">
+Let $D \subseteq \mathbb{R}^2$ be open and $f : D \to \mathbb{R}$ of class $C^1$ on $D$. Let $(x_0, y_0) \in D$ satisfy
+$$f(x_0, y_0) = 0 \quad \text{and} \quad \frac{\partial f}{\partial y}(x_0, y_0) \neq 0.$$
+Then there exist $r > 0$ and a $C^1$ function $g : (x_0 - r, x_0 + r) \to \mathbb{R}$ such that $g(x_0) = y_0$, and for every $(x, y)$ with $|x - x_0| < r$ and $|y - y_0| < r$,
+$$f(x, y) = 0 \iff y = g(x).$$
+Moreover, for every $x \in (x_0 - r, x_0 + r)$,
+$$\frac{\partial f}{\partial x}(x, g(x)) + \frac{\partial f}{\partial y}(x, g(x)) \cdot g'(x) = 0, \qquad \text{so } g'(x) = -\frac{\partial f / \partial x(x, g(x))}{\partial f / \partial y(x, g(x))}.$$
+</Theorem>
+
+<Remark>**Intuition:** The condition $f_y(x_0, y_0) \neq 0$ says the level curve $\{f = 0\}$ is not tangent to the $y$-axis at $(x_0, y_0)$. Infinitesimally, the linearization $f_x(x_0, y_0) \Delta x + f_y(x_0, y_0) \Delta y = 0$ can be solved for $\Delta y$ in terms of $\Delta x$ iff $f_y \neq 0$. The theorem says this infinitesimal solvability extends to a full nonlinear local solution. The derivative formula is obtained by applying the chain rule to the identity $f(x, g(x)) \equiv 0$ and solving for $g'$.</Remark>
+
+The 2D theorem follows from the higher-dimensional version proven below. We skip a direct proof and pass to the general case.
+
+---
+
+## Preliminary Tools
+
+The proof of the full implicit function theorem rests on two results we state and use.
+
+<Theorem title="Mean Value Inequality for Vector-Valued Maps">
+Let $U \subseteq \mathbb{R}^m$ be open and $F : U \to \mathbb{R}^m$ differentiable on $U$. Suppose the line segment $[p, q] = \{p + t(q - p) : 0 \leq t \leq 1\}$ is contained in $U$. Then
+$$\|F(q) - F(p)\| \leq M \|q - p\|, \qquad M = \sup_{x \in U} \|DF(x)\|_{\mathrm{op}},$$
+where $\|L\|_{\mathrm{op}} = \sup_{\|v\|=1} \|Lv\|$ is the operator norm.
+</Theorem>
+
+<Theorem title="Banach Fixed-Point Theorem (Contraction Mapping Principle)">
+Let $Y \subseteq \mathbb{R}^m$ be a non-empty closed subset, and let $K : Y \to Y$ be a **contraction**: there exists $0 \leq \lambda < 1$ such that for every $y_1, y_2 \in Y$,
+$$\|K(y_1) - K(y_2)\| \leq \lambda \|y_1 - y_2\|.$$
+Then there exists a unique $y^* \in Y$ with $K(y^*) = y^*$.
+</Theorem>
+
+<Remark>**Intuition:** A contraction shrinks distances by a factor $\lambda < 1$. Iterating it produces a Cauchy sequence (geometrically shrinking differences), which converges because $Y$ is closed in the complete space $\mathbb{R}^m$. The limit must be fixed because $K$ is continuous, and it is unique because two fixed points would have to be at distance $\leq \lambda \cdot$ their own distance — forcing them to coincide.</Remark>
+
+---
+
+## The General Implicit Function Theorem
+
+<Theorem title="Implicit Function Theorem">
+Let $U \subseteq \mathbb{R}^{n+m} = \mathbb{R}^n \times \mathbb{R}^m$ be open, and let $(x_0, y_0) \in U$. Let $f : U \to \mathbb{R}^m$ be of class $C^1$ in a neighbourhood of $(x_0, y_0)$, with $f(x_0, y_0) = 0$. Write $f = (f_1, \ldots, f_m)$ and introduce the $m \times n$ and $m \times m$ matrices
+$$A = \left( \frac{\partial f_i}{\partial x_j}(x_0, y_0) \right)_{\substack{i = 1, \ldots, m \\ j = 1, \ldots, n}}, \qquad B = \left( \frac{\partial f_i}{\partial y_j}(x_0, y_0) \right)_{i, j = 1, \ldots, m}.$$
+Assume that $B$ is invertible. Then there exist an open neighbourhood $X$ of $x_0$ in $\mathbb{R}^n$, an open neighbourhood of $y_0$ in $\mathbb{R}^m$, and a $C^1$ function $g : X \to \mathbb{R}^m$ with $g(x_0) = y_0$, such that for $(x, y)$ near $(x_0, y_0)$,
+$$f(x, y) = 0 \iff y = g(x).$$
+Moreover, $Dg(x) : \mathbb{R}^n \to \mathbb{R}^m$ is given by the matrix
+$$-B_x^{-1} A_x, \qquad \text{where } A_x = \left( \frac{\partial f_i}{\partial x_j}(x, g(x)) \right), \quad B_x = \left( \frac{\partial f_i}{\partial y_j}(x, g(x)) \right).$$
+</Theorem>
+
+<Remark>**Intuition:** Split variables into "inputs" $x$ and "outputs to be solved for" $y$. The hypothesis "$B$ is invertible" says the infinitesimal system $A \Delta x + B \Delta y = 0$ is uniquely solvable for $\Delta y$: $\Delta y = -B^{-1} A \Delta x$. The theorem lifts this to the nonlinear level: the map $x \mapsto y(x) = g(x)$ exists locally, is $C^1$, and its derivative is the infinitesimal solution $-B^{-1} A$ (evaluated at the current point). The proof rewrites the equation $f(x, y) = 0$ as a fixed-point problem for $y$ at each $x$ and applies the contraction mapping principle.</Remark>
+
+<Proof>
+By translating, assume without loss of generality that $x_0 = 0 \in \mathbb{R}^n$ and $y_0 = 0 \in \mathbb{R}^m$.
+
+**Step 1: Reformulation as a fixed-point problem.**
+
+Since $f$ is $C^1$ at $(0, 0)$, it is differentiable there, and $(Df)(0, 0) : \mathbb{R}^{n+m} \to \mathbb{R}^m$ is the linear map $(x, y) \mapsto Ax + By$. Define the remainder
+$$R(x, y) := f(x, y) - Ax - By.$$
+By the definition of differentiability, $R$ is $C^1$ (being the difference of $C^1$ functions) and sublinear:
+$$\frac{\|R(x, y)\|}{\|(x, y)\|} \to 0 \quad \text{as } (x, y) \to (0, 0).$$
+Note $R(0, 0) = 0$ and $DR(0, 0) = 0$ (the zero linear map $\mathbb{R}^{n+m} \to \mathbb{R}^m$), because $(Df)(0, 0) = (x, y) \mapsto Ax + By$ exactly.
+
+The equation $f(x, y) = 0$ is equivalent to $Ax + By + R(x, y) = 0$, which, since $B$ is invertible, rearranges to
+$$y = -B^{-1}(Ax + R(x, y)).$$
+Define the auxiliary map
+$$K_x(y) := -B^{-1}(Ax + R(x, y)).$$
+Solving $f(x, y) = 0$ for $y$ amounts to finding a fixed point of $K_x$ for each $x$.
+
+**Step 2: $K_x$ is a contraction on a small closed ball.**
+
+We want to apply the Banach fixed-point theorem. We need: (a) $K_x$ maps some closed ball into itself, and (b) $K_x$ contracts distances on that ball, uniformly in $x$ when $x$ is small.
+
+Introduce the $m \times m$ matrix of partials
+$$\frac{\partial R}{\partial y}(x, y) := \left( \frac{\partial R_i}{\partial y_j}(x, y) \right)_{i, j = 1, \ldots, m}.$$
+Since $DR(0, 0) = 0$, in particular $\partial R / \partial y(0, 0) = 0$, the zero $m \times m$ matrix. Because $R$ is $C^1$, the map $(x, y) \mapsto \partial R / \partial y(x, y)$ is continuous. Hence there exists $r > 0$ such that, for all $(x, y) \in B_r(0) \times B_r(0) \subset \mathbb{R}^{n+m}$,
+$$\left\| \frac{\partial R}{\partial y}(x, y) \right\|_{\mathrm{op}} \leq \frac{1}{2 \|B^{-1}\|_{\mathrm{op}}}.$$
+(Here $\|B^{-1}\|_{\mathrm{op}}$ is finite and strictly positive because $B$ is invertible.)
+
+For fixed $x \in B_r(0) \subset \mathbb{R}^n$, the map $y \mapsto R(x, y)$ is differentiable on $B_r(0) \subset \mathbb{R}^m$ with derivative $\partial R / \partial y(x, y)$. By the mean value inequality, for any $y_1, y_2 \in \overline{B_r(0)}$,
+$$\|R(x, y_1) - R(x, y_2)\| \leq M(x) \cdot \|y_1 - y_2\|, \qquad M(x) := \sup_{y \in B_r(0)} \left\| \frac{\partial R}{\partial y}(x, y) \right\|_{\mathrm{op}}.$$
+By our choice of $r$, $M(x) \leq \tfrac{1}{2 \|B^{-1}\|_{\mathrm{op}}}$ for every $x \in B_r(0)$. Therefore
+$$\|K_x(y_1) - K_x(y_2)\| = \|B^{-1}(R(x, y_1) - R(x, y_2))\| \leq \|B^{-1}\|_{\mathrm{op}} \cdot M(x) \cdot \|y_1 - y_2\| \leq \tfrac{1}{2} \|y_1 - y_2\|.$$
+So $K_x$ is a contraction on $\overline{B_r(0)} \subset \mathbb{R}^m$ with contraction constant $\lambda = 1/2$, uniformly in $x \in B_r(0)$.
+
+**Step 3: $K_x$ maps $\overline{B_r(0)}$ into itself for $x$ sufficiently small.**
+
+We have $K_0(0) = -B^{-1}(0 + R(0, 0)) = 0$. The map $x \mapsto K_x(0) = -B^{-1}(Ax + R(x, 0))$ is continuous at $x = 0$ (as a composition of continuous maps), so there is $\tau \in (0, r)$ such that for every $x$ with $\|x\| < \tau$,
+$$\|K_x(0)\| < r / 2.$$
+For any $y \in \overline{B_r(0)}$ and $\|x\| < \tau$, combining Steps 2 and 3:
+$$\|K_x(y)\| \leq \|K_x(y) - K_x(0)\| + \|K_x(0)\| \leq \tfrac{1}{2} \|y - 0\| + \tfrac{r}{2} \leq \tfrac{r}{2} + \tfrac{r}{2} = r.$$
+Hence $K_x(\overline{B_r(0)}) \subseteq \overline{B_r(0)}$.
+
+**Step 4: Banach fixed point defines $g$.**
+
+Set $X = B_\tau(0) \subset \mathbb{R}^n$ and $Y = \overline{B_r(0)} \subset \mathbb{R}^m$. For every $x \in X$, the map $K_x : Y \to Y$ is a contraction on the closed non-empty set $Y$, so by the Banach fixed-point theorem it has a unique fixed point $y^*(x) \in Y$. Define
+$$g : X \to Y, \qquad g(x) := y^*(x).$$
+By construction, $g(x) = K_x(g(x)) = -B^{-1}(Ax + R(x, g(x)))$, equivalently $A x + B g(x) + R(x, g(x)) = 0$, equivalently $f(x, g(x)) = 0$. Also $g(0) = 0$ because $K_0(0) = 0$ and uniqueness of the fixed point.
+
+Uniqueness of $g$ as a solution of $f(x, y) = 0$ in $X \times Y$: if $(x, y) \in X \times Y$ with $f(x, y) = 0$, then $y = K_x(y)$, so $y$ is the fixed point of $K_x$, which is unique and equal to $g(x)$.
+
+**Step 5: Continuity of $g$.**
+
+For any $x_1, x_2 \in X$, using that $g(x_i) = K_{x_i}(g(x_i))$,
+$$\|g(x_1) - g(x_2)\| = \|K_{x_1}(g(x_1)) - K_{x_2}(g(x_2))\|.$$
+Write this as
+$$K_{x_1}(g(x_1)) - K_{x_2}(g(x_2)) = [K_{x_1}(g(x_1)) - K_{x_1}(g(x_2))] + [K_{x_1}(g(x_2)) - K_{x_2}(g(x_2))].$$
+The first bracket is bounded by $\tfrac{1}{2} \|g(x_1) - g(x_2)\|$. The second is
+$$K_{x_1}(g(x_2)) - K_{x_2}(g(x_2)) = -B^{-1}(A x_1 + R(x_1, g(x_2))) + B^{-1}(A x_2 + R(x_2, g(x_2)))$$
+$$= B^{-1}[A(x_2 - x_1) + R(x_2, g(x_2)) - R(x_1, g(x_2))].$$
+Both $A$ and the map $x \mapsto R(x, g(x_2))$ are continuous, so this tends to $0$ as $x_1 \to x_2$. Combining,
+$$\|g(x_1) - g(x_2)\| \leq \tfrac{1}{2} \|g(x_1) - g(x_2)\| + \|B^{-1}\|_{\mathrm{op}} \|A(x_2 - x_1) + R(x_2, g(x_2)) - R(x_1, g(x_2))\|,$$
+so
+$$\|g(x_1) - g(x_2)\| \leq 2 \|B^{-1}\|_{\mathrm{op}} \|A(x_2 - x_1) + R(x_2, g(x_2)) - R(x_1, g(x_2))\| \to 0$$
+as $x_1 \to x_2$. Hence $g$ is continuous on $X$.
+
+**Step 6: Differentiability of $g$.**
+
+Fix $\bar{x} \in X$ and let $\bar{y} = g(\bar{x})$. Since $f$ is $C^1$, it is differentiable at $(\bar{x}, \bar{y})$: writing
+$$\bar{A} = \left( \frac{\partial f_i}{\partial x_j}(\bar{x}, \bar{y}) \right), \qquad \bar{B} = \left( \frac{\partial f_i}{\partial y_j}(\bar{x}, \bar{y}) \right),$$
+we have
+$$f(x, y) = f(\bar{x}, \bar{y}) + \bar{A}(x - \bar{x}) + \bar{B}(y - \bar{y}) + \bar{R}(x - \bar{x}, y - \bar{y}), \qquad \frac{\|\bar{R}(u, v)\|}{\|(u, v)\|} \to 0 \text{ as } (u, v) \to 0.$$
+By continuity of $\partial f_i / \partial y_j$ and the fact that at the base point $B = (\partial f_i / \partial y_j)(0, 0)$ is invertible, the same matrix $\bar{B}$ at $(\bar{x}, \bar{y})$ remains invertible for $\bar{x}$ close enough to $0$ (since invertibility is an open condition — equivalently, $\det \bar{B} \neq 0$ is preserved by small perturbations because $\det$ is continuous). Shrinking $X$ if necessary, we may assume $\bar{B}$ is invertible for every $\bar{x} \in X$.
+
+Along the graph $y = g(x)$, the equation $f(x, g(x)) = 0 = f(\bar{x}, \bar{y})$ gives
+$$0 = \bar{A}(x - \bar{x}) + \bar{B}(g(x) - g(\bar{x})) + \bar{R}(x - \bar{x}, g(x) - g(\bar{x})),$$
+so
+$$g(x) - g(\bar{x}) = -\bar{B}^{-1} \bar{A}(x - \bar{x}) - \bar{B}^{-1} \bar{R}(x - \bar{x}, g(x) - g(\bar{x})).$$
+Let $L = -\bar{B}^{-1} \bar{A}$ (an $m \times n$ matrix) and set $h = x - \bar{x}$, $k = g(x) - g(\bar{x})$. Then
+$$k = L h - \bar{B}^{-1} \bar{R}(h, k).$$
+We show this implies $(k - L h) = o(\|h\|)$ as $h \to 0$.
+
+First, a bound on $\|k\|$ in terms of $\|h\|$. From $k = Lh - \bar{B}^{-1} \bar{R}(h, k)$ and sublinearity of $\bar{R}$, given $\varepsilon \in (0, 1/(2 \|\bar{B}^{-1}\|_{\mathrm{op}}))$ there is $\delta > 0$ such that $\|\bar{R}(h, k)\| \leq \varepsilon \|(h, k)\|$ for $\|(h, k)\| < \delta$. By continuity of $g$, there is $\delta' > 0$ such that $\|h\| < \delta'$ implies $\|(h, k)\| < \delta$. Then
+$$\|k\| \leq \|L\|_{\mathrm{op}} \|h\| + \|\bar{B}^{-1}\|_{\mathrm{op}} \varepsilon (\|h\| + \|k\|),$$
+so $(1 - \|\bar{B}^{-1}\|_{\mathrm{op}} \varepsilon) \|k\| \leq (\|L\|_{\mathrm{op}} + \|\bar{B}^{-1}\|_{\mathrm{op}} \varepsilon) \|h\|$. With $\varepsilon < 1/(2 \|\bar{B}^{-1}\|_{\mathrm{op}})$, we get $\|k\| \leq C \|h\|$ for some constant $C$ independent of $h$ (for $\|h\|$ small).
+
+Now,
+$$\frac{\|k - Lh\|}{\|h\|} = \frac{\|\bar{B}^{-1} \bar{R}(h, k)\|}{\|h\|} \leq \|\bar{B}^{-1}\|_{\mathrm{op}} \cdot \frac{\|\bar{R}(h, k)\|}{\|(h, k)\|} \cdot \frac{\|(h, k)\|}{\|h\|} \leq \|\bar{B}^{-1}\|_{\mathrm{op}} \cdot \frac{\|\bar{R}(h, k)\|}{\|(h, k)\|} \cdot (1 + C).$$
+As $h \to 0$, $(h, k) \to (0, 0)$ by Step 5, so $\|\bar{R}(h, k)\|/\|(h, k)\| \to 0$. Hence
+$$\lim_{h \to 0} \frac{\|g(\bar{x} + h) - g(\bar{x}) - L h\|}{\|h\|} = 0,$$
+so $g$ is differentiable at $\bar{x}$ with $Dg(\bar{x}) = L = -\bar{B}^{-1} \bar{A} = -B_{\bar{x}}^{-1} A_{\bar{x}}$.
+
+**Step 7: $g$ is $C^1$.**
+
+The formula $Dg(x) = -B_x^{-1} A_x$ expresses $Dg(x)$ as the matrix product of $-B_x^{-1}$ and $A_x$. The entries of $A_x$ and $B_x$ are $\partial f_i / \partial x_j(x, g(x))$ and $\partial f_i / \partial y_j(x, g(x))$, each a composition of a continuous function (the partial of $f$) with $x \mapsto (x, g(x))$, and $g$ is continuous. Hence $A_x$ and $B_x$ depend continuously on $x$. Matrix inversion is continuous on the open set of invertible matrices, so $B_x^{-1}$ is continuous in $x$. Therefore the entries of $Dg(x)$ — i.e. the partial derivatives of $g$ — are continuous functions of $x$, and $g$ is of class $C^1$. $\square$
+</Proof>
+
+---
+
+## The Inverse Function Theorem
+
+The inverse function theorem is a special case of the implicit function theorem in which $f(x, y) = F(y) - x$, so solving $f(x, y) = 0$ means inverting $F$.
+
+<Theorem title="Inverse Function Theorem">
+Let $V \subseteq \mathbb{R}^m$ be open, $F : V \to \mathbb{R}^m$ of class $C^1$, and $y_0 \in V$ with $DF(y_0)$ invertible. Set $x_0 = F(y_0)$. Then there exist an open neighbourhood $W$ of $x_0$ and an open neighbourhood $V_0 \subseteq V$ of $y_0$, and a $C^1$ function $F^{-1} : W \to V_0$ such that $F^{-1}(F(y)) = y$ for $y \in V_0$ and $F(F^{-1}(x)) = x$ for $x \in W$. Moreover,
+$$D(F^{-1})(x) = (DF(F^{-1}(x)))^{-1}.$$
+</Theorem>
+
+<Remark>**Intuition:** If the derivative $DF(y_0)$ is invertible, then to first order $F$ acts as an invertible linear map near $y_0$. The theorem says this local linear invertibility lifts to local nonlinear invertibility. The derivative formula is the infinitesimal version of the inverse: the derivative of the inverse is the inverse of the derivative.</Remark>
+
+<Proof>
+Define $f : \mathbb{R}^m \times V \to \mathbb{R}^m$ by $f(x, y) = F(y) - x$. Then $f$ is $C^1$, $f(x_0, y_0) = F(y_0) - x_0 = 0$, and the matrix of $y$-partials at $(x_0, y_0)$ is exactly $DF(y_0)$, which is invertible by hypothesis. By the implicit function theorem, there exist neighbourhoods $W \ni x_0$ and $V_0 \ni y_0$ and a $C^1$ map $g : W \to V_0$ with $g(x_0) = y_0$ and, for $(x, y)$ near $(x_0, y_0)$, $f(x, y) = 0 \iff y = g(x)$. The equation $f(x, y) = 0$ is $F(y) = x$, so $F(g(x)) = x$ for $x \in W$. Shrinking $V_0$ to $V_0 := g(W)$ and noting $g$ is continuous and injective on $W$ (because $g(x) = y$ is equivalent to $F(y) = x$, uniquely determining $y$ for each $x$), we have $F : V_0 \to W$ is a bijection with inverse $g$. Thus $F^{-1} := g$ works.
+
+For the derivative formula, differentiate $F(F^{-1}(x)) = x$ using the chain rule:
+$$DF(F^{-1}(x)) \circ D(F^{-1})(x) = I_{\mathbb{R}^m},$$
+so $D(F^{-1})(x) = (DF(F^{-1}(x)))^{-1}$. $\square$
+</Proof>
+
+---
+
+## Geometric Interpretation: Level Sets as Smooth Graphs
+
+Let $f : U \to \mathbb{R}^m$ with $U \subseteq \mathbb{R}^{n+m}$ open, $f$ of class $C^1$. The level set $\{(x, y) \in U : f(x, y) = 0\}$ is a subset of $\mathbb{R}^{n+m}$. The implicit function theorem says that, at points where the partial Jacobian with respect to the last $m$ variables is invertible, the level set is *locally the graph of a $C^1$ function* $g : \mathbb{R}^n \to \mathbb{R}^m$. Such a subset of $\mathbb{R}^{n+m}$ — locally the graph of a smooth function — is called a **smooth $n$-dimensional submanifold** of $\mathbb{R}^{n+m}$.
+
+More generally, given $F : U \to \mathbb{R}^m$ with $U \subseteq \mathbb{R}^N$, if $DF(p)$ has full rank $m$ at some point $p$ with $F(p) = 0$, then there is a choice of $m$ coordinates in $\mathbb{R}^N$ whose partials give an invertible $m \times m$ submatrix; after reindexing, the implicit function theorem applies and the level set $\{F = 0\}$ is locally the graph of a $C^1$ function of the remaining $N - m = n$ coordinates. Maps $F$ whose derivative has rank $m$ at every point of $F^{-1}(0)$ are called **submersions**, and the theorem says:
+
+*The zero level set of a submersion is a smooth manifold of dimension $N - m$.*
+
+This is the bedrock of differential geometry.
+
+---
+
+## Worked Examples
+
+<Example title="The unit circle, revisited">
+Let $f(x, y) = x^2 + y^2 - 1$. Then $f_x = 2x$ and $f_y = 2y$. Consider the point $(x_0, y_0) = (\sqrt{2}/2, \sqrt{2}/2)$. We have $f(x_0, y_0) = 1/2 + 1/2 - 1 = 0$ and $f_y(x_0, y_0) = \sqrt{2} \neq 0$. The implicit function theorem gives a $C^1$ function $g$ on a neighbourhood of $x_0 = \sqrt{2}/2$ such that $f(x, g(x)) = 0$. The derivative formula yields
+$$g'(x_0) = -\frac{f_x(x_0, y_0)}{f_y(x_0, y_0)} = -\frac{2 x_0}{2 y_0} = -1.$$
+This is the slope of the tangent line to the unit circle at $(\sqrt{2}/2, \sqrt{2}/2)$, as expected.
+
+At the point $(1, 0)$ we have $f_y = 0$, so the theorem fails — and indeed near $(1, 0)$ the circle cannot be written as $y = g(x)$ (two branches meet). However, $f_x(1, 0) = 2 \neq 0$, so swapping the roles of $x$ and $y$, the theorem gives $x = h(y)$ near $(1, 0)$, with $h'(0) = -f_y/f_x = 0$ (a vertical tangent).
+</Example>
+
+<Example title="An implicit curve without a closed form">
+Let $f : \mathbb{R}^2 \to \mathbb{R}$ be
+$$f(x, y) = \frac{1}{6}\left( 2\sqrt{3} \arctan\left( \frac{2y - 1}{\sqrt{3}} \right) + \log\left( \frac{(1 + y)^2}{1 - y + y^2} \right) \right) - x - \frac{\sqrt{3} \pi + \log 64}{18}.$$
+We take $(x_0, y_0) = (0, 1)$. Direct substitution (using $\arctan(1/\sqrt{3}) = \pi/6$ and $\log(4) = \log 4$, $\log 64 = 6 \log 2$) gives $f(0, 1) = 0$. The partials are
+$$\frac{\partial f}{\partial x} = -1, \qquad \frac{\partial f}{\partial y} = \frac{1}{y^3 + 1}.$$
+Take $D = \mathbb{R} \times (-1, \infty)$ so $y^3 + 1 > 0$; $f$ is $C^1$ on $D$. At $(0, 1)$, $\partial f / \partial y = 1/2 \neq 0$. By the implicit function theorem, there is $r > 0$ and a $C^1$ function $g : (-r, r) \to \mathbb{R}$ with $g(0) = 1$ and $f(x, g(x)) = 0$. No closed form for $g$ is available, but the derivative formula yields
+$$g'(x) = -\frac{-1}{1/(g(x)^3 + 1)} = g(x)^3 + 1.$$
+In particular $g'(0) = g(0)^3 + 1 = 2$. We have discovered that $g$ is the solution to the initial-value problem
+$$g'(x) = g(x)^3 + 1, \qquad g(0) = 1.$$
+</Example>
+
+<Example title="The sphere in R^3">
+Let $f(x, y, z) = x^2 + y^2 + z^2 - 1$, the unit sphere. Here $n = 2$ and $m = 1$: we want to solve for $z$ in terms of $(x, y)$. At any $(x_0, y_0, z_0)$ on the sphere with $z_0 \neq 0$, $\partial f / \partial z = 2 z_0 \neq 0$, so the implicit function theorem gives $z = g(x, y)$ locally, with
+$$\frac{\partial g}{\partial x}(x_0, y_0) = -\frac{f_x}{f_z} = -\frac{x_0}{z_0}, \qquad \frac{\partial g}{\partial y}(x_0, y_0) = -\frac{y_0}{z_0}.$$
+The upper hemisphere is globally $z = \sqrt{1 - x^2 - y^2}$. The theorem fails on the equator $\{z = 0\}$, and indeed the sphere is not locally a graph $z = g(x, y)$ near equatorial points.
+</Example>
+
+<Example title="A system of two equations in three unknowns">
+Consider the system
+$$\begin{cases} f_1(x, y_1, y_2) = x^2 + y_1^2 + y_2^2 - 3 = 0, \\ f_2(x, y_1, y_2) = x + y_1 + y_2 - 3 = 0, \end{cases}$$
+at the point $(x_0, y_1^0, y_2^0) = (1, 1, 1)$. Both equations are satisfied. Here $n = 1$, $m = 2$. The partial Jacobian in $(y_1, y_2)$ is
+$$B = \begin{pmatrix} 2 y_1 & 2 y_2 \\ 1 & 1 \end{pmatrix} \Bigg|_{(1,1,1)} = \begin{pmatrix} 2 & 2 \\ 1 & 1 \end{pmatrix}, \qquad \det B = 0.$$
+So the hypothesis fails: we cannot solve for both $y_1, y_2$ in terms of $x$ alone near $(1,1,1)$. Geometrically, at this point the sphere and plane intersect tangentially rather than transversely. Near generic intersection points (e.g.\ the circle of intersection of the sphere and plane is generic away from its tangencies), $B$ is invertible and we can locally solve.
+</Example>
+
+---
+
+## Applications
+
+### Parametrizing Curves and Surfaces
+
+The implicit function theorem is the fundamental tool for turning implicit descriptions of geometric objects into local parametrizations:
+
+- **Curves in $\mathbb{R}^2$** described by $f(x, y) = 0$: locally a graph $y = g(x)$ or $x = h(y)$ wherever $\nabla f \neq 0$.
+- **Surfaces in $\mathbb{R}^3$** described by $f(x, y, z) = 0$: locally a graph $z = g(x, y)$ (or similar) wherever $\nabla f \neq 0$.
+- **Curves in $\mathbb{R}^3$** described as the intersection of two surfaces $f_1 = f_2 = 0$: locally parametrized by one of the coordinates wherever the $2 \times 2$ minor of $(\nabla f_1, \nabla f_2)$ with respect to the other two coordinates is invertible.
+
+### Preparing for Lagrange Multipliers
+
+The Lagrange multiplier method for constrained optimization — minimize $f(x)$ subject to $g(x) = 0$ — relies on the implicit function theorem. At a minimum $x^*$ of $f$ on the constraint set $\{g = 0\}$, assuming $\nabla g(x^*) \neq 0$, the implicit function theorem lets us parametrize the constraint set locally as a smooth surface, which lets us check that directional derivatives of $f$ along the tangent space vanish. This forces $\nabla f(x^*)$ to be normal to the constraint surface, i.e.\ parallel to $\nabla g(x^*)$, yielding the multiplier equation $\nabla f = \lambda \nabla g$. A full treatment is the subject of the next chapter.
+
+---
+
+The implicit function theorem is one of the most consequential theorems in analysis: it bridges algebra (solving equations) and geometry (level sets as manifolds), it underpins the inverse function theorem and Lagrange multipliers, it is the starting point of differential topology and differential geometry, and its proof via Banach's fixed-point theorem illustrates the deep power of contraction mappings — a strategy that recurs throughout analysis, from solving differential equations (Picard iteration) to the spectral theory of operators.

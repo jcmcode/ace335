@@ -1,0 +1,347 @@
+---
+title: "Multivariable Differentiation"
+chapter: 9
+---
+
+Differential calculus in one variable is the study of the local linear approximation of a function. The derivative $f'(a)$ is a number only because linear maps $\mathbb{R} \to \mathbb{R}$ are determined by a single scalar; the geometrically correct object is the linear map $h \mapsto f'(a) h$. In several variables this viewpoint becomes mandatory. The derivative of a function $\vec{F}: \mathbb{R}^n \to \mathbb{R}^m$ at a point is a linear map $\mathbb{R}^n \to \mathbb{R}^m$, represented once bases are chosen by an $m \times n$ matrix of partial derivatives. This chapter develops the theory: directional and partial derivatives, the total (Frechet) derivative, the Jacobian matrix, the delicate interplay between partial and total differentiability, the chain rule, higher-order partials, Clairaut's theorem on the equality of mixed partials, the classes $C^k$, and a mean-value inequality for vector-valued maps.
+
+---
+
+## Directional and Partial Derivatives
+
+Let $U \subseteq \mathbb{R}^n$ be open and $f : U \to \mathbb{R}$. The most naive way to extract one-variable information from $f$ is to restrict it to a line through a point $\vec{a} \in U$ and differentiate.
+
+<Definition title="Directional Derivative">
+Let $U \subseteq \mathbb{R}^n$ be open, $f : U \to \mathbb{R}$, $\vec{a} \in U$, and $\vec{v} \in \mathbb{R}^n$ a direction vector. The **directional derivative of $f$ at $\vec{a}$ in the direction $\vec{v}$** is
+$$D_{\vec{v}} f(\vec{a}) = \lim_{h \to 0} \frac{f(\vec{a} + h\vec{v}) - f(\vec{a})}{h},$$
+provided this limit exists. In particular, when $\vec{v} = \vec{e}_j = (0, \ldots, 0, 1, 0, \ldots, 0)$ is the $j$-th canonical basis vector, we call this the **partial derivative of $f$ with respect to $x_j$ at $\vec{a}$** and denote it
+$$\frac{\partial f}{\partial x_j}(\vec{a}) := \lim_{h \to 0} \frac{f(\vec{a} + h \vec{e}_j) - f(\vec{a})}{h}.$$
+Other notations: $D_j f(\vec{a})$ and $f_{x_j}(\vec{a})$.
+</Definition>
+
+<Remark>**Intuition:** The partial derivative $\partial f / \partial x_j$ freezes all other variables at the value $a_k$ and differentiates $f$ as a one-variable function of $x_j$. It is the rate of change of $f$ when you move through $\vec{a}$ with unit velocity along the $j$-th coordinate axis. The directional derivative is the rate along any line.</Remark>
+
+### Partial Derivatives Do Not Imply Continuity
+
+A crucial warning: in several variables, the existence of every partial derivative at a point is not nearly enough to guarantee that the function is continuous there. Partial derivatives probe the function only along coordinate axes; the function can misbehave wildly on lines that are not axis-aligned.
+
+<Example title="Partials exist at the origin but f is not continuous there">
+Define $f : \mathbb{R}^2 \to \mathbb{R}$ by
+$$f(x, y) = \begin{cases} 1 & \text{if } xy = 0, \\ 0 & \text{if } xy \neq 0. \end{cases}$$
+Along either axis, $f$ is identically $1$, so
+$$\frac{\partial f}{\partial x}(0, 0) = \lim_{h \to 0} \frac{f(h, 0) - f(0,0)}{h} = \lim_{h \to 0} \frac{1 - 1}{h} = 0, \qquad \frac{\partial f}{\partial y}(0, 0) = 0$$
+exist. Yet $f$ is not continuous at $(0,0)$: the sequence $(1/n, 1/n) \to (0,0)$, but $f(1/n, 1/n) = 0 \not\to 1 = f(0,0)$.
+</Example>
+
+<Example title="A nastier counterexample with partials everywhere">
+Define $f : \mathbb{R}^2 \to \mathbb{R}$ by
+$$f(x, y) = \begin{cases} \dfrac{xy}{x^2 + y^2} & (x, y) \neq (0,0), \\ 0 & (x, y) = (0,0). \end{cases}$$
+Away from the origin, the quotient rule gives
+$$\frac{\partial f}{\partial x}(x, y) = \frac{y^3 - y x^2}{(x^2 + y^2)^2}, \qquad \frac{\partial f}{\partial y}(x, y) = \frac{x^3 - x y^2}{(x^2 + y^2)^2}.$$
+At the origin, $f(h, 0) = 0$ for all $h$, so $\partial f / \partial x(0,0) = 0$, and similarly for $y$. Thus the partial derivatives exist everywhere. Yet $f(t, t) = t^2 / (2 t^2) = 1/2$ for every $t \neq 0$, so $\lim_{t \to 0} f(t, t) = 1/2 \neq 0 = f(0,0)$, and $f$ is not continuous at the origin.
+</Example>
+
+The lesson is that pointwise existence of partials is too weak a notion of differentiability. We need something that forces continuity — something that says the function is locally well-approximated by a linear map in *every* direction simultaneously, not just along axes.
+
+---
+
+## The Total Derivative
+
+The correct generalization of the one-variable derivative is the linear approximation viewpoint. In one variable, $f$ is differentiable at $a$ iff there is a scalar $\alpha$ (necessarily $f'(a)$) such that
+$$f(a + h) - f(a) - \alpha h = o(h) \quad \text{as } h \to 0,$$
+equivalently, there is a linear map $T : \mathbb{R} \to \mathbb{R}$ such that $f(a + h) - f(a) - T(h) = o(h)$. In higher dimensions we keep the same statement, replacing $\alpha$ by a matrix and absolute values by norms.
+
+<Definition title="Total Derivative (Frechet Derivative)">
+Let $\vec{F} : D \to \mathbb{R}^m$, where $D \subseteq \mathbb{R}^n$, and let $\vec{a} \in \operatorname{int}(D)$. We say that $\vec{F}$ is **differentiable at $\vec{a}$** if there exists a linear map $T : \mathbb{R}^n \to \mathbb{R}^m$ such that
+$$\lim_{\vec{h} \to \vec{0}} \frac{\|\vec{F}(\vec{a} + \vec{h}) - \vec{F}(\vec{a}) - T\vec{h}\|}{\|\vec{h}\|} = 0.$$
+When such a $T$ exists it is unique; we denote it $D\vec{F}(\vec{a})$ and call it the **total derivative** (or **Frechet derivative**, or **differential**) of $\vec{F}$ at $\vec{a}$.
+</Definition>
+
+<Remark>**Intuition:** $D\vec{F}(\vec{a})$ is the unique linear map that agrees with the increment $\vec{F}(\vec{a} + \vec{h}) - \vec{F}(\vec{a})$ to higher than linear order. Informally, $\vec{F}(\vec{a} + \vec{h}) \approx \vec{F}(\vec{a}) + D\vec{F}(\vec{a})\vec{h}$, with an error that vanishes faster than $\|\vec{h}\|$. It is the best linear approximation to the increment. The definition is coordinate-free — it refers only to norms and linearity, not to specific axes.</Remark>
+
+The definition has the right theoretical consequences, starting with the implication that partials existing alone failed to deliver.
+
+<Theorem title="Differentiability implies continuity">
+Let $\vec{F} : D \to \mathbb{R}^m$, $D \subseteq \mathbb{R}^n$, $\vec{a} \in \operatorname{int}(D)$. If $\vec{F}$ is differentiable at $\vec{a}$, then $\vec{F}$ is continuous at $\vec{a}$.
+</Theorem>
+
+<Proof>
+Let $\varepsilon = 1$. By differentiability, there exists $\delta > 0$ such that whenever $\|\vec{x} - \vec{a}\| < \delta$,
+$$\|\vec{F}(\vec{x}) - \vec{F}(\vec{a}) - D\vec{F}(\vec{a})(\vec{x} - \vec{a})\| < \|\vec{x} - \vec{a}\|.$$
+By the triangle inequality,
+$$\|\vec{F}(\vec{x}) - \vec{F}(\vec{a})\| \leq \|\vec{F}(\vec{x}) - \vec{F}(\vec{a}) - D\vec{F}(\vec{a})(\vec{x} - \vec{a})\| + \|D\vec{F}(\vec{a})(\vec{x} - \vec{a})\|$$
+$$\leq \|\vec{x} - \vec{a}\| + \|D\vec{F}(\vec{a})\|_{\mathrm{op}} \, \|\vec{x} - \vec{a}\| = (1 + \|D\vec{F}(\vec{a})\|_{\mathrm{op}}) \|\vec{x} - \vec{a}\|,$$
+where $\|L\|_{\mathrm{op}} = \sup_{\vec{v} \neq 0} \|L\vec{v}\| / \|\vec{v}\|$ is the operator norm of the linear map $L$, which is finite because every linear map $\mathbb{R}^n \to \mathbb{R}^m$ is bounded. Hence $\vec{F}(\vec{x}) \to \vec{F}(\vec{a})$ as $\vec{x} \to \vec{a}$, i.e. $\vec{F}$ is continuous at $\vec{a}$. $\square$
+</Proof>
+
+### The Jacobian Matrix
+
+Every linear map $T : \mathbb{R}^n \to \mathbb{R}^m$ is represented, in the canonical bases, by a unique $m \times n$ matrix $M$ such that $T\vec{h} = M\vec{h}$. The next theorem identifies this matrix for $T = D\vec{F}(\vec{a})$: its entries are precisely the partial derivatives of the components of $\vec{F}$.
+
+<Theorem title="Total Derivative is the Jacobian">
+Let $\vec{F} : U \to \mathbb{R}^m$, $U \subseteq \mathbb{R}^n$, $\vec{a} \in \operatorname{int}(U)$, and write $\vec{F} = (F_1, \ldots, F_m)$. If $\vec{F}$ is differentiable at $\vec{a}$, then all partial derivatives $\partial F_i / \partial x_j (\vec{a})$ exist, and $D\vec{F}(\vec{a})$ is represented in the canonical bases by the $m \times n$ **Jacobian matrix**
+$$J_{\vec{F}}(\vec{a}) = \begin{pmatrix} \dfrac{\partial F_1}{\partial x_1}(\vec{a}) & \cdots & \dfrac{\partial F_1}{\partial x_n}(\vec{a}) \\ \vdots & & \vdots \\ \dfrac{\partial F_m}{\partial x_1}(\vec{a}) & \cdots & \dfrac{\partial F_m}{\partial x_n}(\vec{a}) \end{pmatrix}.$$
+In particular, differentiability implies the existence of every partial derivative of every component. The converse is not true in general.
+</Theorem>
+
+<Remark>**Intuition:** The Jacobian is the matrix whose $j$-th column is the partial derivative $\partial \vec{F} / \partial x_j(\vec{a})$, viewed as a vector in $\mathbb{R}^m$. This column records the change of $\vec{F}$ produced by a unit push along the $j$-th axis. Multiplying by a general direction vector $\vec{h}$ builds up the total linear response by linearly combining the axis-responses — which is exactly what a linear map does.</Remark>
+
+<Proof>
+Let $(d_{ij})_{\substack{i = 1, \ldots, m \\ j = 1, \ldots, n}}$ be the matrix representing $D\vec{F}(\vec{a})$ in the canonical bases. Applying the map to $\vec{e}_j$ extracts the $j$-th column:
+$$D\vec{F}(\vec{a}) \vec{e}_j = \begin{pmatrix} d_{1j} \\ \vdots \\ d_{mj} \end{pmatrix} = d_{1j} \vec{e}_1^{(m)} + \cdots + d_{mj} \vec{e}_m^{(m)} \in \mathbb{R}^m.$$
+We wish to show that $d_{ij} = \partial F_i / \partial x_j(\vec{a})$. Fix $i$ and $j$ and compute, for $h \neq 0$,
+$$\left| \frac{F_i(\vec{a} + h \vec{e}_j) - F_i(\vec{a})}{h} - d_{ij} \right| = \frac{|F_i(\vec{a} + h\vec{e}_j) - F_i(\vec{a}) - h d_{ij}|}{|h|}.$$
+The quantity $F_i(\vec{a} + h\vec{e}_j) - F_i(\vec{a}) - h d_{ij}$ is the $i$-th component of
+$$\vec{F}(\vec{a} + h\vec{e}_j) - \vec{F}(\vec{a}) - D\vec{F}(\vec{a})(h\vec{e}_j),$$
+so its absolute value is bounded above by the Euclidean norm of that vector. Therefore
+$$\left| \frac{F_i(\vec{a} + h\vec{e}_j) - F_i(\vec{a})}{h} - d_{ij} \right| \leq \frac{\|\vec{F}(\vec{a} + h\vec{e}_j) - \vec{F}(\vec{a}) - D\vec{F}(\vec{a})(h\vec{e}_j)\|}{|h|} = \frac{\|\vec{F}(\vec{a} + h\vec{e}_j) - \vec{F}(\vec{a}) - D\vec{F}(\vec{a})(h\vec{e}_j)\|}{\|h\vec{e}_j\|}.$$
+As $h \to 0$, the vector $h\vec{e}_j \to \vec{0}$, and the right-hand side tends to $0$ by the definition of differentiability. Hence
+$$\frac{\partial F_i}{\partial x_j}(\vec{a}) = \lim_{h \to 0} \frac{F_i(\vec{a} + h \vec{e}_j) - F_i(\vec{a})}{h} = d_{ij}. \qquad \square$$
+</Proof>
+
+The example $f(x, y) = xy/(x^2 + y^2)$ (extended to $0$ at the origin) from the previous section shows the converse is genuinely false: its partials exist at $(0,0)$, but $f$ is not even continuous there, so by the continuity theorem it cannot be differentiable.
+
+<Corollary title="Component-wise Differentiability">
+Let $\vec{F} : U \to \mathbb{R}^m$, $\vec{F} = (F_1, \ldots, F_m)$, $\vec{a} \in \operatorname{int}(U)$. Then $D\vec{F}(\vec{a})$ exists if and only if $DF_j(\vec{a})$ exists for every $j \in \{1, \ldots, m\}$.
+</Corollary>
+
+<Remark>**Intuition:** Differentiability of a vector-valued map is nothing more than simultaneous differentiability of its components. This is the vector-valued analogue of the fact that a sequence in $\mathbb{R}^m$ converges iff each of its component sequences does.</Remark>
+
+<Proof>
+($\Rightarrow$) Suppose $D\vec{F}(\vec{a})$ exists. Since it is a linear map $\mathbb{R}^n \to \mathbb{R}^m$, its components are linear maps $L_j : \mathbb{R}^n \to \mathbb{R}$ with $D\vec{F}(\vec{a})\vec{v} = (L_1 \vec{v}, \ldots, L_m \vec{v})$. For each $j$,
+$$|F_j(\vec{x}) - F_j(\vec{a}) - L_j(\vec{x} - \vec{a})| \leq \|\vec{F}(\vec{x}) - \vec{F}(\vec{a}) - D\vec{F}(\vec{a})(\vec{x} - \vec{a})\|.$$
+Dividing by $\|\vec{x} - \vec{a}\|$ and passing to the limit $\vec{x} \to \vec{a}$, we see that $F_j$ is differentiable at $\vec{a}$ with $DF_j(\vec{a}) = L_j$.
+
+($\Leftarrow$) Conversely, assume each $F_j$ is differentiable at $\vec{a}$ with derivative $DF_j(\vec{a})$. Define the linear map $T : \mathbb{R}^n \to \mathbb{R}^m$ by $T\vec{v} = (DF_1(\vec{a})\vec{v}, \ldots, DF_m(\vec{a})\vec{v})$. Then, using the bound $\|\vec{w}\| \leq \sqrt{m} \max_j |w_j|$,
+$$\frac{\|\vec{F}(\vec{x}) - \vec{F}(\vec{a}) - T(\vec{x} - \vec{a})\|}{\|\vec{x} - \vec{a}\|} \leq \sqrt{m} \max_j \frac{|F_j(\vec{x}) - F_j(\vec{a}) - DF_j(\vec{a})(\vec{x} - \vec{a})|}{\|\vec{x} - \vec{a}\|} \to 0$$
+as $\vec{x} \to \vec{a}$. $\square$
+</Proof>
+
+### A Sufficient Condition: Continuous Partials
+
+The example $f(x,y) = xy/(x^2 + y^2)$ shows partials existing at a point is too weak for differentiability. The following theorem gives a practical sufficient condition: if the partials exist in a neighbourhood and are continuous at the point, then the function is differentiable there.
+
+<Theorem title="Continuous Partials Imply Differentiability">
+Let $\vec{F} : U \to \mathbb{R}^m$, $U \subseteq \mathbb{R}^n$ open, $\vec{a} \in U$, and write $\vec{F} = (F_1, \ldots, F_m)$. Suppose there is $r > 0$ such that for every $j \in \{1, \ldots, m\}$ and every $i \in \{1, \ldots, n\}$, the partial derivative $\partial F_j / \partial x_i(\vec{x})$ exists for every $\vec{x} \in B_r(\vec{a})$, and the function $\vec{x} \mapsto \partial F_j / \partial x_i(\vec{x})$ is continuous at $\vec{a}$. Then $\vec{F}$ is differentiable at $\vec{a}$.
+</Theorem>
+
+<Remark>**Intuition:** Partial derivatives alone do not know about what happens off the coordinate axes. But if they vary continuously, they control the function in a full neighbourhood, and a mean-value telescoping argument along the edges of a small box pieces together an honest total derivative. "Continuous partials" is by far the most common way to check differentiability in practice.</Remark>
+
+<Proof>
+By the preceding corollary, it suffices to prove the scalar case $m = 1$; the vector case follows by applying this to each component. So let $f : U \to \mathbb{R}$ with partials existing on $B_r(\vec{a})$ and continuous at $\vec{a}$. Write $\vec{h} = (h_1, \ldots, h_n)$ with $\|\vec{h}\| < r$, and define the "corner points"
+$$\vec{p}_0 = \vec{a}, \qquad \vec{p}_k = \vec{a} + \sum_{i=1}^k h_i \vec{e}_i \quad (k = 1, \ldots, n), \qquad \vec{p}_n = \vec{a} + \vec{h}.$$
+The increment telescopes:
+$$f(\vec{a} + \vec{h}) - f(\vec{a}) = \sum_{k=1}^n \bigl[ f(\vec{p}_k) - f(\vec{p}_{k-1}) \bigr].$$
+Each term is a one-variable increment of $f$ along the $k$-th coordinate direction. Fix $k$ and define $\varphi_k : [0, h_k] \to \mathbb{R}$ (or $[h_k, 0]$ if $h_k < 0$) by $\varphi_k(t) = f(\vec{p}_{k-1} + t \vec{e}_k)$. Then $\varphi_k$ is differentiable with $\varphi_k'(t) = \partial f / \partial x_k(\vec{p}_{k-1} + t \vec{e}_k)$. By the one-variable Mean Value Theorem, there exists $\theta_k \in (0, 1)$ with
+$$f(\vec{p}_k) - f(\vec{p}_{k-1}) = \varphi_k(h_k) - \varphi_k(0) = h_k \cdot \frac{\partial f}{\partial x_k}(\vec{p}_{k-1} + \theta_k h_k \vec{e}_k) =: h_k \cdot \frac{\partial f}{\partial x_k}(\vec{q}_k),$$
+where $\vec{q}_k$ is a point on the segment between $\vec{p}_{k-1}$ and $\vec{p}_k$; in particular $\vec{q}_k \in B_{\|\vec{h}\|}(\vec{a})$. Summing,
+$$f(\vec{a} + \vec{h}) - f(\vec{a}) = \sum_{k=1}^n h_k \cdot \frac{\partial f}{\partial x_k}(\vec{q}_k).$$
+Let $\nabla f(\vec{a}) = (\partial f/\partial x_1(\vec{a}), \ldots, \partial f/\partial x_n(\vec{a}))$. Subtracting,
+$$f(\vec{a} + \vec{h}) - f(\vec{a}) - \nabla f(\vec{a}) \cdot \vec{h} = \sum_{k=1}^n h_k \left( \frac{\partial f}{\partial x_k}(\vec{q}_k) - \frac{\partial f}{\partial x_k}(\vec{a}) \right).$$
+By Cauchy–Schwarz,
+$$\left| f(\vec{a} + \vec{h}) - f(\vec{a}) - \nabla f(\vec{a}) \cdot \vec{h} \right| \leq \|\vec{h}\| \cdot \sqrt{\sum_{k=1}^n \left( \frac{\partial f}{\partial x_k}(\vec{q}_k) - \frac{\partial f}{\partial x_k}(\vec{a}) \right)^2}.$$
+Since $\vec{q}_k \to \vec{a}$ as $\vec{h} \to \vec{0}$ and each $\partial f / \partial x_k$ is continuous at $\vec{a}$, the square root tends to $0$. Dividing by $\|\vec{h}\|$, we obtain
+$$\lim_{\vec{h} \to \vec{0}} \frac{|f(\vec{a} + \vec{h}) - f(\vec{a}) - \nabla f(\vec{a}) \cdot \vec{h}|}{\|\vec{h}\|} = 0,$$
+so $f$ is differentiable at $\vec{a}$ with $Df(\vec{a}) \vec{h} = \nabla f(\vec{a}) \cdot \vec{h}$. $\square$
+</Proof>
+
+---
+
+## The Gradient
+
+<Definition title="Gradient">
+Let $U \subseteq \mathbb{R}^n$ be open and $f : U \to \mathbb{R}$ have all partial derivatives on $U$. The **gradient** of $f$ is the function $\nabla f : U \to \mathbb{R}^n$ defined by
+$$(\nabla f)(\vec{x}) = \left( \frac{\partial f}{\partial x_1}(\vec{x}), \ldots, \frac{\partial f}{\partial x_n}(\vec{x}) \right).$$
+Equivalently, when $f$ is differentiable at $\vec{x}$, $Df(\vec{x})\vec{h} = \nabla f(\vec{x}) \cdot \vec{h}$.
+</Definition>
+
+<Remark>**Intuition:** The gradient is the vector field that records, at each point, the direction of steepest ascent of $f$, with magnitude equal to the rate of ascent in that direction. A function $U \to \mathbb{R}^n$ with $U \subseteq \mathbb{R}^n$ is called a **vector field**, so the gradient of a scalar-valued function is always a vector field.</Remark>
+
+---
+
+## The Chain Rule
+
+The chain rule — the most important computational tool of differential calculus — takes an especially clean form when the derivative is viewed as a linear map: the derivative of a composition is the composition of the derivatives.
+
+<Theorem title="Chain Rule">
+Let $\vec{G} : U \to \mathbb{R}^p$ with $U \subseteq \mathbb{R}^n$ open, and $\vec{F} : V \to \mathbb{R}^m$ with $V \subseteq \mathbb{R}^p$ open. Suppose $\vec{G}(U) \subseteq V$, let $\vec{a} \in U$, and set $\vec{b} = \vec{G}(\vec{a})$. If $\vec{G}$ is differentiable at $\vec{a}$ and $\vec{F}$ is differentiable at $\vec{b}$, then $\vec{F} \circ \vec{G} : U \to \mathbb{R}^m$ is differentiable at $\vec{a}$, and
+$$D(\vec{F} \circ \vec{G})(\vec{a}) = D\vec{F}(\vec{b}) \circ D\vec{G}(\vec{a}).$$
+In matrix form, the Jacobian of the composition is the product of the Jacobians:
+$$J_{\vec{F} \circ \vec{G}}(\vec{a}) = J_{\vec{F}}(\vec{b}) \, J_{\vec{G}}(\vec{a}).$$
+</Theorem>
+
+<Remark>**Intuition:** To first order, $\vec{G}$ near $\vec{a}$ acts like its linear approximation $D\vec{G}(\vec{a})$, sending a small displacement $\vec{h}$ to $D\vec{G}(\vec{a}) \vec{h}$. Then $\vec{F}$ near $\vec{b}$ acts like $D\vec{F}(\vec{b})$. Composing linear approximations gives the linear approximation of the composition. The error terms are negligible because the operator norm tames them.</Remark>
+
+<Proof>
+Write $A = D\vec{G}(\vec{a})$ and $B = D\vec{F}(\vec{b})$. By definition,
+$$\vec{G}(\vec{a} + \vec{h}) = \vec{G}(\vec{a}) + A\vec{h} + \vec{r}_G(\vec{h}), \qquad \frac{\|\vec{r}_G(\vec{h})\|}{\|\vec{h}\|} \to 0 \text{ as } \vec{h} \to \vec{0},$$
+$$\vec{F}(\vec{b} + \vec{k}) = \vec{F}(\vec{b}) + B\vec{k} + \vec{r}_F(\vec{k}), \qquad \frac{\|\vec{r}_F(\vec{k})\|}{\|\vec{k}\|} \to 0 \text{ as } \vec{k} \to \vec{0}.$$
+Set $\vec{k}(\vec{h}) = \vec{G}(\vec{a} + \vec{h}) - \vec{G}(\vec{a}) = A\vec{h} + \vec{r}_G(\vec{h})$, so that $\vec{G}(\vec{a} + \vec{h}) = \vec{b} + \vec{k}(\vec{h})$. Then
+$$\vec{F}(\vec{G}(\vec{a} + \vec{h})) = \vec{F}(\vec{b} + \vec{k}(\vec{h})) = \vec{F}(\vec{b}) + B \vec{k}(\vec{h}) + \vec{r}_F(\vec{k}(\vec{h})).$$
+Expanding,
+$$\vec{F}(\vec{G}(\vec{a} + \vec{h})) - \vec{F}(\vec{G}(\vec{a})) - (B A)\vec{h} = B \vec{r}_G(\vec{h}) + \vec{r}_F(\vec{k}(\vec{h})).$$
+We show both terms on the right are $o(\|\vec{h}\|)$. For the first,
+$$\frac{\|B \vec{r}_G(\vec{h})\|}{\|\vec{h}\|} \leq \|B\|_{\mathrm{op}} \cdot \frac{\|\vec{r}_G(\vec{h})\|}{\|\vec{h}\|} \to 0.$$
+For the second, note $\|\vec{k}(\vec{h})\| \leq \|A\|_{\mathrm{op}} \|\vec{h}\| + \|\vec{r}_G(\vec{h})\|$, and since $\|\vec{r}_G(\vec{h})\| / \|\vec{h}\| \to 0$, there is $C > 0$ and $\delta > 0$ such that $\|\vec{k}(\vec{h})\| \leq C \|\vec{h}\|$ for $\|\vec{h}\| < \delta$. In particular, $\vec{k}(\vec{h}) \to \vec{0}$ as $\vec{h} \to \vec{0}$. Now
+$$\frac{\|\vec{r}_F(\vec{k}(\vec{h}))\|}{\|\vec{h}\|} = \frac{\|\vec{r}_F(\vec{k}(\vec{h}))\|}{\|\vec{k}(\vec{h})\|} \cdot \frac{\|\vec{k}(\vec{h})\|}{\|\vec{h}\|}$$
+whenever $\vec{k}(\vec{h}) \neq \vec{0}$; the first factor tends to $0$ because $\vec{k}(\vec{h}) \to \vec{0}$, and the second is bounded by $C$. When $\vec{k}(\vec{h}) = \vec{0}$, $\vec{r}_F(\vec{k}(\vec{h})) = \vec{r}_F(\vec{0}) = \vec{0}$, so the ratio is $0$. In either case, the expression tends to $0$ as $\vec{h} \to \vec{0}$.
+
+Therefore
+$$\lim_{\vec{h} \to \vec{0}} \frac{\|\vec{F}(\vec{G}(\vec{a} + \vec{h})) - \vec{F}(\vec{G}(\vec{a})) - BA \vec{h}\|}{\|\vec{h}\|} = 0,$$
+so $\vec{F} \circ \vec{G}$ is differentiable at $\vec{a}$ with derivative $BA = D\vec{F}(\vec{b}) \circ D\vec{G}(\vec{a})$. $\square$
+</Proof>
+
+<Corollary title="Scalar Chain Rule">
+If $f : V \to \mathbb{R}$ is differentiable at $\vec{G}(\vec{a})$ and $\vec{G} : U \to \mathbb{R}^p$ is differentiable at $\vec{a}$, then
+$$\frac{\partial (f \circ \vec{G})}{\partial x_j}(\vec{a}) = \sum_{k=1}^p \frac{\partial f}{\partial y_k}(\vec{G}(\vec{a})) \cdot \frac{\partial G_k}{\partial x_j}(\vec{a}).$$
+</Corollary>
+
+---
+
+## Higher-Order Partial Derivatives
+
+Once we have partial derivatives, we can differentiate again. Let $U \subseteq \mathbb{R}^n$ be open and $f : U \to \mathbb{R}$. If $\partial f / \partial x_j$ exists on $U$ and is itself a function from $U$ to $\mathbb{R}$, we can ask about its partial derivatives.
+
+<Definition title="Second-Order Partial Derivative">
+Let $U \subseteq \mathbb{R}^n$ be open and $f : U \to \mathbb{R}$. Assume $\partial f / \partial x_j$ exists on a neighbourhood of $\vec{a} \in U$. The **second-order partial derivative** of $f$ with respect to $x_i$ and $x_j$ at $\vec{a}$ is
+$$\frac{\partial^2 f}{\partial x_i \partial x_j}(\vec{a}) = \frac{\partial}{\partial x_i}\left( \frac{\partial f}{\partial x_j} \right)(\vec{a}) = \lim_{h \to 0} \frac{\dfrac{\partial f}{\partial x_j}(\vec{a} + h\vec{e}_i) - \dfrac{\partial f}{\partial x_j}(\vec{a})}{h},$$
+when the limit exists. Alternative notations include $D_i D_j f(\vec{a})$ and $f_{x_j x_i}(\vec{a})$ (note the reversed order in subscript notation: $f_{x_j x_i}$ means "differentiate first with respect to $x_j$, then with respect to $x_i$").
+</Definition>
+
+<Remark>**Intuition:** A second-order partial measures the rate at which one partial changes as you move in a (possibly different) coordinate direction. The notation is a minor booby trap: $\partial^2 f / \partial x_i \partial x_j$ means "first $\partial/\partial x_j$, then $\partial/\partial x_i$" — the operator nearest $f$ is applied first.</Remark>
+
+---
+
+## Equality of Mixed Partials: Clairaut's Theorem
+
+A natural question: does the order of differentiation matter? Is $\partial^2 f / \partial x \partial y$ always equal to $\partial^2 f / \partial y \partial x$? In general, no — there is a classical counterexample. But under mild continuity hypotheses, yes: this is Clairaut's theorem (also called Schwarz's theorem).
+
+<Example title="A function with unequal mixed partials">
+Define $f : \mathbb{R}^2 \to \mathbb{R}$ by
+$$f(x, y) = \begin{cases} \dfrac{xy(x^2 - y^2)}{x^2 + y^2} & (x, y) \neq (0, 0), \\ 0 & (x, y) = (0, 0). \end{cases}$$
+For $(x, y) \neq (0,0)$ a direct computation gives
+$$\frac{\partial f}{\partial x}(x, y) = \frac{y(x^4 + 4x^2 y^2 - y^4)}{(x^2 + y^2)^2}, \qquad \frac{\partial f}{\partial y}(x, y) = \frac{x(x^4 - 4 x^2 y^2 - y^4)}{(x^2 + y^2)^2}.$$
+At the origin, $f(x, 0) = 0$ for all $x$, so $\partial f / \partial x(0, 0) = 0$, and likewise $\partial f / \partial y(0, 0) = 0$. In particular, $\partial f / \partial x$ and $\partial f / \partial y$ are continuous on $\mathbb{R}^2$. Now compute along the axes:
+$$\frac{\partial f}{\partial x}(0, y) = \frac{y \cdot (-y^4)}{y^4} = -y, \qquad \frac{\partial f}{\partial y}(x, 0) = \frac{x \cdot x^4}{x^4} = x.$$
+Therefore
+$$\frac{\partial^2 f}{\partial y \partial x}(0, 0) = \frac{d}{dy}\Big|_{y=0} (-y) = -1, \qquad \frac{\partial^2 f}{\partial x \partial y}(0, 0) = \frac{d}{dx}\Big|_{x=0} x = +1.$$
+So the mixed partials are both defined at the origin, but $-1 \neq +1$: they are unequal. The obstruction is that $\partial^2 f / \partial x \partial y$ fails to be continuous at $(0,0)$.
+</Example>
+
+The counterexample shows continuity of the mixed partial is essential. The theorem proves that this is in fact enough.
+
+<Lemma title="Two-Variable Equality of Mixed Partials">
+Let $f : D \to \mathbb{R}$, $D \subseteq \mathbb{R}^2$, $(a, b) \in \operatorname{int}(D)$. Suppose there is $\delta > 0$ such that $\partial f / \partial x$, $\partial f / \partial y$, and $\partial^2 f / \partial x \partial y$ all exist on $B_\delta(a, b)$, and that the map $(x, y) \mapsto \partial^2 f / \partial x \partial y (x, y)$ is continuous at $(a, b)$. Then $\partial^2 f / \partial y \partial x(a, b)$ exists and
+$$\frac{\partial^2 f}{\partial y \partial x}(a, b) = \frac{\partial^2 f}{\partial x \partial y}(a, b).$$
+</Lemma>
+
+<Remark>**Intuition:** Consider the "double increment"
+$$\Delta(h, k) := f(a + h, b + k) - f(a + h, b) - f(a, b + k) + f(a, b).$$
+This symmetric quantity can be rewritten two ways: first differencing in $x$ and then in $y$, or vice versa. Dividing by $hk$ and letting $h, k \to 0$ recovers either mixed partial. The Mean Value Theorem converts both differences into evaluations of $f_{xy}$ at nearby points, and continuity of $f_{xy}$ at $(a, b)$ forces both limits to the same value.</Remark>
+
+<Proof>
+Write $f_x, f_y, f_{xy}, f_{yx}$ for $\partial f / \partial x$, etc. Let $\Delta f(x, y) := f(x + h, y) - f(x, y)$ for $|h|$ small (think of $h$ as fixed for now). Note $\lim_{h \to 0} \Delta f(x, y)/h = f_x(x, y)$.
+
+The quantity we will analyze is the double difference
+$$Q(h, k) := \Delta f(a, b + k) - \Delta f(a, b) = f(a + h, b + k) - f(a, b + k) - f(a + h, b) + f(a, b).$$
+Apply the Mean Value Theorem to the function $y \mapsto \Delta f(a, y)$ on the interval $[b, b + k]$: for $|h|, |k| < \delta$, the function is differentiable in $y$ with derivative
+$$(\Delta f)_y(a, y) = f_y(a + h, y) - f_y(a, y).$$
+(This is valid because $f_y$ exists on $B_\delta(a,b)$ and in particular on the vertical segment from $(a, b)$ to $(a, b + k)$ — actually we need it on both $(a, \cdot)$ and $(a+h, \cdot)$, which both lie in $B_\delta(a, b)$ when $|h|, |k| < \delta / 2$.) By MVT, there exists $\theta_1 = \theta_1(h, k) \in (0, 1)$ with
+$$Q(h, k) = k \cdot (\Delta f)_y(a, b + \theta_1 k) = k \cdot \bigl[ f_y(a + h, b + \theta_1 k) - f_y(a, b + \theta_1 k) \bigr].$$
+Now apply MVT to the function $x \mapsto f_y(x, b + \theta_1 k)$ on $[a, a+h]$: since $f_{xy} = (f_y)_x$ exists on $B_\delta(a, b)$, there exists $\theta_2 = \theta_2(h, k) \in (0, 1)$ with
+$$f_y(a + h, b + \theta_1 k) - f_y(a, b + \theta_1 k) = h \cdot f_{xy}(a + \theta_2 h, b + \theta_1 k).$$
+Therefore
+$$Q(h, k) = h k \cdot f_{xy}(a + \theta_2 h, b + \theta_1 k).$$
+Now we take limits in the other order. Fix $h \neq 0$ small and let $k \to 0$:
+$$\lim_{k \to 0} \frac{Q(h, k)}{k} = \lim_{k \to 0} \frac{[f(a + h, b + k) - f(a + h, b)] - [f(a, b + k) - f(a, b)]}{k} = f_y(a + h, b) - f_y(a, b).$$
+On the other hand, from the formula $Q(h, k) = hk \, f_{xy}(a + \theta_2 h, b + \theta_1 k)$,
+$$\frac{Q(h, k)}{k} = h \cdot f_{xy}(a + \theta_2 h, b + \theta_1 k),$$
+and as $k \to 0$, continuity of $f_{xy}$ at $(a, b)$ (holding $h$ fixed) gives, along any sequence $k_n \to 0$, a subsequential limit of $h \cdot f_{xy}(a + \theta_2 h, b)$ for some $\theta_2 \in [0, 1]$ — but actually to make this rigorous, use continuity of $f_{xy}$ at $(a,b)$ directly: for $|h|$ small, $\lim_{k \to 0} f_{xy}(a + \theta_2(h, k) h, b + \theta_1(h, k) k)$ need not equal $f_{xy}(a + \theta h, b)$ in general, but the two expressions for $Q(h, k)/k$ must be equal, giving
+$$f_y(a + h, b) - f_y(a, b) = \lim_{k \to 0} h \cdot f_{xy}(a + \theta_2(h, k) h, b + \theta_1(h, k) k).$$
+Dividing by $h$ and letting $h \to 0$,
+$$f_{yx}(a, b) = \lim_{h \to 0} \frac{f_y(a + h, b) - f_y(a, b)}{h} = \lim_{h \to 0} \lim_{k \to 0} f_{xy}(a + \theta_2 h, b + \theta_1 k).$$
+By continuity of $f_{xy}$ at $(a, b)$, the iterated limit equals $f_{xy}(a, b)$. Hence $f_{yx}(a, b)$ exists and equals $f_{xy}(a, b)$. $\square$
+</Proof>
+
+<Theorem title="Clairaut's Theorem (Equality of Mixed Partials)">
+Let $D \subseteq \mathbb{R}^n$, $f : D \to \mathbb{R}$, and $\vec{a} \in \operatorname{int}(D)$. Suppose there is $\delta > 0$ such that $\partial f / \partial x_i(\vec{x})$, $\partial f / \partial x_j(\vec{x})$, and $\partial^2 f / \partial x_i \partial x_j(\vec{x})$ exist for every $\vec{x} \in B_\delta(\vec{a})$, and the map $\vec{x} \mapsto \partial^2 f / \partial x_i \partial x_j(\vec{x})$ is continuous at $\vec{a}$. Then $\partial^2 f / \partial x_j \partial x_i(\vec{a})$ exists and
+$$\frac{\partial^2 f}{\partial x_i \partial x_j}(\vec{a}) = \frac{\partial^2 f}{\partial x_j \partial x_i}(\vec{a}).$$
+</Theorem>
+
+<Remark>**Intuition:** The $n$-variable theorem reduces to the $2$-variable lemma by freezing all coordinates except $x_i$ and $x_j$. Once only two variables wiggle, the two-variable proof applies verbatim.</Remark>
+
+<Proof>
+Assume without loss of generality that $i < j$. Let $\vec{a} = (a_1, \ldots, a_n)$. Define the two-variable function
+$$\phi(x, y) = f(a_1, \ldots, a_{i-1}, x, a_{i+1}, \ldots, a_{j-1}, y, a_{j+1}, \ldots, a_n),$$
+defined on an open neighbourhood of $(a_i, a_j) \in \mathbb{R}^2$ (the projection of $B_\delta(\vec{a})$ into the $(x_i, x_j)$-plane). Then
+$$\phi_x(x, y) = \frac{\partial f}{\partial x_i}(\ldots, x, \ldots, y, \ldots), \quad \phi_y(x, y) = \frac{\partial f}{\partial x_j}(\ldots, x, \ldots, y, \ldots),$$
+$$\phi_{xy}(x, y) = \frac{\partial^2 f}{\partial x_i \partial x_j}(\ldots, x, \ldots, y, \ldots).$$
+By hypothesis, $\phi_x, \phi_y, \phi_{xy}$ all exist near $(a_i, a_j)$, and $\phi_{xy}$ is continuous at $(a_i, a_j)$. The two-variable lemma gives $\phi_{yx}(a_i, a_j) = \phi_{xy}(a_i, a_j)$, which is exactly
+$$\frac{\partial^2 f}{\partial x_j \partial x_i}(\vec{a}) = \frac{\partial^2 f}{\partial x_i \partial x_j}(\vec{a}). \qquad \square$$
+</Proof>
+
+---
+
+## The Classes $C^k$
+
+<Definition title="C^k Functions">
+Let $U \subseteq \mathbb{R}^n$ be open. A function $\vec{F} : U \to \mathbb{R}^m$ is said to be **of class $C^1$ on $U$** if all first-order partial derivatives of all component functions of $\vec{F}$ exist and are continuous on $U$. More generally, for $k \geq 1$, $\vec{F}$ is **of class $C^k$ on $U$** if all partial derivatives of order $\leq k$ of all components of $\vec{F}$ exist and are continuous on $U$. The function is **of class $C^\infty$** if it is of class $C^k$ for every $k \geq 1$.
+
+Locally: $\vec{F}$ is of class $C^1$ at a point $\vec{a} \in \operatorname{int}(U)$ if there is an open ball around $\vec{a}$ on which every first-order partial of every component exists, and each such partial is continuous at $\vec{a}$.
+</Definition>
+
+<Remark>**Intuition:** $C^k$ is a hierarchy of smoothness classes: $C^0 \supset C^1 \supset C^2 \supset \cdots \supset C^\infty$. The $C^1$ class is the natural setting for differential calculus, since continuous partials imply differentiability. The $C^2$ class is where Clairaut applies to every mixed pair simultaneously, so the Hessian matrix is symmetric.</Remark>
+
+<Corollary title="C^2 Implies Symmetric Mixed Partials">
+If $f : U \to \mathbb{R}$ is of class $C^2$ on an open set $U \subseteq \mathbb{R}^n$, then for all $i, j \in \{1, \ldots, n\}$ and all $\vec{x} \in U$,
+$$\frac{\partial^2 f}{\partial x_i \partial x_j}(\vec{x}) = \frac{\partial^2 f}{\partial x_j \partial x_i}(\vec{x}).$$
+In particular, the $C^2$ mixed partials do not depend on the order of differentiation.
+</Corollary>
+
+<Proof>
+By definition of $C^2$, all second-order partials of $f$ exist and are continuous on $U$. Clairaut's theorem applies at every $\vec{x} \in U$. $\square$
+</Proof>
+
+<Corollary title="C^1 Implies Differentiable">
+If $\vec{F} : U \to \mathbb{R}^m$ is of class $C^1$ on an open set $U$, then $\vec{F}$ is differentiable at every $\vec{x} \in U$.
+</Corollary>
+
+<Proof>
+Immediate from the continuous-partials sufficient condition. $\square$
+</Proof>
+
+---
+
+## The Mean Value Inequality for Vector-Valued Maps
+
+In one variable, the Mean Value Theorem is an equality: $f(b) - f(a) = f'(c)(b - a)$ for some $c \in (a, b)$. For vector-valued maps this equality fails in general — there is no single point $\vec{c}$ where the derivative reproduces the increment. (Consider $\vec{F}(t) = (\cos t, \sin t)$ on $[0, 2\pi]$: $\vec{F}(2\pi) - \vec{F}(0) = \vec{0}$, but $D\vec{F}(c) = (-\sin c, \cos c) \neq \vec{0}$ for any $c$.) What survives is an inequality bounding the increment by the supremum of the operator norm of the derivative along the segment.
+
+<Theorem title="Mean Value Inequality (Higher-Dimensional MVT)">
+Let $U \subseteq \mathbb{R}^n$ be open and $\vec{F} : U \to \mathbb{R}^m$ be differentiable on $U$. Suppose the line segment
+$$[\vec{p}, \vec{q}] := \{\vec{p} + t(\vec{q} - \vec{p}) : 0 \leq t \leq 1\}$$
+is contained in $U$. Then
+$$\|\vec{F}(\vec{q}) - \vec{F}(\vec{p})\| \leq M \|\vec{q} - \vec{p}\|, \qquad \text{where } M = \sup_{\vec{x} \in [\vec{p}, \vec{q}]} \|D\vec{F}(\vec{x})\|_{\mathrm{op}}.$$
+</Theorem>
+
+<Remark>**Intuition:** You cannot expect to write the increment as an exact derivative-times-displacement because different components of $\vec{F}$ might be "going back and forth" at cross-purposes. But the total speed along the segment is at most $M$, and the distance covered is at most speed $\times$ time. The operator norm $\|D\vec{F}(\vec{x})\|_{\mathrm{op}}$ is the largest stretch factor of the linear map $D\vec{F}(\vec{x})$.</Remark>
+
+<Proof>
+Parametrize the segment by $\gamma : [0, 1] \to U$, $\gamma(t) = \vec{p} + t(\vec{q} - \vec{p})$, so $\gamma'(t) = \vec{q} - \vec{p}$. Set $\vec{\psi}(t) = \vec{F}(\gamma(t))$; by the chain rule, $\vec{\psi}'(t) = D\vec{F}(\gamma(t))(\vec{q} - \vec{p})$, so
+$$\|\vec{\psi}'(t)\| \leq \|D\vec{F}(\gamma(t))\|_{\mathrm{op}} \|\vec{q} - \vec{p}\| \leq M \|\vec{q} - \vec{p}\|.$$
+We wish to show $\|\vec{\psi}(1) - \vec{\psi}(0)\| \leq M \|\vec{q} - \vec{p}\|$. Pick a unit vector $\vec{u} \in \mathbb{R}^m$ with $\vec{u} \cdot (\vec{\psi}(1) - \vec{\psi}(0)) = \|\vec{\psi}(1) - \vec{\psi}(0)\|$ (by Cauchy–Schwarz this is achieved when $\vec{u}$ is the unit vector in the direction of $\vec{\psi}(1) - \vec{\psi}(0)$, or any unit vector if the increment is zero). Define $g : [0, 1] \to \mathbb{R}$ by $g(t) = \vec{u} \cdot \vec{\psi}(t)$. Then $g$ is differentiable with $g'(t) = \vec{u} \cdot \vec{\psi}'(t)$, so $|g'(t)| \leq \|\vec{u}\| \|\vec{\psi}'(t)\| = \|\vec{\psi}'(t)\| \leq M \|\vec{q} - \vec{p}\|$. By the one-variable Mean Value Theorem, there exists $t^* \in (0, 1)$ with
+$$g(1) - g(0) = g'(t^*) \cdot 1.$$
+Therefore
+$$\|\vec{\psi}(1) - \vec{\psi}(0)\| = \vec{u} \cdot (\vec{\psi}(1) - \vec{\psi}(0)) = g(1) - g(0) = g'(t^*) \leq M \|\vec{q} - \vec{p}\|. \qquad \square$$
+</Proof>
+
+<Corollary title="Vanishing Derivative on a Convex Set">
+Let $U \subseteq \mathbb{R}^n$ be open and convex, and $\vec{F} : U \to \mathbb{R}^m$ differentiable on $U$ with $D\vec{F}(\vec{x}) = 0$ for every $\vec{x} \in U$. Then $\vec{F}$ is constant on $U$.
+</Corollary>
+
+<Proof>
+For any $\vec{p}, \vec{q} \in U$, convexity implies $[\vec{p}, \vec{q}] \subset U$. The mean value inequality with $M = 0$ gives $\|\vec{F}(\vec{q}) - \vec{F}(\vec{p})\| \leq 0$, so $\vec{F}(\vec{q}) = \vec{F}(\vec{p})$. $\square$
+</Proof>
+
+---
+
+With partial derivatives, total derivatives, the chain rule, and a working notion of smoothness classes in hand, we are ready to tackle one of the deepest local-to-global results of differential calculus: the implicit function theorem, which tells us when an equation $\vec{F}(\vec{x}, \vec{y}) = \vec{0}$ can be solved locally for $\vec{y}$ in terms of $\vec{x}$.
