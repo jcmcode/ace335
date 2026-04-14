@@ -14,14 +14,12 @@ export default function GradientContour() {
   useEffect(() => setMounted(true), [])
   const [hoverPt, setHoverPt] = useState<{ x: number; y: number } | null>(null)
 
-  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-96" />
-
   const xToScreen = (x: number) => (W / 2) + (x * (W / 2) / 2.5)
   const yToScreen = (y: number) => (H / 2) - (y * (H / 2) / 2.5)
 
   // Contour levels
-  const levels = [0.2, 0.5, 1, 2, 3.5, 5.5]
   const contourPaths = useMemo(() => {
+    const levels = [0.2, 0.5, 1, 2, 3.5, 5.5]
     return levels.map(level => {
       // Ellipse: x^2 + 2y^2 = level -> a = sqrt(level), b = sqrt(level/2)
       const a = Math.sqrt(level)
@@ -31,7 +29,7 @@ export default function GradientContour() {
         const theta = (i / 100) * 2 * Math.PI
         const x = a * Math.cos(theta)
         const y = b * Math.sin(theta)
-        pts.push(`${xToScreen(x)},${yToScreen(y)}`)
+        pts.push(`${(W / 2) + (x * (W / 2) / 2.5)},${(H / 2) - (y * (H / 2) / 2.5)}`)
       }
       return { level, points: pts.join(' ') }
     })
@@ -40,6 +38,8 @@ export default function GradientContour() {
   // Gradient arrows on a grid
   const gradArrows = useMemo(() => {
     const arrows: { x1: number; y1: number; x2: number; y2: number }[] = []
+    const xs = (x: number) => (W / 2) + (x * (W / 2) / 2.5)
+    const ys = (y: number) => (H / 2) - (y * (H / 2) / 2.5)
     for (let i = -2; i <= 2; i += 1) {
       for (let j = -2; j <= 2; j += 1) {
         if (Math.abs(i) < 0.5 && Math.abs(j) < 0.5) continue
@@ -50,15 +50,17 @@ export default function GradientContour() {
         const ex = i + gx * scale
         const ey = j + gy * scale
         arrows.push({
-          x1: xToScreen(i),
-          y1: yToScreen(j),
-          x2: xToScreen(ex),
-          y2: yToScreen(ey),
+          x1: xs(i),
+          y1: ys(j),
+          x2: xs(ex),
+          y2: ys(ey),
         })
       }
     }
     return arrows
   }, [])
+
+  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-96" />
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
     const svg = e.currentTarget

@@ -9,9 +9,6 @@ export default function LagrangeDemo() {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const [c, setC] = useState(1.4) // level of f(x,y) = x + y
-
-  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-80" />
-
   const xToScreen = (x: number) => W / 2 + x * 80
   const yToScreen = (y: number) => H / 2 - y * 80
 
@@ -33,6 +30,8 @@ export default function LagrangeDemo() {
   const cMax = Math.sqrt(2)
   const touching = Math.abs(c - cMax) < 0.05 || Math.abs(c + cMax) < 0.05
 
+
+  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-80" />
   return (
     <div className="my-10 border border-slate-200 rounded-xl bg-white overflow-hidden">
       <div className="px-5 py-3 border-b border-slate-100">

@@ -14,9 +14,6 @@ export default function DarbouxSums() {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const [n, setN] = useState(6)
-
-  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-80" />
-
   const xToScreen = (x: number) => PAD + (x / 2) * (W - 2 * PAD)
   const yToScreen = (y: number) => H - PAD - (y / 4) * (H - 2 * PAD)
 
@@ -48,6 +45,8 @@ export default function DarbouxSums() {
     return pts.join(' ')
   }, [])
 
+
+  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-80" />
   return (
     <div className="my-10 border border-slate-200 rounded-xl bg-white overflow-hidden">
       <div className="px-5 py-3 border-b border-slate-100">

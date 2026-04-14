@@ -10,9 +10,6 @@ export default function UniformVsPointwise() {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const [n, setN] = useState(5)
-
-  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-80" />
-
   // f_n(x) = x^n on [0, 1]. Pointwise limit is 0 for x in [0,1) and 1 at x=1.
   // Not uniform because the "corner" stays — f_n(1 - 1/n) = (1 - 1/n)^n → 1/e
   const xToScreen = (x: number) => PAD + x * (W - 2 * PAD)
@@ -36,6 +33,8 @@ export default function UniformVsPointwise() {
   const worstX = Math.pow(0.5, 1 / n)
   const worstY = 0.5
 
+
+  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-80" />
   return (
     <div className="my-10 border border-slate-200 rounded-xl bg-white overflow-hidden">
       <div className="px-5 py-3 border-b border-slate-100">

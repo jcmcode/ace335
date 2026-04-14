@@ -14,9 +14,6 @@ export default function EpsilonDelta() {
   useEffect(() => setMounted(true), [])
   const [epsilon, setEpsilon] = useState(0.4)
   const [delta, setDelta] = useState(0.2)
-
-  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-96" />
-
   const a = 1  // the point we're approaching
   const L = f(a)  // the limit value
 
@@ -40,6 +37,8 @@ export default function EpsilonDelta() {
   const maxDev = Math.max(Math.abs(f(a + delta) - L), Math.abs(f(a - delta) - L))
   const works = maxDev <= epsilon
 
+
+  if (!mounted) return <div className="my-10 border border-slate-200 rounded-xl bg-white h-96" />
   return (
     <div className="my-10 border border-slate-200 rounded-xl bg-white overflow-hidden">
       <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between flex-wrap gap-2">
